@@ -88,6 +88,22 @@ function install_keptn {
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/quality-gates.yaml"
 
+cat << EOF | kubectl apply -n keptn -f -
+apiVersion: v1
+data:
+  app_domain: ${MY_IP}.xip.io
+kind: ConfigMap
+metadata:
+  creationTimestamp: null
+  name: keptn-domain
+  namespace: keptn
+EOF
+
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create rolebinding --serviceaccount=keptn:default --role=get-keptn-domain -n keptn keptn-get-domain
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create role get-keptn-domain --verb=get --resource=configmap --resource-name=keptn-domain -n keptn
+
+
+
   if openssl version > /dev/null 2>&1; then
     PREFIX="https"
     generate_certificate
