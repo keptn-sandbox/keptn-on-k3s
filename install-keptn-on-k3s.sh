@@ -88,7 +88,7 @@ function install_keptn {
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/quality-gates.yaml"
 
-cat << EOF | kubectl apply -n keptn -f -
+cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: v1
 data:
   app_domain: ${MY_IP}.xip.io
