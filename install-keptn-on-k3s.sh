@@ -180,7 +180,6 @@ function main {
   get_ip
   get_k3s
   check_k8s
-  install_ingress
   install_keptn
   print_config
 }
