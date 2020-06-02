@@ -13,8 +13,8 @@ Installs k3s and keptn quality gates
 ## Usage (Autodetect IP, need hostname -I):
 ```./install-keptn-on-k3s.sh``` 
 
-## Usage (GKE):
-```./install-keptn-on-k3s.sh gke``` 
+## Usage (GCP Instance):
+```./install-keptn-on-k3s.sh gcp``` 
 
 ## Usage (Custom IP):
 ```./install-keptn-on-k3s.sh <IP>```
