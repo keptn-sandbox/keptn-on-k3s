@@ -10,5 +10,11 @@ Installs k3s and keptn quality gates
   
 * Works on a machine with 1 (v)CPU and 4GB of memory
 
-## Usage:
-```./install-keptn-on-k3s.sh```
+## Usage (Autodetect IP, need hostname -I):
+```./install-keptn-on-k3s.sh``` 
+
+## Usage (GCP Instance):
+```./install-keptn-on-k3s.sh gcp``` 
+
+## Usage (Custom IP):
+```./install-keptn-on-k3s.sh <IP>```
