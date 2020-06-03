@@ -74,7 +74,7 @@ function install_keptn {
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create role get-keptn-domain --verb=get --resource=configmap --resource-name=keptn-domain -n keptn
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create rolebinding --serviceaccount=keptn:default --role=get-keptn-domain -n keptn keptn-get-domain
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create role keptn-create-lighthouse-config --verb=create,update --resource=configmap -n keptn
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create role keptn-create-lighthouse-config --verb=create,update,get --resource=configmap -n keptn
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create rolebinding --serviceaccount=keptn:default --role=keptn-create-lighthouse-config -n keptn keptn-create-lighthouse-config
 
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-cluster.yaml"
