@@ -3,13 +3,14 @@
 BINDIR="/usr/local/bin"
 KEPTNVERSION="0.6.2"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
-MY_IP=${1-}
+MY_IP="none"
 K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
 PREFIX="http"
+PROM="false"
 
 function get_ip {
-  if [[ -z "${MY_IP}" ]]; then
+  if [[ "${MY_IP}" == "none" ]]; then
     if hostname -I > /dev/null 2>&1; then
       MY_IP="$(hostname -I | awk '{print $1}')"
     else
@@ -17,12 +18,6 @@ function get_ip {
       exit 1
     fi
   fi
-
-  case "${MY_IP}" in
-    gcp)
-      MY_IP="$(curl -Ls -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)"
-      ;;
-  esac
 
   if [[ ${MY_IP} =~ ^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
     echo "Detected IP: ${MY_IP}"
@@ -88,7 +83,12 @@ function install_keptn {
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/quality-gates.yaml"
 
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin keptn-cluster-rolebinding
+
+  if [[ "${PROM}" == "true" ]]; then
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.4/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
+  fi
   
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: v1
@@ -190,6 +190,35 @@ EOF
 }
 
 function main {
+  while true; do
+  case "$1" in
+    --ip)
+        MY_IP="${2}"
+        shift 2
+      ;;
+    --provider)
+        case "${2}" in
+          gcp)
+            echo "Provider: GCP"
+            MY_IP="$(curl -Ls -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)"
+            shift 2
+            ;;
+          *)
+            echo "Unknown Provider given"
+            exit 1
+            ;;
+        esac
+        ;;
+    --with-prometheus)
+        PROM="true"
+        shift
+        ;;
+    *)
+      break
+      ;;
+  esac
+  done
+
   get_ip
   get_k3s
   check_k8s
