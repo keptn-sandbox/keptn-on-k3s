@@ -88,7 +88,7 @@ function install_keptn {
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/quality-gates.yaml"
 
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin keptn-rbac
   
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: v1
