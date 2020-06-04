@@ -2,6 +2,15 @@
 
 Installs k3s and keptn quality gates
 
+## Use Case
+ * You want to try out keptn
+ * You don't want to deal with Kubernetes
+ * You have access to a Linux host
+ 
+## But:
+ * You don't want to use this in production (currently)
+ * You don't plan to upgrade this installation (currently, but maybe reinstall) 
+
 ## Prerequisites:
   * A machine which is able to execute bash scripts
   * curl
@@ -27,3 +36,6 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/in
 
 ## Usage (Custom IP):
 ```curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --ip <IP>```
+
+## Cleanup
+``` k3s-uninstall.sh ```
