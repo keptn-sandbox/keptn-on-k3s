@@ -27,7 +27,6 @@ Installs k3s and keptn quality gates
 # For the brave, with Prometheus-Service and SLI Provider
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --with-prometheus
 ```
-```./install-keptn-on-k3s.sh``` 
 
 ## Usage (GCP Instance):
 ```
