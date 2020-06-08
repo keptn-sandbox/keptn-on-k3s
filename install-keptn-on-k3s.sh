@@ -61,7 +61,7 @@ function install_keptn {
   use_cert=false
   # Keptn Quality Gate installation based on https://keptn.sh/docs/develop/operate/manifest_installation/
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/namespace.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/installer/rbac.yaml"
+  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/rbac.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-operator-prereqs.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-operator-deploy.yaml"
   sleep 20
