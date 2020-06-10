@@ -206,6 +206,15 @@ function main {
             MY_IP="$(curl -Ls -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)"
             shift 2
             ;;
+          aws)
+            echo "Provider: AWS"
+            MY_IP="$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
+            shift 2
+            ;;
+          digitalocean)
+            echo "Provider: DigitalOcean"
+            MY_IP="$(curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address)"
+            shift 2
           *)
             echo "Unknown Provider given"
             exit 1
