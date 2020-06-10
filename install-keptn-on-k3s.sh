@@ -78,7 +78,7 @@ function install_keptn {
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn-datastore --for=condition=Ready pods --timeout=300s --all
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn keptn-api-token --from-literal=keptn-api-token="${KEPTN_API_TOKEN}"
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn bridge-credentials --from-literal="BASIC_AUTH_USERNAME=keptn" --from-literal="${BRIDGE_PASSWORD}" -n keptn
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn bridge-credentials --from-literal=BASIC_AUTH_USERNAME="keptn" --from-literal=BASIC_AUTH_PASSWORD="${BRIDGE_PASSWORD}"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/core.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/keptn-domain-configmap.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
