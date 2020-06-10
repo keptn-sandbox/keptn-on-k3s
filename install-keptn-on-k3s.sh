@@ -8,6 +8,7 @@ K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
 PREFIX="http"
 PROM="false"
+BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
   if [[ "${MY_IP}" == "none" ]]; then
@@ -76,8 +77,8 @@ function install_keptn {
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb-datastore/mongodb-datastore-distributor.yaml"
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn-datastore --for=condition=Ready pods --timeout=300s --all
 
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn keptn-api-token --from-literal=keptn-api-token="$KEPTN_API_TOKEN"
-
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn keptn-api-token --from-literal=keptn-api-token="${KEPTN_API_TOKEN}"
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn bridge-credentials --from-literal="BASIC_AUTH_USERNAME=keptn" --from-literal="${BRIDGE_PASSWORD}" -n keptn
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/core.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/keptn-domain-configmap.yaml"
   apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
@@ -178,9 +179,11 @@ EOF
 }
 
 function print_config {
-  echo "API URL   :   ${PREFIX}://api.keptn.$MY_IP.xip.io"
-  echo "Bridge URL:   ${PREFIX}://bridge.keptn.$MY_IP.xip.io"
-  echo "API Token :   $KEPTN_API_TOKEN"
+  echo "API URL   :      ${PREFIX}://api.keptn.$MY_IP.xip.io"
+  echo "Bridge URL:      ${PREFIX}://bridge.keptn.$MY_IP.xip.io"
+  echo "Bridge Username: keptn"
+  echo "Bridge Password: $BRIDGE_PASSWORD"
+  echo "API Token :      $KEPTN_API_TOKEN"
 
   cat << EOF
 To use keptn:
