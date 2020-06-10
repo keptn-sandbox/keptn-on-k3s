@@ -215,6 +215,7 @@ function main {
             echo "Provider: DigitalOcean"
             MY_IP="$(curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address)"
             shift 2
+            ;;
           *)
             echo "Unknown Provider given"
             exit 1
