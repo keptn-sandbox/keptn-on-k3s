@@ -236,7 +236,7 @@ function main {
         ;;
     --with-dynatrace)
         DYNA="true"
-        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN & DT_PAAS_TOKEN
+        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN & DT_PAAS_TOKEN"
         shift
         ;;
     *)
