@@ -94,9 +94,9 @@ function install_keptn {
 
   if [[ "${DYNA}" == "true" ]]; then
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.7.1/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.1/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.2/deploy/service.yaml"
     
-    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"  --from-literal="DT_PAAS_TOKEN=$DT_PAAS_TOKEN"
+    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
   fi
 
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
@@ -231,12 +231,35 @@ function main {
         esac
         ;;
     --with-prometheus)
+        echo "Enabling Prometheus Support"
         PROM="true"
         shift
         ;;
     --with-dynatrace)
         DYNA="true"
-        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN & DT_PAAS_TOKEN"
+        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
+        if [[ "$DT_TENANT" == "" ]]; then
+          echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+          echo "To learn more about the required settings please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
+          exit 1
+        fi 
+        if [[ "$DT_API_TOKEN" == "" ]]; then
+          echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
+          echo "If you want to learn more please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
+          exit 1
+        fi
+
+        # Validate tenant and token is correct
+        status=$(curl --request GET \
+             --url "https://$DT_TENANT/api/v1/config/clusterversion" \
+             --header "Authorization: Api-Token $DT_API_TOKEN" \
+             --write-out %{http_code} --silent --output /dev/null)
+        if [[ $status != 200 ]]; then
+          echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
+          echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
+          echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
+          exit 1
+        fi
         shift
         ;;
     *)
