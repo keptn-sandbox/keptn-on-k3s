@@ -8,6 +8,7 @@ K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
 PREFIX="http"
 PROM="false"
+DYNA="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
@@ -90,7 +91,14 @@ function install_keptn {
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.4/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
   fi
-  
+
+  if [[ "${DYNA}" == "true" ]]; then
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.7.1/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.1/deploy/service.yaml"
+    
+    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"  --from-literal="DT_PAAS_TOKEN=$DT_PAAS_TOKEN"
+  fi
+
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: v1
 data:
@@ -224,6 +232,11 @@ function main {
         ;;
     --with-prometheus)
         PROM="true"
+        shift
+        ;;
+    --with-dynatrace)
+        DYNA="true"
+        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN & DT_PAAS_TOKEN
         shift
         ;;
     *)
