@@ -9,6 +9,7 @@ K3SKUBECTLOPT="kubectl"
 PREFIX="http"
 PROM="false"
 DYNA="false"
+JMETER="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
@@ -87,6 +88,7 @@ function install_keptn {
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin keptn-cluster-rolebinding
 
+  # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.4/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
@@ -97,6 +99,11 @@ function install_keptn {
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.2/deploy/service.yaml"
     
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+  fi
+
+  # Installing JMeter Extended Service
+  if [[ "${JMETER}" == "true" ]]; then
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/jmeter-extended-service/release-0.2.0/deploy/service.yaml"
   fi
 
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
@@ -229,6 +236,11 @@ function main {
             exit 1
             ;;
         esac
+        ;;
+    --with-jmeter)
+        echo "Enabling JMeter Support"
+        JMETER="true"
+        shift
         ;;
     --with-prometheus)
         echo "Enabling Prometheus Support"
