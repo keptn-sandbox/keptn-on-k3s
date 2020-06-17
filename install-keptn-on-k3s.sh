@@ -8,6 +8,8 @@ K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
 PREFIX="http"
 PROM="false"
+DYNA="false"
+JMETER="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
@@ -86,11 +88,24 @@ function install_keptn {
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin keptn-cluster-rolebinding
 
+  # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.4/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
   fi
-  
+
+  if [[ "${DYNA}" == "true" ]]; then
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.7.1/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.2/deploy/service.yaml"
+    
+    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+  fi
+
+  # Installing JMeter Extended Service
+  if [[ "${JMETER}" == "true" ]]; then
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/jmeter-extended-service/release-0.2.0/deploy/service.yaml"
+  fi
+
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: v1
 data:
@@ -222,8 +237,41 @@ function main {
             ;;
         esac
         ;;
+    --with-jmeter)
+        echo "Enabling JMeter Support"
+        JMETER="true"
+        shift
+        ;;
     --with-prometheus)
+        echo "Enabling Prometheus Support"
         PROM="true"
+        shift
+        ;;
+    --with-dynatrace)
+        DYNA="true"
+        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
+        if [[ "$DT_TENANT" == "" ]]; then
+          echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+          echo "To learn more about the required settings please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
+          exit 1
+        fi 
+        if [[ "$DT_API_TOKEN" == "" ]]; then
+          echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
+          echo "If you want to learn more please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
+          exit 1
+        fi
+
+        # Validate tenant and token is correct
+        status=$(curl --request GET \
+             --url "https://$DT_TENANT/api/v1/config/clusterversion" \
+             --header "Authorization: Api-Token $DT_API_TOKEN" \
+             --write-out %{http_code} --silent --output /dev/null)
+        if [[ $status != 200 ]]; then
+          echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
+          echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
+          echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
+          exit 1
+        fi
         shift
         ;;
     *)
