@@ -1,6 +1,9 @@
-# keptn-on-k3s
+# Keptn Control Plane on k3s
 
-Installs k3s and keptn quality gates
+Installs k3s (www.k3s.io) and Keptn's Control Plane. 
+Keptn Control Plane includes Keptns Bridge, API, the Quality Gate capability and optionally the JMeter service!
+
+The install scripts provides with the options to configure either Prometheus or Dynatrace support automatically!
 
 ## Use Case
  * You want to try out keptn
@@ -30,8 +33,8 @@ The script allows a couple of parameters
 | --with-prometheus | | Will enable Prometheus Support |
 | --with-dynatrace | | Will enable Dynatrace Support. Requires DT_API_TOKEN and DT_TENANT env variables to be set
 | --with-jmeter | | Will install JMeter Extended Service |
-| --provider | aws,gcp,digitalocean,<empty> | handles IP gathering based on provider |
-| --IP | <YOURIP> | Allows you to pass your own IP of your host |
+| --provider | aws,gcp,digitalocean,EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
+| --IP | YOURIP | Allows you to pass your own IP of your host |
 
 ## Usage (Autodetect IP, need hostname -I):
 ```
@@ -44,8 +47,13 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/in
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --provider gcp
 ``` 
 
-## Usage (EC2 Instance with Dynatrace & JMeter :
+## Usage (EC2 Instance with Dynatrace & JMeter):
+
+FYI: For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
+
 ```
+export DT_TENANT=abc12345.live.dynatrace.com
+export DT_API_TOKEN=YOURTOKEN
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter
 ``` 
 
