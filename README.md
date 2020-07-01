@@ -1,7 +1,7 @@
 # Keptn Control Plane on k3s
 
 Installs [k3s](https://k3s.io) and [Keptn's](https://keptn.sh) Control Plane. 
-Keptn Control Plane includes Keptns Bridge, API and the Quality Gate capability and optionally the JMeter service!
+Keptn Control Plane includes Keptns Bridge, API and the Quality Gate capability and optionally the JMeter service! But does _not_ include capabilities for using Keptn as deployment tool.
 
 The install scripts provides with the additional options to configure either Prometheus or Dynatrace support automatically as well as installing the JMeter service to enable the Performance as a Self-Service capability!
 
