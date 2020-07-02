@@ -38,7 +38,7 @@ The script allows a couple of parameters
 | --with-dynatrace | | Will enable Dynatrace Support. Requires DT_API_TOKEN and DT_TENANT env variables to be set
 | --with-jmeter | | Will install JMeter Extended Service |
 | --provider | aws,gcp,digitalocean,EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
-| --IP | YOURIP | Allows you to pass your own IP of your host |
+| --ip | YOURIP | Allows you to pass your own IP of your host |
 
 ## Usage (Autodetect IP, need hostname -I):
 ```
