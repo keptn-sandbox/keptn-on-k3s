@@ -103,7 +103,7 @@ function install_keptn {
   fi
 
   if [[ "{$SLACKBOT}" == "true" ]]; then
-    apply_manifest "https://github.com/keptn-sandbox/slackbot-service/blob/release-0.1.2/deploy/slackbot-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.1.2/deploy/slackbot-service.yaml"
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
 
