@@ -284,7 +284,7 @@ function main {
         SLACKBOT="true"
         echo "Enabling Slackbot: Requires secret 'slackbot' with slackbot-token to be set!"
         if [[ $SLACKBOT_TOKEN == "" ]]; then
-          echo "You have to set SLACKBOT_TOKEN to the token for your Slackbot"
+          echo "You have to set the env variable SLACKBOT_TOKEN to the token for your Slackbot"
           echo "Find more information here: https://github.com/keptn-sandbox/slackbot-service"
           exit 1
         fi
