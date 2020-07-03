@@ -10,7 +10,7 @@ PREFIX="http"
 PROM="false"
 DYNA="false"
 JMETER="false"
-SLACKBOT="false"
+SLACK="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
@@ -102,7 +102,7 @@ function install_keptn {
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
   fi
 
-  if [[ "{$SLACKBOT}" == "true" ]]; then
+  if [[ "${SLACK}" == "true" ]]; then
     apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.1.2/deploy/slackbot-service.yaml"
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
@@ -281,7 +281,7 @@ function main {
         shift
         ;;
     --with-slackbot)
-        SLACKBOT="true"
+        SLACK="true"
         echo "Enabling Slackbot: Requires secret 'slackbot' with slackbot-token to be set!"
         if [[ $SLACKBOT_TOKEN == "" ]]; then
           echo "You have to set the env variable SLACKBOT_TOKEN to the token for your Slackbot"
