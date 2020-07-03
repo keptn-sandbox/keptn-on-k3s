@@ -10,6 +10,7 @@ PREFIX="http"
 PROM="false"
 DYNA="false"
 JMETER="false"
+SLACKBOT="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 function get_ip {
@@ -99,6 +100,11 @@ function install_keptn {
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.2/deploy/service.yaml"
     
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+  fi
+
+  if [[ "{$SLACKBOT}" == "true" ]]; then
+    apply_manifest "https://github.com/keptn-sandbox/slackbot-service/blob/release-0.1.2/deploy/slackbot-service.yaml"
+    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
 
   # Installing JMeter Extended Service
@@ -270,6 +276,16 @@ function main {
           echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
           echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
           echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
+          exit 1
+        fi
+        shift
+        ;;
+    --with-slackbot)
+        SLACKBOT="true"
+        echo "Enabling Slackbot: Requires Secret slackbot with slackbot-token to be set!"
+        if [[ "SLACKBOT_TOKEN" == "" ]]; then
+          echo "You have to set SLACKBOT_TOKEN to the token for your Slackbot"
+          echo "Find more information here: https://github.com/keptn-sandbox/slackbot-service"
           exit 1
         fi
         shift
