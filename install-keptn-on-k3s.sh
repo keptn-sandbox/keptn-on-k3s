@@ -6,10 +6,11 @@ KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
-PREFIX="http"
+PREFIX="https"
 PROM="false"
 DYNA="false"
 JMETER="false"
+CERTS="selfsigned"
 SLACK="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
@@ -59,6 +60,58 @@ function generate_certificate {
   openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/O=keptn/CN=*.{MY_IP}.xip.io" -keyout /tmp/certificate.key -out /tmp/certificate.crt
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret tls keptn-tls -n keptn --cert /tmp/certificate.crt --key /tmp/certificate.key
   rm /tmp/certificate.crt /tmp/certificate.key
+}
+
+function install_certmanager {
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace cert-manager
+  apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
+
+  cat << EOF |  apply_manifest -
+apiVersion: helm.cattle.io/v1
+kind: HelmChart
+metadata:
+  name: cert-manager
+  namespace: cert-manager
+spec:
+  chart: cert-manager
+  repo: https://charts.jetstack.io
+EOF
+
+  cat << EOF | apply_manifest -
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: selfsigned-issuer
+  namespace: cert-manager
+spec:
+  selfSigned: {}
+EOF
+
+if [[ "$CERTS" == "letsencrypt" ]]; then
+  if [[ "$LE_STAGE" == "production" ]]; then
+    ACME_SERVER="https://acme-v02.api.letsencrypt.org/directory"
+  else
+    ACME_SERVER="https://acme-staging-v02.api.letsencrypt.org/directory"
+  fi
+  cat << EOF | apply_manifest -
+apiVersion: cert-manager.io/v1alpha2
+kind: ClusterIssuer
+metadata:
+  name: letsencrypt-issuer
+spec:
+  acme:
+    email: $CERT_EMAIL
+    server: $ACME_SERVER
+    privateKeySecretRef:
+      # Secret resource that will be used to store the account's private key.
+      name: letsencrypt-issuer-account-key
+    # Add a single challenge solver, HTTP01 using nginx
+    solvers:
+    - http01:
+        ingress:
+          class: traefik
+EOF
+fi
 }
 
 function install_keptn {
@@ -123,54 +176,19 @@ metadata:
   namespace: keptn
 EOF
 
-  if openssl version > /dev/null 2>&1; then
-    PREFIX="https"
-    generate_certificate
-  fi
-
-  if  [[ ${PREFIX} == "https" ]]; then
-    cat << EOF |  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
-apiVersion: networking.k8s.io/v1beta1
-kind: Ingress
-metadata:
-  name: keptn-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
-spec:
-  tls:
-  - secretName: keptn-tls
-  rules:
-    - host: api.keptn.${MY_IP}.xip.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: api-gateway-nginx
-              servicePort: 80
-    - host: api.keptn
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: api-gateway-nginx
-              servicePort: 80
-    - host: bridge.keptn.${MY_IP}.xip.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: bridge
-              servicePort: 8080
-EOF
-  else
   cat << EOF |  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
   name: keptn-ingress
   annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+    cert-manager.io/cluster-issuer: $CERTS-issuer
 spec:
+  tls:
+  - hosts:
+    - api.keptn.${MY_IP}.xip.io
+    - bridge.keptn.${MY_IP}.xip.io
+    secretName: keptn-tls
   rules:
     - host: api.keptn.${MY_IP}.xip.io
       http:
@@ -196,7 +214,6 @@ spec:
 EOF
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
-  fi
 }
 
 function print_config {
@@ -242,6 +259,19 @@ function main {
             exit 1
             ;;
         esac
+        ;;
+    --letsencrypt)
+        echo "Will try to create LetsEncrypt certs"
+        CERTS="letsencrypt"
+        if [[ "$CERT_EMAIL" == "" ]]; then
+          echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
+          exit 1
+        fi
+        if [[ "$LE_STAGE" != "production" ]]; then
+          echo "Be aware that this will issue staging certificates"
+        fi
+
+        shift
         ;;
     --with-jmeter)
         echo "Enabling JMeter Support"
@@ -299,6 +329,7 @@ function main {
   get_ip
   get_k3s
   check_k8s
+  install_certmanager
   install_keptn
   print_config
 }
