@@ -144,6 +144,7 @@ function install_keptn {
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
+    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace dynatrace
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
 
