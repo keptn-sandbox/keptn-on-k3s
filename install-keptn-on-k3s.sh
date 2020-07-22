@@ -1,9 +1,10 @@
 #!/usr/bin/env bash
 
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.6.2"
+KEPTNVERSION="0.7.0"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
+FQDN="none"
 K3SKUBECTLCMD="${BINDIR}/k3s"
 K3SKUBECTLOPT="kubectl"
 PREFIX="https"
@@ -32,6 +33,16 @@ function get_ip {
   fi
 }
 
+function get_fqdn {
+  if [[ "$FQDN" == "none" ]]; then
+    FQDN="${MY_IP}.xip.io"
+    if [[ "${LE_STAGE}" == "production" ]]; then
+      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
+      exit 1
+    fi
+  fi
+}
+
 function apply_manifest {
   if [[ ! -z $1 ]]; then
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -f "${1}"
@@ -46,6 +57,12 @@ function get_k3s {
   curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" sh -
 }
 
+function get_helm {
+  curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+  chmod 700 /tmp/get_helm.sh
+  /tmp/get_helm.sh
+}
+
 function check_k8s {
   started=false
   while [[ ! "${started}" ]]; do
@@ -56,11 +73,6 @@ function check_k8s {
   done
 }
 
-function generate_certificate {
-  openssl req -new -newkey rsa:4096 -days 3650 -nodes -x509 -subj "/C=US/O=keptn/CN=*.{MY_IP}.xip.io" -keyout /tmp/certificate.key -out /tmp/certificate.crt
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret tls keptn-tls -n keptn --cert /tmp/certificate.crt --key /tmp/certificate.key
-  rm /tmp/certificate.crt /tmp/certificate.key
-}
 
 function install_certmanager {
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace cert-manager
@@ -116,42 +128,25 @@ fi
 
 function install_keptn {
   use_cert=false
-  # Keptn Quality Gate installation based on https://keptn.sh/docs/develop/operate/manifest_installation/
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/namespace.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/rbac.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-operator-prereqs.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-operator-deploy.yaml"
-  sleep 20
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn -l name=nats-operator  --for=condition=Ready pods --timeout=300s --all
 
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/nats/nats-cluster.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/namespace.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb/pvc.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb/deployment.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb/svc.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb-datastore/k8s/mongodb-datastore.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/logging/mongodb-datastore/mongodb-datastore-distributor.yaml"
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn-datastore --for=condition=Ready pods --timeout=300s --all
+  helm install keptn keptn \
+    --create-namespace --namespace=keptn \
+    --repo="https://storage.googleapis.com/keptn-installer" \
+    --kubeconfig /etc/rancher/k3s/k3s.yaml
+  sleep 10
+  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn  --for=condition=Ready pods --timeout=300s --all
 
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn keptn-api-token --from-literal=keptn-api-token="${KEPTN_API_TOKEN}"
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn bridge-credentials --from-literal=BASIC_AUTH_USERNAME="keptn" --from-literal=BASIC_AUTH_PASSWORD="${BRIDGE_PASSWORD}"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/core.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/keptn-domain-configmap.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/api-gateway-nginx.yaml"
-  apply_manifest "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/installer/manifests/keptn/quality-gates.yaml"
-
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create clusterrolebinding --serviceaccount=keptn:default --clusterrole=cluster-admin keptn-cluster-rolebinding
 
   # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.4/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.7.1/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.4.2/deploy/service.yaml"
-    
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
+
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
   fi
 
@@ -162,19 +157,8 @@ function install_keptn {
 
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/jmeter-extended-service/release-0.2.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.0/jmeter-service/deploy/service.yaml"
   fi
-
-  cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
-apiVersion: v1
-data:
-  app_domain: ${MY_IP}.xip.io
-kind: ConfigMap
-metadata:
-  creationTimestamp: null
-  name: keptn-domain
-  namespace: keptn
-EOF
 
   cat << EOF |  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
 apiVersion: networking.k8s.io/v1beta1
@@ -183,50 +167,39 @@ metadata:
   name: keptn-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   tls:
   - hosts:
-    - api.keptn.${MY_IP}.xip.io
-    - bridge.keptn.${MY_IP}.xip.io
+    - ${FQDN}
     secretName: keptn-tls
   rules:
-    - host: api.keptn.${MY_IP}.xip.io
-      http:
+    - http:
         paths:
           - path: /
             backend:
               serviceName: api-gateway-nginx
               servicePort: 80
-    - host: api.keptn
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: api-gateway-nginx
-              servicePort: 80
-    - host: bridge.keptn.${MY_IP}.xip.io
-      http:
-        paths:
-          - path: /
-            backend:
-              serviceName: bridge
-              servicePort: 8080
 EOF
 
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 }
 
 function print_config {
-  echo "API URL   :      ${PREFIX}://api.keptn.$MY_IP.xip.io"
-  echo "Bridge URL:      ${PREFIX}://bridge.keptn.$MY_IP.xip.io"
-  echo "Bridge Username: keptn"
+  BRIDGE_USERNAME="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
+  BRIDGE_PASSWORD="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
+  KEPTN_API_TOKEN="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+
+  echo "API URL   :      ${PREFIX}://${FQDN}/api"
+  echo "Bridge URL:      ${PREFIX}://${FQDN}/bridge"
+  echo "Bridge Username: $BRIDGE_USERNAME"
   echo "Bridge Password: $BRIDGE_PASSWORD"
   echo "API Token :      $KEPTN_API_TOKEN"
 
   cat << EOF
 To use keptn:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://api.keptn.$MY_IP.xip.io"
+- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 EOF
 }
 
@@ -260,6 +233,10 @@ function main {
             ;;
         esac
         ;;
+    --fqdn)
+	FQDN="${2}"
+	shift 2
+      ;;
     --letsencrypt)
         echo "Will try to create LetsEncrypt certs"
         CERTS="letsencrypt"
@@ -290,7 +267,7 @@ function main {
           echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
           echo "To learn more about the required settings please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
           exit 1
-        fi 
+        fi
         if [[ "$DT_API_TOKEN" == "" ]]; then
           echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
           echo "If you want to learn more please visit https://keptn.sh/docs/0.6.0/reference/monitoring/dynatrace/"
@@ -327,7 +304,9 @@ function main {
   done
 
   get_ip
+  get_fqdn
   get_k3s
+  get_helm
   check_k8s
   install_certmanager
   install_keptn
