@@ -40,6 +40,7 @@ The script allows a couple of parameters
 | --with-slackbot | | Will install the Keptn slackbot. Requires SLACKBOT_TOKEN env variable to be set |
 | --provider | aws,gcp,digitalocean,EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
 | --ip | YOURIP | Allows you to pass your own IP of your host |
+| --fqdn | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry
 
 ## TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io).
