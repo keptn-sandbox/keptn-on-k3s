@@ -144,7 +144,7 @@ function install_keptn {
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
 
     "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
