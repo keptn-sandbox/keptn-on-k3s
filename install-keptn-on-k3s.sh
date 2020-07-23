@@ -17,6 +17,7 @@ DYNA="false"
 JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
+XIP="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE="staging"
@@ -80,9 +81,10 @@ function get_ip {
 }
 
 function get_xip_address {
+
   address=${1:-none}
   if [[ $address != none ]]; then
-    echo ${address}.xip.io
+    echo "${address}.xip.io"
   else
     echo "No address given"
     exit 1
@@ -92,7 +94,7 @@ function get_xip_address {
 function get_fqdn {
   if [[ "$FQDN" == "none" ]]; then
     FQDN="${MY_IP}"
-    if [[ "${LE_STAGE}" == "staging" ]] || [[ "$USE_XIP" ]]; then
+    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${XIP}" == "true" ]]; then
       FQDN="$(get_xip_address "${MY_IP}")"
     fi
     if [[ "${LE_STAGE}" == "production" ]]; then
@@ -137,7 +139,7 @@ function check_k8s {
 
 
 function install_certmanager {
-  write_progress "Install Cert-Manager"
+  write_progress "Installing Cert-Manager"
   create_namespace cert-manager
 
   apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
@@ -329,7 +331,7 @@ function main {
         ;;
     --use-xip)
         echo "Using xip.io"
-        USE_XIP="true"
+        XIP="true"
         shift
         ;;
     --with-jmeter)
