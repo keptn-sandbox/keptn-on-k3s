@@ -81,7 +81,7 @@ function get_ip {
 }
 
 function get_xip_address {
-  address=${1:-none}
+  address="${1:-none}"
   if [[ $address != none ]]; then
     echo "${address}.xip.io"
   else
@@ -193,6 +193,7 @@ fi
 function install_keptn {
   write_progress "Installing Keptn"
   helm upgrade keptn keptn --install \
+    --version="${KEPTNVERSION}" \
     --create-namespace --namespace=keptn \
     --repo="https://storage.googleapis.com/keptn-installer" \
     --kubeconfig="$KUBECONFIG"
