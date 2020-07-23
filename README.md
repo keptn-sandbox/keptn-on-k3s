@@ -44,12 +44,12 @@ The script allows a couple of parameters
 ## Usage (Autodetect IP, need hostname -I):
 ```
 # For the brave, with Prometheus-Service and SLI Provider
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --with-prometheus
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.6.2/install-keptn-on-k3s.sh | bash -s - --with-prometheus
 ```
 
 ## Usage (GCP Instance):
 ```
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --provider gcp
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.6.2/install-keptn-on-k3s.sh | bash -s - --provider gcp
 ``` 
 
 ## Usage (EC2 Instance with Dynatrace & JMeter):
@@ -59,11 +59,11 @@ FYI: For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOK
 ```
 export DT_TENANT=abc12345.live.dynatrace.com
 export DT_API_TOKEN=YOURTOKEN
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.6.2/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter
 ``` 
 
 ## Usage (Custom IP):
-```curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/master/install-keptn-on-k3s.sh | bash -s - --ip <IP>```
+```curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.6.2/install-keptn-on-k3s.sh | bash -s - --ip <IP>```
 
 ## Cleanup
 ``` k3s-uninstall.sh ```
