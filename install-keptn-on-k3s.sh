@@ -36,13 +36,14 @@ function create_namespace {
 
 function check_delete_secret {
   secret="${1:-none}"
+  namespace="${2:-keptn}"
   if [[ "${secret}" == "none" ]]; then
     echo "No Secret given"
     exit 1
   fi
 
-  if [[ $("${K3SKUBECTL[@]}" get secret "$secret" -n keptn) ]]; then
-    "${K3SKUBECTL[@]}" delete secret "$secret" -n keptn
+  if [[ $("${K3SKUBECTL[@]}" get secret "$secret" -n "$namespace") ]]; then
+    "${K3SKUBECTL[@]}" delete secret "$secret" -n "$namespace"
   fi
 
 }
@@ -159,6 +160,24 @@ spec:
   selfSigned: {}
 EOF
 
+  check_delete_secret traefik-default-cert kube-system
+
+  cat << EOF | apply_manifest -
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: traefik-default
+  namespace: kube-system
+spec:
+  secretName: traefik-default-cert
+  issuerRef:
+    name: selfsigned-issuer
+    kind: ClusterIssuer
+  dnsNames:
+  - ${MY_IP}
+EOF
+
+
 if [[ "$CERTS" == "letsencrypt" ]]; then
   if [[ "$LE_STAGE" == "production" ]]; then
     ACME_SERVER="https://acme-v02.api.letsencrypt.org/directory"
@@ -185,6 +204,10 @@ spec:
           class: traefik
 EOF
 fi
+  "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
+  echo "Waiting for Traefik to restart"
+  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=300s -l app=traefik
+
 }
 
 function install_keptn {
