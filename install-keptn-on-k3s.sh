@@ -143,13 +143,10 @@ function install_certmanager {
 
   apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
 
-  helm upgrade cert-manager cert-manager --install \
+  helm upgrade cert-manager cert-manager --install --wait \
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
     --kubeconfig="${KUBECONFIG}"
-
-  sleep 10
-  "${K3SKUBECTL[@]}" wait --namespace=cert-manager  --for=condition=Ready pods --timeout=300s --all
 
   sleep 3
   cat << EOF | apply_manifest -
@@ -192,17 +189,13 @@ fi
 
 function install_keptn {
   write_progress "Installing Keptn"
-  helm upgrade keptn keptn --install \
+  helm upgrade keptn keptn --install --wait \
     --version="${KEPTNVERSION}" \
     --create-namespace --namespace=keptn \
     --repo="https://storage.googleapis.com/keptn-installer" \
     --kubeconfig="$KUBECONFIG"
 
-  sleep 10
-  "${K3SKUBECTL[@]}" wait --namespace=keptn  --for=condition=Ready pods --timeout=300s --all
-
-
-  # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
+    # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
      apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
