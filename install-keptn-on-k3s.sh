@@ -79,9 +79,22 @@ function get_ip {
   fi
 }
 
+function get_xip_address {
+  address=${1:-none}
+  if [[ $address != none ]]; then
+    echo ${address}.xip.io
+  else
+    echo "No address given"
+    exit 1
+  fi
+}
+
 function get_fqdn {
   if [[ "$FQDN" == "none" ]]; then
-    FQDN="${MY_IP}.xip.io"
+    FQDN="${MY_IP}"
+    if [[ "${LE_STAGE}" == "staging" ]] || [[ "$USE_XIP" ]]; then
+      FQDN="$(get_xip_address "${MY_IP}")"
+    fi
     if [[ "${LE_STAGE}" == "production" ]]; then
       echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
       exit 1
@@ -312,6 +325,11 @@ function main {
           echo "Be aware that this will issue staging certificates"
         fi
 
+        shift
+        ;;
+    --use-xip)
+        echo "Using xip.io"
+        USE_XIP="true"
         shift
         ;;
     --with-jmeter)
