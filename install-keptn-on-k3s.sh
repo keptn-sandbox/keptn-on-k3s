@@ -2,13 +2,16 @@
 
 set -eu
 
+DT_TENANT=${DT_TENANT:-none}
+DT_API_TOKEN=${DT_API_TOKEN:-none}
+DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
+
 BINDIR="/usr/local/bin"
 KEPTNVERSION="0.7.0"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
-K3SKUBECTLCMD="${BINDIR}/k3s"
-K3SKUBECTLOPT="kubectl"
+K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 PREFIX="https"
 PROM="false"
 DYNA="false"
@@ -16,10 +19,50 @@ JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
-HELM_OPTS="--kubeconfig /etc/rancher/k3s/k3s.yaml --create-namespace"
+KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+LE_STAGE="staging"
+
+function create_namespace {
+  namespace="${1:-none}"
+  if [[ "${namespace}" == "none" ]]; then
+    echo "No Namespace given"
+    exit 1
+  fi
+
+  if [[ ! $("${K3SKUBECTL[@]}" get namespace "$namespace") ]]; then
+    "${K3SKUBECTL[@]}" create namespace "$namespace"
+  fi
+}
+
+function check_delete_secret {
+  secret="${1:-none}"
+  if [[ "${secret}" == "none" ]]; then
+    echo "No Secret given"
+    exit 1
+  fi
+
+  if [[ $("${K3SKUBECTL[@]}" get secret "$secret" -n keptn) ]]; then
+    "${K3SKUBECTL[@]}" delete secret "$secret" -n keptn
+  fi
+
+}
+
+function get_keptn_token {
+  echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+}
+
+
+function write_progress {
+  status="${1:-default}"
+  echo ""
+  echo "#######################################>"
+  echo "# ${status}"
+  echo "#######################################>"
+}
 
 
 function get_ip {
+  write_progress "Determining IP Address"
   if [[ "${MY_IP}" == "none" ]]; then
     if hostname -I > /dev/null 2>&1; then
       MY_IP="$(hostname -I | awk '{print $1}')"
@@ -49,7 +92,7 @@ function get_fqdn {
 
 function apply_manifest {
   if [[ ! -z $1 ]]; then
-    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -f "${1}"
+    "${K3SKUBECTL[@]}" apply -f "${1}"
     if [[ $? != 0 ]]; then
       echo "Error applying manifest $1"
       exit 1
@@ -58,10 +101,13 @@ function apply_manifest {
 }
 
 function get_k3s {
+  write_progress "Installing K3s"
   curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" sh -
 }
 
 function get_helm {
+  write_progress "Installing Helm"
+
   curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
   chmod 700 /tmp/get_helm.sh
   /tmp/get_helm.sh
@@ -71,7 +117,7 @@ function check_k8s {
   started=false
   while [[ ! "${started}" ]]; do
     sleep 5
-    if "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" get nodes; then
+    if "${K3SKUBECTL[@]}" get nodes; then
       started=true
     fi
   done
@@ -79,12 +125,18 @@ function check_k8s {
 
 
 function install_certmanager {
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace cert-manager
+  write_progress "Install Cert-Manager"
+  create_namespace cert-manager
+
   apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
 
-  helm install cert-manager cert-manager "${HELM_OPTS}" \
-    --namespace=cert-manager \
-    --repo="https://charts.jetstack.io"
+  helm upgrade cert-manager cert-manager --install \
+    --create-namespace --namespace=cert-manager \
+    --repo="https://charts.jetstack.io" \
+    --kubeconfig="${KUBECONFIG}"
+
+  sleep 10
+  "${K3SKUBECTL[@]}" wait --namespace=cert-manager  --for=condition=Ready pods --timeout=300s --all
 
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1alpha2
@@ -125,45 +177,54 @@ fi
 }
 
 function install_keptn {
-  
-  helm install keptn keptn "${HELM_OPTS}" \
-    --namespace=keptn \
+  write_progress "Installing Keptn"
+  helm upgrade keptn keptn --install \
+    --create-namespace --namespace=keptn \
     --repo="https://storage.googleapis.com/keptn-installer" \
+    --kubeconfig="$KUBECONFIG"
+
   sleep 10
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn  --for=condition=Ready pods --timeout=300s --all
+  "${K3SKUBECTL[@]}" wait --namespace=keptn  --for=condition=Ready pods --timeout=300s --all
 
 
   # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
+     write_progress "Installing Prometheus Service"
+     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    echo "Installing Dynatrace OneAgent Operator"
-    helm install dynatrace-oneagent-operator dynatrace-oneagent-operator "${HELM_OPTS}" \
-      --namespace=dynatrace \
-      --repo="https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable" \
-      --set platform="kubernetes" \
-      --set oneagent.apiUrl="https://${DT_TENANT}/api" \
-      --set secret.apiToken="${DT_API_TOKEN}" \
-      --set secret.paasToken="${DT_PAAS_TOKEN}"
+    write_progress "Installing Dynatrace Service"
+    create_namespace dynatrace
+
+    check_delete_secret dynatrace
+    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
+      --from-literal="DT_TENANT=$DT_TENANT" \
+      --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
+      --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
+      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
+    write_progress "Installing SlackBot Service"
     apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.1.2/deploy/slackbot-service.yaml"
-    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
+
+    check_delete_secret slackbot
+    "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
 
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
+    write_progress "Installing JMeter Service"
     apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.0/jmeter-service/deploy/service.yaml"
   fi
 
-  cat << EOF |  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
+  write_progress "Configuring Ingress Object"
+  cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
 metadata:
@@ -185,13 +246,15 @@ spec:
               servicePort: 80
 EOF
 
-  "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
+  write_progress "Waiting for objects to be ready"
+  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 }
 
 function print_config {
-  BRIDGE_USERNAME="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
-  BRIDGE_PASSWORD="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
-  KEPTN_API_TOKEN="$(${K3SKUBECTLCMD} ${K3SKUBECTLOPT} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+  write_progress "Deployment Summary"
+  BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
+  BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
+  KEPTN_API_TOKEN="$(get_keptn_token)"
 
   echo "API URL   :      ${PREFIX}://${FQDN}/api"
   echo "Bridge URL:      ${PREFIX}://${FQDN}/bridge"
@@ -208,7 +271,7 @@ EOF
 
 function main {
   while true; do
-  case "$1" in
+  case "${1:-default}" in
     --ip)
         MY_IP="${2}"
         shift 2
@@ -226,7 +289,6 @@ function main {
             shift 2
             ;;
           digitalocean)
-            echo "Provider: DigitalOcean"
             MY_IP="$(curl -s http://169.254.169.254/metadata/v1/interfaces/public/0/ipv4/address)"
             shift 2
             ;;
@@ -266,17 +328,17 @@ function main {
     --with-dynatrace)
         DYNA="true"
         echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN, DT_PAAS_TOKEN"
-        if [[ "$DT_TENANT" == "" ]]; then
+        if [[ "$DT_TENANT" == "none" ]]; then
           echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
           echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
           exit 1
         fi
-        if [[ "$DT_API_TOKEN" == "" ]]; then
+        if [[ "$DT_API_TOKEN" == "none" ]]; then
           echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
           echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
           exit 1
         fi
-        if [[ "$DT_PAAS_TOKEN" == "" ]]; then
+        if [[ "$DT_PAAS_TOKEN" == "none" ]]; then
           echo "You have to set DT_PAAS_TOKEN"
           echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
           exit 1
