@@ -154,8 +154,6 @@ function install_keptn {
 
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
-
-    "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create secret generic -n keptn dynatrace --from-literal="DT_TENANT=$DT_TENANT" --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
@@ -270,7 +268,7 @@ function main {
         ;;
     --with-dynatrace)
         DYNA="true"
-        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
+        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN, DT_PAAS_TOKEN"
         if [[ "$DT_TENANT" == "" ]]; then
           echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
           echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
