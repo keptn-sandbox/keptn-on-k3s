@@ -81,7 +81,6 @@ function get_ip {
 }
 
 function get_xip_address {
-  echo "Will use xip.io"
   address=${1:-none}
   if [[ $address != none ]]; then
     echo "${address}.xip.io"
