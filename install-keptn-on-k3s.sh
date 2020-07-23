@@ -238,7 +238,8 @@ function install_keptn {
     apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.0/jmeter-service/deploy/service.yaml"
   fi
 
-  write_progress "Configuring Ingress Object"
+  write_progress "Configuring Ingress Object ($FQDN)"
+
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
 apiVersion: networking.k8s.io/v1beta1
 kind: Ingress
