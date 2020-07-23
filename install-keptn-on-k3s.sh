@@ -78,16 +78,9 @@ function install_certmanager {
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace cert-manager
   apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
 
-  cat << EOF |  apply_manifest -
-apiVersion: helm.cattle.io/v1
-kind: HelmChart
-metadata:
-  name: cert-manager
-  namespace: cert-manager
-spec:
-  chart: cert-manager
-  repo: https://charts.jetstack.io
-EOF
+  helm install cert-manager cert-manager \
+    --create-namespace --namespace=cert-manager \
+    --repo="https://charts.jetstack.io"
 
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1alpha2
@@ -105,6 +98,7 @@ if [[ "$CERTS" == "letsencrypt" ]]; then
   else
     ACME_SERVER="https://acme-staging-v02.api.letsencrypt.org/directory"
   fi
+
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
@@ -144,7 +138,7 @@ function install_keptn {
 
   if [[ "${DYNA}" == "true" ]]; then
     echo "Installing Dynatrace OneAgent Operator"
-    helm install dynatrace-oneagent-operator dynatrace/dynatrace-oneagent-operator \
+    helm install dynatrace-oneagent-operator dynatrace-oneagent-operator \
       --create-namespace --namespace=dynatrace \
       --repo="https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable" \
       --set platform="kubernetes" \
@@ -152,7 +146,7 @@ function install_keptn {
       --set secret.apiToken="${DT_API_TOKEN}" \
       --set secret.paasToken="${DT_PAAS_TOKEN}"
 
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/manifests/dynatrace-service/dynatrace-service.yaml"
+    apply_manifest "https://github.com/keptn-contrib/dynatrace-service/blob/0.8.0/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
   fi
 
