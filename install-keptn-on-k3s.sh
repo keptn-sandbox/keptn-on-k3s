@@ -20,7 +20,7 @@ SLACK="false"
 XIP="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-LE_STAGE="staging"
+LE_STAGE="none"
 
 function create_namespace {
   namespace="${1:-none}"
@@ -81,7 +81,7 @@ function get_ip {
 }
 
 function get_xip_address {
-
+  echo "Will use xip.io"
   address=${1:-none}
   if [[ $address != none ]]; then
     echo "${address}.xip.io"
