@@ -152,6 +152,7 @@ function install_certmanager {
   sleep 10
   "${K3SKUBECTL[@]}" wait --namespace=cert-manager  --for=condition=Ready pods --timeout=300s --all
 
+  sleep 3
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1alpha2
 kind: ClusterIssuer
