@@ -35,7 +35,7 @@ The script allows a couple of parameters
 | Parameter Name | Value | Comment |
 | ------------- | ------ | --------|
 | --with-prometheus | | Will enable Prometheus Support |
-| --with-dynatrace | | Will enable Dynatrace Support. Requires DT_API_TOKEN and DT_TENANT env variables to be set |
+| --with-dynatrace | | Will enable Dynatrace Support. Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
 | --with-jmeter | | Will install JMeter Extended Service |
 | --with-slackbot | | Will install the Keptn slackbot. Requires SLACKBOT_TOKEN env variable to be set |
 | --provider | aws,gcp,digitalocean,EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
