@@ -146,7 +146,7 @@ function install_keptn {
       --set secret.apiToken="${DT_API_TOKEN}" \
       --set secret.paasToken="${DT_PAAS_TOKEN}"
 
-    apply_manifest "https://github.com/keptn-contrib/dynatrace-service/blob/0.8.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml"
     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
   fi
 
