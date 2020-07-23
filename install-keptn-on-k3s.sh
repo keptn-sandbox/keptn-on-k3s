@@ -109,7 +109,7 @@ function install_keptn {
 
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/jmeter-extended-service/release-0.2.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.6.2/jmeter-service/deploy/service.yaml"
   fi
 
   cat << EOF | "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" apply -n keptn -f -
