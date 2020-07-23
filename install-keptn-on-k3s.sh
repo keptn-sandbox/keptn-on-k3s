@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -eu
+
 BINDIR="/usr/local/bin"
 KEPTNVERSION="0.7.0"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
@@ -14,6 +16,8 @@ JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
+HELM_OPTS="--kubeconfig /etc/rancher/k3s/k3s.yaml --create-namespace"
+
 
 function get_ip {
   if [[ "${MY_IP}" == "none" ]]; then
@@ -78,8 +82,8 @@ function install_certmanager {
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" create namespace cert-manager
   apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
 
-  helm install cert-manager cert-manager \
-    --create-namespace --namespace=cert-manager \
+  helm install cert-manager cert-manager "${HELM_OPTS}" \
+    --namespace=cert-manager \
     --repo="https://charts.jetstack.io"
 
   cat << EOF | apply_manifest -
@@ -122,10 +126,9 @@ fi
 
 function install_keptn {
   
-  helm install keptn keptn \
-    --create-namespace --namespace=keptn \
+  helm install keptn keptn "${HELM_OPTS}" \
+    --namespace=keptn \
     --repo="https://storage.googleapis.com/keptn-installer" \
-    --kubeconfig /etc/rancher/k3s/k3s.yaml
   sleep 10
   "${K3SKUBECTLCMD}" "${K3SKUBECTLOPT}" wait --namespace=keptn  --for=condition=Ready pods --timeout=300s --all
 
@@ -138,8 +141,8 @@ function install_keptn {
 
   if [[ "${DYNA}" == "true" ]]; then
     echo "Installing Dynatrace OneAgent Operator"
-    helm install dynatrace-oneagent-operator dynatrace-oneagent-operator \
-      --create-namespace --namespace=dynatrace \
+    helm install dynatrace-oneagent-operator dynatrace-oneagent-operator "${HELM_OPTS}" \
+      --namespace=dynatrace \
       --repo="https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable" \
       --set platform="kubernetes" \
       --set oneagent.apiUrl="https://${DT_TENANT}/api" \
