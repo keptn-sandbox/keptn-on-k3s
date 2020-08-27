@@ -122,7 +122,7 @@ function get_k3s {
 function get_helm {
   write_progress "Installing Helm"
 
-  curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
+  curl -kfsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
   chmod 700 /tmp/get_helm.sh
   /tmp/get_helm.sh
 }
