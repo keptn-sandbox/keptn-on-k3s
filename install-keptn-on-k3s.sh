@@ -380,7 +380,7 @@ function main {
         status=$(curl -vk --request GET \
              --url "https://$DT_TENANT/api/v1/config/clusterversion" \
              --header "Authorization: Api-Token $DT_API_TOKEN" \
-             --write-out %{http_code} --silent --output /dev/null)
+             --write-out %{http_code})
         if [[ $status != 200 ]]; then
           echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
           echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
