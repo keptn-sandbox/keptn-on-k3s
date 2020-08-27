@@ -377,7 +377,7 @@ function main {
         fi
 
         # Validate tenant and token is correct
-        status=$(curl -v --request GET \
+        status=$(curl -vk --request GET \
              --url "https://$DT_TENANT/api/v1/config/clusterversion" \
              --header "Authorization: Api-Token $DT_API_TOKEN" \
              --write-out %{http_code} --silent --output /dev/null)
