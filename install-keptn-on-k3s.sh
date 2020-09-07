@@ -6,7 +6,7 @@ DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.0"
+KEPTNVERSION="0.7.1"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
@@ -142,16 +142,15 @@ function install_certmanager {
   write_progress "Installing Cert-Manager"
   create_namespace cert-manager
 
-  apply_manifest https://github.com/jetstack/cert-manager/releases/download/v0.15.2/cert-manager.crds.yaml
-
   helm upgrade cert-manager cert-manager --install --wait \
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
-    --kubeconfig="${KUBECONFIG}"
+    --kubeconfig="${KUBECONFIG}" \
+    --set installCRDs=true
 
   sleep 3
   cat << EOF | apply_manifest -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: selfsigned-issuer
@@ -163,7 +162,7 @@ EOF
   check_delete_secret traefik-default-cert kube-system
 
   cat << EOF | apply_manifest -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: traefik-default
@@ -186,7 +185,7 @@ if [[ "$CERTS" == "letsencrypt" ]]; then
   fi
 
   cat << EOF | apply_manifest -
-apiVersion: cert-manager.io/v1alpha2
+apiVersion: cert-manager.io/v1
 kind: ClusterIssuer
 metadata:
   name: letsencrypt-issuer
@@ -236,13 +235,13 @@ function install_keptn {
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.8.0/deploy/service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.5.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
     write_progress "Installing SlackBot Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.1.2/deploy/slackbot-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
 
     check_delete_secret slackbot
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
@@ -251,7 +250,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.0/jmeter-service/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
