@@ -204,9 +204,9 @@ spec:
 EOF
 fi
   "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
-  echo "Waiting for Traefik to restart"
-  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=300s -l app=traefik
-
+  sleep 5
+  echo "Waiting for Traefik to restart - 1st attempt"
+  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=60s -l app=traefik
 }
 
 function install_keptn {
