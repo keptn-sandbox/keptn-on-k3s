@@ -59,11 +59,43 @@ It also gives you the option (`--with-demo dynatrace`) to create your first Kept
 **Pre-Requisit:** For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
 **--provider:** Depending on your virtual machine either specify aws, gcp, digitalocean or remove that parameter if you run this on any other supported linux!
 
-```
-export DT_TENANT=abc12345.live.dynatrace.com
-export DT_API_TOKEN=YOURTOKEN
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter --with-demo dynatrace
+```console
+$ export DT_TENANT=abc12345.live.dynatrace.com
+$ export DT_API_TOKEN=YOURTOKEN
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter --with-demo dynatrace
 ``` 
+
+It takes about 2-3 minutes. Once its done you see a console output similiar to this:
+```console
+#######################################>
+# Deployment Summary
+#######################################>
+API URL   :      https://11.222.81.205/api
+Bridge URL:      https://11.222.81.205/bridge
+Bridge Username: keptn
+Bridge Password: BRIDGEPWD
+API Token :      APITOKENXXXXX
+The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+Here are 3 things you can do:
+1: Open the Keptn's Bridge for your Quality Gate Project: https://11.222.81.205/bridge/project/demo-qualitygate - login via keptn/BRIDGEPWD
+2: Run another Quality Gate via: keptn send event start-evaluation --project=demo-demo-qualitygate --stage=qualitygate --service=demo
+3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
+
+If you want to install the Keptn CLI somewhere else - here the description:
+- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
+- Authenticate: keptn auth  --api-token "APITOKENXXXXX" --endpoint "https://11.222.81.205/api"
+```
+
+Great thing is that when opening that bridge link you immediately see your first Quality Gate Result in the Keptn *demo-qualitygate* project:
+![](./images/keptnqualitygate_dynatrace.png)
+
+When you click the dashboard link you see that a new Dynatrace SLO Dashboard was automatically created for your *demo-qualitygate* project:
+![](./images/dynatraceslodashboard.png)
+
+From here on you can either modify the dashboard to add more SLIs, or you can run more quality gate evaluations as explained in the console output, e.g:
+```console
+keptn send event start-evaluation --project=demo-demo-qualitygate --stage=qualitygate --service=demo
+```
 
 ## More installation examples
 
@@ -72,7 +104,7 @@ Here are a couple of installation examples
 ### Installing on any Linux with Prometheus Support:
 
 This option will auto-detect your IP address by using *hostname -I* 
-```
+```console
 # For the brave, with Prometheus-Service and SLI Provider
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --with-prometheus
 ```
@@ -80,7 +112,7 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/ins
 ### Installing on GCP:
 
 This option passes the *--provider gcp** option. In this case the script queries the external IP address of your GCP instance.
-```
+```console
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --provider gcp
 ``` 
 
@@ -88,7 +120,11 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/ins
 
 This option allows you to specify which IP address to be used to expose Keptn services (API, Bridge ...) on this machine!
 
-```curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --ip <IP>```
+```console
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --ip <IP>
+```
 
 ### Cleanup: Uninstall k3s
-``` k3s-uninstall.sh ```
+```console
+k3s-uninstall.sh
+```
