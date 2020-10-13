@@ -23,6 +23,12 @@ BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE="none"
 
+# keptn demo project defaults
+KEPTN_PROJECT="demo-qualitygate"
+KEPTN_STAGE="qualitygate"
+KEPTN_SERVICE="demo"
+
+
 function create_namespace {
   namespace="${1:-none}"
   if [[ "${namespace}" == "none" ]]; then
@@ -316,9 +322,6 @@ function install_demo_dynatrace {
   DYNATRACE_TOKEN="${DT_API_TOKEN}"
 
   KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
-  KEPTN_PROJECT="demo-qualitygate"
-  KEPTN_STAGE="qualitygate"
-  KEPTN_SERVICE="demo"
   KEPTN_BRIDGE_PROJECT="YOURKEPTNURL\/bridge\/project\/${KEPTN_PROJECT}"
 
   cat > /tmp/shipyard.yaml << EOF
@@ -344,7 +347,8 @@ EOF
   rm /tmp/shipyard.yaml 
   rm /tmp/slo_sli_dashboard.json
 
-  echo "Enable Dynatrace SLI Provider"
+  echo "Run first Dynatrace Quality Gate"
+  keptn send event start-evaluation --project=demo-"${KEPTN_PROJECT}" --stage="${KEPTN_STAGE}" --service="${KEPTN_SERVICE}"
 }
 
 function install_demo {
@@ -365,6 +369,20 @@ function print_config {
   echo "Bridge Password: $BRIDGE_PASSWORD"
   echo "API Token :      $KEPTN_API_TOKEN"
 
+  if [[ "${DEMO}" == "dynatrace" ]]; then
+  cat << EOF
+The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+Here are 3 things you can do:
+1: Open the Keptn's Bridge for your Quality Gate Project: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PROJECT} - login via $BRIDGE_USERNAME/$BRIDGE_PASSWORD
+2: Run another Quality Gate via: keptn send event start-evaluation --project=demo-${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
+3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
+
+If you want to install the Keptn CLI somewhere else - here the description:
+- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
+- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+EOF
+
+  else     
   cat << EOF
 The Keptn CLI has already been installed and authenticated. To use keptn here some sample commands
 $ keptn status
@@ -374,6 +392,8 @@ If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 EOF
+  fi 
+
 }
 
 function main {
