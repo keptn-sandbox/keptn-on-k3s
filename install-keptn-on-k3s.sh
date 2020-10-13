@@ -221,8 +221,8 @@ function install_keptn {
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
+     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml -n keptn "
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml -n keptn "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -236,13 +236,16 @@ function install_keptn {
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml -n keptn"
+    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml -n keptn"
+
+    # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
+    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
     write_progress "Installing SlackBot Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml -n keptn"
 
     check_delete_secret slackbot
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
@@ -251,7 +254,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml"
+    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml -n keptn"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
@@ -302,7 +305,7 @@ function install_demo_dynatrace {
   KEPTN_PROJECT="demo-qualitygate"
   KEPTN_STAGE="qualitygate"
   KEPTN_SERVICE="demo"
-  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_PROJECT}"
+  KEPTN_BRIDGE_PROJECT="YOURKEPTNURL\/bridge\/project\/${KEPTN_PROJECT}"
 
   cat > /tmp/shipyard.yaml << EOF
 stages:
@@ -315,7 +318,7 @@ EOF
   echo "Create Keptn Service: ${KEPTN_SERVICE}"
   keptn create service "${KEPTN_SERVICE}" --project="${KEPTN_PROJECT}"
   
-  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_PROJECT}-${KEPTN_STAGE}-${KEPTN_SERVICE}"
+  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_PROJECT}.${KEPTN_STAGE}.${KEPTN_SERVICE}"
   curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_PROJECT}/${KEPTN_PROJECT}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_STAGE}/${KEPTN_STAGE}/" /tmp/slo_sli_dashboard.json
@@ -326,6 +329,8 @@ EOF
   echo "remove temporary files"
   rm /tmp/shipyard.yaml 
   rm /tmp/slo_sli_dashboard.json
+
+  echo "Enable Dynatrace SLI Provider"
 }
 
 function install_demo {
@@ -447,7 +452,7 @@ function main {
         ;;
     --with-demo)
         DEMO="${2}"
-        echo "Going to install demo projects for ${DEMO}"
+        echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
         ;;
     --with-slackbot)
