@@ -486,6 +486,10 @@ function main {
         ;;
     --with-demo)
         DEMO="${2}"
+        if [[ $DEMO != "dynatrace" ]]; then 
+          echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
+          exit 1
+        fi 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
         ;;
@@ -507,11 +511,6 @@ function main {
 
   get_ip
   get_fqdn
-
-  echo ""
-  echo "Are you ready to install based on the output from above?"
-  read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
-
   get_k3s
   get_helm
   check_k8s
