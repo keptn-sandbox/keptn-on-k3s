@@ -251,6 +251,10 @@ function install_keptn {
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
+
+    # In preparation for Keptn 0.7.2 (CAN BE REMOVED ONCE 0.7.2 is released)
+    "${K3SKUBECTL[@]}" -n keptn set image deployment/lighthouse-service lighthouse-service=keptn/lighthouse-service:0.7.2 --record
+    "${K3SKUBECTL[@]}" -n keptn set image deployment/bridge keptn/bridge2:0.7.2 --record
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
