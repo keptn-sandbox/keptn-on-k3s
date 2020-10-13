@@ -32,16 +32,17 @@ If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.
 
 ## Parameters
 The script allows a couple of parameters
-| Parameter Name | Value | Comment |
+| Parameter Name | Values | Comment |
 | ------------- | ------ | --------|
 | --with-prometheus | | Will enable Prometheus Support |
-| --with-dynatrace | | Will enable Dynatrace Support. Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
-| --with-jmeter | | Will install JMeter Extended Service |
-| --with-slackbot | | Will install the Keptn slackbot. Requires SLACKBOT_TOKEN env variable to be set |
+| --with-dynatrace | | Will enable Dynatrace Support. <br> Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
+| --with-jmeter | | Will install JMeter Service |
+| --with-slackbot | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
 | --use-xip | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
-| --provider | aws,gcp,digitalocean,EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
+| --provider | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
 | --ip | YOURIP | Allows you to pass your own IP of your host |
-| --fqdn | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry
+| --fqdn | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
+| --demo | dynatrace | Will install demo projects for Dynatrace |
 
 ## TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io). 
