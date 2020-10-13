@@ -1,36 +1,39 @@
 # Keptn Control Plane on k3s
 
-Installs [k3s](https://k3s.io) and [Keptn's](https://keptn.sh) Control Plane. 
+Installs [Keptn's](https://keptn.sh) Control Plane on [k3s](https://k3s.io) which is your fastest and easiest way to leverage Keptn for SLI/SLO-based Quality Gates, Performance as a Self-Service and Automated Operation (aka Auto-Remedition).
+
 Keptn Control Plane includes Keptns Bridge, API and the Quality Gate capability and optionally the JMeter service! But does _not_ include capabilities for using Keptn as deployment tool.
 
 The install scripts provides with the additional options to configure either Prometheus or Dynatrace support automatically as well as installing the JMeter service to enable the Performance as a Self-Service capability!
 
 On top of that you are free to install any other Keptn Service such as the Notification, Jenkins, Grafana, Jira ... service. Find those services in the [Keptn-Contrib](https://github.com/keptn-contrib) organization.
 
+## Use cases, pre-requisites and supported stacks
+
 If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.com/watch?v=hx0NHj4u7ic)
 
-## Use Case
+### Use Case
  * You want to try out keptn
  * You don't want to deal with Kubernetes
  * You have access to a Linux host
  
-## But:
+### But:
  * You don't want to use this in production (currently)
  * You don't plan to upgrade this installation (currently, but maybe reinstall) 
 
-## Prerequisites:
+### Prerequisites:
   * A machine which is able to execute bash scripts
   * curl
   
-## Currently tested on:
+### Currently tested on:
   * CentOS 8
   * ArchLinux
   * Debian on GCP
-  * Amazon Linux
+  * Amazon Linux 2
   
 * Works on a machine with 1 (v)CPU and 4GB of memory
 
-## Parameters
+### Parameters
 The script allows a couple of parameters
 | Parameter Name | Values | Comment |
 | ------------- | ------ | --------|
@@ -44,32 +47,47 @@ The script allows a couple of parameters
 | --fqdn | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
 | --with-demo | dynatrace | Will install demo projects for Dynatrace |
 
-## TLS Certificates
+### TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io). 
-  
-## Usage (Autodetect IP, need hostname -I):
+
+## Keptn for Dynatrace Users in 5 Minutes
+
+For Dynatrace users the script installs Dynatrace related Keptn services (`--with-dynatrace`) and connects them to your Dynatrace Tenant (SaaS or Managed). 
+It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Demo projects so you can immediatly explore how Quality Gates or Performance as a Self-Service works with Keptn & Dynatrace.
+
+**Pre-Requisit:** For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
+**--provider:** Depending on your virtual machine either specify aws, gcp, digitalocean or remove that parameter if you run this on any other supported linux!
+
+```
+export DT_TENANT=abc12345.live.dynatrace.com
+export DT_API_TOKEN=YOURTOKEN
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter --with-demo dynatrace
+``` 
+
+## More installation examples
+
+Here are a couple of installation examples
+
+### Installing on any Linux with Prometheus Support:
+
+This option will auto-detect your IP address by using *hostname -I* 
 ```
 # For the brave, with Prometheus-Service and SLI Provider
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --with-prometheus
 ```
 
-## Usage (GCP Instance):
+### Installing on GCP:
+
+This option passes the *--provider gcp** option. In this case the script queries the external IP address of your GCP instance.
 ```
 curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --provider gcp
 ``` 
 
-## Usage (EC2 Instance with Dynatrace & JMeter):
+### Installation using a custom IP:
 
-FYI: For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
+This option allows you to specify which IP address to be used to expose Keptn services (API, Bridge ...) on this machine!
 
-```
-export DT_TENANT=abc12345.live.dynatrace.com
-export DT_API_TOKEN=YOURTOKEN
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter
-``` 
-
-## Usage (Custom IP):
 ```curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --ip <IP>```
 
-## Cleanup
+### Cleanup: Uninstall k3s
 ``` k3s-uninstall.sh ```

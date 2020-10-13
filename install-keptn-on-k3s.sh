@@ -260,7 +260,7 @@ function install_keptn {
 
     # In preparation for Keptn 0.7.2 (CAN BE REMOVED ONCE 0.7.2 is released)
     "${K3SKUBECTL[@]}" -n keptn set image deployment/lighthouse-service lighthouse-service=keptn/lighthouse-service:0.7.2 --record
-    "${K3SKUBECTL[@]}" -n keptn set image deployment/bridge keptn/bridge2:0.7.2 --record
+    "${K3SKUBECTL[@]}" -n keptn set image deployment/bridge bridge=keptn/bridge2:0.7.2 --record
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
