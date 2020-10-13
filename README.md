@@ -35,17 +35,17 @@ If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.
 
 ### Parameters
 The script allows a couple of parameters
-| <div style="width:150px">Parameter Name</div> | <div style="width:100px">Values</div> | Comment |
+| Parameter Name | Values | Comment |
 | ------------------------------ | ------ | --------|
-| --with-prometheus | | Will enable Prometheus Support |
-| --with-dynatrace | | Will enable Dynatrace Support. <br> Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
-| --with-jmeter | | Will install JMeter Service |
-| --with-slackbot | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
-| --use-xip | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
-| --provider | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
-| --ip | YOURIP | Allows you to pass your own IP of your host |
-| --fqdn | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
-| --with-demo | dynatrace | Will install demo projects for Dynatrace |
+| `--with-prometheus` | | Will enable Prometheus Support |
+| `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
+| `--with-jmeter` | | Will install JMeter Service |
+| `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
+| `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
+| `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
+| `--ip` | YOURIP | Allows you to pass your own IP of your host |
+| `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
+| `--with-demo` | dynatrace | Will install demo projects for Dynatrace |
 
 
 ### TLS Certificates
