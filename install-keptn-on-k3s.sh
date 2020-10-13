@@ -115,6 +115,16 @@ function apply_manifest {
   fi
 }
 
+function apply_manifest_ns_keptn {
+  if [[ ! -z $1 ]]; then
+    "${K3SKUBECTL[@]}" apply -n keptn -f "${1}"
+    if [[ $? != 0 ]]; then
+      echo "Error applying manifest $1"
+      exit 1
+    fi
+  fi
+}
+
 function get_k3s {
   write_progress "Installing K3s"
   curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" sh -
@@ -221,8 +231,8 @@ function install_keptn {
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml -n keptn "
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml -n keptn "
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -236,8 +246,8 @@ function install_keptn {
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml -n keptn"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml -n keptn"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
@@ -245,7 +255,7 @@ function install_keptn {
 
   if [[ "${SLACK}" == "true" ]]; then
     write_progress "Installing SlackBot Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml -n keptn"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
 
     check_delete_secret slackbot
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
@@ -254,7 +264,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml -n keptn"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
