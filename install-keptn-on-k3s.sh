@@ -283,6 +283,8 @@ EOF
 }
 
 function install_keptncli {
+  KEPTN_API_TOKEN="$(get_keptn_token)"
+
   echo "Installing and Authenticating Keptn CLI"
   curl -sL https://get.keptn.sh | sudo -E bash
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
@@ -297,25 +299,33 @@ function install_demo_dynatrace {
   DYNATRACE_TOKEN="${DT_API_TOKEN}"
 
   KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
-  KEPTN_PROJECT="demo_qualitygate"
+  KEPTN_PROJECT="demo-qualitygate"
   KEPTN_STAGE="qualitygate"
   KEPTN_SERVICE="demo"
   KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_PROJECT}"
 
-  cat > ./tmp/shipyard.yaml << EOF
+  cat > /tmp/shipyard.yaml << EOF
 stages:
-- name: "${KEPTN_STAGE}
+- name: "${KEPTN_STAGE}"
 EOF
 
   echo "Create Keptn Project: ${KEPTN_PROJECT}"
-  keptn create project "${KEPTN_PROJECT}" --shipyard=./tmp/shipyard.yaml
+  keptn create project "${KEPTN_PROJECT}" --shipyard=/tmp/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_SERVICE}"
   keptn create service "${KEPTN_SERVICE}" --project="${KEPTN_PROJECT}"
   
   echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_PROJECT}-${KEPTN_STAGE}-${KEPTN_SERVICE}"
   curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
-  curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @./slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_PROJECT}/${KEPTN_PROJECT}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_STAGE}/${KEPTN_STAGE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_SERVICE}/${KEPTN_SERVICE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT}/" /tmp/slo_sli_dashboard.json
+  curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
+
+  echo "remove temporary files"
+  rm /tmp/shipyard.yaml 
+  rm /tmp/slo_sli_dashboard.json
 }
 
 function install_demo {
@@ -437,6 +447,7 @@ function main {
         ;;
     --with-demo)
         DEMO="${2}"
+        echo "Going to install demo projects for ${DEMO}"
         shift 2
         ;;
     --with-slackbot)
@@ -457,6 +468,11 @@ function main {
 
   get_ip
   get_fqdn
+
+  echo ""
+  echo "Are you ready to install based on the output from above?"
+  read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
+
   get_k3s
   get_helm
   check_k8s
