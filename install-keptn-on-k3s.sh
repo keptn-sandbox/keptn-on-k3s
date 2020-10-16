@@ -382,8 +382,11 @@ function print_config {
 
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
-1: Open the Keptn's Bridge for your Quality Gate Project: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PROJECT} - login via $BRIDGE_USERNAME/$BRIDGE_PASSWORD
-2: Run another Quality Gate via: keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
+1: Open the Keptn's Bridge for your Quality Gate Project: 
+   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PROJECT}
+   User / PWD: $BRIDGE_USERNAME/$BRIDGE_PASSWORD
+2: Run another Quality Gate via: 
+   keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
 3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
 If you want to install the Keptn CLI somewhere else - here the description:

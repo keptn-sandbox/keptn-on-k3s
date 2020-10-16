@@ -106,14 +106,14 @@ Here are a couple of installation examples
 This option will auto-detect your IP address by using *hostname -I* 
 ```console
 # For the brave, with Prometheus-Service and SLI Provider
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --with-prometheus
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --with-prometheus
 ```
 
 ### Installing on GCP:
 
 This option passes the *--provider gcp** option. In this case the script queries the external IP address of your GCP instance.
 ```console
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --provider gcp
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --provider gcp
 ``` 
 
 ### Installation using a custom IP:
@@ -121,7 +121,7 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/ins
 This option allows you to specify which IP address to be used to expose Keptn services (API, Bridge ...) on this machine!
 
 ```console
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.1/install-keptn-on-k3s.sh | bash -s - --ip <IP>
+curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --ip <IP>
 ```
 
 ### Cleanup: Uninstall k3s
