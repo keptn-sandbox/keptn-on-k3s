@@ -388,7 +388,6 @@ function print_config {
   if [[ "${DEMO}" == "dynatrace" ]]; then
   write_progress "Dynatrace Demo Summary"
   cat << EOF
-
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
 1: Open the Keptn's Bridge for your Quality Gate Project: 
