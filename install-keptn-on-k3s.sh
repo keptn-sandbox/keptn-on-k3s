@@ -6,7 +6,7 @@ DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.1"
+KEPTNVERSION="0.7.2"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
@@ -27,7 +27,13 @@ LE_STAGE="none"
 KEPTN_PROJECT="demo-qualitygate"
 KEPTN_STAGE="qualitygate"
 KEPTN_SERVICE="demo"
-
+KEPTN_REMEDIATION_PROJECT="demo-remediation"
+KEPTN_REMEDIATION_STAGE="production"
+KEPTN_REMEDIATION_SERVICE="allproblems"
+KEPTN_DELIVERY_PROJECT="demo-delivery"
+KEPTN_DELIVERY_STAGE_DEV="dev"
+KEPTN_DELIVERY_STAGE_STAGING="dev"
+KEPTN_DELIVERY_SERVICE="simplenode"
 
 function create_namespace {
   namespace="${1:-none}"
@@ -252,15 +258,11 @@ function install_keptn {
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.0/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
-
-    # In preparation for Keptn 0.7.2 (CAN BE REMOVED ONCE 0.7.2 is released)
-    "${K3SKUBECTL[@]}" -n keptn set image deployment/lighthouse-service lighthouse-service=keptn/lighthouse-service:0.7.2 --record
-    "${K3SKUBECTL[@]}" -n keptn set image deployment/bridge bridge=keptn/bridge2:0.7.2 --record
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
@@ -274,7 +276,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
@@ -316,13 +318,15 @@ function install_keptncli {
 function install_demo_dynatrace {
   echo "Installing Dynatrace Demo Projects"
 
+  # Demo 1: Create a quality-gate project
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
   DYNATRACE_TENANT="https://${DT_TENANT}"
   DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
   DYNATRACE_TOKEN="${DT_API_TOKEN}"
 
   KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
-  KEPTN_BRIDGE_PROJECT="YOURKEPTNURL\/bridge\/project\/${KEPTN_PROJECT}"
+  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}\/bridge\/project\/${KEPTN_PROJECT}"
+  KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\\/}"
 
   cat > /tmp/shipyard.yaml << EOF
 stages:
@@ -340,7 +344,7 @@ EOF
   sed -i "s/\${KEPTN_PROJECT}/${KEPTN_PROJECT}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_STAGE}/${KEPTN_STAGE}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_SERVICE}/${KEPTN_SERVICE}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
   curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
 
   echo "remove temporary files"
