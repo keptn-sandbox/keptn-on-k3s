@@ -6,7 +6,7 @@ DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.1"
+KEPTNVERSION="0.7.2"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
@@ -18,9 +18,22 @@ JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
 XIP="false"
+DEMO="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE="none"
+
+# keptn demo project defaults
+KEPTN_PROJECT="demo-qualitygate"
+KEPTN_STAGE="qualitygate"
+KEPTN_SERVICE="demo"
+KEPTN_REMEDIATION_PROJECT="demo-remediation"
+KEPTN_REMEDIATION_STAGE="production"
+KEPTN_REMEDIATION_SERVICE="allproblems"
+KEPTN_DELIVERY_PROJECT="demo-delivery"
+KEPTN_DELIVERY_STAGE_DEV="dev"
+KEPTN_DELIVERY_STAGE_STAGING="dev"
+KEPTN_DELIVERY_SERVICE="simplenode"
 
 function create_namespace {
   namespace="${1:-none}"
@@ -107,6 +120,16 @@ function get_fqdn {
 function apply_manifest {
   if [[ ! -z $1 ]]; then
     "${K3SKUBECTL[@]}" apply -f "${1}"
+    if [[ $? != 0 ]]; then
+      echo "Error applying manifest $1"
+      exit 1
+    fi
+  fi
+}
+
+function apply_manifest_ns_keptn {
+  if [[ ! -z $1 ]]; then
+    "${K3SKUBECTL[@]}" apply -n keptn -f "${1}"
     if [[ $? != 0 ]]; then
       echo "Error applying manifest $1"
       exit 1
@@ -204,9 +227,9 @@ spec:
 EOF
 fi
   "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
-  echo "Waiting for Traefik to restart"
-  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=300s -l app=traefik
-
+  sleep 5
+  echo "Waiting for Traefik to restart - 1st attempt"
+  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=60s -l app=traefik
 }
 
 function install_keptn {
@@ -217,11 +240,15 @@ function install_keptn {
     --repo="https://storage.googleapis.com/keptn-installer" \
     --kubeconfig="$KUBECONFIG"
 
+  # Lets install the Statistics Service
+  write_progress "Installing Keptn Statistics Service"
+  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.1.1/deploy/service.yaml"
+
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -235,13 +262,16 @@ function install_keptn {
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
 
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.9.0/deploy/service.yaml"
-    apply_manifest "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.6.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.0/deploy/service.yaml"
+
+    # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
+    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
     write_progress "Installing SlackBot Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
 
     check_delete_secret slackbot
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
@@ -250,7 +280,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest "https://raw.githubusercontent.com/keptn/keptn/0.7.1/jmeter-service/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
@@ -281,6 +311,60 @@ EOF
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 }
 
+function install_keptncli {
+  KEPTN_API_TOKEN="$(get_keptn_token)"
+
+  echo "Installing and Authenticating Keptn CLI"
+  curl -sL https://get.keptn.sh | sudo -E bash
+  keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+}
+
+function install_demo_dynatrace {
+  echo "Installing Dynatrace Demo Projects"
+
+  # Demo 1: Create a quality-gate project
+  # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
+  DYNATRACE_TENANT="https://${DT_TENANT}"
+  DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
+  DYNATRACE_TOKEN="${DT_API_TOKEN}"
+
+  KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
+  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_PROJECT}"
+  KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
+
+  cat > /tmp/shipyard.yaml << EOF
+stages:
+- name: "${KEPTN_STAGE}"
+EOF
+
+  echo "Create Keptn Project: ${KEPTN_PROJECT}"
+  keptn create project "${KEPTN_PROJECT}" --shipyard=/tmp/shipyard.yaml
+
+  echo "Create Keptn Service: ${KEPTN_SERVICE}"
+  keptn create service "${KEPTN_SERVICE}" --project="${KEPTN_PROJECT}"
+  
+  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_PROJECT}.${KEPTN_STAGE}.${KEPTN_SERVICE}"
+  curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_PROJECT}/${KEPTN_PROJECT}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_STAGE}/${KEPTN_STAGE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_SERVICE}/${KEPTN_SERVICE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
+  curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
+
+  echo "remove temporary files"
+  rm /tmp/shipyard.yaml 
+  rm /tmp/slo_sli_dashboard.json
+
+  echo "Run first Dynatrace Quality Gate"
+  keptn send event start-evaluation --project="${KEPTN_PROJECT}" --stage="${KEPTN_STAGE}" --service="${KEPTN_SERVICE}"
+}
+
+function install_demo {
+  if [[ "${DEMO}" == "dynatrace" ]]; then
+    install_demo_dynatrace
+  fi 
+}
+
 function print_config {
   write_progress "Deployment Summary"
   BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
@@ -293,11 +377,35 @@ function print_config {
   echo "Bridge Password: $BRIDGE_PASSWORD"
   echo "API Token :      $KEPTN_API_TOKEN"
 
+  if [[ "${DEMO}" == "dynatrace" ]]; then
   cat << EOF
-To use keptn:
+
+The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+Here are 3 things you can do:
+1: Open the Keptn's Bridge for your Quality Gate Project: 
+   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PROJECT}
+   User / PWD: $BRIDGE_USERNAME/$BRIDGE_PASSWORD
+2: Run another Quality Gate via: 
+   keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
+3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
+
+If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 EOF
+
+  else     
+  cat << EOF
+The Keptn CLI has already been installed and authenticated. To use keptn here some sample commands
+$ keptn status
+$ keptn create project myfirstproject --shipyard=./shipyard.yaml
+
+If you want to install the Keptn CLI somewhere else - here the description:
+- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
+- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+EOF
+  fi 
+
 }
 
 function main {
@@ -388,6 +496,15 @@ function main {
         fi
         shift
         ;;
+    --with-demo)
+        DEMO="${2}"
+        if [[ $DEMO != "dynatrace" ]]; then 
+          echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
+          exit 1
+        fi 
+        echo "Demo: Installing demo projects for ${DEMO}"
+        shift 2
+        ;;
     --with-slackbot)
         SLACK="true"
         echo "Enabling Slackbot: Requires secret 'slackbot' with slackbot-token to be set!"
@@ -411,6 +528,8 @@ function main {
   check_k8s
   install_certmanager
   install_keptn
+  install_keptncli
+  install_demo  
   print_config
 }
 
