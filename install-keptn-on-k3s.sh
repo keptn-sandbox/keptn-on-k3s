@@ -330,7 +330,7 @@ function install_demo_dynatrace {
 
   KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
   KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_PROJECT}"
-  KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\\/}"
+  KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
   cat > /tmp/shipyard.yaml << EOF
 stages:
