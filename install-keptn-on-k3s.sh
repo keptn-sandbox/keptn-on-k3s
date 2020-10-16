@@ -351,9 +351,17 @@ EOF
   sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
   curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
 
+  echo "Add dynatrace.conf.yaml to enable SLI/SLO Dashboard query"
+  cat > /tmp/dynatrace.conf.yaml << EOF
+spec_version: '0.1.0'
+dashboard: query
+EOF
+  keptn add-resource --project="${KEPTN_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+
   echo "remove temporary files"
   rm /tmp/shipyard.yaml 
   rm /tmp/slo_sli_dashboard.json
+  rm /tmp/dynatrace.conf.yaml
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_PROJECT}" --stage="${KEPTN_STAGE}" --service="${KEPTN_SERVICE}"
