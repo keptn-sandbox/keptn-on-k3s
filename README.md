@@ -75,15 +75,26 @@ Bridge URL:      https://11.222.81.205/bridge
 Bridge Username: keptn
 Bridge Password: BRIDGEPWD
 API Token :      APITOKENXXXXX
+
+#######################################>
+# Dynatrace Demo Summary
+#######################################>
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
-1: Open the Keptn's Bridge for your Quality Gate Project: https://11.222.81.205/bridge/project/demo-qualitygate - login via keptn/BRIDGEPWD
-2: Run another Quality Gate via: keptn send event start-evaluation --project=demo-demo-qualitygate --stage=qualitygate --service=demo
+1: Open the Keptn's Bridge for your Quality Gate Project:
+   Project URL: https://11.222.81.205/bridge/project/demo-qualitygate
+   User / PWD: keptn/BRIDGEPWD
+2: Run another Quality Gate via:
+   keptn send event start-evaluation --project=demo-qualitygate --stage=qualitygate --service=demo
 3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
 If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
 - Authenticate: keptn auth  --api-token "APITOKENXXXXX" --endpoint "https://11.222.81.205/api"
+
+If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+
+Now go and enjoy Keptn!
 ```
 
 Great thing is that when opening that bridge link you immediately see your first Quality Gate Result in the Keptn *demo-qualitygate* project:

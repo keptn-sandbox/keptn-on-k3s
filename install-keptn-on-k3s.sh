@@ -320,7 +320,7 @@ function install_keptncli {
 }
 
 function install_demo_dynatrace {
-  echo "Installing Dynatrace Demo Projects"
+  write_progress "Installing Dynatrace Demo Projects"
 
   # Demo 1: Create a quality-gate project
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
@@ -351,9 +351,17 @@ EOF
   sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
   curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
 
+  echo "Add dynatrace.conf.yaml to enable SLI/SLO Dashboard query"
+  cat > /tmp/dynatrace.conf.yaml << EOF
+spec_version: '0.1.0'
+dashboard: query
+EOF
+  keptn add-resource --project="${KEPTN_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+
   echo "remove temporary files"
   rm /tmp/shipyard.yaml 
   rm /tmp/slo_sli_dashboard.json
+  rm /tmp/dynatrace.conf.yaml
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_PROJECT}" --stage="${KEPTN_STAGE}" --service="${KEPTN_SERVICE}"
@@ -366,7 +374,7 @@ function install_demo {
 }
 
 function print_config {
-  write_progress "Deployment Summary"
+  write_progress "Keptn Deployment Summary"
   BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
   BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
   KEPTN_API_TOKEN="$(get_keptn_token)"
@@ -378,8 +386,8 @@ function print_config {
   echo "API Token :      $KEPTN_API_TOKEN"
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
+  write_progress "Dynatrace Demo Summary"
   cat << EOF
-
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
 1: Open the Keptn's Bridge for your Quality Gate Project: 
@@ -389,9 +397,6 @@ Here are 3 things you can do:
    keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
 3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
-If you want to install the Keptn CLI somewhere else - here the description:
-- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 EOF
 
   else     
@@ -400,11 +405,18 @@ The Keptn CLI has already been installed and authenticated. To use keptn here so
 $ keptn status
 $ keptn create project myfirstproject --shipyard=./shipyard.yaml
 
+EOF
+  fi 
+
+  cat << EOF
 If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+
+If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+
+Now go and enjoy Keptn!
 EOF
-  fi 
 
 }
 
