@@ -398,9 +398,6 @@ Here are 3 things you can do:
    keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
 3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
-If you want to install the Keptn CLI somewhere else - here the description:
-- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 EOF
 
   else     
@@ -409,11 +406,18 @@ The Keptn CLI has already been installed and authenticated. To use keptn here so
 $ keptn status
 $ keptn create project myfirstproject --shipyard=./shipyard.yaml
 
+EOF
+  fi 
+
+  cat << EOF
 If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+
+If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+
+Now go and enjoy Keptn!
 EOF
-  fi 
 
 }
 
