@@ -240,6 +240,10 @@ function install_keptn {
     --repo="https://storage.googleapis.com/keptn-installer" \
     --kubeconfig="$KUBECONFIG"
 
+  # Lets install the Statistics Service
+  write_progress "Installing Keptn Statistics Service"
+  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.1.1/deploy/service.yaml"
+
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
