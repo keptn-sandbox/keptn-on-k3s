@@ -320,7 +320,7 @@ function install_keptncli {
 }
 
 function install_demo_dynatrace {
-  echo "Installing Dynatrace Demo Projects"
+  write_progress "Installing Dynatrace Demo Projects"
 
   # Demo 1: Create a quality-gate project
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
@@ -374,7 +374,7 @@ function install_demo {
 }
 
 function print_config {
-  write_progress "Deployment Summary"
+  write_progress "Keptn Deployment Summary"
   BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
   BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
   KEPTN_API_TOKEN="$(get_keptn_token)"
@@ -386,6 +386,7 @@ function print_config {
   echo "API Token :      $KEPTN_API_TOKEN"
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
+  write_progress "Dynatrace Demo Summary"
   cat << EOF
 
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
