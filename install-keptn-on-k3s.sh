@@ -396,9 +396,9 @@ EOF
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
 
-  curl -fsSL -o /tmp/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
-  curl -fsSL -o /tmp/basicload.jmx https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
-  curl -fsSL -o /tmp/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
+  curl -fsSL -o /tmp/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
+  curl -fsSL -o /tmp/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
+  curl -fsSL -o /tmp/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload.jmx --resourceUri=jmeter/basicload.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
