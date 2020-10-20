@@ -7,6 +7,9 @@ comparison:
   number_of_comparison_results: 1
 filter:
 objectives:
+  - sli: "throughput"
+  - sli: "response_time_p50"
+  - sli: "response_time_p90"
   - sli: "response_time_p95"
     key_sli: false
     pass:             
@@ -21,7 +24,6 @@ objectives:
     pass:
     - criteria:
       - "<5"
-    - sli: throughput
 total_score:
   pass: "90%"
   warning: "75%"

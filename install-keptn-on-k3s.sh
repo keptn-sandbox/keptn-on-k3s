@@ -7,6 +7,7 @@ DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 BINDIR="/usr/local/bin"
 KEPTNVERSION="0.7.2"
+JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
@@ -24,9 +25,12 @@ KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE="none"
 
 # keptn demo project defaults
-KEPTN_PROJECT="demo-qualitygate"
-KEPTN_STAGE="qualitygate"
-KEPTN_SERVICE="demo"
+KEPTN_QG_PROJECT="demo-qualitygate"
+KEPTN_QG_STAGE="qualitygate"
+KEPTN_QG_SERVICE="qualitygateservice"
+KEPTN_PERFORMANCE_PROJECT="demo-performance"
+KEPTN_PERFORMANCE_STAGE="performance"
+KEPTN_PERFORMANCE_SERVICE="appundertest"
 KEPTN_REMEDIATION_PROJECT="demo-remediation"
 KEPTN_REMEDIATION_STAGE="production"
 KEPTN_REMEDIATION_SERVICE="allproblems"
@@ -260,7 +264,8 @@ function install_keptn {
       --from-literal="DT_TENANT=$DT_TENANT" \
       --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
       --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
-      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)"
+      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
+      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$FQDN/bridge"
 
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.0/deploy/service.yaml"
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.0/deploy/service.yaml"
@@ -280,7 +285,7 @@ function install_keptn {
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/jmeter-service/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Ingress Object (${FQDN})"
@@ -322,32 +327,34 @@ function install_keptncli {
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
+  # ==============================================================================================
   # Demo 1: Create a quality-gate project
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
+  # ==============================================================================================
   DYNATRACE_TENANT="https://${DT_TENANT}"
   DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
   DYNATRACE_TOKEN="${DT_API_TOKEN}"
 
   KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
-  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_PROJECT}"
+  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_QG_PROJECT}"
   KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
   cat > /tmp/shipyard.yaml << EOF
 stages:
-- name: "${KEPTN_STAGE}"
+- name: "${KEPTN_QG_STAGE}"
 EOF
 
-  echo "Create Keptn Project: ${KEPTN_PROJECT}"
-  keptn create project "${KEPTN_PROJECT}" --shipyard=/tmp/shipyard.yaml
+  echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
+  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=/tmp/shipyard.yaml
 
-  echo "Create Keptn Service: ${KEPTN_SERVICE}"
-  keptn create service "${KEPTN_SERVICE}" --project="${KEPTN_PROJECT}"
+  echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
+  keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
   
-  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_PROJECT}.${KEPTN_STAGE}.${KEPTN_SERVICE}"
+  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
   curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_PROJECT}/${KEPTN_PROJECT}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_STAGE}/${KEPTN_STAGE}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_SERVICE}/${KEPTN_SERVICE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_QG_PROJECT}/${KEPTN_QG_PROJECT}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_QG_STAGE}/${KEPTN_QG_STAGE}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_QG_SERVICE}/${KEPTN_QG_SERVICE}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
   curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
 
@@ -355,8 +362,15 @@ EOF
   cat > /tmp/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
 dashboard: query
+attachRules:
+  tagRule:
+  - meTypes:
+    - SERVICE
+    tags:
+    - context: CONTEXTLESS
+      key: $SERVICE
 EOF
-  keptn add-resource --project="${KEPTN_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
   echo "remove temporary files"
   rm /tmp/shipyard.yaml 
@@ -364,7 +378,61 @@ EOF
   rm /tmp/dynatrace.conf.yaml
 
   echo "Run first Dynatrace Quality Gate"
-  keptn send event start-evaluation --project="${KEPTN_PROJECT}" --stage="${KEPTN_STAGE}" --service="${KEPTN_SERVICE}"
+  keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
+
+  # ==============================================================================================
+  # Demo 2: Performance as a Self-service Project
+  # Creates a single stage project that will execute JMeter performance tests against any URL you give it
+  # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
+  # ==============================================================================================
+  cat > /tmp/shipyard.yaml << EOF
+stages:
+- name: "${KEPTN_PERFORMANCE_STAGE}"
+EOF
+
+  echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
+  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=/tmp/shipyard.yaml
+
+  echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
+  keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
+
+  curl -fsSL -o /tmp/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
+  curl -fsSL -o /tmp/basicload.jmx https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
+  curl -fsSL -o /tmp/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload.jmx --resourceUri=jmeter/basicload.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+
+  cat > /tmp/dynatrace.conf.yaml << EOF
+spec_version: '0.1.0'
+dashboard: query
+attachRules:
+  tagRule:
+  - meTypes:
+    - SERVICE
+    tags:
+    - context: CONTEXTLESS
+      key: $SERVICE
+EOF
+
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+
+  # adding SLI/SLO
+  curl -fsSL -o /tmp/performance_sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
+  curl -fsSL -o /tmp/performance_slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/performance_sli.yaml --resourceUri=dynatrace/sli.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=/tmp/performance_slo.yaml --resourceUri=slo.yaml
+
+
+  # Download helper files to send a deployment finished event
+  curl -fsSL -o senddeployfinished.sh https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/senddeploymentfinished.sh
+  curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholders.json
+  chmod +x senddeployfinished.sh
+
+
+  rm /tmp/dynatrace.conf.yaml 
+  rm /tmp/performance_slo.yaml
+  rm /tmp/performance_sli.yaml
 }
 
 function install_demo {
@@ -391,11 +459,23 @@ function print_config {
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
 1: Open the Keptn's Bridge for your Quality Gate Project: 
-   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PROJECT}
-   User / PWD: $BRIDGE_USERNAME/$BRIDGE_PASSWORD
+   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_QG_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: Run another Quality Gate via: 
-   keptn send event start-evaluation --project=${KEPTN_PROJECT} --stage=${KEPTN_STAGE} --service=${KEPTN_SERVICE}
-3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
+   keptn send event start-evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
+
+For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
+Here are 3 things you can do:
+1: Open the Keptn's Bridge for your Performance Project:
+   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PERFORMANCE_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_PERFORMANCE_SERVICE}
+3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_PERFORMANCE_PROJECT};service=${KEPTN_PERFORMANCE_SERVICE};stage=${KEPTN_PERFORMANCE_STAGE}
+4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
+   ./senddeployfinished.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
+5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
+
+Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
 EOF
 
