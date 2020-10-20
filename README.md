@@ -54,7 +54,7 @@ keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a 
 ## Keptn for Dynatrace Users in 5 Minutes
 
 For Dynatrace users the script installs Dynatrace related Keptn services (`--with-dynatrace`) and connects them to your Dynatrace Tenant (SaaS or Managed). 
-It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Demo projects so you can immediatly explore how Quality Gates or Performance as a Self-Service works with Keptn & Dynatrace.
+It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Dynatrace Demo projects so you can immediatly explore how Quality Gates or Performance as a Self-Service works with Keptn & Dynatrace.
 
 **Pre-Requisit:** For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
 **--provider:** Depending on your virtual machine either specify aws, gcp, digitalocean or remove that parameter if you run this on any other supported linux!
@@ -68,13 +68,13 @@ $ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatra
 It takes about 2-3 minutes. Once its done you see a console output similiar to this:
 ```console
 #######################################>
-# Deployment Summary
+# Keptn Deployment Summary
 #######################################>
-API URL   :      https://11.222.81.205/api
-Bridge URL:      https://11.222.81.205/bridge
+API URL   :      https://12.123.77.189/api
+Bridge URL:      https://12.123.77.189/bridge
 Bridge Username: keptn
-Bridge Password: BRIDGEPWD
-API Token :      APITOKENXXXXX
+Bridge Password: BRIDGEPASSWORD
+API Token :      KEPTNAPITOKEN
 
 #######################################>
 # Dynatrace Demo Summary
@@ -82,15 +82,29 @@ API Token :      APITOKENXXXXX
 The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 Here are 3 things you can do:
 1: Open the Keptn's Bridge for your Quality Gate Project:
-   Project URL: https://11.222.81.205/bridge/project/demo-qualitygate
-   User / PWD: keptn/BRIDGEPWD
+   Project URL: https://12.123.77.189/bridge/project/dynatrace
+   User / PWD: keptn / BRIDGEPASSWORD
 2: Run another Quality Gate via:
-   keptn send event start-evaluation --project=demo-qualitygate --stage=qualitygate --service=demo
-3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
+   keptn send event start-evaluation --project=dynatrace --stage=qualitygate --service=qualitygateservice
+3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
+   More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
+
+For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
+Here are 3 things you can do:
+1: Open the Keptn's Bridge for your Performance Project:
+   Project URL: https://12.123.77.189/bridge/project/demo-performance
+   User / PWD: keptn / BRIDGEPASSWORD
+2: In Dynatrace pick a service you want to run a simple test against and add the manual label: appundertest
+3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=demo-performance;service=appundertest;stage=performance
+4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
+   ./senddeployfinished.sh demo-performance performance appundertest performance_withdtmint http://yourapp/yoururl
+5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
+
+Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
 If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "APITOKENXXXXX" --endpoint "https://11.222.81.205/api"
+- Authenticate: keptn auth  --api-token "KEPTNAPITOKEN" --endpoint "https://12.123.77.189/api"
 
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
 
