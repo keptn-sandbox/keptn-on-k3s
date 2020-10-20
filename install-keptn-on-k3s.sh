@@ -352,7 +352,7 @@ EOF
   
   echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
   curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_ROJECT}/${KEPTN_QG_PROJECT}/" /tmp/slo_sli_dashboard.json
+  sed -i "s/\${KEPTN_PROJECT}/${KEPTN_QG_PROJECT}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_STAGE}/${KEPTN_QG_STAGE}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_SERVICE}/${KEPTN_QG_SERVICE}/" /tmp/slo_sli_dashboard.json
   sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
