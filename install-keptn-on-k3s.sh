@@ -25,7 +25,7 @@ KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE="none"
 
 # keptn demo project defaults
-KEPTN_QG_PROJECT="demo-qualitygate"
+KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="qualitygate"
 KEPTN_QG_SERVICE="qualitygateservice"
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
@@ -328,8 +328,9 @@ function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
   # ==============================================================================================
-  # Demo 1: Create a quality-gate project
+  # Demo 1: Create a quality-gate project called "dynatrace"
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
+  # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
   DYNATRACE_TENANT="https://${DT_TENANT}"
   DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
@@ -429,10 +430,10 @@ EOF
   curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholder.json
   chmod +x senddeployfinished.sh
 
-
   rm /tmp/dynatrace.conf.yaml 
   rm /tmp/performance_slo.yaml
   rm /tmp/performance_sli.yaml
+  rm /tmp/shipyard.yaml 
 }
 
 function install_demo {
@@ -463,6 +464,8 @@ Here are 3 things you can do:
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: Run another Quality Gate via: 
    keptn send event start-evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
+3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
+   More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
 For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
 Here are 3 things you can do:
