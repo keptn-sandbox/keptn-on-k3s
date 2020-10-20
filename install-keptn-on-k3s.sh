@@ -425,8 +425,8 @@ EOF
 
 
   # Download helper files to send a deployment finished event
-  curl -fsSL -o senddeployfinished.sh https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/senddeploymentfinished.sh
-  curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholders.json
+  curl -fsSL -o senddeployfinished.sh https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/senddeploymentfinished.sh
+  curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholder.json
   chmod +x senddeployfinished.sh
 
 
