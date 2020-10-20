@@ -26,8 +26,8 @@ LE_STAGE="none"
 
 # keptn demo project defaults
 KEPTN_QG_PROJECT="dynatrace"
-KEPTN_QG_STAGE="qualitygate"
-KEPTN_QG_SERVICE="qualitygateservice"
+KEPTN_QG_STAGE="quality-gate"
+KEPTN_QG_SERVICE="demo"
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
 KEPTN_PERFORMANCE_STAGE="performance"
 KEPTN_PERFORMANCE_SERVICE="appundertest"
@@ -343,6 +343,7 @@ function install_demo_dynatrace {
   cat > /tmp/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_QG_STAGE}"
+  test_strategy: "performance"
 EOF
 
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
