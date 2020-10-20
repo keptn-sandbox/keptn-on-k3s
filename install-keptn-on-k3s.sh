@@ -368,7 +368,7 @@ attachRules:
     - SERVICE
     tags:
     - context: CONTEXTLESS
-      key: $SERVICE
+      key: \$SERVICE
 EOF
   keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
@@ -412,7 +412,7 @@ attachRules:
     - SERVICE
     tags:
     - context: CONTEXTLESS
-      key: $SERVICE
+      key: \$SERVICE
 EOF
 
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
