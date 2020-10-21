@@ -424,10 +424,10 @@ EOF
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
   # adding SLI/SLO
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/performance_sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/performance_slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/performance_sli.yaml --resourceUri=dynatrace/sli.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/performance_slo.yaml --resourceUri=slo.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/sli.yaml --resourceUri=dynatrace/sli.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/slo.yaml --resourceUri=slo.yaml
 
   # Download helper files to send a deployment finished event
   echo "Downloading helper script senddeployfinished.sh"
