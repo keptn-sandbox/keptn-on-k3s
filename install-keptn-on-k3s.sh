@@ -340,6 +340,7 @@ function install_demo_dynatrace {
   KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_QG_PROJECT}"
   KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
+  mkdir -p keptn/${KEPTN_QG_PROJECT}/dynatrace
   cat > keptn/${KEPTN_QG_PROJECT}/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_QG_STAGE}"
@@ -385,6 +386,8 @@ EOF
   # Creates a single stage project that will execute JMeter performance tests against any URL you give it
   # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
   # ==============================================================================================
+  mkdir -p keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace
+  mkdir -p keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter
   cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_PERFORMANCE_STAGE}"
