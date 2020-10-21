@@ -340,14 +340,14 @@ function install_demo_dynatrace {
   KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_QG_PROJECT}"
   KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
-  cat > /tmp/shipyard.yaml << EOF
+  cat > keptn/${KEPTN_QG_PROJECT}/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_QG_STAGE}"
   test_strategy: "performance"
 EOF
 
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=/tmp/shipyard.yaml
+  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
   keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
@@ -361,7 +361,7 @@ EOF
   curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
 
   echo "Add dynatrace.conf.yaml to enable SLI/SLO Dashboard query"
-  cat > /tmp/dynatrace.conf.yaml << EOF
+  cat > keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
 dashboard: query
 attachRules:
@@ -372,12 +372,10 @@ attachRules:
     - context: CONTEXTLESS
       key: \$SERVICE
 EOF
-  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
-  echo "remove temporary files"
-  rm /tmp/shipyard.yaml 
+  # remove temporary file
   rm /tmp/slo_sli_dashboard.json
-  rm /tmp/dynatrace.conf.yaml
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
@@ -387,25 +385,25 @@ EOF
   # Creates a single stage project that will execute JMeter performance tests against any URL you give it
   # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
   # ==============================================================================================
-  cat > /tmp/shipyard.yaml << EOF
+  cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_PERFORMANCE_STAGE}"
 EOF
 
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=/tmp/shipyard.yaml
+  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
 
-  curl -fsSL -o /tmp/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
-  curl -fsSL -o /tmp/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
-  curl -fsSL -o /tmp/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload.jmx --resourceUri=jmeter/basicload.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
 
-  cat > /tmp/dynatrace.conf.yaml << EOF
+  cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
 dashboard: query
 attachRules:
@@ -417,24 +415,19 @@ attachRules:
       key: \$SERVICE
 EOF
 
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
   # adding SLI/SLO
-  curl -fsSL -o /tmp/performance_sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
-  curl -fsSL -o /tmp/performance_slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=/tmp/performance_sli.yaml --resourceUri=dynatrace/sli.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=/tmp/performance_slo.yaml --resourceUri=slo.yaml
-
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/performance_sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/performance_slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/performance_sli.yaml --resourceUri=dynatrace/sli.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/performance_slo.yaml --resourceUri=slo.yaml
 
   # Download helper files to send a deployment finished event
+  echo "Downloading helper script senddeployfinished.sh"
   curl -fsSL -o senddeployfinished.sh https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/senddeploymentfinished.sh
   curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholder.json
   chmod +x senddeployfinished.sh
-
-  rm /tmp/dynatrace.conf.yaml 
-  rm /tmp/performance_slo.yaml
-  rm /tmp/performance_sli.yaml
-  rm /tmp/shipyard.yaml 
 }
 
 function install_demo {
