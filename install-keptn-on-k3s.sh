@@ -459,6 +459,7 @@ EOF
   cat > keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml << EOF
 stages:
 - name: "${KEPTN_REMEDIATION_STAGE}"
+  remediation_strategy: automated
 EOF
 
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
@@ -651,7 +652,7 @@ function main {
           echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
           exit 1
         fi 
-        
+
         # need to make sure we install the generic exector service for our demo as well as jmeter
         GENERICEXEC="true"
         JMETER="true"
