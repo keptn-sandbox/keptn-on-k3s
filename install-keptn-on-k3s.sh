@@ -113,7 +113,7 @@ function get_fqdn {
   if [[ "$FQDN" == "none" ]]; then
 
     # when running on AWS - query the public DNS
-    if [[ "${PROVIDER}" == "aws"]]; then 
+    if [[ "${PROVIDER}" == "aws" ]]; then 
       FQDN="$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
     fi 
 
