@@ -21,6 +21,7 @@ CERTS="selfsigned"
 SLACK="false"
 XIP="false"
 DEMO="false"
+GENERICEXEC="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE=${LE_STAGE:-none}
@@ -275,6 +276,12 @@ function install_keptn {
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
+  fi
+
+  if [[ "${GENERICEXEC}" == "true" ]]; then
+    write_progress "Installing Generic Executor Service"
+
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/master/deploy/service.yaml"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
@@ -644,6 +651,11 @@ function main {
           echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
           exit 1
         fi 
+        
+        # need to make sure we install the generic exector service for our demo as well as jmeter
+        GENERICEXEC="true"
+        JMETER="true"
+
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
         ;;
