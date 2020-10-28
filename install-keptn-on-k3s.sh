@@ -236,7 +236,7 @@ EOF
 fi
   "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
   sleep 5
-  echo "Waiting for Traefik to restart - 1st attempt"
+  echo "Waiting for Traefik to restart - 1st attempt (max 60s)"
   "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=60s -l app=traefik
 }
 
@@ -322,10 +322,10 @@ spec:
               servicePort: 80
 EOF
 
-  write_progress "Waiting for Keptn pods to be ready"
+  write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 
-  write_progress "Waiting for certificates to be ready"
+  write_progress "Waiting for certificates to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
 }
 
@@ -482,6 +482,12 @@ EOF
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --stage="${KEPTN_REMEDIATION_STAGE}" --service="${KEPTN_REMEDIATION_SERVICE}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml --resourceUri=remediation.yaml
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh --resourceUri=generic-executor/action.triggered.firstaction.sh
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh --resourceUri=generic-executor/action.triggered.secondaction.sh
+
+  # Download helper files to create a dynatrace problem
+  echo "Downloading helper script createdtproblem.sh"
+  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/createdtproblem.sh
+  chmod +x createdtproblem.sh
+
 }
 
 function install_demo {

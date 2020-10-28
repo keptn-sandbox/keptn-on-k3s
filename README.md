@@ -58,14 +58,28 @@ It also gives you the option (`--with-demo dynatrace`) to create your first Kept
 
 **Pre-Requisit:** For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
 **--provider:** Depending on your virtual machine either specify aws, gcp, digitalocean or remove that parameter if you run this on any other supported linux!
+**Certificate with xip.io:** For the Auto-Remediation Use case we want Dynatrace to push problems to Keptn. This requires a full qualified domain name and a valid certificate for the Keptn ingress. The parameter --letsencrypt makes our script create a self-signed staging letsencrypt certificate using xip.io to get a FQDN. For this to also work we need to specify LE_STAGE and CERT_EMAIL. You can leave CERT_EMAIL with the bogus email as it is not relevant! 
+If you have your own domain name for your host you can set this via the parameter --FQDN mykeptn.mydomain.com!
 
+Here the enviornment variables you need to set:
 ```console
 $ export DT_TENANT=abc12345.live.dynatrace.com
 $ export DT_API_TOKEN=YOURTOKEN
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter --with-demo dynatrace
+$ export LE_STAGE=staging
+$ export CERT_EMAIL=myemail@mydomain.com
+```
+
+**Option 1:** Install with xip.io domain and self-signed certificate
+```console
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt
 ``` 
 
-It takes about 2-3 minutes. Once its done you see a console output similiar to this:
+**Option 2:** Use your own custom domain that points to your host
+```console
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --FQDN mykeptn.mydomain.com
+``` 
+
+It takes about 2-3 minutes (or 4-5 if you use the --letsencrypt option). Once its done you see a console output similiar to this:
 ```console
 #######################################>
 # Keptn Deployment Summary
