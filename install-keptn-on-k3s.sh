@@ -454,13 +454,6 @@ EOF
   echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
   keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
 
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
-
   cat > keptn/${KEPTN_REMEDIATION_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
 dashboard: query
@@ -475,7 +468,6 @@ EOF
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --stage="${KEPTN_REMEDIATION_STAGE}" --service="${KEPTN_REMEDIATION_SERVICE}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml --resourceUri=remediation.yaml
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh --resourceUri=generic-executor/action.triggered.firstaction.sh
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh --resourceUri=generic-executor/action.triggered.secondaction.sh
-
 }
 
 function install_demo {
@@ -519,6 +511,12 @@ Here are 3 things you can do:
 4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
    ./senddeployfinished.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
+
+For the Auto-Remediation Demo we have created a project that contains a default remediation.yaml with some default bash script actions
+In order for this to work do
+1: Create a new Problem Notification Integration as explained in the readme
+2: Either force Dynatrace to open a problem ticket or create one through the API
+3: Watch the auto-remediation actions in Keptn's bridge
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
