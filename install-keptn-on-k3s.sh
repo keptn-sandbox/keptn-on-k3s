@@ -23,7 +23,7 @@ XIP="false"
 DEMO="false"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-LE_STAGE="none"
+LE_STAGE=${LE_STAGE:-none}
 
 # keptn demo project defaults
 KEPTN_QG_PROJECT="dynatrace"
@@ -315,8 +315,11 @@ spec:
               servicePort: 80
 EOF
 
-  write_progress "Waiting for objects to be ready"
+  write_progress "Waiting for Keptn pods to be ready"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
+
+  write_progress "Waiting for certificates to be ready"
+  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
 }
 
 function install_keptncli {
