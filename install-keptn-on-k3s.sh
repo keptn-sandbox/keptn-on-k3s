@@ -114,23 +114,6 @@ function get_fqdn {
 
     FQDN="${MY_IP}"
 
-    # when running on AWS - query the public DNS
-
-    case "${PROVIDER}" in
-      gcp)          
-        # TODO: find a fallback/default for gcp public dns
-        ;;
-      aws)
-        FQDN="$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
-        return 0
-        ;;
-      digitalocean)
-        # TODO: find a fallback/default for digitalocean public dns
-         ;;
-      *)
-        ;;
-    esac
-
     if [[ "${LE_STAGE}" == "staging" ]] || [[ "${XIP}" == "true" ]]; then
       FQDN="$(get_xip_address "${MY_IP}")"
     fi
