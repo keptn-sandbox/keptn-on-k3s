@@ -560,6 +560,7 @@ function main {
           aws)
             echo "Provider: AWS"
             MY_IP="$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
+            FQDN="$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
             shift 2
             ;;
           digitalocean)
