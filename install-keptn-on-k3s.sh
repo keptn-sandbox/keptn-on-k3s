@@ -5,6 +5,7 @@ set -eu
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 
+PROVIDER="none"
 BINDIR="/usr/local/bin"
 KEPTNVERSION="0.7.2"
 JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
@@ -110,6 +111,12 @@ function get_xip_address {
 
 function get_fqdn {
   if [[ "$FQDN" == "none" ]]; then
+
+    # when running on AWS - query the public DNS
+    if [[ "${PROVIDER}" == "aws"]]; then 
+      FQDN="$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
+    fi 
+
     FQDN="${MY_IP}"
     if [[ "${LE_STAGE}" == "staging" ]] || [[ "${XIP}" == "true" ]]; then
       FQDN="$(get_xip_address "${MY_IP}")"
@@ -551,7 +558,8 @@ function main {
         shift 2
       ;;
     --provider)
-        case "${2}" in
+        PROVIDER="${2}"
+        case "${PROVIDER}" in
           gcp)
             echo "Provider: GCP"
             MY_IP="$(curl -Ls -H "Metadata-Flavor: Google" http://metadata/computeMetadata/v1/instance/network-interfaces/0/access-configs/0/external-ip)"
@@ -560,7 +568,6 @@ function main {
           aws)
             echo "Provider: AWS"
             MY_IP="$(curl -s http://169.254.169.254/latest/meta-data/public-ipv4)"
-            FQDN="$(curl -s http://169.254.169.254/latest/meta-data/public-hostname)"
             shift 2
             ;;
           digitalocean)
