@@ -18,6 +18,13 @@ spec:
       value:
         CustomKey1: customValue1
         CustomKey2: customValue2
+  - problemType: Simulated Power outage
+    actionsOnOpen:
+    - name: Handle Power Outage
+      action: poweroutageaction
+      description: In a power outage scenario we make sure nobody dripped on a cable
+      value:
+        Message: Please make sure nobody dripped on a cable!
   - problemType: Browser monitor global outage
     actionsOnOpen:
     - name: Validate DNS entries
