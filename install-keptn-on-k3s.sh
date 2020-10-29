@@ -479,14 +479,22 @@ EOF
   curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/remediation.yaml
   curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.firstaction.sh
   curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.secondaction.sh
+  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.escalate.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.escalate.sh
+  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.validatedns.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.validatedns.sh
+  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.poweroutageaction.py https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.poweroutageaction.py
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --stage="${KEPTN_REMEDIATION_STAGE}" --service="${KEPTN_REMEDIATION_SERVICE}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml --resourceUri=remediation.yaml
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh --resourceUri=generic-executor/action.triggered.firstaction.sh
   keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh --resourceUri=generic-executor/action.triggered.secondaction.sh
+  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.escalate.sh --resourceUri=generic-executor/action.triggered.escalate.sh
+  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.validatedns.sh --resourceUri=generic-executor/action.triggered.validatedns.sh
+  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.poweroutageaction.py --resourceUri=generic-executor/action.triggered.poweroutageaction.py
 
   # Download helper files to create a dynatrace problem
-  echo "Downloading helper script createdtproblem.sh"
-  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/createdtproblem.sh
+  echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
+  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtproblem.sh
   chmod +x createdtproblem.sh
+  curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
+  chmod +x createdtnotification.sh
 
 }
 
