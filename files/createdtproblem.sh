@@ -16,9 +16,12 @@ if [[ -z "$EVENT_TYPE" ]]; then
   EVENT_TYPE="ERROR_EVENT"
 fi 
 
-echo "Sending a custom '$EVENT_TYPE' event to Dynatrace ($DT_TENANT) for entity ($DT_ENTITY_ID). Problem '$PROBLEM_TITLE' will help you test the auto-remediation workflows with Keptn & Dynatrace"
+echo "============================================================="
+echo "About to send a custom '$EVENT_TYPE' event to Dynatrace ($DT_TENANT) for entity ($DT_ENTITY_ID). Problem '$PROBLEM_TITLE' will help you test the auto-remediation workflows with Keptn & Dynatrace"
+echo "============================================================="
 echo "To parameterize EVENT_TYPE $ PROBLEM_TITLE simply pass them as parameters to the script. Here is an example:"
-echo "createproblem.sh PERFORMANCE_EVENT 'Critical Performance Issue'"
+echo "Usage: ./createdtproblem.sh PERFORMANCE_EVENT 'Critical Performance Issue'"
+read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
 
 PAYLOAD='
 {
@@ -34,6 +37,11 @@ PAYLOAD='
   }
 }
 '
+echo "=============================================================="
+echo "SENDING THE FOLLOWING HTTP PAYLOAD TO https://$DT_TENANT/api/v1/events"
+echo $PAYLOAD
+echo "=============================================================="
+
 curl -X POST \
           "https://$DT_TENANT/api/v1/events" \
           -H 'accept: application/json; charset=utf-8' \
