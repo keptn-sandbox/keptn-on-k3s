@@ -517,10 +517,11 @@ function print_config {
   echo "API Token :      $KEPTN_API_TOKEN"
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
-  write_progress "Dynatrace Demo Summary"
+  write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
   cat << EOF
-The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
-Here are 3 things you can do:
+3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+
+For the Quality Gate Use case you can do this::
 1: Open the Keptn's Bridge for your Quality Gate Project: 
    Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_QG_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
@@ -540,11 +541,13 @@ Here are 3 things you can do:
    ./senddeployfinished.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
-For the Auto-Remediation Demo we have created a project that contains a default remediation.yaml with some default bash script actions
+For the Auto-Remediation Demo we have created project ${KEPTN_REMEDIATION_PROJECT} that contains a default remediation.yaml and some bash and python scripts
 In order for this to work do
 1: Create a new Problem Notification Integration as explained in the readme
-2: Either force Dynatrace to open a problem ticket or create one through the API
+2: Either force Dynatrace to open a problem ticket, create one through the API or execute createdtproblem.sh
 3: Watch the auto-remediation actions in Keptn's bridge
+   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
