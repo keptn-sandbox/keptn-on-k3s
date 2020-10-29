@@ -11,3 +11,4 @@ print("I also have some env variables, e.g: PID=" + os.getenv('PID', "") + ", CO
 print("SOURCE=" + os.getenv('SOURCE',""))
 print("PROJECT=" + os.getenv('PROJECT',""))
 print("PROBLEMTITLE=" + os.getenv('PROBLEMTITLE',""))
+print("And here is the message that was passed as part of the remediation action definition :" + os.getenv("VALUE_MESSAGE", "NO MESSAGE"))
