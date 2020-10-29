@@ -6,15 +6,16 @@ if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" || -z "$DT_ENTITY_ID" ]]; then
   exit 1
 fi
 
-PROBLEM_TITLE=$1
+EVENT_TYPE=$1
+if [[ -z "$EVENT_TYPE" ]]; then
+  EVENT_TYPE="ERROR_EVENT"
+fi 
+
+PROBLEM_TITLE=$2
 if [[ -z "$PROBLEM_TITLE" ]]; then
   PROBLEM_TITLE="Simulated Power outage"
 fi 
 
-EVENT_TYPE=$2
-if [[ -z "$EVENT_TYPE" ]]; then
-  EVENT_TYPE="ERROR_EVENT"
-fi 
 
 echo "============================================================="
 echo "About to send a custom '$EVENT_TYPE' event to Dynatrace ($DT_TENANT) for entity ($DT_ENTITY_ID). Problem '$PROBLEM_TITLE' will help you test the auto-remediation workflows with Keptn & Dynatrace"
