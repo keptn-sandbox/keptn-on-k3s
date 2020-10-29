@@ -1,7 +1,8 @@
 #!/bin/bash
 
-if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" || -z "$KEPTN_ENDPOINT" || -z "$KEPTN_API_TOKEN" ]]; then
-  echo "DT_TENANT, DT_API_TOKEN, KEPTN_ENDPOINT & KEPTN_API_TOKEN MUST BE SET!!"
+if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" || -z "$KEPTN_ENDPOINT" || -z "$KEPTN_API_TOKEN" -z "$DT_ALERTING_PROFILE" ]]; then
+  echo "DT_TENANT, DT_API_TOKEN, DT_ALERTING_PROFILE, KEPTN_ENDPOINT & KEPTN_API_TOKEN MUST BE SET!!"
+  echo "DT_ALERTING_PROFILE is the UUID of the alerting profile to use, e.g: for your Default Profile"
   exit 1
 fi
 
@@ -20,7 +21,7 @@ if [[ -z "$KEPTN_SERVICE" ]]; then
   KEPTN_SERVICE="allproblems"
 fi 
 
-echo "Will create a Problem Notification in Dynatrace to send all problems to Keptns $KEPTN_PROJECT.$KEPTN_STAGE.$KEPTN_SERVICE"
+echo "Will create a Problem Notification in Dynatrace to send all problems matching profile $DT_ALERTING_PROFILE to Keptns $KEPTN_PROJECT.$KEPTN_STAGE.$KEPTN_SERVICE"
 
 KEPTNPAYLOAD='{
     \"specversion\":\"0.2\",
@@ -44,14 +45,14 @@ KEPTNPAYLOAD='{
 
 PAYLOAD='
 {
-  "name": "Keptn Remediation Demo for '$KEPTN_PROJECT.$KEPTN_STAGE.$KEPTN_SERVICE'",
-  "alertingProfile" : "Default",
-  "active" : "true",
   "type": "WEBHOOK",
+  "name": "Keptn Remediation Demo for '$KEPTN_PROJECT'.'$KEPTN_STAGE'.'$KEPTN_SERVICE'",
+  "active" : true,
+  "alertingProfile" : "'$DT_ALERTING_PROFILE'",
   "url" : "'$KEPTN_ENDPOINT'/api/v1/event",
   "acceptAnyCertificate": true,
   "payload" : "'$KEPTNPAYLOAD'",
-  "headers : [
+  "headers" : [
     { "name" : "x-token", "value" : "'$KEPTN_API_TOKEN'"},
     { "name" : "Content-Type", "value" : "application/cloudevents+json"}
   ]
