@@ -154,9 +154,8 @@ For this example we need to
 2: (optionally) Simulate an problem event
 
 ### Create Problem Notification in Dynatrace
-I've prepared a sample script that can setup the problem notification for you - or - you can create it yourself!
 
-If you want to create this yourself simply create a new Webhook Problem Notification in Dynatrace
+Lets create a simple Webhook Problem Notification in Dynatrace with the following values:
 * Webhook URL: `YOURKEPTNDOMAIN/api/v1/event`
 * Header x-token: `YOURKEPTNAPITOKEN`
 * Header Content-Type: `application/cloudevents+json`
@@ -185,6 +184,10 @@ Payload:
 ```
 Select the best alerting profile and then hit *Send test notification*. This should send an event to Keptn which seconds later you should also see in Keptn's demo-remediation project. It will also kick off the default remediation workflow which just executes a simple bash script that echos some data!
 If the Dynatrace UI tells you that something is not working it is most likely that your Dynatrace Tenant cannot reach your Keptn. This is why we mentioned in the beginning that your machine needs to be accessible from your Dynatrace Tenant (SaaS or Managed)
+
+**How does this map to a Keptn Project?**
+
+They way the mapping works is based on the information in the "Tags" string. You can see that there we reference the Keptn Project, Stage & Service. This information is used by Keptn to map incoming problems to a Keptn Project, Stage and Service where it then looks for the remediation.yaml!
 
 ### Simulate some problems
 
