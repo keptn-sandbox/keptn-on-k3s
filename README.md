@@ -10,10 +10,12 @@ On top of that you are free to install any other Keptn Service such as the Notif
 
 ## Use cases, pre-requisites and supported stacks
 
-If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.com/watch?v=hx0NHj4u7ic)
+* If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.com/watch?v=hx0NHj4u7ic)
+
+* If you want to use **Keptn with Dynatrace** check out [Keptn for Dynatrace in 5 Minutes](README-KeptnForDynatrace.md)
 
 ### Use Case
- * You want to try out keptn
+ * You want to try out Keptn
  * You don't want to deal with Kubernetes
  * You have access to a Linux host
  
@@ -38,7 +40,7 @@ The script allows a couple of parameters
 | Parameter Name | Values | Comment |
 | ------------------------------ | ------ | --------|
 | `--with-prometheus` | | Will enable Prometheus Support |
-| `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN, DT_PAAS_TOKEN and DT_TENANT env variables to be set |
+| `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will install JMeter Service |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
 | `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
@@ -47,68 +49,19 @@ The script allows a couple of parameters
 | `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
 | `--with-demo` | dynatrace | Will install demo projects for Dynatrace |
 
-
 ### TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io). 
 
-## Keptn for Dynatrace Users in 5 Minutes
+## Installing Keptn for Dynatrace in 5 Minutes
 
-For Dynatrace users the script installs Dynatrace related Keptn services (`--with-dynatrace`) and connects them to your Dynatrace Tenant (SaaS or Managed). 
-It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Demo projects so you can immediatly explore how Quality Gates or Performance as a Self-Service works with Keptn & Dynatrace.
+For all details please check out [Keptn for Dynatrace in 5 Minutes](README-KeptnForDynatrace.md)
 
-**Pre-Requisit:** For enabling Dynatrace support you must first export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant!
-**--provider:** Depending on your virtual machine either specify aws, gcp, digitalocean or remove that parameter if you run this on any other supported linux!
-
+As an example - here is your script to install Keptn for Dynatrace on an Amazon Linux 2 EC2 machine with pre-configured projects for Quality Gates, Performance Automation & Auto-Remediation:
 ```console
-$ export DT_TENANT=abc12345.live.dynatrace.com
-$ export DT_API_TOKEN=YOURTOKEN
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-jmeter --with-demo dynatrace
-``` 
-
-It takes about 2-3 minutes. Once its done you see a console output similiar to this:
-```console
-#######################################>
-# Deployment Summary
-#######################################>
-API URL   :      https://11.222.81.205/api
-Bridge URL:      https://11.222.81.205/bridge
-Bridge Username: keptn
-Bridge Password: BRIDGEPWD
-API Token :      APITOKENXXXXX
-
-#######################################>
-# Dynatrace Demo Summary
-#######################################>
-The Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
-Here are 3 things you can do:
-1: Open the Keptn's Bridge for your Quality Gate Project:
-   Project URL: https://11.222.81.205/bridge/project/demo-qualitygate
-   User / PWD: keptn/BRIDGEPWD
-2: Run another Quality Gate via:
-   keptn send event start-evaluation --project=demo-qualitygate --stage=qualitygate --service=demo
-3: Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
-
-If you want to install the Keptn CLI somewhere else - here the description:
-- Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "APITOKENXXXXX" --endpoint "https://11.222.81.205/api"
-
-If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
-
-Now go and enjoy Keptn!
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt
 ```
 
-Great thing is that when opening that bridge link you immediately see your first Quality Gate Result in the Keptn *demo-qualitygate* project:
-![](./images/keptnqualitygate_dynatrace.png)
-
-When you click the dashboard link you see that a new Dynatrace SLO Dashboard was automatically created for your *demo-qualitygate* project:
-![](./images/dynatraceslodashboard.png)
-
-From here on you can either modify the dashboard to add more SLIs, or you can run more quality gate evaluations as explained in the console output, e.g:
-```console
-keptn send event start-evaluation --project=demo-demo-qualitygate --stage=qualitygate --service=demo
-```
-
-## More installation examples
+## Other installation examples
 
 Here are a couple of installation examples
 
