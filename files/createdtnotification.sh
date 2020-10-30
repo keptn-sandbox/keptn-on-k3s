@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" || -z "$KEPTN_ENDPOINT" || -z "$KEPTN_API_TOKEN" -z "$DT_ALERTING_PROFILE" ]]; then
+if [[ -z "$DT_TENANT" || -z "$DT_API_TOKEN" || -z "$KEPTN_ENDPOINT" || -z "$KEPTN_API_TOKEN" || -z "$DT_ALERTING_PROFILE" ]]; then
   echo "DT_TENANT, DT_API_TOKEN, DT_ALERTING_PROFILE, KEPTN_ENDPOINT & KEPTN_API_TOKEN MUST BE SET!!"
   echo "DT_ALERTING_PROFILE is the UUID of the alerting profile to use, e.g: for your Default Profile"
   exit 1
@@ -22,10 +22,11 @@ if [[ -z "$KEPTN_SERVICE" ]]; then
 fi 
 
 echo "============================================================="
-echo "About to create a Problem Notification in Dynatrace to send all problems matching profile $DT_ALERTING_PROFILE to Keptns $KEPTN_PROJECT.$KEPTN_STAGE.$KEPTN_SERVICE"
+echo "About to create a Problem Notification in Dynatrace"
+echo "Sending all problems matching profile $DT_ALERTING_PROFILE to Keptns $KEPTN_PROJECT.$KEPTN_STAGE.$KEPTN_SERVICE"
 echo "============================================================="
 echo "To parameterize project, stage and service you can pass them as parameters as shown here:"
-echo "Usage: ./createdtnotification.sh keptnproject keptnstage keptnservice
+echo "Usage: ./createdtnotification.sh keptnproject keptnstage keptnservice"
 read -rsp $'Press ctrl-c to abort. Press any key to continue...\n' -n1 key
 
 
@@ -77,4 +78,5 @@ curl -X POST \
           -H 'Content-Type: application/json; charset=utf-8' \
           -d "$PAYLOAD" \
           -o curloutput.txt
+
 cat curloutput.txt

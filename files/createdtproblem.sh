@@ -18,7 +18,8 @@ fi
 
 
 echo "============================================================="
-echo "About to send a custom '$EVENT_TYPE' event to Dynatrace ($DT_TENANT) for entity ($DT_ENTITY_ID). Problem '$PROBLEM_TITLE' will help you test the auto-remediation workflows with Keptn & Dynatrace"
+echo "About to send a custom '$EVENT_TYPE' event to Dynatrace ($DT_TENANT) for entity ($DT_ENTITY_ID)."
+echo "Problem '$PROBLEM_TITLE' will help you test the auto-remediation workflows with Keptn & Dynatrace!"
 echo "============================================================="
 echo "To parameterize EVENT_TYPE $ PROBLEM_TITLE simply pass them as parameters to the script. Here is an example:"
 echo "Usage: ./createdtproblem.sh PERFORMANCE_EVENT 'Critical Performance Issue'"
