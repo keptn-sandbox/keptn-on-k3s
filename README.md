@@ -10,9 +10,9 @@ On top of that you are free to install any other Keptn Service such as the Notif
 
 ## Use cases, pre-requisites and supported stacks
 
-If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.com/watch?v=hx0NHj4u7ic)
+* If you want to watch our Keptn on k3s webinar [click here!](https://www.youtube.com/watch?v=hx0NHj4u7ic)
 
-If you want to use Keptn with Dynatrace check out [Keptn for Dynatrace in 5 Minutes](README-KeptnForDynatrace.md)
+* If you want to use **Keptn with Dynatrace** check out [Keptn for Dynatrace in 5 Minutes](README-KeptnForDynatrace.md)
 
 ### Use Case
  * You want to try out Keptn
