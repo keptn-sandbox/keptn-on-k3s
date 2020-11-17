@@ -7,7 +7,7 @@ DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 PROVIDER="none"
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.2"
+KEPTNVERSION="0.7.3"
 JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
