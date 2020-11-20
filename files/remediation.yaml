@@ -3,34 +3,6 @@ kind: Remediation
 metadata:
   name: dynatrace-demo-remediation
 spec:
-  defaults:
-  - actionsOnRemediationTriggered:
-    - name: Close Jira Ticket
-      action: closejiraticket
-      value:
-        Message: There was an error during remediation action execution
-  - actionsOnActionFinishedFailed:
-    - name: Comment Failure to Jira Ticket
-      action: commentjiraticket
-      value:
-        Message: There was an error during remediation action execution
-  - actionsOnActionFinishedPass:
-    - name: Comment Success to Jira Ticket
-      action: commentjiraticket
-      value:
-        Message: Remediation Action executed successfully!      
-  - actionsOnRemediationFinishedPass:
-    - name: Close Jira Ticket
-      action: closejiraticket
-      value:
-        Message: Remediation workflow successfully executed
-  - actionsOnRemediationFinishedFailed:
-    - name: Close Jira Ticket
-      action: closejiraticket
-      value:
-        Message: Remediation workflow ended without success
-                                  
-
   remediations:  
   - problemType: Simulated Power outage
     actionsOnOpen:
