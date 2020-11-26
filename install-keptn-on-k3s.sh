@@ -650,6 +650,10 @@ function main {
           exit 1
         fi
 
+        # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
+        echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
+        echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+
         # Validate tenant and token is correct
         status=$(curl --request GET \
              --url "https://$DT_TENANT/api/v1/config/clusterversion" \
