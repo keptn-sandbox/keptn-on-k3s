@@ -568,6 +568,7 @@ If you want to install the Keptn CLI somewhere else - here the description:
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+After that also remove the demo files that were downloaded in your local working directory!
 
 Now go and enjoy Keptn!
 EOF

@@ -94,3 +94,5 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/ins
 ```console
 k3s-uninstall.sh
 ```
+
+Also make sure to remove any other potentially created files as part of the demo installations!
