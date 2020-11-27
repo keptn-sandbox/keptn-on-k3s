@@ -10,7 +10,7 @@ If you follow this installation guide you will be able to explore the key Keptn 
 For Dynatrace users this script installs Dynatrace related Keptn services (`--with-dynatrace`) and connects them to your Dynatrace Tenant (SaaS or Managed). 
 It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Dynatrace Demo projects so you can immediatly explore how Quality Gates, Performance as a Self-Service and Auto-Remediation Use Cases work with Keptn & Dynatrace.
 
-## Three Pre-Requisits
+## Four Pre-Requisits
 
 ### 1 - Dynatrace Credentials
 
@@ -31,6 +31,10 @@ For the Auto-Remediation Use Case to work Dynatrace needs to be able to send pro
 **Caution:** While xip.io is a good demo option it is not 100% reliable! A better option is to create your own DNS entry to point to your machine and then specify it via the (`--fqdn yourdomain.abc`)
 
 Good news is that the script provides the option (`--letsencrypt`) which creates a self-signed certificate for either your 1.2.3.4.xip.io or your FQDN. If you want to use letsencrypt we need to export the environment variables LE_STAGE=staging and CERT_EMAIL=someemail
+
+### 4 - Your host needs to allow HTTP/HTTPS incoming traffic
+
+The host you install Keptn on should be accessible via HTTPS. So - if you create an EC2 or GCP instance - please make sure that HTTP (80) & HTTPS (443) are enabled for inbound traffic. Otherwise installation will not work, e.g: letsencrypt wont issue or certificate or Dynatrace wont be able to call into your Keptn instance
 
 ## Installation including 3 Demo Projects
 
@@ -109,6 +113,7 @@ If you want to install the Keptn CLI somewhere else - here the description:
 - Authenticate: keptn auth  --api-token "KEPTN_API_TOKEN" --endpoint "https://12.23.34.45.xip.io/api"
 
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+After that also remove the demo files that were downloaded in your local working directory!
 
 Now go and enjoy Keptn!
 ```
@@ -219,3 +224,5 @@ This demo also uses the [generic-executor-service that allows](https://github.co
 ```console
 k3s-uninstall.sh
 ```
+
+After that lets also clear the downloaded sample files in your local working directory!

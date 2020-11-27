@@ -24,7 +24,7 @@ On top of that you are free to install any other Keptn Service such as the Notif
  * You don't plan to upgrade this installation (currently, but maybe reinstall) 
 
 ### Prerequisites:
-  * A machine which is able to execute bash scripts
+  * A machine which is able to execute bash scripts and that allows incoming HTTP (80) & HTTPS (443) traffic
   * curl
   
 ### Currently tested on:
@@ -32,7 +32,9 @@ On top of that you are free to install any other Keptn Service such as the Notif
   * ArchLinux
   * Debian on GCP
   * Amazon Linux 2
-  
+
+**ATTENTION**: if you try this on an EC2, GCP, ... instance please make sure to allow inbound traffic for HTTP & HTTPS!
+
 * Works on a machine with 1 (v)CPU and 4GB of memory
 
 ### Parameters
@@ -92,3 +94,5 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/ins
 ```console
 k3s-uninstall.sh
 ```
+
+Also make sure to remove any other potentially created files as part of the demo installations!

@@ -7,7 +7,7 @@ DT_API_TOKEN=${DT_API_TOKEN:-none}
 
 PROVIDER="none"
 BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.2"
+KEPTNVERSION="0.7.3"
 JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
@@ -250,13 +250,13 @@ function install_keptn {
 
   # Lets install the Statistics Service
   write_progress "Installing Keptn Statistics Service"
-  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.1.1/deploy/service.yaml"
+  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.2.0/deploy/service.yaml"
 
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.5/deploy/service.yaml"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.2/deploy/service.yaml "
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.6/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.3/deploy/service.yaml "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -275,7 +275,7 @@ function install_keptn {
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.0/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
-    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace
+    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
@@ -568,6 +568,7 @@ If you want to install the Keptn CLI somewhere else - here the description:
 - Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
+After that also remove the demo files that were downloaded in your local working directory!
 
 Now go and enjoy Keptn!
 EOF
@@ -649,6 +650,10 @@ function main {
           echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
           exit 1
         fi
+
+        # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
+        echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
+        echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
 
         # Validate tenant and token is correct
         status=$(curl --request GET \

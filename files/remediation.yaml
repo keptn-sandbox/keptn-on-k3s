@@ -11,6 +11,11 @@ spec:
       description: In a power outage scenario we make sure nobody dripped on a cable
       value:
         Message: Please make sure nobody dripped on a cable!
+    - name: Escalate
+      action: escalate
+      description: Escalate to somebody that knows how to fix this
+      value:
+        Message: We are having a power outage!!
   - problemType: Critical Performance Issue
     actionsOnOpen:
     - name: We escalate performance issues right away
