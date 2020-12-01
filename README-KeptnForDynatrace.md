@@ -181,9 +181,12 @@ Payload:
         "ProblemTitle":"{ProblemTitle}",
         "ProblemURL":"{ProblemURL}",
         "ProblemDetails":{ProblemDetailsJSON},
-        "Tags":"keptn_project:demo-remediation,keptn_stage:production,keptn_service:allproblems,mycustomtag,{Tags}",
+        "Tags":"{Tags}",
         "ImpactedEntities":{ImpactedEntities},
-        "ImpactedEntity":"{ImpactedEntity}"
+        "ImpactedEntity":"{ImpactedEntity}",
+        "KeptnProject":"demo-remediation",
+        "KeptnService":"default",
+        "KeptnStage":"production"
     }
 }
 ```
