@@ -417,10 +417,14 @@ EOF
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
 
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basiccheck.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basiccheck_withdtmint.jmx
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx --resourceUri=jmeter/basiccheck.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx --resourceUri=jmeter/basiccheck_withdtmint.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
 
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_EASYTRAVEL}"
@@ -429,7 +433,7 @@ EOF
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/jmeter.conf.yaml
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-classic-random-book.jmx
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-users.txt
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/easytravel-jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx --resourceUri=jmeter/easytravel-classic-random-book.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt --resourceUri=jmeter/easytravel-users.txt
 
