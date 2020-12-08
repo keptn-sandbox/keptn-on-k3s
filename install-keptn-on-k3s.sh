@@ -33,6 +33,7 @@ KEPTN_QG_SERVICE="demo"
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
 KEPTN_PERFORMANCE_STAGE="performance"
 KEPTN_PERFORMANCE_SERVICE="appundertest"
+KEPTN_PERFORMANCE_EASYTRAVEL="easytravel"
 KEPTN_REMEDIATION_PROJECT="demo-remediation"
 KEPTN_REMEDIATION_STAGE="production"
 KEPTN_REMEDIATION_SERVICE="default"
@@ -419,8 +420,18 @@ EOF
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
   curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+
+  echo "Create Keptn Service: ${KEPTN_PERFORMANCE_EASYTRAVEL}"
+  keptn create service "${KEPTN_PERFORMANCE_EASYTRAVEL}" --project="${KEPTN_PERFORMANCE_PROJECT}"
+
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/jmeter.conf.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-classic-random-book.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-users.txt
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/easytravel-jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx --resourceUri=jmeter/easytravel-classic-random-book.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt --resourceUri=jmeter/easytravel-users.txt
 
   cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
