@@ -383,7 +383,7 @@ spec:
     - "${KEPTN_DOMAIN}"
     secretName: keptn-tls
   rules:
-    - host: 
+    - host: "${KEPTN_DOMAIN}"
       http:
         paths:
           - path: /
@@ -440,7 +440,7 @@ gitea_deleteApiToken(){
 
 gitea_readApiTokenFromFile() {
     if [ ! -f "$TOKEN_FILE" ]; then
-        createApiToken 
+        gitea_createApiToken 
     fi 
 
     if [ -f "$TOKEN_FILE" ]; then
