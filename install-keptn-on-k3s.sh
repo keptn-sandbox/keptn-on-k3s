@@ -677,8 +677,10 @@ EOF
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
     gitea_readApiTokenFromFile
-    gitea_createKeptnRepos
-  fi 
+    gitea_createKeptnRepo "dynatrace"
+    gitea_createKeptnRepo "demo-performance"
+    gitea_createKeptnRepo "demo-remediation"
+  fi
 
 }
 
