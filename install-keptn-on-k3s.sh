@@ -482,7 +482,7 @@ gitea_createKeptnRepo(){
 gitea_createGitRepo(){
     echo "Create repo for project $1"
     # Create Repo with Token
-    curl -Xk POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
+    curl -k -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
     -H "accept: application/json" -H "Content-Type: application/json" \
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
