@@ -16,6 +16,7 @@ K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 PREFIX="https"
 PROM="false"
 DYNA="false"
+GITEA="false"
 JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
@@ -261,7 +262,7 @@ function install_keptn {
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    write_progress "Installing Dynatrace Service"
+    write_progress "Installing Dynatrace Service & Monaco (Monitoring as Code)"
     create_namespace dynatrace
 
     check_delete_secret dynatrace
@@ -273,11 +274,46 @@ function install_keptn {
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$FQDN/bridge"
 
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.1/deploy/service.yaml"
-    # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.1/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/patch/release-0.7.1/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.2/deploy/service.yaml"
+    # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/patch/release-0.7.1/deploy/service.yaml"
+
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/main/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+  fi
+
+  if [[ "${GITEA}" == "true" ]]; then
+    write_progress "Installing Gitea for upstream git"
+    helm repo add gitea-charts https://dl.gitea.io/charts/
+
+    cd gitea
+    ./deploy-gitea.sh $FQDN
+    cd ..
+
+  write_progress "Configuring Gitea Ingress Object (${FQDN})"
+
+  cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
+apiVersion: networking.k8s.io/v1beta1
+kind: Ingress
+metadata:
+  name: gitea-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: $CERTS-issuer
+    traefik.ingress.kubernetes.io/redirect-entry-point: https
+spec:
+  tls:
+  - hosts:
+    - "git.${FQDN}"
+    secretName: keptn-tls
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: gitea-http
+              servicePort: 3000
+EOF
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
@@ -300,7 +336,7 @@ function install_keptn {
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/deploy/service.yaml"
   fi
 
-  write_progress "Configuring Ingress Object (${FQDN})"
+  write_progress "Configuring Keptn Ingress Object (${FQDN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
 apiVersion: networking.k8s.io/v1beta1
@@ -339,6 +375,22 @@ function install_keptncli {
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 }
 
+#
+# Creates a new Keptn project based on the shipyard. Also creates a gitea project and sets the upstream
+# Parameters:
+# 1: Keptn Project Name
+#
+function create_keptn_project {
+
+  keptn create project "${1}" --shipyard=keptn/${1}/shipyard.yaml
+
+  if [[ "${GITEA}" == "true" ]]; then
+    cd setup/gitea
+    ./create-upstream-git.sh ${$1}
+    cd ../..  
+  fi 
+}
+
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -363,7 +415,8 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_QG_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
   keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
@@ -684,6 +737,10 @@ function main {
         fi
         shift
         ;;
+    --with-gitea)
+       GITEA="true"
+       shift
+       ;;
     --with-demo)
         DEMO="${2}"
         if [[ $DEMO != "dynatrace" ]]; then 
