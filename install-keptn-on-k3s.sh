@@ -299,15 +299,19 @@ function install_keptn {
     echo "Create namespace for git"
     kubectl create ns git
 
-  sed -e 's~domain.placeholder~'"$FQDN"'~' \
-      -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
-      -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
-      helm-gitea.yaml > gen/helm-gitea.yaml
+    GIT_SERVER="http://git.${FDQN}"
+    curl -fsSL -o /helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
-  echo "Install gitea via Helmchart"
-  helm install gitea gitea-charts/gitea -f gen/helm-gitea.yaml --namespace git
-  
-  write_progress "Configuring Gitea Ingress Object (${FQDN})"
+    # Download helm yaml
+    sed -e 's~domain.placeholder~'"$FQDN"'~' \
+        -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
+        -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
+        helm-gitea.yaml > helm-gitea_gen.yaml
+
+    echo "Install gitea via Helmchart"
+    helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git
+    
+    write_progress "Configuring Gitea Ingress Object (${FQDN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
 apiVersion: networking.k8s.io/v1beta1
@@ -331,9 +335,10 @@ spec:
               servicePort: 3000
 EOF
 
-  echo "Successfully installed Gitea"
-  echo "Git User: $GIT_USER"
-  echo "Git Password: $GIT_PASSWORD"
+    echo "Successfully installed Gitea"
+    echo "Git Server: $GIT_SERVER"
+    echo "Git User: $GIT_USER"
+    echo "Git Password: $GIT_PASSWORD"
 
   fi
 
@@ -839,7 +844,6 @@ function main {
         ;;
     --with-gitea)
        GITEA="true"
-       GIT_SERVER="http://git.${FDQN}"
        shift
        ;;
     --with-demo)
