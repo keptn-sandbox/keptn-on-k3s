@@ -891,6 +891,16 @@ function main {
   esac
   done
 
+  # Check pre-req of jq
+  if ! [ -x "$(command -v jq)" ]; then
+    echo 'Error: jq is not installed.' >&2
+    exit 1
+  fi
+  if ! [ -x "$(command -v curl)" ]; then
+    echo 'Error: curl is not installed.' >&2
+    exit 1
+  fi
+
   get_ip
   get_fqdn
   get_k3s
