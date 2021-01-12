@@ -418,7 +418,7 @@ function install_keptncli {
 # Create Token
 gitea_createApiToken(){
     echo "Creating token for $GIT_USER from $GIT_SERVER"
-    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
     -X POST "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" \
     -d "{ \"name\": \"$GIT_TOKEN\" }" -o $TOKEN_FILE
@@ -426,14 +426,14 @@ gitea_createApiToken(){
 
 gitea_getApiTokens(){
     echo "Get tokens for $GIT_USER from $GIT_SERVER"
-    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
     -X GET "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8"
 }
 
 gitea_deleteApiToken(){
     echo "Deleting token for $GIT_USER from $GIT_SERVER"
-    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
     -X DELETE "$GIT_SERVER/api/v1/users/$GIT_USER/tokens/$TOKEN_ID" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" 
 }
@@ -481,7 +481,7 @@ gitea_createKeptnRepo(){
 gitea_createGitRepo(){
     echo "Create repo for project $1"
     # Create Repo with Token
-    curl -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
+    curl -Xk POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
     -H "accept: application/json" -H "Content-Type: application/json" \
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
