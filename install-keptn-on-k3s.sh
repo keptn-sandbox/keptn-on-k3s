@@ -27,6 +27,15 @@ BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE=${LE_STAGE:-none}
 
+#Gitea - default values
+GIT_USER="keptn"
+GIT_PASSWORD="keptn#R0cks"
+GIT_SERVER="http://git.$FDQN"
+
+# static vars
+GIT_TOKEN="keptn-upstream-token"
+TOKEN_FILE=$GIT_TOKEN.json
+
 # keptn demo project defaults
 KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="quality-gate"
@@ -287,10 +296,17 @@ function install_keptn {
     write_progress "Installing Gitea for upstream git"
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
-    cd gitea
-    ./deploy-gitea.sh $FQDN
-    cd ..
+    echo "Create namespace for git"
+    kubectl create ns git
 
+  sed -e 's~domain.placeholder~'"$FQDN"'~' \
+      -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
+      -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
+      helm-gitea.yaml > gen/helm-gitea.yaml
+
+  echo "Install gitea via Helmchart"
+  helm install gitea gitea-charts/gitea -f gen/helm-gitea.yaml --namespace git
+  
   write_progress "Configuring Gitea Ingress Object (${FQDN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
@@ -314,6 +330,11 @@ spec:
               serviceName: gitea-http
               servicePort: 3000
 EOF
+
+  echo "Successfully installed Gitea"
+  echo "Git User: $GIT_USER"
+  echo "Git Password: $GIT_PASSWORD"
+
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
@@ -375,6 +396,83 @@ function install_keptncli {
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
 }
 
+# Following are functions based on Gitea Documentation
+# https://gitea.com/gitea/helm-chart/#configuration
+
+# Load git vars
+
+# Create Token
+gitea_createApiToken(){
+    echo "Creating token for $GIT_USER from $GIT_SERVER"
+    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    -X POST "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" \
+    -d "{ \"name\": \"$GIT_TOKEN\" }" -o $TOKEN_FILE
+}
+
+gitea_getApiTokens(){
+    echo "Get tokens for $GIT_USER from $GIT_SERVER"
+    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    -X GET "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8"
+}
+
+gitea_deleteApiToken(){
+    echo "Deleting token for $GIT_USER from $GIT_SERVER"
+    curl -v --user $GIT_USER:$GIT_PASSWORD \
+    -X DELETE "$GIT_SERVER/api/v1/users/$GIT_USER/tokens/$TOKEN_ID" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" 
+}
+
+gitea_readApiTokenFromFile() {
+    if [ ! -f "$TOKEN_FILE" ]; then
+        createApiToken 
+    fi 
+
+    if [ -f "$TOKEN_FILE" ]; then
+        echo "Reading token from file $TOKEN_FILE"
+        TOKENJSON=$(cat $TOKEN_FILE)
+        API_TOKEN=$(echo $TOKENJSON | jq -r '.sha1')
+        TOKEN_ID=$(echo $TOKENJSON | jq -r '.id')
+        echo "tokenId: $TOKEN_ID hash: $API_TOKEN"
+    else 
+        echo "Cant get Git Token!"
+    fi
+}
+
+gitea_createKeptnRepos() {
+    echo "Creating repositories for Keptn projects "
+    for project in `keptn get projects | awk '{ if (NR!=1) print $1}'`;
+    do 
+        gitea_createKeptnRepo $project
+    done
+}
+
+gitea_updateKeptnRepo(){
+    KEPTN_PROJECT=$1
+    keptn update project $KEPTN_PROJECT --git-user=$GIT_USER --git-token=$API_TOKEN --git-remote-url=$GIT_SERVER/$GIT_USER/$KEPTN_PROJECT.git
+}
+
+gitea_createKeptnRepoManually(){
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepo $1
+}
+
+gitea_createKeptnRepo(){
+    echo "Creating and migrating Keptn project to self-hosted git for $1"
+    gitea_createGitRepo $1
+    gitea_updateKeptnRepo $1
+}
+
+gitea_createGitRepo(){
+    echo "Create repo for project $1"
+    # Create Repo with Token
+    curl -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
+    -H "accept: application/json" -H "Content-Type: application/json" \
+    -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
+}
+
+
 #
 # Creates a new Keptn project based on the shipyard. Also creates a gitea project and sets the upstream
 # Parameters:
@@ -385,9 +483,9 @@ function create_keptn_project {
   keptn create project "${1}" --shipyard=keptn/${1}/shipyard.yaml
 
   if [[ "${GITEA}" == "true" ]]; then
-    cd setup/gitea
-    ./create-upstream-git.sh ${$1}
-    cd ../..  
+    gitea_readApiTokenFromFile
+
+    gitea_createKeptnRepo "${1}"
   fi 
 }
 
@@ -465,7 +563,8 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_PERFORMANCE_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
@@ -532,7 +631,8 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_REMEDIATION_PROJECT}""
 
   echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
   keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
