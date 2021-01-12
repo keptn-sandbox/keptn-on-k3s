@@ -297,10 +297,10 @@ function install_keptn {
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
     echo "Create namespace for git"
-    kubectl create ns git
+    "${K3SKUBECTL[@]}" create ns git
 
     GIT_SERVER="http://git.${FDQN}"
-    curl -fsSL -o /helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
+    curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
     # Download helm yaml
     sed -e 's~domain.placeholder~'"$FQDN"'~' \
@@ -309,12 +309,12 @@ function install_keptn {
         helm-gitea.yaml > helm-gitea_gen.yaml
 
     echo "Install gitea via Helmchart"
-    helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git
+    helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
     
     write_progress "Configuring Gitea Ingress Object (${FQDN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: gitea-ingress
@@ -331,8 +331,9 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: gitea-http
-              servicePort: 3000
+              service:
+                name: gitea-http
+                port: 3000
 EOF
 
     echo "Successfully installed Gitea"
@@ -365,7 +366,7 @@ EOF
   write_progress "Configuring Keptn Ingress Object (${FQDN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: keptn-ingress
@@ -382,8 +383,9 @@ spec:
         paths:
           - path: /
             backend:
-              serviceName: api-gateway-nginx
-              servicePort: 80
+              service
+                name: api-gateway-nginx
+                port: 80
 EOF
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
