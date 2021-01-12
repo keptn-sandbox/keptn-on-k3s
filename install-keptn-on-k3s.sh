@@ -333,7 +333,8 @@ spec:
             backend:
               service:
                 name: gitea-http
-                port: 3000
+                port: 
+                  number: 3000
 EOF
 
     echo "Successfully installed Gitea"
@@ -385,7 +386,8 @@ spec:
             backend:
               service
                 name: api-gateway-nginx
-                port: 80
+                port: 
+                  number: 80
 EOF
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
