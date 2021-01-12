@@ -344,7 +344,8 @@ spec:
                   number: 3000
 EOF
 
-    echo "Successfully installed Gitea"
+    write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
+    "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
@@ -493,15 +494,9 @@ gitea_createGitRepo(){
 # 1: Keptn Project Name
 #
 function create_keptn_project {
-
   keptn create project "${1}" --shipyard=keptn/${1}/shipyard.yaml
-
-  if [[ "${GITEA}" == "true" ]]; then
-    gitea_readApiTokenFromFile
-
-    gitea_createKeptnRepo "${1}"
-  fi 
 }
+
 
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
@@ -678,6 +673,12 @@ EOF
   chmod +x createdtproblem.sh
   curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
   chmod +x createdtnotification.sh
+
+  # last step is to setup upstream gits
+  if [[ "${GITEA}" == "true" ]]; then
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepos
+  fi 
 
 }
 
