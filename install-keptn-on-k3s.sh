@@ -30,7 +30,7 @@ LE_STAGE=${LE_STAGE:-none}
 #Gitea - default values
 GIT_USER="keptn"
 GIT_PASSWORD="keptn#R0cks"
-GIT_SERVER="http://git.$FDQN"
+GIT_SERVER="none"
 
 # static vars
 GIT_TOKEN="keptn-upstream-token"
@@ -839,6 +839,7 @@ function main {
         ;;
     --with-gitea)
        GITEA="true"
+       GIT_SERVER="http://git.${FDQN}"
        shift
        ;;
     --with-demo)
