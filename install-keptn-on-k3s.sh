@@ -632,7 +632,7 @@ EOF
 
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
   # keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
-  create_keptn_project "${KEPTN_REMEDIATION_PROJECT}""
+  create_keptn_project "${KEPTN_REMEDIATION_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
   keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
