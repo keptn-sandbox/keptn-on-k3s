@@ -304,7 +304,8 @@ function install_keptn {
     echo "Create namespace for git"
     "${K3SKUBECTL[@]}" create ns git
 
-    GIT_SERVER="${PREFIX}://$GIT_DOMAIN"
+    # always acceses git via http as we otherwise may have problem with self-signed certificate!
+    GIT_SERVER="http://$GIT_DOMAIN"
     curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
     # Download helm yaml
@@ -325,7 +326,6 @@ metadata:
   name: gitea-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
-    traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   tls:
   - hosts:
