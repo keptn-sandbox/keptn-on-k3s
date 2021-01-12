@@ -330,6 +330,7 @@ spec:
     - http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
               service:
                 name: gitea-http
@@ -383,6 +384,7 @@ spec:
     - http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
               service
                 name: api-gateway-nginx
