@@ -52,14 +52,19 @@ $ export CERT_EMAIL=myemail@mydomain.com
 
 You see that the sample uses the `--with-demo dynatrace`, `--letsencrypt` and `--provider aws` option:
 ```console
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
 ``` 
+
+All URLs provided will be of form http(s)://keptn.12.23.34.45.xip.io. xip.io is a free DNS resolution service which will resolve any DNS request to that IP Address as part of the DNS name.
 
 **Option 2:** Use your own custom domain that points to your host
 You see that the sample additionally uses the `--fqdn mykeptn.mydomain.com` option:
 ```console
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --fqdn mykeptn.mydomain.com
+$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --fqdn mykeptn.mydomain.com --with-gitea
 ``` 
+
+All URLs provided will be of form http(s)://keptn.YOURDOMAIN. So - when setting up your own custom domain name make sure that you have a wildcard route so that all subdomains from your FQDN will also map to your machine where you install Keptn on k3s.
+
 
 Installation will take about 4-5 minutes assuming there are no issues with getting a certifcate, you have enough resources, ...
 In case you run into an issue - simply try it again. If you still have an issue - ping us on the [Keptn Slack](https://slack.keptn.sh)
@@ -69,11 +74,15 @@ In case you run into an issue - simply try it again. If you still have an issue 
 #######################################>
 # Keptn Deployment Summary
 #######################################>
-API URL   :      https://12.23.34.45.xip.io/api
-Bridge URL:      https://12.23.34.45.xip.io/bridge
+API URL   :      https://keptn.12.23.34.45.xip.io/api
+Bridge URL:      https://keptn.12.23.34.45.xip.io/bridge
 Bridge Username: keptn
 Bridge Password: BRIDGEPASSWORD
 API Token :      KEPTN_API_TOKEN
+Git Server:      http://git.12.23.34.45.xip.io
+Git User:        keptn
+Git Password:    keptn#R0cks
+
 
 #######################################>
 # Dynatrace Demo Summary: 3 Use Cases to explore
@@ -119,6 +128,19 @@ After that also remove the demo files that were downloaded in your local working
 
 Now go and enjoy Keptn!
 ```
+
+## Accessing Keptn projects and configuration files
+
+If you have used the `--with-gitea` option the installation script not only installed Gitea (a Git Service) but also created Git repositories and set them as upstream git repos for each created keptn project via `keptn update project --git-xxxx`
+Now - if you have not used that option but if you have your own Git account on either GitHub, Bitbucket, GitLab, Azure ... then you can simply update each keptn project and point it to your own upstream gits. More information on that can be found here: [Git-based upstream](https://keptn.sh/docs/0.7.x/manage/git_upstream/)
+
+Here is the overview of the created Keptn Projects:
+![](./images/keptn_project_overview.png)
+
+If you have the Git-upstream you can simply click on that link and it brings you to your git-upstream repo. Thats a great way to learn how Keptn organizes its configuration files in Git. You will see the main branch with the shipyard.yaml as well as the stage specific branches with stage and service specific files:
+
+![](./images/gitea_upstream_git.png)
+
 
 ## Use Case 1: Quality Gate
 

@@ -377,7 +377,6 @@ metadata:
   name: keptn-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
-    traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   tls:
   - hosts:
