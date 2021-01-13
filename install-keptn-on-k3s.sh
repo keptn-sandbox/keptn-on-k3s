@@ -12,10 +12,12 @@ JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
 KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
+KEPTN_DOMAIN="none"
 K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 PREFIX="https"
 PROM="false"
 DYNA="false"
+GITEA="false"
 JMETER="false"
 CERTS="selfsigned"
 SLACK="false"
@@ -26,6 +28,16 @@ BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 LE_STAGE=${LE_STAGE:-none}
 
+#Gitea - default values
+GIT_USER="keptn"
+GIT_PASSWORD="keptn#R0cks"
+GIT_SERVER="none"
+GIT_DOMAIN="none"
+
+# static vars
+GIT_TOKEN="keptn-upstream-token"
+TOKEN_FILE=$GIT_TOKEN.json
+
 # keptn demo project defaults
 KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="quality-gate"
@@ -33,6 +45,7 @@ KEPTN_QG_SERVICE="demo"
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
 KEPTN_PERFORMANCE_STAGE="performance"
 KEPTN_PERFORMANCE_SERVICE="appundertest"
+KEPTN_PERFORMANCE_EASYTRAVEL="easytravel"
 KEPTN_REMEDIATION_PROJECT="demo-remediation"
 KEPTN_REMEDIATION_STAGE="production"
 KEPTN_REMEDIATION_SERVICE="default"
@@ -123,6 +136,9 @@ function get_fqdn {
       exit 1
     fi
   fi
+
+  KEPTN_DOMAIN="keptn.${FQDN}"
+  GIT_DOMAIN="git.${FQDN}"
 }
 
 function apply_manifest {
@@ -260,22 +276,76 @@ function install_keptn {
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    write_progress "Installing Dynatrace Service"
+    write_progress "Installing Dynatrace Service & Monaco (Monitoring as Code)"
     create_namespace dynatrace
 
     check_delete_secret dynatrace
     "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
       --from-literal="DT_TENANT=$DT_TENANT" \
       --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
-      --from-literal="KEPTN_API_URL=${PREFIX}://$FQDN/api" \
+      --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
-      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$FQDN/bridge"
+      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.1/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.1/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.2/deploy/service.yaml"
+    # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/patch/release-0.7.1/deploy/service.yaml"
+
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/main/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+  fi
+
+  if [[ "${GITEA}" == "true" ]]; then
+    write_progress "Installing Gitea for upstream git"
+    helm repo add gitea-charts https://dl.gitea.io/charts/
+
+    echo "Create namespace for git"
+    "${K3SKUBECTL[@]}" create ns git
+
+    # always acceses git via http as we otherwise may have problem with self-signed certificate!
+    GIT_SERVER="http://$GIT_DOMAIN"
+    curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
+
+    # Download helm yaml
+    sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
+        -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
+        -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
+        helm-gitea.yaml > helm-gitea_gen.yaml
+
+    echo "Install gitea via Helmchart"
+    helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
+    
+    write_progress "Configuring Gitea Ingress Object (${GIT_DOMAIN})"
+
+  cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: gitea-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: $CERTS-issuer
+spec:
+  tls:
+  - hosts:
+    - "${GIT_DOMAIN}"
+    secretName: keptn-tls
+  rules:
+    - host: "${GIT_DOMAIN}"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: gitea-http
+                port: 
+                  number: 3000
+EOF
+
+    write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
+    "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
@@ -298,28 +368,31 @@ function install_keptn {
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/deploy/service.yaml"
   fi
 
-  write_progress "Configuring Ingress Object (${FQDN})"
+  write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
 
   cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
-apiVersion: networking.k8s.io/v1beta1
+apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: keptn-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
-    traefik.ingress.kubernetes.io/redirect-entry-point: https
 spec:
   tls:
   - hosts:
-    - "${FQDN}"
+    - "${KEPTN_DOMAIN}"
     secretName: keptn-tls
   rules:
-    - http:
+    - host: "${KEPTN_DOMAIN}"
+      http:
         paths:
           - path: /
+            pathType: Prefix
             backend:
-              serviceName: api-gateway-nginx
-              servicePort: 80
+              service:
+                name: api-gateway-nginx
+                port: 
+                  number: 80
 EOF
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
@@ -334,8 +407,95 @@ function install_keptncli {
 
   echo "Installing and Authenticating Keptn CLI"
   curl -sL https://get.keptn.sh | sudo -E bash
-  keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+  keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
+
+# Following are functions based on Gitea Documentation
+# https://gitea.com/gitea/helm-chart/#configuration
+
+# Load git vars
+
+# Create Token
+gitea_createApiToken(){
+    echo "Creating token for $GIT_USER from $GIT_SERVER"
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    -X POST "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" \
+    -d "{ \"name\": \"$GIT_TOKEN\" }" -o $TOKEN_FILE
+}
+
+gitea_getApiTokens(){
+    echo "Get tokens for $GIT_USER from $GIT_SERVER"
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    -X GET "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8"
+}
+
+gitea_deleteApiToken(){
+    echo "Deleting token for $GIT_USER from $GIT_SERVER"
+    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    -X DELETE "$GIT_SERVER/api/v1/users/$GIT_USER/tokens/$TOKEN_ID" \
+    -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" 
+}
+
+gitea_readApiTokenFromFile() {
+    if [ ! -f "$TOKEN_FILE" ]; then
+        gitea_createApiToken 
+    fi 
+
+    if [ -f "$TOKEN_FILE" ]; then
+        echo "Reading token from file $TOKEN_FILE"
+        TOKENJSON=$(cat $TOKEN_FILE)
+        API_TOKEN=$(echo $TOKENJSON | jq -r '.sha1')
+        TOKEN_ID=$(echo $TOKENJSON | jq -r '.id')
+        echo "tokenId: $TOKEN_ID hash: $API_TOKEN"
+    else 
+        echo "Cant get Git Token!"
+    fi
+}
+
+gitea_createKeptnRepos() {
+    echo "Creating repositories for Keptn projects "
+    for project in `keptn get projects | awk '{ if (NR!=1) print $1}'`;
+    do 
+        gitea_createKeptnRepo $project
+    done
+}
+
+gitea_updateKeptnRepo(){
+    KEPTN_PROJECT=$1
+    keptn update project $KEPTN_PROJECT --git-user=$GIT_USER --git-token=$API_TOKEN --git-remote-url=$GIT_SERVER/$GIT_USER/$KEPTN_PROJECT.git
+}
+
+gitea_createKeptnRepoManually(){
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepo $1
+}
+
+gitea_createKeptnRepo(){
+    echo "Creating and migrating Keptn project to self-hosted git for $1"
+    gitea_createGitRepo $1
+    gitea_updateKeptnRepo $1
+}
+
+gitea_createGitRepo(){
+    echo "Create repo for project $1"
+    # Create Repo with Token
+    curl -k -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
+    -H "accept: application/json" -H "Content-Type: application/json" \
+    -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
+}
+
+
+#
+# Creates a new Keptn project based on the shipyard. Also creates a gitea project and sets the upstream
+# Parameters:
+# 1: Keptn Project Name
+#
+function create_keptn_project {
+  keptn create project "${1}" --shipyard=keptn/${1}/shipyard.yaml
+}
+
 
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
@@ -349,7 +509,7 @@ function install_demo_dynatrace {
   DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
   DYNATRACE_TOKEN="${DT_API_TOKEN}"
 
-  KEPTN_ENDPOINT="${PREFIX}://${FQDN}"
+  KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
   KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_QG_PROJECT}"
   KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
@@ -361,7 +521,8 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_QG_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
   keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
@@ -410,17 +571,32 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_PERFORMANCE_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
 
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/jmeter.conf.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/jmeter/basicload_withdtmint.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/jmeter.conf.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basiccheck.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basiccheck_withdtmint.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basicload.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basicload_withdtmint.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx --resourceUri=jmeter/basiccheck.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx --resourceUri=jmeter/basiccheck_withdtmint.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
   keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
+
+  echo "Create Keptn Service: ${KEPTN_PERFORMANCE_EASYTRAVEL}"
+  keptn create service "${KEPTN_PERFORMANCE_EASYTRAVEL}" --project="${KEPTN_PERFORMANCE_PROJECT}"
+
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-jmeter.conf.yaml
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-classic-random-book.jmx
+  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-users.txt
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --service=${KEPTN_PERFORMANCE_EASYTRAVEL} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx --resourceUri=jmeter/easytravel-classic-random-book.jmx
+  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt --resourceUri=jmeter/easytravel-users.txt
 
   cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
 spec_version: '0.1.0'
@@ -463,7 +639,8 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
+  # keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
+  create_keptn_project "${KEPTN_REMEDIATION_PROJECT}"
 
   echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
   keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
@@ -496,6 +673,14 @@ EOF
   curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
   chmod +x createdtnotification.sh
 
+  # last step is to setup upstream gits
+  if [[ "${GITEA}" == "true" ]]; then
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepo "dynatrace"
+    gitea_createKeptnRepo "demo-performance"
+    gitea_createKeptnRepo "demo-remediation"
+  fi
+
 }
 
 function install_demo {
@@ -510,11 +695,17 @@ function print_config {
   BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
   KEPTN_API_TOKEN="$(get_keptn_token)"
 
-  echo "API URL   :      ${PREFIX}://${FQDN}/api"
-  echo "Bridge URL:      ${PREFIX}://${FQDN}/bridge"
+  echo "API URL   :      ${PREFIX}://${KEPTN_DOMAIN}/api"
+  echo "Bridge URL:      ${PREFIX}://${KEPTN_DOMAIN}/bridge"
   echo "Bridge Username: $BRIDGE_USERNAME"
   echo "Bridge Password: $BRIDGE_PASSWORD"
   echo "API Token :      $KEPTN_API_TOKEN"
+
+if [[ "${GITEA}" == "true" ]]; then
+  echo "Git Server:      $GIT_SERVER"
+  echo "Git User:        $GIT_USER"
+  echo "Git Password:    $GIT_PASSWORD"
+fi
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
   write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
@@ -523,7 +714,7 @@ function print_config {
 
 For the Quality Gate Use case you can do this::
 1: Open the Keptn's Bridge for your Quality Gate Project: 
-   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_QG_PROJECT}
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_QG_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: Run another Quality Gate via: 
    keptn send event start-evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
@@ -533,7 +724,7 @@ For the Quality Gate Use case you can do this::
 For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
 Here are 3 things you can do:
 1: Open the Keptn's Bridge for your Performance Project:
-   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_PERFORMANCE_PROJECT}
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_PERFORMANCE_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_PERFORMANCE_SERVICE}
 3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_PERFORMANCE_PROJECT};service=${KEPTN_PERFORMANCE_SERVICE};stage=${KEPTN_PERFORMANCE_STAGE}
@@ -546,7 +737,7 @@ In order for this to work do
 1: Create a new Problem Notification Integration as explained in the readme
 2: Either force Dynatrace to open a problem ticket, create one through the API or execute createdtproblem.sh
 3: Watch the auto-remediation actions in Keptn's bridge
-   Project URL: ${PREFIX}://${FQDN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
@@ -565,7 +756,7 @@ EOF
   cat << EOF
 If you want to install the Keptn CLI somewhere else - here the description:
 - Install the keptn CLI: curl -sL https://get.keptn.sh | sudo -E bash
-- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$FQDN/api"
+- Authenticate: keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
 After that also remove the demo files that were downloaded in your local working directory!
@@ -668,6 +859,10 @@ function main {
         fi
         shift
         ;;
+    --with-gitea)
+       GITEA="true"
+       shift
+       ;;
     --with-demo)
         DEMO="${2}"
         if [[ $DEMO != "dynatrace" ]]; then 
@@ -697,6 +892,16 @@ function main {
       ;;
   esac
   done
+
+  # Check pre-req of jq
+  if ! [ -x "$(command -v jq)" ]; then
+    echo 'Error: jq is not installed.' >&2
+    exit 1
+  fi
+  if ! [ -x "$(command -v curl)" ]; then
+    echo 'Error: curl is not installed.' >&2
+    exit 1
+  fi
 
   get_ip
   get_fqdn
