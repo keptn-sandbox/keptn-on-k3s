@@ -518,6 +518,7 @@ EOF
   keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
   
   echo "Adding Dynatrace SLI/SLO Dashboard Monaco Files for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
+  mkdir -p keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard
   curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.json
   curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.yaml
   
@@ -547,6 +548,8 @@ EOF
 
   # remove temporary file
   rm /tmp/slo_sli_dashboard.json
+
+  echo "Send keptn configuration change to apply config changes"
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
