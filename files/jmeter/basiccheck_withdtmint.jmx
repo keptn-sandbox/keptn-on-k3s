@@ -270,6 +270,11 @@ hm.add(new org.apache.jmeter.protocol.http.control.Header(&quot;x-dynatrace-test
               <stringProp name="Argument.value">keptnProject=${KEPTN_PROJECT},keptnService=${KEPTN_SERVICE},keptnStage=${KEPTN_STAGE},keptnTestStrategy=${KEPTN_TESTSTRATEGY}</stringProp>
               <stringProp name="Argument.metadata">=</stringProp>
             </elementProp>
+            <elementProp name="enabled" elementType="Argument">
+              <stringProp name="Argument.name">enabled</stringProp>
+              <stringProp name="Argument.value">true</stringProp>
+              <stringProp name="Argument.metadata">=</stringProp>
+            </elementProp>
           </collectionProp>
         </elementProp>
         <stringProp name="classname">com.dynatrace.jmeter.plugins.MintBackendListener</stringProp>
