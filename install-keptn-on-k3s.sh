@@ -546,8 +546,6 @@ attachRules:
 EOF
   keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
-  # remove temporary file
-  rm /tmp/slo_sli_dashboard.json
 
   echo "Send keptn configuration change to apply config changes"
 
