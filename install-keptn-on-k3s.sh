@@ -288,11 +288,11 @@ function install_keptn {
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
     # Installing core dynatrace services
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.1/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.2/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.3/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.3/deploy/service.yaml"
 
     # Installing monaco service
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/release-0.2.0/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/release-0.2.1/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
