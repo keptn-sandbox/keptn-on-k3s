@@ -287,11 +287,12 @@ function install_keptn {
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.1/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.2/deploy/service.yaml"
-    # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/patch/release-0.7.1/deploy/service.yaml"
+    # Installing core dynatrace services
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.3/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.3/deploy/service.yaml"
 
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/main/deploy/service.yaml"
+    # Installing monaco service
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/release-0.2.1/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
@@ -487,16 +488,6 @@ gitea_createGitRepo(){
 }
 
 
-#
-# Creates a new Keptn project based on the shipyard. Also creates a gitea project and sets the upstream
-# Parameters:
-# 1: Keptn Project Name
-#
-function create_keptn_project {
-  keptn create project "${1}" --shipyard=keptn/${1}/shipyard.yaml
-}
-
-
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -521,19 +512,22 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  # keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
-  create_keptn_project "${KEPTN_QG_PROJECT}"
+  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
   keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
   
-  echo "Create a Dynatrace SLI/SLO Dashboard for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
-  curl -fsSL -o /tmp/slo_sli_dashboard.json https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/master/dashboard/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_PROJECT}/${KEPTN_QG_PROJECT}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_STAGE}/${KEPTN_QG_STAGE}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_SERVICE}/${KEPTN_QG_SERVICE}/" /tmp/slo_sli_dashboard.json
-  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" /tmp/slo_sli_dashboard.json
-  curl -X POST  ${DYNATRACE_ENDPOINT} -H "accept: application/json; charset=utf-8" -H "Authorization: Api-Token ${DYNATRACE_TOKEN}" -H "Content-Type: application/json; charset=utf-8" -d @/tmp/slo_sli_dashboard.json
+  echo "Adding Dynatrace SLI/SLO Dashboard Monaco Files for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
+  mkdir -p keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard
+  curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.json
+  curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.yaml
+  
+  # Replace one placeholder with the keptn bridge url
+  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json
+
+  # upload monaco files
+  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json --resourceUri=dynatrace/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json
+  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml --resourceUri=dynatrace/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml
 
   echo "Add dynatrace.conf.yaml to enable SLI/SLO Dashboard query"
   cat > keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
@@ -552,8 +546,8 @@ attachRules:
 EOF
   keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
-  # remove temporary file
-  rm /tmp/slo_sli_dashboard.json
+
+  echo "Send keptn configuration change to apply config changes"
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
@@ -571,8 +565,7 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  # keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
-  create_keptn_project "${KEPTN_PERFORMANCE_PROJECT}"
+  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
   keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
@@ -639,8 +632,7 @@ stages:
 EOF
 
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  # keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
-  create_keptn_project "${KEPTN_REMEDIATION_PROJECT}"
+  keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
 
   echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
   keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
