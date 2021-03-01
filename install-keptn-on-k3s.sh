@@ -2,31 +2,51 @@
 
 set -eu
 
+# Keptn Version Information
+KEPTNVERSION="0.8.0-rc1"
+JMETER_SERVICE_VERSION="feature/2552/jmeterextensionskeptn072"
+PROM_SERVICE_VERSION="release-0.4.0"
+PROM_SLI_SERVICE_VERSION="release-0.3.0"
+DT_SERVICE_VERSION="release-0.11.0"
+DT_SLI_SERVICE_VERSION="release-0.8.0"
+GENERICEXEC_SERVICE_VERSION="release-0.3"
+MONACO_SERVICE_VERSION="release-0.2.1"
+
+# Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 
+
+# Install Flags
 PROVIDER="none"
-BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.3"
-JMETER_SERVICE_BRANCH="feature/2552/jmeterextensionskeptn072"
-KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
 KEPTN_DOMAIN="none"
-K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 PREFIX="https"
+CERTS="selfsigned"
+LE_STAGE=${LE_STAGE:-none}
+XIP="false"
+
 PROM="false"
 DYNA="false"
 GITEA="false"
 JMETER="false"
-CERTS="selfsigned"
 SLACK="false"
-XIP="false"
-DEMO="false"
 GENERICEXEC="false"
+
+DEMO="false"
+
+
+# Keptn Credentials
+KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
+
+# k8s config
+K3SVERSION="v1.19"
+BINDIR="/usr/local/bin"
+K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-LE_STAGE=${LE_STAGE:-none}
+
 
 #Gitea - default values
 GIT_USER="keptn"
@@ -53,6 +73,7 @@ KEPTN_DELIVERY_PROJECT="demo-delivery"
 KEPTN_DELIVERY_STAGE_DEV="dev"
 KEPTN_DELIVERY_STAGE_STAGING="dev"
 KEPTN_DELIVERY_SERVICE="simplenode"
+
 
 function create_namespace {
   namespace="${1:-none}"
@@ -161,13 +182,32 @@ function apply_manifest_ns_keptn {
   fi
 }
 
+function get_kubectl {
+  if ! [ -x "$(command -v kubectl)" ]; then
+    write_progress "Installing kubectl"
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  fi  
+}
+
 function get_k3s {
-  write_progress "Installing K3s"
-  curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" sh -
+  write_progress "Installing K3s (${K3SVERSION}) with NGINX instead of Traefik Ingress"
+  curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
+
+  # set the kubeconfig
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  kubectl get pods -A
+
+  # install ingress nginx
+  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+  helm repo update
+
+  helm install ingress-nginx ingress-nginx/ingress-nginx  
 }
 
 function get_helm {
-  write_progress "Installing Helm"
+  write_progress "Installing Helm 3"
 
   curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
   chmod 700 /tmp/get_helm.sh
@@ -206,16 +246,16 @@ spec:
   selfSigned: {}
 EOF
 
-  check_delete_secret traefik-default-cert kube-system
+  check_delete_secret nginx-default-cert kube-system
 
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: traefik-default
+  name: nginx-default
   namespace: kube-system
 spec:
-  secretName: traefik-default-cert
+  secretName: nginx-default-cert
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
@@ -241,38 +281,33 @@ spec:
     email: $CERT_EMAIL
     server: $ACME_SERVER
     privateKeySecretRef:
-      # Secret resource that will be used to store the account's private key.
       name: letsencrypt-issuer-account-key
-    # Add a single challenge solver, HTTP01 using nginx
     solvers:
     - http01:
         ingress:
           class: traefik
 EOF
 fi
-  "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
+  "${K3SKUBECTL[@]}" rollout restart deployment ingress-nginx-controller
   sleep 5
-  echo "Waiting for Traefik to restart - 1st attempt (max 60s)"
-  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=60s -l app=traefik
+  echo "Waiting for Nginx Ingress to restart - 1st attempt (max 60s)"
+  "${K3SKUBECTL[@]}" wait --namespace=default --for=condition=Ready pods --timeout=60s --all
 }
 
 function install_keptn {
-  write_progress "Installing Keptn"
+  write_progress "Installing Keptn for Continuous Delivery"
   helm upgrade keptn keptn --install --wait \
     --version="${KEPTNVERSION}" \
     --create-namespace --namespace=keptn \
     --repo="https://storage.googleapis.com/keptn-installer" \
+    --set=continuous-delivery.enabled=true \
     --kubeconfig="$KUBECONFIG"
-
-  # Lets install the Statistics Service
-  write_progress "Installing Keptn Statistics Service"
-  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.2.0/deploy/service.yaml"
 
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.6/deploy/service.yaml"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.3/deploy/service.yaml "
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -288,11 +323,11 @@ function install_keptn {
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
     # Installing core dynatrace services
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.3/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.3/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
 
     # Installing monaco service
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/release-0.2.1/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
@@ -352,7 +387,7 @@ EOF
   if [[ "${GENERICEXEC}" == "true" ]]; then
     write_progress "Installing Generic Executor Service"
 
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/master/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
@@ -365,8 +400,8 @@ EOF
 
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
-    write_progress "Installing JMeter Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/deploy/service.yaml"
+    write_progress "Installing JMeter Service - ${JMETER_SERVICE_VERSION}"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_VERSION}/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
@@ -407,7 +442,7 @@ function install_keptncli {
   KEPTN_API_TOKEN="$(get_keptn_token)"
 
   echo "Installing and Authenticating Keptn CLI"
-  curl -sL https://get.keptn.sh | sudo -E bash
+  curl -sL https://get.keptn.sh | KEPTN_VERSION=0.8.0-rc1 sudo -E bash
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
@@ -897,6 +932,7 @@ function main {
 
   get_ip
   get_fqdn
+  get_kubectl
   get_k3s
   get_helm
   check_k8s

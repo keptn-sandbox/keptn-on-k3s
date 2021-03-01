@@ -192,8 +192,11 @@ Payload:
 ```json
 {
     "specversion":"0.2",
+    "shkeptncontext":"{PID}",
     "type":"sh.keptn.events.problem",
     "source":"dynatrace",
+    "id":"{PID}",
+    "time":"",
     "contenttype":"application/json",
     "data": {
         "State":"{State}",
