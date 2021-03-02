@@ -285,7 +285,7 @@ spec:
     solvers:
     - http01:
         ingress:
-          class: traefik
+          class: nginx
 EOF
 fi
   "${K3SKUBECTL[@]}" rollout restart deployment ingress-nginx-controller
