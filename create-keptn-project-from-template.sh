@@ -4,16 +4,18 @@
 
 TEMPLATE_DIRECTORY="keptn_project_template"
 
-TEMPLATE_NAME=${$1:-none}
-PROJECT_NAME=${$2:-none}
-SERVICE_NAME=${$3:-none}
+TEMPLATE_NAME=${1:-none}
+PROJECT_NAME=${2:-none}
+SERVICE_NAME=${3:-none}
 
 if [[ "$TEMPLATE_NAME" == "none" ]]; then
     echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
+    echo "Usage: $0 quality-gate-dynatrace quality-gate demo"
     exit 1
 fi
 if [[ "$PROJECT_NAME" == "none" ]]; then
     echo "You have to set PROJECT_NAME to the project name you want to create based on the template"
+    echo "Usage: $0 quality-gate-dynatrace quality-gate demo"
     exit 1
 fi
 
@@ -28,13 +30,15 @@ if ! [ -x "$(command -v keptn)" ]; then
 fi
 
 # Validate that there is a template directory that we can use to create projects from
-if ! [ -d "${TEMPLATE_DIRECTORY}"]; then
+if ! [ -d "${TEMPLATE_DIRECTORY}" ]; then
     echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}"
+    exit 1
 fi
 
 # Validate that the specific project template exists
-if ! [ -d "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"]; then
+if ! [ -d "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}" ]; then
     echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"
+    exit 1
 fi
 
 #
@@ -48,6 +52,7 @@ keptn create project "${PROJECT_NAME}" --shipyard=${TEMPLATE_DIRECTORY}/${TEMPLA
 #
 for tempFile in $(tree -i -f)
 do 
+    echo "tempFile: ${tempFile}"
     # if this is a directory we dont do anything!
     if [ -d "$tempFile" ]; then continue; fi;
 
@@ -55,21 +60,25 @@ do
     localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
-    if [[ localFileName == *"shipyard.yaml"* ]]; then continue; fi
-    if [[ localFileName == *"service_template"* ]]; then continue; fi
+    if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
+    if [[ "${localFileName}" == *"service_template"* ]]; then continue; fi
+
+    echo "Processing localFileName: ${tempFile}"
 
     # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
-    removeFileName = $(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
-    removeFileName = $(echo "${removeFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
-    removeFileName = $(echo "${removeFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+    remoteFileName = $(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
+    remoteFileName = $(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
+    remoteFileName = $(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+
+    echo "Using remoteFileName: ${remoteFileName}"
 
     # is this file for a specific stage?
-    if [[ localFileName == *"stage_"** ]]; then
+    if [[ "${localFileName}" == *"stage_"** ]]; then
         # TODO parse the name of the stage from the stage_STAGENAME/filename
-        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource=localFileName --resourceUri=localFileName
+        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource=localFileName --resourceUri=remoteFileName
 
     else 
-        keptn add-resource --project="${PROJECT_NAME}" --resource=localFileName --resourceUri=localFileName
+        keptn add-resource --project="${PROJECT_NAME}" --resource=localFileName --resourceUri=remoteFileName
     fi; 
 done 
 
@@ -87,7 +96,7 @@ if ! [[ "$SERVICE_NAME" == "none" ]]; then
         localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
 
         # we are only interested in the service_template subdirectory
-        if [[ localFileName == *"service_template"* ]]; then
+        if [[ "${localFileName}" == *"service_template"* ]]; then
             keptn add-resource --project="${PROJECT_NAME}" --service="${SERVICE_NAME}" --resource=localFileName --resourceUri=localFileName
         fi
 
