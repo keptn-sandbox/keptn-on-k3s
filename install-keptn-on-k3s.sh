@@ -4,7 +4,7 @@ set -eu
 
 # Keptn Version Information
 KEPTNVERSION="0.8.0-rc1"
-JMETER_SERVICE_VERSION="feature/2552/jmeterextensionskeptn072"
+JMETER_SERVICE_VERSION="feature/2552/jmeterextensions"
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.11.0"
@@ -400,8 +400,9 @@ EOF
 
   # Installing JMeter Extended Service
   if [[ "${JMETER}" == "true" ]]; then
-    write_progress "Installing JMeter Service - ${JMETER_SERVICE_VERSION}"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_VERSION}/jmeter-service/deploy/service.yaml"
+    # no need to install jmeter any longer as this is installed by default now
+    # write_progress "Installing JMeter Service - ${JMETER_SERVICE_VERSION}"
+    # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_VERSION}/jmeter-service/deploy/service.yaml"
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
