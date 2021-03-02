@@ -2,7 +2,7 @@
 
 # Usage: create-keptn-project-from-template.sh quality-gate-dynatrace quality-gate demo
 
-TEMPLATE_DIRECTORY="keptn_project_template"
+TEMPLATE_DIRECTORY="keptn_project_templates"
 
 TEMPLATE_NAME=${1:-none}
 PROJECT_NAME=${2:-none}
@@ -45,7 +45,7 @@ fi
 # Now lets create that Keptn project
 #
 echo "Create Keptn Project: ${PROJECT_NAME} from ${TEMPLATE_NAME}"
-keptn create project "${PROJECT_NAME}" --shipyard=${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}/shipyard.yaml
+keptn create project "${PROJECT_NAME}" --shipyard=./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}/shipyard.yaml
 
 #
 # Now we iterate through the template folder and add all resources on project level
@@ -57,7 +57,7 @@ do
     if [ -d "$tempFile" ]; then continue; fi;
 
     # remove the trailing ./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME} of the tree output
-    localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
+    localFileName=$(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
@@ -66,19 +66,19 @@ do
     echo "Processing localFileName: ${tempFile}"
 
     # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
-    remoteFileName = $(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
-    remoteFileName = $(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
-    remoteFileName = $(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+    remoteFileName=$(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
+    remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
+    remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
 
     echo "Using remoteFileName: ${remoteFileName}"
 
     # is this file for a specific stage?
     if [[ "${localFileName}" == *"stage_"** ]]; then
         # TODO parse the name of the stage from the stage_STAGENAME/filename
-        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource=localFileName --resourceUri=remoteFileName
+        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource="./${localFileName}" --resourceUri="{remoteFileName}"
 
     else 
-        keptn add-resource --project="${PROJECT_NAME}" --resource=localFileName --resourceUri=remoteFileName
+        keptn add-resource --project="${PROJECT_NAME}" --resource="./${localFileName}" --resourceUri="{remoteFileName}"
     fi; 
 done 
 
@@ -93,11 +93,21 @@ if ! [[ "$SERVICE_NAME" == "none" ]]; then
     for tempFile in $(tree -i -f)
     do 
         # remove the trailing ./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME} of the tree output
-        localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
+        localFileName=$(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
 
         # we are only interested in the service_template subdirectory
         if [[ "${localFileName}" == *"service_template"* ]]; then
-            keptn add-resource --project="${PROJECT_NAME}" --service="${SERVICE_NAME}" --resource=localFileName --resourceUri=localFileName
+
+            echo "Processing localFileName: ${tempFile}"
+
+            # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
+            remoteFileName=$(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
+            remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
+            remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+
+            echo "Using remoteFileName: ${remoteFileName}"
+
+            keptn add-resource --project="${PROJECT_NAME}" --service="${SERVICE_NAME}" --resource="./${localFileName}" --resourceUri="{remoteFileName}"
         fi
 
     done 
