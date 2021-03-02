@@ -61,11 +61,11 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 #
 # Now we iterate through the template folder and add all resources on project level
 #
-for tempFile in $(tree -i -f)
+for localFileName in $(tree -i -f)
 do 
-    echo "tempFile: ${tempFile}"
+    echo "localFileName: ${localFileName}"
     # if this is a directory we dont do anything!
-    if [ -d "$tempFile" ]; then continue; fi;
+    if [ -d "$localFileName" ]; then continue; fi;
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
@@ -99,15 +99,15 @@ if ! [[ "$SERVICE_NAME" == "none" ]]; then
     keptn create service "${SERVICE_NAME}" --project="${PROJECT_NAME}"
 
     # Now we iterate through the template folder for services and add all resources on service level
-    for tempFile in $(tree -i -f)
+    for localFileName in $(tree -i -f)
     do 
-        # remove the trailing ./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME} of the tree output
-        localFileName=$(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
+        # if this is a directory we dont do anything!
+        if [ -d "$localFileName" ]; then continue; fi;
 
         # we are only interested in the service_template subdirectory
         if [[ "${localFileName}" == *"service_template"* ]]; then
 
-            echo "Processing localFileName: ${tempFile}"
+            echo "Processing localFileName: ${localFileName}"
 
             # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
             remoteFileName=$(echo "${localFileName/.\//}")
