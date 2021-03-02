@@ -64,9 +64,9 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 for localFileName in $(tree -i -f)
 do 
     echo "localFileName: ${localFileName}"
-    # if this is a directory we dont do anything! if we are at the end of tree we also stop
+    # if this is a directory we dont do anything! if its not a valid file we also skip it
     if [ -d "$localFileName" ]; then continue; fi
-    if [[ "${localFileName}" == "" ]]; then break; fi
+    if ! [ -f "$localFileName" ]; then continue; fi
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
@@ -104,7 +104,7 @@ if ! [[ "$SERVICE_NAME" == "none" ]]; then
     do 
         # if this is a directory we dont do anything!
         if [ -d "$localFileName" ]; then continue; fi;
-        if [[ "${localFileName}" == "" ]]; then break; fi
+        if ! [ -f "$localFileName" ]; then continue; fi
 
         # we are only interested in the service_template subdirectory
         if [[ "${localFileName}" == *"service_template"* ]]; then
