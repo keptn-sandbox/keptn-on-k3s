@@ -582,10 +582,11 @@ EOF
   keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
 
 
-  echo "Send keptn configuration change to apply config changes"
+#  echo "Send keptn configuration change to apply config changes"
 
   echo "Run first Dynatrace Quality Gate"
   keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
+
 
   # ==============================================================================================
   # Demo 2: Performance as a Self-service Project

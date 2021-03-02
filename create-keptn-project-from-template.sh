@@ -1,0 +1,99 @@
+#!/usr/bin/env bash
+
+# Usage: create-keptn-project-from-template.sh quality-gate-dynatrace quality-gate demo
+
+TEMPLATE_DIRECTORY="keptn_project_template"
+
+TEMPLATE_NAME=${$1:-none}
+PROJECT_NAME=${$2:-none}
+SERVICE_NAME=${$3:-none}
+
+if [[ "$TEMPLATE_NAME" == "none" ]]; then
+    echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
+    exit 1
+fi
+if [[ "$PROJECT_NAME" == "none" ]]; then
+    echo "You have to set PROJECT_NAME to the project name you want to create based on the template"
+    exit 1
+fi
+
+if ! [ -x "$(command -v tree)" ]; then
+    echo "Tree command not installed. This is required"
+    exit 1
+fi
+
+if ! [ -x "$(command -v keptn)" ]; then
+    echo "Keptn CLI is not installed. This is required"
+    exit 1
+fi
+
+# Validate that there is a template directory that we can use to create projects from
+if ! [ -d "${TEMPLATE_DIRECTORY}"]; then
+    echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}"
+fi
+
+# Validate that the specific project template exists
+if ! [ -d "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"]; then
+    echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"
+fi
+
+#
+# Now lets create that Keptn project
+#
+echo "Create Keptn Project: ${PROJECT_NAME} from ${TEMPLATE_NAME}"
+keptn create project "${PROJECT_NAME}" --shipyard=${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}/shipyard.yaml
+
+#
+# Now we iterate through the template folder and add all resources on project level
+#
+for tempFile in $(tree -i -f)
+do 
+    # if this is a directory we dont do anything!
+    if [ -d "$tempFile" ]; then continue; fi;
+
+    # remove the trailing ./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME} of the tree output
+    localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
+
+    # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
+    if [[ localFileName == *"shipyard.yaml"* ]]; then continue; fi
+    if [[ localFileName == *"service_template"* ]]; then continue; fi
+
+    # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
+    removeFileName = $(echo "${localFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
+    removeFileName = $(echo "${removeFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
+    removeFileName = $(echo "${removeFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+
+    # is this file for a specific stage?
+    if [[ localFileName == *"stage_"** ]]; then
+        # TODO parse the name of the stage from the stage_STAGENAME/filename
+        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource=localFileName --resourceUri=localFileName
+
+    else 
+        keptn add-resource --project="${PROJECT_NAME}" --resource=localFileName --resourceUri=localFileName
+    fi; 
+done 
+
+#
+# Now lets create the service if a SERVICE_NAME was given
+#
+if ! [[ "$SERVICE_NAME" == "none" ]]; then
+    echo "Create Keptn Service: ${SERVICE_NAME}"
+    keptn create service "${SERVICE_NAME}" --project="${PROJECT_NAME}"
+
+    # Now we iterate through the template folder for services and add all resources on service level
+    for tempFile in $(tree -i -f)
+    do 
+        # remove the trailing ./${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME} of the tree output
+        localFileName = $(echo "${tempFile/.\${TEMPLATE_DIRECTORY}\/${TEMPLATE_NAME}\//}")
+
+        # we are only interested in the service_template subdirectory
+        if [[ localFileName == *"service_template"* ]]; then
+            keptn add-resource --project="${PROJECT_NAME}" --service="${SERVICE_NAME}" --resource=localFileName --resourceUri=localFileName
+        fi
+
+    done 
+
+fi
+
+
+
