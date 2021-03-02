@@ -399,11 +399,11 @@ EOF
   fi
 
   # Installing JMeter Extended Service
-  if [[ "${JMETER}" == "true" ]]; then
+  # if [[ "${JMETER}" == "true" ]]; then
     # no need to install jmeter any longer as this is installed by default now
     # write_progress "Installing JMeter Service - ${JMETER_SERVICE_VERSION}"
     # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_VERSION}/jmeter-service/deploy/service.yaml"
-  fi
+  # fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
 
