@@ -64,8 +64,9 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 for localFileName in $(tree -i -f)
 do 
     echo "localFileName: ${localFileName}"
-    # if this is a directory we dont do anything!
-    if [ -d "$localFileName" ]; then continue; fi;
+    # if this is a directory we dont do anything! if we are at the end of tree we also stop
+    if [ -d "$localFileName" ]; then continue; fi
+    if [[ "${localFileName}" == "" ]]; then break; fi
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
@@ -75,9 +76,9 @@ do
 
     # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
     remoteFileName=$(echo "${localFileName/.\//}")
-    remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
-    remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
-    remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
+    remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT/$PROJECT_NAME}")
+    remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE/$STAGE_NAME}")
+    remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE/$SERVICE_NAME}")
 
     echo "Using remoteFileName: ${remoteFileName}"
 
@@ -103,6 +104,7 @@ if ! [[ "$SERVICE_NAME" == "none" ]]; then
     do 
         # if this is a directory we dont do anything!
         if [ -d "$localFileName" ]; then continue; fi;
+        if [[ "${localFileName}" == "" ]]; then break; fi
 
         # we are only interested in the service_template subdirectory
         if [[ "${localFileName}" == *"service_template"* ]]; then
