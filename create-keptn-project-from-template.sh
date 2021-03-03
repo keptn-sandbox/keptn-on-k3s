@@ -71,11 +71,13 @@ do
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
 
     # if its a file in a stage_STAGENAME directory lets add this to the STAGE_NAME
-    if [[ "${localFileName}" == *"stage_"* ]]; then 
-      RESOURCE_STAGE_NAME=${localFileName##/stage_*}
-      RESOURCE_STAGE_NAME=${RESOURCE_STAGE_NAME%%/*}
+    if [[ "${localFileName}" == *"/stage_"* ]]; then 
+      RESOURCE_STAGE_NAME=$(echo "${localFileName##/stage_}")
+      RESOURCE_STAGE_NAME=$(echo "${RESOURCE_STAGE_NAME%%/*}")
+      REMOVE_FROM_REMOTE_FILENAME="\/stage_${RESOURCE_STAGE_NAME}"
     else
       RESOURCE_STAGE_NAME=""
+      REMOVE_FROM_REMOTE_FILENAME=""
     fi
 
     # if its a file in a service_template directory lets add to the service SERVICE_NAME
@@ -89,6 +91,7 @@ do
 
     # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
     remoteFileName=$(echo "${localFileName/.\//}")
+    remoteFileName=$(echo "${remoteFileName/$REMOVE_FROM_REMOTE_FILENAME/}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT/$PROJECT_NAME}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE/$STAGE_NAME}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE/$SERVICE_NAME}")
