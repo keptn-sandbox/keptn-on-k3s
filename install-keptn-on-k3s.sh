@@ -523,8 +523,58 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
-
 function install_demo_dynatrace {
+  write_progress "Installing Dynatrace Demo Projects"
+
+  # ==============================================================================================
+  # Demo 1: Create a quality-gate project called "dynatrace"
+  # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
+  # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
+  # ==============================================================================================
+  KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_QG_PROJECT} ${KEPTN_QG_SERVICE}
+
+  echo "Run first Dynatrace Quality Gate"
+  keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
+
+
+  # ==============================================================================================
+  # Demo 2: Performance as a Self-service Project
+  # Creates a single stage project that will execute JMeter performance tests against any URL you give it
+  # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
+  # ==============================================================================================
+  echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+
+  # ==============================================================================================
+  # Demo 3: Auto-Remediation
+  # Creates a single stage project with a service that will map to all incoming problem types, e.g: infrastructure, applcation ...
+  # The service will have its own remediation.yaml to execute remediation scripts
+  # This demo will leverage the generic-executor-service to execute bash or python scripts for remediation
+  # ==============================================================================================
+  echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+
+  # Download helper files to create a dynatrace problem
+  echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
+  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtproblem.sh
+  chmod +x createdtproblem.sh
+  curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
+  chmod +x createdtnotification.sh
+
+  # last step is to setup upstream gits
+  if [[ "${GITEA}" == "true" ]]; then
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepo "${KEPTN_QG_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
+  fi
+
+}
+
+
+function install_demo_dynatrace_old {
   write_progress "Installing Dynatrace Demo Projects"
 
   # ==============================================================================================

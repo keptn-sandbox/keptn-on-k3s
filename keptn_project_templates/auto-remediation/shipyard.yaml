@@ -1,0 +1,18 @@
+apiVersion: "spec.keptn.sh/0.2.0"
+kind: "Shipyard"
+metadata:
+  name: "shipyard-auto-remediation"
+spec:
+  stages:
+  - name: "production"
+    sequences:
+      - name: remediation
+        triggeredOn:
+        - event: production.problem.open
+        - event: production.remediation.in-progress
+        tasks:
+        - name: remediation
+        - name: test
+          properties:
+            kind: real_user
+        - name: evaluation
