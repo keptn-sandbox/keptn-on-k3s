@@ -61,6 +61,12 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 #
 # Now lets create a service if specified
 #
+if ! [[ "$SERVICE_NAME" == "none" ]]; then
+    echo "Create Keptn Project: ${PROJECT_NAME} from ${TEMPLATE_NAME}"
+    keptn create service $SERVICE_NAME --project="${PROJECT_NAME}"
+else
+    SERVICE_NAME=""
+fi
 
 
 #
