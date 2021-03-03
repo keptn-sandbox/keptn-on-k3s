@@ -45,7 +45,7 @@ else
 fi 
 
 # Validate that the keptn project doesnt already exist
-if keptn get project $PROJECT_NAME | grep -q "No Project"; then
+if keptn get project $PROJECT_NAME | grep -q "No project"; then
     echo "Validated that Keptn Project $PROJECT_NAME doesnt yet exist. Continue creation of project"
 else
     echo "Keptn Project $PROJECT_NAME already exists. Please specify a different project name of delete existing project first"
@@ -83,10 +83,10 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 
 #
 # Validate that project was created
-if keptn get project $PROJECT_NAME | grep -q "No Project"; then
+if keptn get project $PROJECT_NAME | grep -q "No project"; then
     echo "Create Project failed or not finished yet. Waiting for 5 seconds and trying this again."
     sleep 5
-    if keptn get project $PROJECT_NAME | grep -q "No Project"; then
+    if keptn get project $PROJECT_NAME | grep -q "No project"; then
         echo "Create Project failed. Aborting creation of project. Please check your Keptn installation"
         exit 1
     fi 
