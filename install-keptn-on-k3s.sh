@@ -161,6 +161,8 @@ function get_fqdn {
 
   KEPTN_DOMAIN="keptn.${FQDN}"
   GIT_DOMAIN="git.${FQDN}"
+  # always acceses git via http as we otherwise may have problem with self-signed certificate!
+  GIT_SERVER="http://$GIT_DOMAIN"
 }
 
 function apply_manifest {
@@ -340,10 +342,6 @@ function install_keptn {
 
     echo "Create namespace for git"
     "${K3SKUBECTL[@]}" create ns git
-
-    # always acceses git via http as we otherwise may have problem with self-signed certificate!
-    GIT_SERVER="http://$GIT_DOMAIN"
-    # curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
     # Download helm yaml
     sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
