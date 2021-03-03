@@ -532,11 +532,12 @@ function install_demo_dynatrace {
   # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
   KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
   ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_QG_PROJECT} ${KEPTN_QG_SERVICE}
 
   echo "Run first Dynatrace Quality Gate"
-  keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
+  keptn trigger evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
 
 
   # ==============================================================================================
@@ -544,8 +545,9 @@ function install_demo_dynatrace {
   # Creates a single stage project that will execute JMeter performance tests against any URL you give it
   # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
   # ==============================================================================================
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+  ./create-keptn-project-from-template.sh performance-as-selfservice ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
 
   # ==============================================================================================
   # Demo 3: Auto-Remediation
@@ -553,8 +555,9 @@ function install_demo_dynatrace {
   # The service will have its own remediation.yaml to execute remediation scripts
   # This demo will leverage the generic-executor-service to execute bash or python scripts for remediation
   # ==============================================================================================
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+  ./create-keptn-project-from-template.sh auto-remediation ${KEPTN_REMEDIATION_PROJECT} ${KEPTN_REMEDIATION_SERVICE}
 
   # Download helper files to create a dynatrace problem
   echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
