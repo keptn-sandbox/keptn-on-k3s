@@ -10,5 +10,5 @@ spec:
         tasks:
         - name: test
           properties:
-            teststrategy: performance
+            kind: performance
       - name: evaluation
