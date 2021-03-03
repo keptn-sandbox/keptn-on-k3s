@@ -71,13 +71,15 @@ do
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
 
     # if its a file in a stage_STAGENAME directory lets add this to the STAGE_NAME
+    RESOURCE_STAGE_NAME=""
+    REMOVE_FROM_REMOTE_FILENAME=""
     if [[ "${localFileName}" == *"/stage_"* ]]; then 
       RESOURCE_STAGE_NAME=$(echo "${localFileName##/stage_}")
+      echo $RESOURCE_STAGE_NAME
       RESOURCE_STAGE_NAME=$(echo "${RESOURCE_STAGE_NAME%%/*}")
+      echo $RESOURCE_STAGE_NAME
       REMOVE_FROM_REMOTE_FILENAME="\/stage_${RESOURCE_STAGE_NAME}"
-    else
-      RESOURCE_STAGE_NAME=""
-      REMOVE_FROM_REMOTE_FILENAME=""
+      echo $REMOVE_FROM_REMOTE_FILENAME
     fi
 
     # if its a file in a service_template directory lets add to the service SERVICE_NAME
