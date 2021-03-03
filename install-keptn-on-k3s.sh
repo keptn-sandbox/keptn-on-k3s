@@ -362,6 +362,7 @@ metadata:
   name: gitea-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
@@ -414,6 +415,7 @@ metadata:
   name: keptn-ingress
   annotations:
     cert-manager.io/cluster-issuer: $CERTS-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
