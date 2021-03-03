@@ -342,16 +342,17 @@ function install_keptn {
 
     # always acceses git via http as we otherwise may have problem with self-signed certificate!
     GIT_SERVER="http://$GIT_DOMAIN"
-    curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
+    # curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
     # Download helm yaml
     sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
         -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
         -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
-        helm-gitea.yaml > helm-gitea_gen.yaml
+        ./files/gitea/helm-gitea.yaml > helm-gitea_gen.yaml
 
     echo "Install gitea via Helmchart"
     helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
+    rm helm-gitea_gen.yaml
     
     write_progress "Configuring Gitea Ingress Object (${GIT_DOMAIN})"
 
@@ -443,7 +444,7 @@ function install_keptncli {
   KEPTN_API_TOKEN="$(get_keptn_token)"
 
   echo "Installing and Authenticating Keptn CLI"
-  curl -sL https://get.keptn.sh | KEPTN_VERSION=0.8.0-rc1 sudo -E bash
+  curl -sL https://get.keptn.sh | KEPTN_VERSION=${KEPTNVERSION} sudo -E bash
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
@@ -560,11 +561,11 @@ function install_demo_dynatrace {
   ./create-keptn-project-from-template.sh auto-remediation ${KEPTN_REMEDIATION_PROJECT} ${KEPTN_REMEDIATION_SERVICE}
 
   # Download helper files to create a dynatrace problem
-  echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
-  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtproblem.sh
-  chmod +x createdtproblem.sh
-  curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
-  chmod +x createdtnotification.sh
+#  echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
+#  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtproblem.sh
+#  chmod +x createdtproblem.sh
+#  curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
+#  chmod +x createdtnotification.sh
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
