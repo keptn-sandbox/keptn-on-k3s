@@ -74,7 +74,7 @@ do
     RESOURCE_STAGE_NAME=""
     REMOVE_FROM_REMOTE_FILENAME=""
     if [[ "${localFileName}" == *"/stage_"* ]]; then 
-      RESOURCE_STAGE_NAME=$(echo "${localFileName##/stage_}")
+      RESOURCE_STAGE_NAME=$(echo "${localFileName##*/stage_}")
       echo $RESOURCE_STAGE_NAME
       RESOURCE_STAGE_NAME=$(echo "${RESOURCE_STAGE_NAME%%/*}")
       echo $RESOURCE_STAGE_NAME
