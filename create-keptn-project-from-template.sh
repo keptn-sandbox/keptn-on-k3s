@@ -63,7 +63,6 @@ keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 #
 for localFileName in $(tree -i -f)
 do 
-    echo "localFileName: ${localFileName}"
     # if this is a directory we dont do anything! if its not a valid file we also skip it
     if [ -d "$localFileName" ]; then continue; fi
     if ! [ -f "$localFileName" ]; then continue; fi
@@ -73,17 +72,17 @@ do
 
     # if its a file in a stage_STAGENAME directory lets add this to the STAGE_NAME
     if [[ "${localFileName}" == *"stage_"* ]]; then 
-      STAGE_NAME=${localFileName##/stage_*}
-      STAGE_NAME=${STAGE_NAME%%/*}
+      RESOURCE_STAGE_NAME=${localFileName##/stage_*}
+      RESOURCE_STAGE_NAME=${RESOURCE_STAGE_NAME%%/*}
     else
-      STAGE_NAME=""
+      RESOURCE_STAGE_NAME=""
     fi
 
     # if its a file in a service_template directory lets add to the service SERVICE_NAME
     if [[ "${localFileName}" == *"service_template"* ]]; then 
-      SERVICE_NAME=${3}
+      RESOURCE_SERVICE_NAME=$SERVICE_NAME
     else
-      SERVICE_NAME=""
+      RESOURCE_SERVICE_NAME=""
     fi
 
     echo "Processing localFileName: ${localFileName}"
@@ -96,7 +95,7 @@ do
 
     echo "Using remoteFileName: ${remoteFileName}"
 
-    keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --service="${SERVICE_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
+    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --service="${RESOURCE_SERVICE_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
 done 
 
 # switch back to prev working dir
