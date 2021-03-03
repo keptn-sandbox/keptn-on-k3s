@@ -59,6 +59,11 @@ echo "Create Keptn Project: ${PROJECT_NAME} from ${TEMPLATE_NAME}"
 keptn create project "${PROJECT_NAME}" --shipyard=./shipyard.yaml
 
 #
+# Now lets create a service if specified
+#
+
+
+#
 # Now we iterate through the template folder and add all resources on project level
 #
 for localFileName in $(tree -i -f)
@@ -75,10 +80,8 @@ do
     REMOVE_FROM_REMOTE_FILENAME=""
     if [[ "${localFileName}" == *"/stage_"* ]]; then 
       RESOURCE_STAGE_NAME=$(echo "${localFileName##*/stage_}")
-      echo $RESOURCE_STAGE_NAME
       RESOURCE_STAGE_NAME=$(echo "${RESOURCE_STAGE_NAME%%/*}")
-      echo $RESOURCE_STAGE_NAME
-      REMOVE_FROM_REMOTE_FILENAME="\/stage_${RESOURCE_STAGE_NAME}"
+      REMOVE_FROM_REMOTE_FILENAME="stage_${RESOURCE_STAGE_NAME}"
       echo $REMOVE_FROM_REMOTE_FILENAME
     fi
 
