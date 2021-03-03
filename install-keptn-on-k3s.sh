@@ -26,6 +26,7 @@ PREFIX="https"
 CERTS="selfsigned"
 LE_STAGE=${LE_STAGE:-none}
 XIP="false"
+INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
 DYNA="false"
@@ -656,6 +657,10 @@ EOF
 function main {
   while true; do
   case "${1:-default}" in
+    --type)
+        INSTALL_TYPE="${2}"
+        shift 2
+      ;;
     --ip)
         MY_IP="${2}"
         shift 2
@@ -793,14 +798,38 @@ function main {
   get_ip
   get_fqdn
   get_kubectl
-  get_k3s
-  get_helm
-  check_k8s
-  install_certmanager
-  install_keptn
-  install_keptncli
-  install_demo  
-  print_config
+
+  if [[ "${INSTALL_TYPE}" == "all" ]]; then
+    get_k3s
+    get_helm
+    check_k8s
+    install_certmanager
+    install_keptn
+    install_keptncli
+    install_demo  
+    print_config
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "k3s" ]]; then
+    get_k3s
+    get_helm
+    check_k8s
+    install_certmanager
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "keptn" ]]; then
+    install_keptn
+    install_keptncli
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "demo" ]]; then
+    install_demo
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "gitea" ]]; then
+    gitea_createKeptnRepos
+  fi
+
 }
 
 main "${@}"
