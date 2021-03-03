@@ -827,6 +827,7 @@ function main {
   fi
 
   if [[ "${INSTALL_TYPE}" == "gitea" ]]; then
+    gitea_readApiTokenFromFile
     gitea_createKeptnRepos
   fi
 
