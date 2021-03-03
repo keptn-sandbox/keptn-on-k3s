@@ -70,7 +70,21 @@ do
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
-    if [[ "${localFileName}" == *"service_template"* ]]; then continue; fi
+
+    # if its a file in a stage_STAGENAME directory lets add this to the STAGE_NAME
+    if [[ "${localFileName}" == *"stage_"* ]]; then 
+      STAGE_NAME=${localFileName##/stage_*}
+      STAGE_NAME=${STAGE_NAME%%/*}
+    else
+      STAGE_NAME=""
+    fi
+
+    # if its a file in a service_template directory lets add to the service SERVICE_NAME
+    if [[ "${localFileName}" == *"service_template"* ]]; then 
+      SERVICE_NAME=${3}
+    else
+      SERVICE_NAME=""
+    fi
 
     echo "Processing localFileName: ${localFileName}"
 
@@ -82,50 +96,8 @@ do
 
     echo "Using remoteFileName: ${remoteFileName}"
 
-    # is this file for a specific stage?
-    if [[ "${localFileName}" == *"stage_"** ]]; then
-        # TODO parse the name of the stage from the stage_STAGENAME/filename
-        keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
-
-    else 
-        keptn add-resource --project="${PROJECT_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
-    fi; 
+    keptn add-resource --project="${PROJECT_NAME}" --stage="${STAGE_NAME}" --service="${SERVICE_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
 done 
-
-#
-# Now lets create the service if a SERVICE_NAME was given
-#
-if ! [[ "$SERVICE_NAME" == "none" ]]; then
-    echo "Create Keptn Service: ${SERVICE_NAME}"
-    keptn create service "${SERVICE_NAME}" --project="${PROJECT_NAME}"
-
-    # Now we iterate through the template folder for services and add all resources on service level
-    for localFileName in $(tree -i -f)
-    do 
-        # if this is a directory we dont do anything!
-        if [ -d "$localFileName" ]; then continue; fi;
-        if ! [ -f "$localFileName" ]; then continue; fi
-
-        # we are only interested in the service_template subdirectory
-        if [[ "${localFileName}" == *"service_template"* ]]; then
-
-            echo "Processing localFileName: ${localFileName}"
-
-            # TODO - replace placeholders within FILES, e.g: PROJECT_NAME, STAGE_NAME, SERVICE_NAME, KEPTNS_BRIDGE_URL ...
-            remoteFileName=$(echo "${localFileName/.\//}")
-            remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT_NAME/$PROJECT_NAME}")
-            remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE_NAME/$STAGE_NAME}")
-            remoteFileName=$(echo "${remoteFileName/KEPTN_SERVICE_NAME/$SERVICE_NAME}")
-
-            echo "Using remoteFileName: ${remoteFileName}"
-
-            keptn add-resource --project="${PROJECT_NAME}" --service="${SERVICE_NAME}" --resource="${localFileName}" --resourceUri="${remoteFileName}"
-        fi
-
-    done 
-
-fi
-
 
 # switch back to prev working dir
 cd "${currDir}"
