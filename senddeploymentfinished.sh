@@ -24,7 +24,7 @@ if [[ -z "$PROJECT" || -z "$STAGE" || -z "$SERVICE" || -z "$URL" || -z "$TESTSTR
 fi
 
 # Generate a temp file with replaced placeholders
-inputfile="deployment.finished.event.placeholders.json"
+inputfile="deployment.finished.event.placeholder.json"
 tmpfile="deployment.finished.event.tmp.json"
 
 if [ -f $tmpfile ] ; then
@@ -35,4 +35,3 @@ sed -e "s/\$PROJECT/$PROJECT/" -e "s/\$STAGE/$STAGE/" -e "s/\$SERVICE/$SERVICE/"
 
 # now lets execute the keptn command
 keptn send event --file=$tmpfile
-# keptn send event --file $tmpfile
