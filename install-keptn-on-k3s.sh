@@ -623,7 +623,7 @@ Here are 3 things you can do:
 For the Auto-Remediation Demo we have created project ${KEPTN_REMEDIATION_PROJECT} that contains a default remediation.yaml and some bash and python scripts
 In order for this to work do
 1: Create a new Problem Notification Integration as explained in the readme
-2: Either force Dynatrace to open a problem ticket, create one through the API or execute createdtproblem.sh
+2: Either force Dynatrace to open a problem ticket, create one through the API or execute ./dynatrace/createdtproblem.sh
 3: Watch the auto-remediation actions in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
@@ -826,7 +826,7 @@ function main {
     install_demo
   fi
 
-  if [[ "${INSTALL_TYPE}" == "gitea" ]]; then
+  if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
     gitea_readApiTokenFromFile
     gitea_createKeptnRepos
   fi

@@ -8,6 +8,7 @@ If you follow this installation guide you will be able to explore the key Keptn 
 **Watch these tutorial on YouTube:** 
 * [SLO-based Quality Gates with Keptn & Dynatrace in 5 Minutes](https://www.youtube.com/watch?v=650Gn--XEQE)
 * [SRE-Driven Auto Remediation with Keptn & Dynatrace in 5 minutes](https://www.youtube.com/watch?v=05Mzs-Donr0)
+* [Performance Analysis Automation with JMeter, Keptn & Dynatrace in 5 Minutes](https://www.youtube.com/watch?v=m4dkR8QxYSE&list=PLqt2rd0eew1YFx9m8dBFSiGYSBcDuWG38&index=6&t=1s)
 
 For Dynatrace users this script installs Dynatrace related Keptn services (`--with-dynatrace`) and connects them to your Dynatrace Tenant (SaaS or Managed). 
 It also gives you the option (`--with-demo dynatrace`) to create your first Keptn Dynatrace Demo projects so you can immediatly explore how Quality Gates, Performance as a Self-Service and Auto-Remediation Use Cases work with Keptn & Dynatrace.

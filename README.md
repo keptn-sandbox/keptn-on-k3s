@@ -1,4 +1,13 @@
-# Keptn Control Plane on k3s
+# Keptn on k3s (with sample projects)
+
+Before you start - make sure to pick the right branch for your Keptn Version!
+
+| Authors | Tutorial Version | Keptn Version | Comment |
+| ------ | ------------- | --------------| -------- |
+| [@thschue](https://github.com/thschue) | [release-0.6.2](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.6.2) | 0.6.2 | Initial Release |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.7.3](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.7.3) | 0.7.3 | Adding Dynatrace Use Cases |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.8.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.8.0) | 0.8.0 | Updates to Keptn 0.8 |
+
 
 Installs [Keptn's](https://keptn.sh) Control Plane on [k3s](https://k3s.io) which is your fastest and easiest way to leverage Keptn for SLI/SLO-based Quality Gates, Performance as a Self-Service and Automated Operation (aka Auto-Remedition).
 
@@ -43,6 +52,7 @@ On top of that you are free to install any other Keptn Service such as the Notif
 The script allows a couple of parameters
 | Parameter Name | Values | Comment |
 | ------------------------------ | ------ | --------|
+| `--type` | all (default), k3s, keptn, demo, gitus | Will either install everything (all), just k3s, just keptn (assuming that kubectl is pointing to a k8s cluster), demo (just the demo components), gitus (will create Git Upstreams for each Keptn Project) |
 | `--with-prometheus` | | Will enable Prometheus Support |
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will install JMeter Service |
