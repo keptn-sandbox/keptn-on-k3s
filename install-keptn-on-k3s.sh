@@ -246,7 +246,6 @@ function check_k8s {
 function install_certmanager {
 
   # Only install cert manager if we install control or delivery plane
-  KEPTN_CONTROLPLANE
   if [[ "${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
     return
   fi 
