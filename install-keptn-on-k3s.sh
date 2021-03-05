@@ -4,7 +4,22 @@ set -eu
 
 # Keptn Version Information
 KEPTNVERSION="0.8.0"
+KEPTN_DELIVERYPLANE=false
+KEPTN_EXECUTIONPLANE=false
+KEPTN_CONTROLPLANE=true
+
+# For execution plane these are the env-variables that identify the keptn control plane
+# KEPTN_CONTROL_PLANE_DOMAIN=""
+# KEPTN_CONTROL_PLANE_API_TOKEN=""
+
+# For execution plane here are the filters
+# KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
+# KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
+# KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
+
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
+JMETER_SERVICE_VERSION="0.8.0"
+
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.11.0"
@@ -298,13 +313,63 @@ fi
 }
 
 function install_keptn {
-  write_progress "Installing Keptn for Continuous Delivery"
-  helm upgrade keptn keptn --install --wait \
-    --version="${KEPTNVERSION}" \
-    --create-namespace --namespace=keptn \
-    --repo="https://storage.googleapis.com/keptn-installer" \
-    --set=continuous-delivery.enabled=true \
-    --kubeconfig="$KUBECONFIG"
+
+  if [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+    write_progress "Installing Keptn Control Plane"
+    helm upgrade keptn keptn --install --wait \
+      --version="${KEPTNVERSION}" \
+      --create-namespace --namespace=keptn \
+      --repo="https://storage.googleapis.com/keptn-installer" \
+      --set=continuous-delivery.enabled=false \
+      --kubeconfig="$KUBECONFIG"
+  fi 
+
+  if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
+    write_progress "Installing Keptn for Continuous Delivery (Control & Execution Plane)"
+    helm upgrade keptn keptn --install --wait \
+      --version="${KEPTNVERSION}" \
+      --create-namespace --namespace=keptn \
+      --repo="https://storage.googleapis.com/keptn-installer" \
+      --set=continuous-delivery.enabled=true \
+      --kubeconfig="$KUBECONFIG"
+  fi 
+
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    # following instructions from https://keptn.sh/docs/0.8.x/operate/multi_cluster/#install-keptn-execution-plane
+    write_progress "Installing Keptn Execution Plane to connect to ${KEPTN_CONTROL_PLANE_DOMAIN}"
+
+    # Install the Helm Service
+    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
+    yq w /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
+    yq w /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+    yq w /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+    yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+
+    # Install JMeter if the user wants to
+    if [[ "${JMETER}" == "true" ]]; then
+      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      yq w /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      yq w /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+      yq w /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+    fi
+
+    # Install Generic Executor if the user wants to
+    if [[ "${GENERICEXEC}" == "true" ]]; then
+      # TODO
+    fi 
+
+    return
+  fi 
+
 
     # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
   if [[ "${PROM}" == "true" ]]; then
@@ -354,32 +419,11 @@ function install_keptn {
     rm helm-gitea_gen.yaml
     
     write_progress "Configuring Gitea Ingress Object (${GIT_DOMAIN})"
-
-  cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: gitea-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: $CERTS-issuer
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  tls:
-  - hosts:
-    - "${GIT_DOMAIN}"
-    secretName: keptn-tls
-  rules:
-    - host: "${GIT_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: gitea-http
-                port: 
-                  number: 3000
-EOF
+    sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
+        -e 's~issuer.placeholder~'"$CERTS"'~' \
+        ./files/gitea/gitea-ingress.yaml > gitea-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n git -f gitea-ingress_gen.yaml
+    rm gitea-ingress_gen.yaml    
 
     write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
@@ -399,40 +443,18 @@ EOF
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
 
-  # Installing JMeter Extended Service
-  # if [[ "${JMETER}" == "true" ]]; then
-    # no need to install jmeter any longer as this is installed by default now
-    # # write_progress "Installing JMeter Service - ${JMETER_SERVICE_VERSION}" # is now installed automatically
-    # # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_VERSION}/jmeter-service/deploy/service.yaml" # is now installed automatically
-  # fi
+  # Installing JMeter Service on the control plane if requested!
+  if [[ "${JMETER}" == "true" ]]; then
+    write_progress "Installing JMeter Service"
+    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
+  fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
-
-  cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: keptn-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: $CERTS-issuer
-    nginx.ingress.kubernetes.io/ssl-redirect: "false"
-spec:
-  tls:
-  - hosts:
-    - "${KEPTN_DOMAIN}"
-    secretName: keptn-tls
-  rules:
-    - host: "${KEPTN_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: api-gateway-nginx
-                port: 
-                  number: 80
-EOF
+  sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
+    -e 's~issuer.placeholder~'"$CERTS"'~' \
+    ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
+  "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
+  rm keptn-ingress_gen.yaml
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
@@ -710,6 +732,36 @@ function main {
         XIP="true"
         shift
         ;;
+    --deliveryplane)
+        echo "Installing Keptn Delivery Plane"
+        KEPTN_DELIVERYPLANE="true"
+        KEPTN_EXECUTIONPLANE="false"
+        KEPTN_CONTROLPLANE="false"
+        shift
+        ;;
+    --executionplane)
+        echo "Installing Keptn Execution Plane"
+        KEPTN_DELIVERYPLANE="false"
+        KEPTN_EXECUTIONPLANE="true"
+        KEPTN_CONTROLPLANE="false"
+
+        # need keptn_endpoint, keptn_token and distributor filter project, stage & service
+        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == ""]; then
+          echo "To install an execution plane set KEPTN_CONTROL_PLANE_DOMAIN to the HOSTNAME of the Keptn Control Plane, e.g: keptn.yourdomain.com"
+          exit 1
+        fi 
+        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == ""]; then
+          echo "To install an execution plane set KEPTN_CONTROL_PLANE_API_TOKEN to the API_TOKEN of your of the Keptn Control Plane"
+          exit 1
+        fi 
+
+        echo "Here are the execution plane filters that will be used. If you want to change them set those env-variables before running the script"
+        echo "KEPTN_EXECUTION_PLANE_STAGE_FILTER=${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+        echo "KEPTN_EXECUTION_PLANE_SERVICE_FILTER=${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+        echo "KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+        
+        shift
+        ;;     
     --with-jmeter)
         echo "Enabling JMeter Support"
         JMETER="true"
@@ -788,10 +840,17 @@ function main {
   # Check pre-req of jq
   if ! [ -x "$(command -v jq)" ]; then
     echo 'Error: jq is not installed.' >&2
+    echo 'Install it e.g: brew install jp or sudo apt-get install jq'
     exit 1
   fi
+  if ! [ -x "$(command -v yq)" ]; then
+    echo 'Error: yq is not installed.' >&2
+    echo 'Install it e.g: brew install yq or sudo apt-get install yq'
+    exit 1
+  fi  
   if ! [ -x "$(command -v curl)" ]; then
     echo 'Error: curl is not installed.' >&2
+    echo 'Install it e.g: brew install curl or sudo apt-get install curl'
     exit 1
   fi
 
