@@ -8,7 +8,6 @@ Before you start - make sure to pick the right branch for your Keptn Version!
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.7.3](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.7.3) | 0.7.3 | Adding Dynatrace Use Cases |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.8.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.8.0) | 0.8.0 | Updates to Keptn 0.8 |
 
-
 Installs [Keptn's](https://keptn.sh) Control Plane on [k3s](https://k3s.io) which is your fastest and easiest way to leverage Keptn for SLI/SLO-based Quality Gates, Performance as a Self-Service and Automated Operation (aka Auto-Remedition).
 
 Keptn Control Plane includes Keptns Bridge, API and the Quality Gate capability and optionally the JMeter service! But does _not_ include capabilities for using Keptn as deployment tool.
@@ -37,7 +36,21 @@ On top of that you are free to install any other Keptn Service such as the Notif
 ### Prerequisites:
   * A machine which is able to execute bash scripts and that allows incoming HTTP (80) & HTTPS (443) traffic
   * curl
-  
+
+### Required tools
+To install you need the following tools on your machine: git, curl, jq, yq! Here instructions on how to download on an EC2 Linux
+```sh
+sudo yum update -y
+sudo yum install git -y
+sudo yum install curl -y
+sudo yum install jq -y
+sudo wget https://github.com/mikefarah/yq/releases/download/v4.2.0/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+
+git clone https://github.com/keptn-sandbox/keptn-on-k3s
+cd keptn-on-k3s
+git checkout release-0.8.0
+```
+
 ### Currently tested on:
   * CentOS 8
   * ArchLinux
@@ -46,7 +59,8 @@ On top of that you are free to install any other Keptn Service such as the Notif
 
 **ATTENTION**: if you try this on an EC2, GCP, ... instance please make sure to allow inbound traffic for HTTP & HTTPS!
 
-* Works on a machine with 1 (v)CPU and 4GB of memory
+* Basic install (for quality gates only) works on a machine with 1 (v)CPU and 4GB of memory
+* Advanced install (with delivery & testing) needs a machine with at least 4 (v)CPU and 16GB of memory
 
 ### Parameters
 The script allows a couple of parameters

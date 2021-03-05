@@ -363,9 +363,9 @@ function install_keptn {
     fi
 
     # Install Generic Executor if the user wants to
-    if [[ "${GENERICEXEC}" == "true" ]]; then
+#    if [[ "${GENERICEXEC}" == "true" ]]; then
       # TODO
-    fi 
+#    fi 
 
     return
   fi 
