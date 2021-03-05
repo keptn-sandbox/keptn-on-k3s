@@ -746,11 +746,11 @@ function main {
         KEPTN_CONTROLPLANE="false"
 
         # need keptn_endpoint, keptn_token and distributor filter project, stage & service
-        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == ""]; then
+        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_DOMAIN to the HOSTNAME of the Keptn Control Plane, e.g: keptn.yourdomain.com"
           exit 1
         fi 
-        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == ""]; then
+        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_API_TOKEN to the API_TOKEN of your of the Keptn Control Plane"
           exit 1
         fi 
