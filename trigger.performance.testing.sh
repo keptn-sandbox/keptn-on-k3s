@@ -24,8 +24,8 @@ if [[ -z "$PROJECT" || -z "$STAGE" || -z "$SERVICE" || -z "$URL" || -z "$TESTSTR
 fi
 
 # Generate a temp file with replaced placeholders
-inputfile="deployment.finished.event.placeholder.json"
-tmpfile="deployment.finished.event.tmp.json"
+inputfile="performance.testing.triggered.placeholder.json"
+tmpfile="performance.testing.triggered.placeholder.tmp"
 
 if [ -f $tmpfile ] ; then
     rm -f $tmpfile

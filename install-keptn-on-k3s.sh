@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.0-rc1"
+KEPTNVERSION="0.8.0"
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
