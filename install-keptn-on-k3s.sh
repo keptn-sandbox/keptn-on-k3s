@@ -244,6 +244,13 @@ function check_k8s {
 
 
 function install_certmanager {
+
+  # Only install cert manager if we install control or delivery plane
+  KEPTN_CONTROLPLANE
+  if [[ "${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
+    return
+  fi 
+
   write_progress "Installing Cert-Manager"
   create_namespace cert-manager
 
@@ -859,8 +866,8 @@ function main {
   get_kubectl
 
   if [[ "${INSTALL_TYPE}" == "all" ]]; then
-    get_k3s
     get_helm
+    get_k3s
     check_k8s
     install_certmanager
     install_keptn
@@ -870,8 +877,8 @@ function main {
   fi
 
   if [[ "${INSTALL_TYPE}" == "k3s" ]]; then
-    get_k3s
     get_helm
+    get_k3s
     check_k8s
     install_certmanager
   fi
