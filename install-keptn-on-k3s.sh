@@ -58,7 +58,7 @@ KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 # k8s config
-K3SVERSION="v1.19"
+K3SVERSION="v1.18"
 BINDIR="/usr/local/bin"
 K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml

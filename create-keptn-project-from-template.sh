@@ -139,6 +139,7 @@ do
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
     remoteFileName=$(echo "${localFileName/.\//}")
+    remoteFileName=$(echo "${localFileName/service_template/}")
     remoteFileName=$(echo "${remoteFileName/$REMOVE_FROM_REMOTE_FILENAME/}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT/$PROJECT_NAME}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE/$STAGE_NAME}")
