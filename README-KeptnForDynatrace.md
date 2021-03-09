@@ -53,7 +53,7 @@ $ export CERT_EMAIL=myemail@mydomain.com
 
 You see that the sample uses the `--with-demo dynatrace`, `--letsencrypt` and `--provider aws` option:
 ```console
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
+$ ./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
 ``` 
 
 All URLs provided will be of form http(s)://keptn.12.23.34.45.xip.io. xip.io is a free DNS resolution service which will resolve any DNS request to that IP Address as part of the DNS name.
@@ -61,7 +61,7 @@ All URLs provided will be of form http(s)://keptn.12.23.34.45.xip.io. xip.io is 
 **Option 2:** Use your own custom domain that points to your host
 You see that the sample additionally uses the `--fqdn mykeptn.mydomain.com` option:
 ```console
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --fqdn mykeptn.mydomain.com --with-gitea
+$ ./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea --fqdn mykeptn.mydomain.com
 ``` 
 
 All URLs provided will be of form http(s)://keptn.YOURDOMAIN. So - when setting up your own custom domain name make sure that you have a wildcard route so that all subdomains from your FQDN will also map to your machine where you install Keptn on k3s.

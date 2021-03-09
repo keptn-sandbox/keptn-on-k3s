@@ -88,7 +88,12 @@ For all details please check out [Keptn for Dynatrace in 5 Minutes](README-Keptn
 
 As an example - here is your script to install Keptn for Dynatrace on an Amazon Linux 2 EC2 machine with pre-configured projects for Quality Gates, Performance Automation & Auto-Remediation:
 ```console
-$ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/install-keptn-on-k3s.sh | bash -s - --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt
+./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
+```
+
+If you have your own DNS name for your machine, e.g: creating a Route53 entry to your public IP of your EC2 instance you can run this command
+```console
+./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea --fqdn yourkeptndomain.abc
 ```
 
 ## Other installation examples
@@ -100,14 +105,14 @@ Here are a couple of installation examples
 This option will auto-detect your IP address by using *hostname -I* 
 ```console
 # For the brave, with Prometheus-Service and SLI Provider
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --with-prometheus
+./install-keptn-on-k3s.sh --with-prometheus
 ```
 
 ### Installing on GCP:
 
 This option passes the *--provider gcp** option. In this case the script queries the external IP address of your GCP instance.
 ```console
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --provider gcp
+./install-keptn-on-k3s.sh --provider gcp
 ``` 
 
 ### Installation using a custom IP:
@@ -115,7 +120,7 @@ curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/ins
 This option allows you to specify which IP address to be used to expose Keptn services (API, Bridge ...) on this machine!
 
 ```console
-curl -Lsf https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/0.7.2/install-keptn-on-k3s.sh | bash -s - --ip <IP>
+./install-keptn-on-k3s.sh --ip <IP>
 ```
 
 ### Cleanup: Uninstall k3s
