@@ -95,7 +95,7 @@ For the Quality Gate Use case you can do this::
    Project URL: https://12.23.34.45.xip.io/bridge/project/dynatrace
    User / PWD: keptn / BRIDGEPASSWORD
 2: Run another Quality Gate via:
-   keptn send event start-evaluation --project=dynatrace --stage=quality-gate --service=demo
+   keptn trigger evaluation --project=dynatrace --stage=quality-gate --service=demo
 3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
    More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
@@ -149,7 +149,7 @@ If you have the Git-upstream you can simply click on that link and it brings you
 
 So - for the quality gate use case there is already a project created called *dynatrace*. A first quality gate evaluation was already triggered during the installation so you should already see the first results. If you want you can also run a couple more quality gate evaluation using the keptn CLI command shown in the output:
 ```console
-keptn send event start-evaluation --project=dynatrace --stage=quality-gate --service=demo
+keptn trigger evaluation --project=dynatrace --stage=quality-gate --service=demo
 ```
 
 Here is how this should look like in your Keptn's Bridge:
@@ -169,13 +169,13 @@ You can also use this project to let Keptn manage any of your application servic
 
 The demo comes with a project called *demo-performance* which has been pre-loaded with a basic JMeter script that can execute requests against ANY URL. This can be used for demo purposes to show how Keptn can orchestrate the execution of a test against any monitored service and then evaluate SLI/SLO-based quality gates.
 
-All you need to do is put a tag on one of your services in Dynatrace called *appundertest* and then use the script *senddeployfinished.sh* and giving it the URL of that service endpoint. Then wait for the results!
+All you need to do is put a tag on one of your services in Dynatrace called *appundertest* and then use the script *trigger.performance.testing.sh* and giving it the URL of that service endpoint. Then wait for the results!
 
 ![](./images/perfaaservice_animated.gif)
 
 ## Use Case 3: Auto-Remediation
 
-**YouTube Tutorial coming Dec 1st:**
+**Watch this Use Case on YouTube:** [Automated Problem Remediation with Keptn & Dynatrace in 5 Minutes](https://www.youtube.com/watch?v=05Mzs-Donr0&list=PLqt2rd0eew1YFx9m8dBFSiGYSBcDuWG38&index=7)
 
 This demo allows you to have Keptn react to ANY or SOME problems that Dynatrace detects by executing a remediation workflow. The remediation workflow will execute either a Python script, bash script or can execute an HTTP webhook. 
 

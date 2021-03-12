@@ -25,7 +25,7 @@ PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.11.0"
 DT_SLI_SERVICE_VERSION="release-0.8.0"
 GENERICEXEC_SERVICE_VERSION="release-0.3"
-MONACO_SERVICE_VERSION="release-0.2.1"
+MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -411,6 +411,9 @@ function install_keptn {
     write_progress "Installing Gitea for upstream git"
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
+    # removing any previous git-token files that might be left-over from a previous install
+    rm "${TOKEN_FILE}" || true
+
     echo "Create namespace for git"
     "${K3SKUBECTL[@]}" create ns git
 
@@ -633,7 +636,7 @@ For the Quality Gate Use case you can do this::
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_QG_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: Run another Quality Gate via: 
-   keptn send event start-evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
+   keptn trigger evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
 3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
    More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
@@ -645,7 +648,7 @@ Here are 3 things you can do:
 2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_PERFORMANCE_SERVICE}
 3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_PERFORMANCE_PROJECT};service=${KEPTN_PERFORMANCE_SERVICE};stage=${KEPTN_PERFORMANCE_STAGE}
 4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
-   ./senddeploymentfinished.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
+   ./trigger.performance.testing.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
 For the Auto-Remediation Demo we have created project ${KEPTN_REMEDIATION_PROJECT} that contains a default remediation.yaml and some bash and python scripts
