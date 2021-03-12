@@ -30,7 +30,7 @@ MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
-
+OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
 PROVIDER="none"
@@ -567,7 +567,7 @@ function install_demo_dynatrace {
   KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${KEPTN_QG_PROJECT} ${KEPTN_QG_SERVICE}
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT} ${KEPTN_QG_SERVICE}
 
   echo "Run first Dynatrace Quality Gate"
   keptn trigger evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
@@ -580,7 +580,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh performance-as-selfservice ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
 
   # ==============================================================================================
   # Demo 3: Auto-Remediation
@@ -590,7 +590,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  ./create-keptn-project-from-template.sh auto-remediation ${KEPTN_REMEDIATION_PROJECT} ${KEPTN_REMEDIATION_SERVICE}
+  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT} ${KEPTN_REMEDIATION_SERVICE}
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
@@ -822,6 +822,13 @@ function main {
           echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
           exit 1
         fi 
+
+        if [[ $DEMO == "dynatrace" ]]; then 
+          if [[ $OWNER_EMAIL == "none" ]]; then 
+            echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
+            exit 1
+          fi 
+        fi
 
         # need to make sure we install the generic exector service for our demo as well as jmeter
         GENERICEXEC="true"

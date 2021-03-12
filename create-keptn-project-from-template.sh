@@ -1,13 +1,15 @@
 #!/usr/bin/env bash
 
-# Usage: create-keptn-project-from-template.sh quality-gate-dynatrace quality-gate demo
+# Usage: create-keptn-project-from-template.sh quality-gate-dynatrace yourname@email.com quality-gate demo
 
 TEMPLATE_DIRECTORY="keptn_project_templates"
 
 # Parameters for Script
 TEMPLATE_NAME=${1:-none}
-PROJECT_NAME=${2:-none}
-SERVICE_NAME=${3:-none}
+OWNER_EMAIL=${2:-none}
+PROJECT_NAME=${3:-none}
+SERVICE_NAME=${4:-none}
+
 
 # Expected Env Variables that should be set!
 # KEPTN_ENDPOINT="https://yourkeptndomain.abc
@@ -17,12 +19,18 @@ KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
 if [[ "$TEMPLATE_NAME" == "none" ]]; then
     echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
-    echo "Usage: $0 quality-gate-dynatrace quality-gate demo"
+    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
     exit 1
 fi
+if [[ "$OWNER_EMAIL" == "none" ]]; then
+    echo "You have to set OWNER_EMAIL to a valid email as this might be used in e.g: Dynatrace Dashboards .."
+    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
+    exit 1
+fi
+
 if [[ "$PROJECT_NAME" == "none" ]]; then
     echo "You have to set PROJECT_NAME to the project name you want to create based on the template"
-    echo "Usage: $0 quality-gate-dynatrace quality-gate demo"
+    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
     exit 1
 fi
 
@@ -134,7 +142,8 @@ do
     #
     # create a tmp file so we can do any IN-FILE replacements
     cp ${localFileName} ${localFileName}.tmp
-    sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
+    sed -i "s/\${REPLACE_KEPTN_BRIDGE}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
+    sed -i "s/\${REPLACE_OWNER_EMAIL}/${OWNER_EMAIL}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./

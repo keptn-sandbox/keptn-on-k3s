@@ -19,6 +19,8 @@ It also gives you the option (`--with-demo dynatrace`) to create your first Kept
 
 For enabling Dynatrace support we need to export DT_TENANT & DT_API_TOKEN so that Keptn can connect to your Dynatrace Tenant! More details on the [Keptn doc](https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install/)
 
+When installing the Dynatrace Demos you also need to export OWNER_EMAIL and set it to a valid Dynatrace Username identified by the email. This is needed because the demos will install some Dynatrace dashboards and for those we need the username. Best is to use the same email that was used to create the Dynatrace token!
+
 ### 2 - Public IP or Host Name
 
 The script will try to fetch your machines IP or Hostname. If you run on AWS, GCP or DigitalOcean you can specify the (`--provider aws|gcp|digitalocean`) option to let the script use some documented APIs to query the public IP.
@@ -45,6 +47,7 @@ Let's first export all relevant environment variables we need:
 ```console
 $ export DT_TENANT=abc12345.live.dynatrace.com
 $ export DT_API_TOKEN=YOURTOKEN
+$ export OWNER_EMAIL=yourdynatraceuser@yourmail.com
 $ export LE_STAGE=staging
 $ export CERT_EMAIL=myemail@mydomain.com
 ```

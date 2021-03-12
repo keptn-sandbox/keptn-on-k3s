@@ -1,15 +1,9 @@
 {
     "dashboardMetadata": {
         "name": "{{ .name }}",
-        "shared": false,
-        "owner": "",
-        "sharingDetails": {
-            "linkShared": true,
-            "published": false
-        },
-        "dashboardFilter": {
-            "timeframe": ""
-        }
+        "shared": true,
+        "owner": "{{ .owner }}",        
+        "tags": ["keptn", "{{ .stage }}", "{{ .project }}", "{{ .service }}"]
     },
     "tiles": [{
         "name": "Custom chart",
@@ -493,6 +487,6 @@
             "height": 114
         },
         "tileFilter": {},
-        "markdown": "## Welcome to your first SLI/SLO-based Quality Gate Dashboard - view results in your [Keptn Bridge](${KEPTN_BRIDGE_PROJECT})\n \nThis default dashboard includes a set of base metrics (SLIs) that produce values in any Dynatrace deployment. \nUse this to make yourself familiar with defining your own SLIs (by adding more custom charts) and how to define SLOs (as part of the chart title) for every metric.\nThis default chart does not split by metric dimensions such as service, process, or host; however, splitting is supported by Keptn and is encouraged.\nFor more best practices on how to create these SLI/SLO dashboards please have a look at the [Dynatrace-SLI-Service readme](https://github.com/keptn-contrib/dynatrace-sli-service)."
+        "markdown": "## Welcome to your first SLI/SLO-based Quality Gate Dashboard - view results in your [Keptns Bridge]({{ .keptnbridge }}/project/{{ .project }}/{{ .service }})\n \nThis default dashboard includes a set of base metrics (SLIs) that produce values in any Dynatrace deployment. \nUse this to make yourself familiar with defining your own SLIs (by adding more custom charts) and how to define SLOs (as part of the chart title) for every metric.\nThis default chart does not split by metric dimensions such as service, process, or host; however, splitting is supported by Keptn and is encouraged.\nFor more best practices on how to create these SLI/SLO dashboards please have a look at the [Dynatrace-SLI-Service readme](https://github.com/keptn-contrib/dynatrace-sli-service)."
     }]
   }
