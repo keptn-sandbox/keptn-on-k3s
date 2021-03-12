@@ -8,5 +8,5 @@ spec:
     sequences:
       - name: evaluation
         tasks:
-#        - name: monaco
+        - name: monaco
         - name: evaluation
