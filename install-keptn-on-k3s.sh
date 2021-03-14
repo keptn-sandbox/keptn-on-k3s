@@ -8,6 +8,8 @@ KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
 KEPTN_CONTROLPLANE=true
 
+ISTIO_VERSION="1.9.1"
+
 # For execution plane these are the env-variables that identify the keptn control plane
 # KEPTN_CONTROL_PLANE_DOMAIN=""
 # KEPTN_CONTROL_PLANE_API_TOKEN=""
@@ -240,6 +242,26 @@ function get_helm {
   /tmp/get_helm.sh
 }
 
+function get_istio {
+  ISTIO_EXISTS=$(kubectl get po -n istio-system | grep Running | wc | awk '{ print $1 }')
+  if [[ "$ISTIO_EXISTS" -gt "0" ]]
+  then
+    echo "3. Istio already installed on k8s"
+  else
+    echo "3. Downloading and installing Istio ${ISTIO_VERSION}"
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIO_VERSION} sh -
+    sudo mv istio-${ISTIO_VERSION}/bin/istioctl /usr/local/bin/istioctl
+
+    istioctl install -y
+
+    write_progress "Configuring Istio Ingress Object"
+    sed -e 's~issuer.placeholder~'"$CERTS"'~' \
+        ./files/istio/istio-ingress.yaml > istio-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n git -f istio-ingress_gen.yaml
+    rm istio-ingress_gen.yaml
+  fi
+}
+
 function check_k8s {
   started=false
   while [[ ! "${started}" ]]; do
@@ -346,11 +368,17 @@ function install_keptn {
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
       --kubeconfig="$KUBECONFIG"
-  fi 
+
+    # need to install Istio for Delivery Plane as we are potentially depoying sevices blue / green
+    get_istio
+  fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
     # following instructions from https://keptn.sh/docs/0.8.x/operate/multi_cluster/#install-keptn-execution-plane
     write_progress "Installing Keptn Execution Plane to connect to ${KEPTN_CONTROL_PLANE_DOMAIN}"
+
+    # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
+    get_istio
 
     # Install the Helm Service
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
