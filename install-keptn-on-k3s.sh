@@ -35,6 +35,7 @@ MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
+DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
 OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
@@ -237,6 +238,28 @@ function get_k3s {
   helm install ingress-nginx ingress-nginx/ingress-nginx  
 }
 
+# Installs Dynatrace OneAgent Operator on the k3s cluster
+function get_oneagent {
+  # only install if all dynatrace settings are specified
+  if [ "$DT_TENANT" == "none" ]; then return; fi
+  if [ "$DT_API_TOKEN" == "none" ]; then return; fi
+  if [ "$DT_PAAS_TOKEN" == "none" ]; then return; fi
+
+  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+  "${K3SKUBECTL[@]}" create namespace dynatrace
+
+  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+
+  helm install dynatrace-oneagent-operator \
+    dynatrace/dynatrace-oneagent-operator -n\
+    dynatrace --values oneagent_values.yaml
+
+  rm oneagent_values.yaml
+}
+
 function get_helm {
   write_progress "Installing Helm 3"
 
@@ -290,15 +313,10 @@ function check_k8s {
 
 function install_certmanager {
 
-  # Only install cert manager if we install control or delivery plane
-  if [[ "${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
-    return
-  fi 
-
-  write_progress "Installing Cert-Manager"
-  create_namespace cert-manager
-
-  helm upgrade cert-manager cert-manager --install --wait \
+  # Only install cert manager if we install all dynatrace settings are specifiedane
+  if ["${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
+    retur return; fi
+  helmupgrade cert-manager cert-manager --install--wait return; fi
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
     --kubeconfig="${KUBECONFIG}" \
@@ -429,16 +447,10 @@ function install_keptn {
     fi
 
     # Install Generic Executor if the user wants to
-#    if [[ "${GENERICEXEC}" == "true" ]]; then
-      # TODO
-#    fi 
-
-    return
-  fi 
-
-
-    # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
-  if [[ "${PROM}" == "true" ]]; then
+#    if [[ "${GENERICEXEC}" == "true" ]]; all dynatrace settings are specified
+#    i
+ return; fi
+  if [ "${PROM}" == "true"]]; thereturn; fi
      write_progress "Installing Prometheus Service"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
@@ -472,7 +484,7 @@ function install_keptn {
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
     # removing any previous git-token files that might be left-over from a previous install
-    if ! [ -f "${TOKEN_FILE}" ]; then 
+    if [ -f "${TOKEN_FILE}" ]; then 
       rm "${TOKEN_FILE}"     
     fi
 
@@ -707,7 +719,7 @@ if [[ "${GITEA}" == "true" ]]; then
   echo "Git Password:    $GIT_PASSWORD"
 fi
 
-  if [[ "${DEMO}" == "dynatrace" ]]; then
+  if [[ "${DEMO}" == "dynatrace" ]]; "then"
   write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
   cat << EOF
 3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
@@ -891,6 +903,12 @@ function main {
           echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
           exit 1
         fi
+        if [[ "$DT_PAAS_TOKEN" == "none" ]]; then
+          echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+          echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
+          echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
+          exit 1
+        fi
 
         # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
         echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
@@ -974,6 +992,7 @@ function main {
   if [[ "${INSTALL_TYPE}" == "all" ]]; then
     get_helm
     get_k3s
+    get_oneagent    
     check_k8s
     install_certmanager
     install_keptn
@@ -985,6 +1004,7 @@ function main {
   if [[ "${INSTALL_TYPE}" == "k3s" ]]; then
     get_helm
     get_k3s
+    get_oneagent    
     check_k8s
     install_certmanager
   fi
