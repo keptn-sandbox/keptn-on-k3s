@@ -6,7 +6,7 @@ spec:
   stages:
   - name: "performance"
     sequences:
-      - name: func_testing
+      - name: testing
         tasks:
         - name: test
           properties:
@@ -14,6 +14,8 @@ spec:
         - name: evaluation
     sequences:
       - name: light_performance
+        triggers:
+        - performance.testing.finished
         tasks:
         - name: test
           properties:
@@ -21,6 +23,8 @@ spec:
         - name: evaluation
     sequences:
       - name: performance
+        triggers:
+        - light_performance.testing.finished      
         tasks:
         - name: test
           properties:
