@@ -25,4 +25,4 @@ spec:
         - name: test
           properties:
             teststrategy: performance
-        - name: evaluation                
+        - name: evaluation

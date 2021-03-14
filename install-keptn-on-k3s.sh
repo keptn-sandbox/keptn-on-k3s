@@ -643,7 +643,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
+  ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then

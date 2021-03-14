@@ -136,10 +136,11 @@ fi
 #
 for localFileName in $(tree -i -f)
 do 
-    # if this is a directory lets check if it is a service_ directory. 
-    # If so we create or onboard that service. If not - we just skip it
-    if [ -d "$localFileName" ]; then 
+    # if this is a directory we ignore it
+    if [ -d "$localFileName" ]; then continue; fi
 
+    # if this is a service directory and we found the servicedir.txt then we create or onboard the service
+    if [[ "${localFileName}" == *"servicedir.txt"* ]]; then 
         # lets check whether its a service_
         if [[ "${localFileName}" == *"/service_"* ]]; then
             RESOURCE_SERVICE_NAME=$(echo "${localFileName##*/service_}")
@@ -157,12 +158,14 @@ do
         continue; 
     fi
 
+    # any other file or folder in a service_XXXX directory we simply ignore
+    if [[ "${localFileName}" == *"/service_"* ]]; then continue; fi
+
     # Lets validate that the file is actually a file!
     if ! [ -f "$localFileName" ]; then continue; fi
 
     # we are not re-uploading the shipyard.yaml and we ignore the emptydir.txt
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
-    if [[ "${localFileName}" == *"emptydir.txt"* ]]; then continue; fi
 
     # Validate if the file is in stage_STAGENAME directory. If so set STAGE_NAME lets remove that directory for the uploaded resourceUri
     RESOURCE_STAGE_NAME=""
