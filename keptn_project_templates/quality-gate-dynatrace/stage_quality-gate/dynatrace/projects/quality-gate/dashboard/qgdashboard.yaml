@@ -8,4 +8,4 @@ qualitygatedashboard:
   - service: "{{ .Env.KEPTN_SERVICE }}"  
   - owner: "${OWNER_EMAIL}"
   - keptnbridge: "http://REPLACE_KEPTN_BRIDGE/bridge"
-  - owner: "REPLACE_DASHBOARD_OWNER"
+  - owner: "REPLACE_OWNER_EMAIL"

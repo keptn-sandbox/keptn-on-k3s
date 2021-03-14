@@ -180,9 +180,9 @@ do
     #
     # create a tmp file so we can do any IN-FILE replacements
     cp ${localFileName} ${localFileName}.tmp
-    sed -i "s/\${REPLACE_KEPTN_BRIDGE}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
-    sed -i "s/\${REPLACE_OWNER_EMAIL}/${OWNER_EMAIL}/" ${localFileName}.tmp
-    sed -i "s/\${REPLACE_KEPTN_INGRESS}/${KEPTN_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_BRIDGE/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./

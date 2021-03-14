@@ -3,7 +3,7 @@ operator:
   image: ""
 oneagent:
   name: "oneagent"
-  apiUrl: "DT_TENANT/api"
+  apiUrl: "https://DT_TENANT/api"
   image: ""
   args:
   - --set-host-group=keptn_on_k3s

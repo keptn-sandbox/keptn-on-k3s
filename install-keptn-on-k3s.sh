@@ -253,6 +253,7 @@ function get_oneagent {
     -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
     ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
 
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
   helm install dynatrace-oneagent-operator \
     dynatrace/dynatrace-oneagent-operator -n\
     dynatrace --values oneagent_values.yaml
@@ -734,7 +735,7 @@ For the Quality Gate Use case you can do this::
    More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
 For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
-Here are 3 things you can do:
+Here are things you can do:
 1: Open the Keptn's Bridge for your Performance Project:
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_PERFORMANCE_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
@@ -759,6 +760,17 @@ To trigger a delivery simple do this
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
+To trigger a delivery simple do this
+1: Open the Keptn's Bridge for your Performance Project:
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_ADV_PERFORMANCE_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_ADV_PERFORMANCE_SERVICE}
+3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_ADV_PERFORMANCE_PROJECT};service=${KEPTN_ADV_PERFORMANCE_SERVICE};stage=${KEPTN_ADV_PERFORMANCE_STAGE}
+4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
+   ./trigger.performance.testing.sh ${KEPTN_ADV_PERFORMANCE_PROJECT} functional ${KEPTN_ADV_PERFORMANCE_SERVICE} performance http://yourapp/yoururl
+5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh

@@ -2,7 +2,7 @@ config:
     - staging_qualitygate_db: "qualitygatedb.json"
 
 staging_qualitygate_db:
-  - owner: "REPLACE_DASHBOARD_OWNER"
+  - owner: "REPLACE_OWNER_EMAIL"
   - keptnbridge: "http://REPLACE_KEPTN_BRIDGE/bridge"
   - name: "KQG;project={{ .Env.KEPTN_PROJECT }};service={{ .Env.KEPTN_SERVICE }};stage={{ .Env.KEPTN_STAGE }}"
   - project: "{{ .Env.KEPTN_PROJECT }}"

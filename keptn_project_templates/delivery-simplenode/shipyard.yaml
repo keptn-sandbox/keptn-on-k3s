@@ -26,6 +26,7 @@ spec:
       triggeredOn:
       - event: dev.delivery.finished
       tasks:
+      - name: monaco
       - name: deployment
         properties:
           deploymentstrategy: direct
@@ -44,6 +45,7 @@ spec:
       triggeredOn:
       - event: staging.delivery.finished
       tasks:
+      - name: monaco
       - name: deployment
         properties:
           deploymentstrategy: blue_green_service
