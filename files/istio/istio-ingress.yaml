@@ -22,9 +22,12 @@ spec:
   - http:
       paths:
       - backend:
-          serviceName: istio-ingressgateway
-          servicePort: 80
+          service:
+            name: istio-ingressgateway
+            port: 
+              number: 80
         path: /
+        pathType: Prefix
   tls:
   - hosts:
     #secretName: istio-tls
