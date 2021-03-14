@@ -805,6 +805,13 @@ function main {
         XIP="true"
         shift
         ;;
+    --controlplane)
+        echo "Installing Keptn Control Plane"
+        KEPTN_DELIVERYPLANE="false"
+        KEPTN_EXECUTIONPLANE="false"
+        KEPTN_CONTROLPLANE="true"
+        shift
+        ;;
     --deliveryplane)
         echo "Installing Keptn Delivery Plane"
         KEPTN_DELIVERYPLANE="true"
