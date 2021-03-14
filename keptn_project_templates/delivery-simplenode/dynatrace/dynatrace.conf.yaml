@@ -1,0 +1,17 @@
+---
+spec_version: '0.1.0'
+dashboard: query
+attachRules:
+  tagRule:
+  - meTypes:
+    - PROCESS_GROUP_INSTANCE
+    tags:
+    - context: CONTEXTLESS
+      key: keptn_project
+      value: $PROJECT
+    - context: CONTEXTLESS
+      key: keptn_service
+      value: $SERVICE
+    - context: CONTEXTLESS
+      key: keptn_stage
+      value: $STAGE

@@ -78,17 +78,25 @@ TOKEN_FILE=$GIT_TOKEN.json
 KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="quality-gate"
 KEPTN_QG_SERVICE="demo"
+
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
 KEPTN_PERFORMANCE_STAGE="performance"
 KEPTN_PERFORMANCE_SERVICE="appundertest"
 KEPTN_PERFORMANCE_EASYTRAVEL="easytravel"
+
 KEPTN_REMEDIATION_PROJECT="demo-remediation"
 KEPTN_REMEDIATION_STAGE="production"
 KEPTN_REMEDIATION_SERVICE="default"
+
 KEPTN_DELIVERY_PROJECT="demo-delivery"
 KEPTN_DELIVERY_STAGE_DEV="dev"
-KEPTN_DELIVERY_STAGE_STAGING="dev"
+KEPTN_DELIVERY_STAGE_STAGING="staging"
+KEPTN_DELIVERY_STAGE_PRODUCTION="production"
 KEPTN_DELIVERY_SERVICE="simplenode"
+
+KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
+KEPTN_ADV_PERFORMANCE_STAGE="performance"
+KEPTN_ADV_PERFORMANCE_SERVICE="appundertest"
 
 
 function create_namespace {
@@ -565,9 +573,10 @@ function install_demo_dynatrace {
   # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
   KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT} ${KEPTN_QG_SERVICE}
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT}
 
   echo "Run first Dynatrace Quality Gate"
   keptn trigger evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
@@ -580,7 +589,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_SERVICE}
+  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT}
 
   # ==============================================================================================
   # Demo 3: Auto-Remediation
@@ -590,7 +599,23 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT} ${KEPTN_REMEDIATION_SERVICE}
+  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT}
+
+  # ==============================================================================================
+  # Demo 4: Delivery
+  # Creates a 3 stage delivery project to delivery the singlenode sample app in dev, staging and production
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_DELIVERY_PROJECT}"
+  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT}
+
+  # ==============================================================================================
+  # Demo 5: Advanced Performance
+  # Creates a project with 3 sequences of performance testing: functional, simple load, performance
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
+  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
@@ -598,6 +623,8 @@ function install_demo_dynatrace {
     gitea_createKeptnRepo "${KEPTN_QG_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
   fi
 
 }
@@ -658,6 +685,15 @@ In order for this to work do
 3: Watch the auto-remediation actions in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+For the Delivery Use Case we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
+To trigger a delivery simple do this
+1: Trigger a delivery through the Keptn CLI
+   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --${KEPTN_DELIVERY_SERVICE}
+2: Watch the delivery progress in Keptn's bridge
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 

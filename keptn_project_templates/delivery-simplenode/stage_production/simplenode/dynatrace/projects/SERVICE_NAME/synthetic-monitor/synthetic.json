@@ -1,0 +1,67 @@
+{
+    "name": "{{ .name }}",
+    "frequencyMin": 5,
+    "enabled": true,
+    "type": "HTTP",
+    "createdFrom": "GUI",
+    "script": {
+      "version": "1.0",
+      "requests": [
+        {
+          "description": "{{ .description }}",
+          "url": "{{ .url }}",
+          "method": "GET",
+          "validation": {
+            "rules": [
+              {
+                "value": ">=400",
+                "passIfFound": false,
+                "type": "httpStatusesList"
+              }
+            ],
+            "rulesChaining": "or"
+          },
+          "configuration": {
+            "acceptAnyCertificate": true,
+            "followRedirects": true
+          }
+        }
+      ]
+    },
+    "locations": [
+      "GEOLOCATION-388A5AD15726CB6F"
+    ],
+    "anomalyDetection": {
+      "outageHandling": {
+        "globalOutage": true,
+        "localOutage": false,
+        "localOutagePolicy": {
+          "affectedLocations": 1,
+          "consecutiveRuns": 3
+        }
+      },
+      "loadingTimeThresholds": {
+        "enabled": false,
+        "thresholds": [
+          {
+            "type": "TOTAL",
+            "valueMs": 0
+          }
+        ]
+      }
+    },
+    "tags": [
+        { "context" : "CONTEXTLESS", "key" : "{{ .project }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .service }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .stage }}"}        
+    ],
+    "managementZones": [],
+    "automaticallyAssignedApps": [],
+    "manuallyAssignedApps": [],
+    "requests": [
+      {
+        "name": "{{ .description }}",
+        "sequenceNumber": 1
+      }
+    ]
+  }

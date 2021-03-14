@@ -1,0 +1,10 @@
+config:
+    - synthetic_http_prod_check: "synthetic.json"
+
+synthetic_http_prod_check:
+    - name: "{{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_STAGE }}"
+    - description: "{{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_SERVICE }} {{ .Env.KEPTN_STAGE }} Homepage"
+    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_INGRESS"
+    - project: "{{ .Env.KEPTN_PROJECT }}"
+    - stage: "{{ .Env.KEPTN_STAGE }}"
+    - service: "{{ .Env.KEPTN_SERVICE }}"

@@ -1,21 +1,41 @@
 #!/usr/bin/env bash
 
-# Usage: create-keptn-project-from-template.sh quality-gate-dynatrace yourname@email.com quality-gate demo
+# Usage: create-keptn-project-from-template.sh project-template-folder yourname@email.com new-project-name
+#        create-keptn-project-from-template.sh quality-gate-dynatrace myuser@gmail.com quality-gate
 
+# Here is a sample project-template-folder folder structure with the explanation what will happen
+# project-template-folder\
+#   shipyard.yaml           --> this is the only MANDATORY file. it will be the shipyard for keptn create project
+#   dynatrace\
+#     dynatrace.conf.yaml   --> will be uploaded to the project level
+#   service_demo            --> if a foler with service_ exists it will either create or onboard a new service depending on whether there is a subfolder charts
+#     charts                --> if the charts subfolder exists it will do a keptn onboard service demo --charts=./charts otherwise keptn create service
+#   stage_quality-gate      --> this folder will be iterated and content will be uploaded to the quality-gate stage
+#     dynatrace\
+#       dynatrace.conf.yaml --> this will now be a stage specific file
+#     demo\                 
+#       jmeter\
+#         jmeter.conf.yaml  --> this file will be a jmeter.conf.yaml specific to the demo service in the quality-gate stage
+
+# The files in the repo can contain certain PLACEHOLDERS which will be replaced before uploaded. 
+# The replacement happens in .tmp files - so - no original files will be changed. Here the list of REPLACE options
+# REPLACE_KEPTN_BRIDGE   with -> KEPTN_BRIDGE_PROJECT_ESCAPED
+# REPLACE_OWNER_EMAIL    with -> OWNER_EMAIL
+# REPLACE_KEPTN_INGRESS  with -> KEPTN_INGRESS
+
+# default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
 
-# Parameters for Script
+# Parameters for Script - they have to be passed to the script!
 TEMPLATE_NAME=${1:-none}
 OWNER_EMAIL=${2:-none}
 PROJECT_NAME=${3:-none}
-SERVICE_NAME=${4:-none}
-
 
 # Expected Env Variables that should be set!
-# KEPTN_ENDPOINT="https://yourkeptndomain.abc
+# KEPTN_ENDPOINT="https://keptn.yourkeptndomain.abc
+# KEPTN_INGRESS="yourkeptndomain.abc"
 KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${PROJECT_NAME}"
 KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
-
 
 if [[ "$TEMPLATE_NAME" == "none" ]]; then
     echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
@@ -34,6 +54,17 @@ if [[ "$PROJECT_NAME" == "none" ]]; then
     exit 1
 fi
 
+if [[ "$KEPTN_ENDPOINT" == "" ]]; then
+    echo "You have to export KEPTN_ENDPOINT and set it to your Keptn Endpoint URL, e.g: https://keptn.yourkeptndomain.com"
+    exit 1
+fi
+
+if [[ "$KEPTN_INGRESS" == "" ]]; then
+    echo "You have to export KEPTN_INGRESS and set it to your Ingress host , e.g: yourkeptndomain.com"
+    exit 1
+fi
+
+## Now - lets validate if all tools are installed that are needed
 if ! [ -x "$(command -v tree)" ]; then
     echo "Tree command not installed. This is required"
     exit 1
@@ -44,7 +75,7 @@ if ! [ -x "$(command -v keptn)" ]; then
     exit 1
 fi
 
-# Validate that keptn cli is successfull authenticated
+## Validate that keptn cli is successfull authenticated
 if keptn status | grep -q "Successfully authenticated"; then
     echo "Keptn CLI connected successfully!"
 else 
@@ -52,7 +83,7 @@ else
     exit 1
 fi 
 
-# Validate that the keptn project doesnt already exist
+## Validate that the keptn project doesnt already exist
 if keptn get project $PROJECT_NAME | grep -q "No project"; then
     echo "Validated that Keptn Project $PROJECT_NAME doesnt yet exist. Continue creation of project"
 else
@@ -60,25 +91,25 @@ else
     exit 1
 fi 
 
-# Validate that there is a template directory that we can use to create projects from
+## Validate that there is a template directory that we can use to create projects from
 if ! [ -d "${TEMPLATE_DIRECTORY}" ]; then
     echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}"
     exit 1
 fi
 
-# Validate that the specific project template exists
+## Validate that the specific project template exists
 if ! [ -d "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}" ]; then
     echo "Can't find Keptn Project Template: ${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"
     exit 1
 fi
 
-# Validate that the specific project template has a shipyard
+## Validate that the specific project template has a shipyard
 if ! [ -f "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}/shipyard.yaml" ]; then
     echo "Keptn Project Template doesnt have a shipyard.yaml: ${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}/shipyard.yaml"
     exit 1
 fi
 
-# switch to template directory
+## switch to template directory
 currDir=$(pwd)
 echo "Switching to Template Directory"
 cd "${TEMPLATE_DIRECTORY}/${TEMPLATE_NAME}"
@@ -101,28 +132,38 @@ if keptn get project $PROJECT_NAME | grep -q "No project"; then
 fi 
 
 #
-# Now lets create a service if specified
-#
-if ! [[ "$SERVICE_NAME" == "none" ]]; then
-    echo "Create Keptn Project: ${PROJECT_NAME} from ${TEMPLATE_NAME}"
-    keptn create service $SERVICE_NAME --project="${PROJECT_NAME}"
-else
-    SERVICE_NAME=""
-fi
-
-#
-# Now we iterate through the template folder and add all resources on project level
+# Now we iterate through the template folder and add all resources
 #
 for localFileName in $(tree -i -f)
 do 
-    # if this is a directory we dont do anything! if its not a valid file we also skip it
-    if [ -d "$localFileName" ]; then continue; fi
+    # if this is a directory lets check if it is a service_ directory. 
+    # If so we create or onboard that service. If not - we just skip it
+    if [ -d "$localFileName" ]; then 
+
+        # lets check whether its a service_
+        if [[ "${localFileName}" == *"/service_"* ]]; then
+            RESOURCE_SERVICE_NAME=$(echo "${localFileName##*/service_}")
+            SERVICE_NAME=$(echo "${RESOURCE_SERVICE_NAME%%/*}")
+
+            if [ -d "./service_${SERVICE_NAME}/charts}" ]; then 
+                echo "Onboard Keptn Service: ${SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
+                keptn onboard service $SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts}"
+            else 
+                echo "Create Keptn Service: ${SERVICE_NAME} for project ${PROJECT_NAME}"
+                keptn create service $SERVICE_NAME --project="${PROJECT_NAME}"
+            fi
+        fi;
+
+        continue; 
+    fi
+
+    # Lets validate that the file is actually a file!
     if ! [ -f "$localFileName" ]; then continue; fi
 
     # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
 
-    # if its a file in a stage_STAGENAME directory lets add this to the STAGE_NAME
+    # Validate if the file is in stage_STAGENAME directory. If so set STAGE_NAME lets remove that directory for the uploaded resourceUri
     RESOURCE_STAGE_NAME=""
     REMOVE_FROM_REMOTE_FILENAME=""
     if [[ "${localFileName}" == *"/stage_"* ]]; then 
@@ -132,23 +173,16 @@ do
       echo $REMOVE_FROM_REMOTE_FILENAME
     fi
 
-    # if its a file in a service_template directory lets add to the service SERVICE_NAME
-    if [[ "${localFileName}" == *"service_template"* ]]; then 
-      RESOURCE_SERVICE_NAME=$SERVICE_NAME
-    else
-      RESOURCE_SERVICE_NAME=""
-    fi
-
     #
     # create a tmp file so we can do any IN-FILE replacements
     cp ${localFileName} ${localFileName}.tmp
     sed -i "s/\${REPLACE_KEPTN_BRIDGE}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
     sed -i "s/\${REPLACE_OWNER_EMAIL}/${OWNER_EMAIL}/" ${localFileName}.tmp
+    sed -i "s/\${REPLACE_KEPTN_INGRESS}/${KEPTN_INGRESS}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
     remoteFileName=$(echo "${localFileName/.\//}")
-    remoteFileName=$(echo "${localFileName/service_template/}")
     remoteFileName=$(echo "${remoteFileName/$REMOVE_FROM_REMOTE_FILENAME/}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_PROJECT/$PROJECT_NAME}")
     remoteFileName=$(echo "${remoteFileName/KEPTN_STAGE/$STAGE_NAME}")
@@ -156,7 +190,8 @@ do
 
     # echo "Processing localFileName: ${localFileName}"
     # echo "Using remoteFileName: ${remoteFileName}"
-    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --service="${RESOURCE_SERVICE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileName}"
+    # Lets upload our file
+    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileName}"
 
     # remove tmp file
     rm ${localFileName}.tmp
