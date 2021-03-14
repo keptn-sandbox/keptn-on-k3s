@@ -11,6 +11,13 @@ spec:
         - name: test
           properties:
             teststrategy: functional
+      - name: performance_light
+        triggeredOn:
+        - event: functional.testing.finished
+          selector:
+            match:
+              result: "pass"
+        tasks:
         - name: test
           properties:
             teststrategy: performance_light
@@ -18,8 +25,11 @@ spec:
   - name: "performance"
     sequences:
       - name: performance
-        triggers:
-        - light_performance.testing.finished      
+        triggeredOn:
+        - event: functional.performance_light.finished      
+          selector:
+            match:
+              result: "pass"
         tasks:
         - name: test
           properties:

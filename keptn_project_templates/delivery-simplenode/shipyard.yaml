@@ -23,8 +23,8 @@ spec:
   - name: staging
     sequences:
     - name: artifact-delivery
-      triggers:
-      - dev.artifact-delivery.finished
+      triggeredOn:
+      - event: dev.artifact-delivery.finished
       tasks:
       - name: deployment
         properties:
@@ -41,8 +41,8 @@ spec:
   - name: production
     sequences:
     - name: artifact-delivery
-      triggers:
-      - staging.artifact-delivery.finished
+      triggeredOn:
+      - event: staging.artifact-delivery.finished
       tasks:
       - name: deployment
         properties:
