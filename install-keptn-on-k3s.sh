@@ -600,8 +600,8 @@ function install_demo_dynatrace {
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
   # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
-  KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
-  KEPTN_INGRESS=${FQDN}
+  export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  export KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
   ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT}
