@@ -68,6 +68,9 @@ The script allows a couple of parameters
 | Parameter Name | Values | Comment |
 | ------------------------------ | ------ | --------|
 | `--type` | all (default), k3s, keptn, demo, gitus | Will either install everything (all), just k3s, just keptn (assuming that kubectl is pointing to a k8s cluster), demo (just the demo components), gitus (will create Git Upstreams for each Keptn Project) |
+| `--controlplane` | | This is default anyway - but - it would jus install Keptn Control Plane on this k3s |
+| `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm + JMeter |
+| `--executionplane` | | This option only installs Keptn's Execution Plane but also requires you to set  |
 | `--with-prometheus` | | Will enable Prometheus Support |
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will install JMeter Service |

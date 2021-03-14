@@ -257,7 +257,7 @@ function get_istio {
     write_progress "Configuring Istio Ingress Object"
     sed -e 's~issuer.placeholder~'"$CERTS"'~' \
         ./files/istio/istio-ingress.yaml > istio-ingress_gen.yaml
-    "${K3SKUBECTL[@]}" apply -n git -f istio-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n istio-system -f istio-ingress_gen.yaml
     rm istio-ingress_gen.yaml
   fi
 }
@@ -368,6 +368,9 @@ function install_keptn {
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
       --kubeconfig="$KUBECONFIG"
+
+    # no need to additionally install jmeter as we install a delivery plane anyway!
+    JMETER="false"
 
     # need to install Istio for Delivery Plane as we are potentially depoying sevices blue / green
     get_istio
