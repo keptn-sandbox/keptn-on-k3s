@@ -4,23 +4,18 @@ metadata:
   name: "shipyard-advanced-performance"
 spec:
   stages:
-  - name: "performance"
+  - name: "functional"
     sequences:
       - name: testing
         tasks:
         - name: test
           properties:
             teststrategy: functional
-        - name: evaluation
-    sequences:
-      - name: light_performance
-        triggers:
-        - performance.testing.finished
-        tasks:
         - name: test
           properties:
             teststrategy: performance_light
         - name: evaluation
+  - name: "performance"
     sequences:
       - name: performance
         triggers:
