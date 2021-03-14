@@ -451,7 +451,9 @@ function install_keptn {
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
     # removing any previous git-token files that might be left-over from a previous install
-    rm "${TOKEN_FILE}" || true
+    if ! [ -f "${TOKEN_FILE}" ]; then 
+      rm "${TOKEN_FILE}"     
+    fi
 
     echo "Create namespace for git"
     "${K3SKUBECTL[@]}" create ns git
@@ -720,7 +722,7 @@ In order for this to work do
 For the Delivery Use Case we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
 To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI
-   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --${KEPTN_DELIVERY_SERVICE}
+   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --service=${KEPTN_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD

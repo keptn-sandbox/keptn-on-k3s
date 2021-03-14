@@ -146,7 +146,7 @@ do
             RESOURCE_SERVICE_NAME=$(echo "${localFileName##*/service_}")
             SERVICE_NAME=$(echo "${RESOURCE_SERVICE_NAME%%/*}")
 
-            if [ -d "./service_${SERVICE_NAME}/charts}" ]; then 
+            if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
                 echo "Onboard Keptn Service: ${SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
                 keptn onboard service $SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts}"
             else 
