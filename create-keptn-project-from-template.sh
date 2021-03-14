@@ -160,8 +160,9 @@ do
     # Lets validate that the file is actually a file!
     if ! [ -f "$localFileName" ]; then continue; fi
 
-    # we are not re-uploading the shipyard.yaml nor do we iterate through the service_template subdirectories
+    # we are not re-uploading the shipyard.yaml and we ignore the emptydir.txt
     if [[ "${localFileName}" == *"shipyard.yaml"* ]]; then continue; fi
+    if [[ "${localFileName}" == *"emptydir.txt"* ]]; then continue; fi
 
     # Validate if the file is in stage_STAGENAME directory. If so set STAGE_NAME lets remove that directory for the uploaded resourceUri
     RESOURCE_STAGE_NAME=""
