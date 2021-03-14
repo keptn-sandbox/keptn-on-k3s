@@ -9,6 +9,9 @@ KEPTN_EXECUTIONPLANE=false
 KEPTN_CONTROLPLANE=true
 
 ISTIO_VERSION="1.9.1"
+INGRESS_PORT="80"
+INGRESS_PROTOCOL="http"
+ISTIO_GATEWAY="public-gateway.istio-system"
 
 # For execution plane these are the env-variables that identify the keptn control plane
 # KEPTN_CONTROL_PLANE_DOMAIN=""
@@ -259,7 +262,19 @@ function get_istio {
         ./files/istio/istio-ingress.yaml > istio-ingress_gen.yaml
     "${K3SKUBECTL[@]}" apply -n istio-system -f istio-ingress_gen.yaml
     rm istio-ingress_gen.yaml
+
+    "${K3SKUBECTL[@]}" apply -n istio-system -f ./files/istio/istio-gateway.yaml
   fi
+
+  # TODO - maybe use FQDN instead of KEPTN_DOMAIN as prefix
+  # Create ConfigMap Entry for keptn's helm service
+  "${K3SKUBECTL[@]}" create configmap -n keptn ingress-config \
+      --from-literal=ingress_hostname_suffix=${KEPTN_DOMAIN} \
+      --from-literal=ingress_port=${INGRESS_PORT} \
+      --from-literal=ingress_protocol=${INGRESS_PROTOCOL} \
+      --from-literal=istio_gateway=${ISTIO_GATEWAY} \
+      -oyaml --dry-run | kubectl replace -f -
+
 }
 
 function check_k8s {
@@ -374,11 +389,17 @@ function install_keptn {
 
     # need to install Istio for Delivery Plane as we are potentially depoying sevices blue / green
     get_istio
+
+    # now we need to restart the helm service for it to pick up istio
+    kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
   fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
     # following instructions from https://keptn.sh/docs/0.8.x/operate/multi_cluster/#install-keptn-execution-plane
     write_progress "Installing Keptn Execution Plane to connect to ${KEPTN_CONTROL_PLANE_DOMAIN}"
+
+    # lets make sure the keptn namespace is created
+    create_namespace "keptn"
 
     # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
     get_istio
