@@ -18,6 +18,10 @@ spec:
           teststrategy: functional
       - name: evaluation
       - name: release
+      - name: approval
+        properties:
+          pass: automatic
+          warning: automatic
   - name: staging
     description: "Represents Staging where good artifacts from dev will be promoted to. One exception is the hotfix sequence which allows direct deploy to staging!"
     sequences:
@@ -25,10 +29,6 @@ spec:
       triggeredOn:
       - event: dev.delivery.finished
       tasks:
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic
       - name: monaco
       - name: deployment
         properties:
@@ -57,6 +57,10 @@ spec:
           teststrategy: performance
       - name: evaluation
       - name: release
+      - name: approval
+        properties:
+          pass: automatic
+          warning: manual
   - name: production
     description: "Represents Production. All staging artifacts need manual approval except hotfixes. Hotfixes are auto-approved if passed!"
     sequences:
@@ -64,10 +68,6 @@ spec:
       triggeredOn:
       - event: staging.delivery.finished
       tasks:
-      - name: approval
-        properties:
-          pass: manual
-          warning: manual
       - name: monaco
       - name: deployment
         properties:
@@ -89,10 +89,6 @@ spec:
       triggeredOn:
       - event: staging.delivery-hotfix.finished
       tasks:
-      - name: approval
-        properties:
-          pass: automatic
-          warning: manual
       - name: monaco
       - name: deployment
         properties:

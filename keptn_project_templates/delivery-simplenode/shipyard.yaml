@@ -16,16 +16,16 @@ spec:
           teststrategy: functional
       - name: evaluation
       - name: release
+      - name: approval
+        properties:
+          pass: automatic
+          warning: automatic
   - name: staging
     sequences:
     - name: delivery
       triggeredOn:
       - event: dev.delivery.finished
       tasks:  
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic
       - name: monaco
       - name: deployment
         properties:
@@ -35,6 +35,10 @@ spec:
           teststrategy: performance
       - name: evaluation
       - name: release
+      - name: approval
+        properties:
+          pass: manual
+          warning: manual
     - name: rollback
       triggeredOn:
         - event: staging.delivery.finished
@@ -49,10 +53,6 @@ spec:
       triggeredOn:
       - event: staging.delivery.finished
       tasks:
-      - name: approval
-        properties:
-          pass: manual
-          warning: manual
       - name: monaco
       - name: deployment
         properties:
