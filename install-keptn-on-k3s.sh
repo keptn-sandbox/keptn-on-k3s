@@ -453,10 +453,7 @@ function install_keptn {
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
     fi
-
-    # Install Generic Executor if the user wants to
-#    if [[ "${GENERICEXEC}" == "true" ]]; all dynatrace settings are specified
-#    i
+  fi
  
   if [ "${PROM}" == "true"]]; then
      write_progress "Installing Prometheus Service"
