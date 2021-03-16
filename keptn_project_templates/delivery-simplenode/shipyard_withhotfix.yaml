@@ -2,7 +2,7 @@ apiVersion: spec.keptn.sh/0.2.0
 kind: Shipyard
 metadata:
   name: "shipyard-delivery-simplenode"
-  description: "3 stages delivery"
+  description: "3 stages delivery with an option for a hotfix deployment into staging and production"
 spec:
   stages:
   - name: dev
@@ -19,7 +19,7 @@ spec:
       - name: evaluation
       - name: release
   - name: staging
-    description: "Represents Staging where good artifacts from dev will be promoted to"
+    description: "Represents Staging where good artifacts from dev will be promoted to. One exception is the hotfix sequence which allows direct deploy to staging!"
     sequences:
     - name: delivery
       triggeredOn:
@@ -46,8 +46,19 @@ spec:
               result: "fail"
       tasks:
         - name: rollback
+    - name: delivery-hotfix
+      tasks:
+      - name: monaco
+      - name: deployment
+        properties:
+          deploymentstrategy: direct
+      - name: test
+        properties:
+          teststrategy: performance
+      - name: evaluation
+      - name: release
   - name: production
-    description: "Represents Production. All staging artifacts need manual approval"
+    description: "Represents Production. All staging artifacts need manual approval except hotfixes. Hotfixes are auto-approved if passed!"
     sequences:
     - name: delivery
       triggeredOn:
@@ -74,3 +85,20 @@ spec:
               result: "fail"
       tasks:
         - name: rollback
+    - name: delivery-hotfix
+      triggeredOn:
+      - event: staging.delivery-hotfix.finished
+      tasks:
+      - name: approval
+        properties:
+          pass: automatic
+          warning: manual
+      - name: monaco
+      - name: deployment
+        properties:
+          deploymentstrategy: blue_green_service
+      - name: test
+        properties:
+          teststrategy: performance
+      - name: evaluation
+      - name: release

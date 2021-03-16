@@ -1,0 +1,227 @@
+{
+    "dashboardMetadata": {
+        "name": "{{ .name }}",
+        "shared": false,
+        "owner" : "{{ .owner }}",
+        "sharingDetails": {
+            "linkShared": true,
+            "published": true
+        },
+        "dashboardFilter": {
+            "managementZone": {
+                "id": "{{ .mzId }}",
+                "name": "{{ .mzName }}"
+            }
+        },
+        "tags": ["keptn", "{{ .stage }}", "{{ .project }}", "{{ .service }}"]
+    },
+    "tiles": [{
+        "name": "Custom chart",
+        "tileType": "CUSTOM_CHARTING",
+        "configured": true,
+        "bounds": {
+            "top": 114,
+            "left": 684,
+            "width": 342,
+            "height": 152
+        },
+        "tileFilter": {},
+        "filterConfig": {
+            "type": "MIXED",
+            "customName": "Server side response time;sli=response_time_p95;pass=<600;warning=<=800",
+            "defaultName": "Custom chart",
+            "chartConfig": {
+                "legendShown": true,
+                "type": "TIMESERIES",
+                "series": [{
+                    "metric": "builtin:service.response.time",
+                    "aggregation": "PERCENTILE",
+                    "percentile": 95,
+                    "type": "LINE",
+                    "entityType": "SERVICE",
+                    "dimensions": [],
+                    "sortAscending": false,
+                    "sortColumn": true,
+                    "aggregationRate": "TOTAL"
+                }],
+                "resultMetadata": {}
+            },
+            "filtersPerEntityType": {}
+        }
+    }, {
+        "name": "Custom chart",
+        "tileType": "CUSTOM_CHARTING",
+        "configured": true,
+        "bounds": {
+            "top": 114,
+            "left": 0,
+            "width": 342,
+            "height": 152
+        },
+        "tileFilter": {},
+        "filterConfig": {
+            "type": "MIXED",
+            "customName": "Server side response time - P50;sli=response_time_p50;",
+            "defaultName": "Custom chart",
+            "chartConfig": {
+                "legendShown": true,
+                "type": "TIMESERIES",
+                "series": [{
+                    "metric": "builtin:service.response.time",
+                    "aggregation": "PERCENTILE",
+                    "percentile": 50,
+                    "type": "LINE",
+                    "entityType": "SERVICE",
+                    "dimensions": [],
+                    "sortAscending": false,
+                    "sortColumn": true,
+                    "aggregationRate": "TOTAL"
+                }],
+                "resultMetadata": {}
+            },
+            "filtersPerEntityType": {}
+        }
+    }, {
+        "name": "Custom chart",
+        "tileType": "CUSTOM_CHARTING",
+        "configured": true,
+        "bounds": {
+            "top": 114,
+            "left": 342,
+            "width": 342,
+            "height": 152
+        },
+        "tileFilter": {},
+        "filterConfig": {
+            "type": "MIXED",
+            "customName": "Server side response time;sli=response_time_p90;pass=<=500;warning=<=600",
+            "defaultName": "Custom chart",
+            "chartConfig": {
+                "legendShown": true,
+                "type": "TIMESERIES",
+                "series": [{
+                    "metric": "builtin:service.response.time",
+                    "aggregation": "PERCENTILE",
+                    "percentile": 90,
+                    "type": "LINE",
+                    "entityType": "SERVICE",
+                    "dimensions": [],
+                    "sortAscending": false,
+                    "sortColumn": true,
+                    "aggregationRate": "TOTAL"
+                }],
+                "resultMetadata": {}
+            },
+            "filtersPerEntityType": {}
+        }
+    }, {
+        "name": "Markdown",
+        "tileType": "MARKDOWN",
+        "configured": true,
+        "bounds": {
+            "top": 0,
+            "left": 0,
+            "width": 1026,
+            "height": 76
+        },
+        "tileFilter": {},
+        "markdown": "## This is your SLO Quality Gate Dashboard for Staging\nSee the Quality Gate evaluations in [Keptns Bridge]({{ .keptnbridge }}/project/{{ .project }}/{{ .service }})Modify it based on your requirements"
+    }, {
+        "name": "SLOs for Server Side Response Times (p50, p90, p95)",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 76,
+            "left": 0,
+            "width": 1026,
+            "height": 38
+        },
+        "tileFilter": {}
+    }, {
+        "name": "SLOs for Server Side Response Times (p50, p90, p95)",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 266,
+            "left": 0,
+            "width": 1026,
+            "height": 38
+        },
+        "tileFilter": {}
+    }, {
+        "name": "SLOs for Server Side Response Times (p50, p90, p95)",
+        "tileType": "HEADER",
+        "configured": true,
+        "bounds": {
+            "top": 456,
+            "left": 0,
+            "width": 1026,
+            "height": 38
+        },
+        "tileFilter": {}
+    }, {
+        "name": "Custom chart",
+        "tileType": "CUSTOM_CHARTING",
+        "configured": true,
+        "bounds": {
+            "top": 304,
+            "left": 0,
+            "width": 342,
+            "height": 152
+        },
+        "tileFilter": {},
+        "filterConfig": {
+            "type": "MIXED",
+            "customName": "Throuhput (Server Side Request Count);sli=throughput;pass=>4000",
+            "defaultName": "Custom chart",
+            "chartConfig": {
+                "legendShown": true,
+                "type": "TIMESERIES",
+                "series": [{
+                    "metric": "builtin:service.requestCount.total",
+                    "aggregation": "NONE",
+                    "type": "LINE",
+                    "entityType": "SERVICE",
+                    "dimensions": [],
+                    "sortAscending": false,
+                    "sortColumn": true,
+                    "aggregationRate": "TOTAL"
+                }],
+                "resultMetadata": {}
+            },
+            "filtersPerEntityType": {}
+        }
+    }, {
+        "name": "Custom chart",
+        "tileType": "CUSTOM_CHARTING",
+        "configured": true,
+        "bounds": {
+            "top": 494,
+            "left": 0,
+            "width": 342,
+            "height": 152
+        },
+        "tileFilter": {},
+        "filterConfig": {
+            "type": "MIXED",
+            "customName": "Server Side Failure Rate;sli=error_rate;pass=<=1%;warning=<=2%",
+            "defaultName": "Custom chart",
+            "chartConfig": {
+                "legendShown": true,
+                "type": "TIMESERIES",
+                "series": [{
+                    "metric": "builtin:service.errors.server.rate",
+                    "aggregation": "AVG",
+                    "type": "LINE",
+                    "entityType": "SERVICE",
+                    "dimensions": [],
+                    "sortAscending": false,
+                    "sortColumn": true,
+                    "aggregationRate": "TOTAL"
+                }],
+                "resultMetadata": {}
+            },
+            "filtersPerEntityType": {}
+        }
+    }]
+}
