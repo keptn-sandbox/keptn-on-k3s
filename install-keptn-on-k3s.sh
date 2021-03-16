@@ -377,7 +377,7 @@ spec:
         ingress:
           class: nginx
 EOF
-fi
+
   "${K3SKUBECTL[@]}" rollout restart deployment ingress-nginx-controller
   sleep 5
   echo "Waiting for Nginx Ingress to restart - 1st attempt (max 60s)"
@@ -721,7 +721,7 @@ if [[ "${GITEA}" == "true" ]]; then
   echo "Git Password:    $GIT_PASSWORD"
 fi
 
-  if [[ "${DEMO}" == "dynatrace" ]]; "then"
+  if [[ "${DEMO}" == "dynatrace" ]]; then
   write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
   cat << EOF
 3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
