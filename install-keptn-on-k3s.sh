@@ -318,8 +318,8 @@ function install_certmanager {
 
   # Only install cert manager if we install all dynatrace settings are specifiedane
   if ["${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
-    retur 
-  helmupgrade cert-manager cert-manager --install--wait
+    retur return; fi
+  helmupgrade cert-manager cert-manager --install--wait return; fi
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
     --kubeconfig="${KUBECONFIG}" \
@@ -377,12 +377,11 @@ spec:
         ingress:
           class: nginx
 EOF
-
+fi
   "${K3SKUBECTL[@]}" rollout restart deployment ingress-nginx-controller
   sleep 5
   echo "Waiting for Nginx Ingress to restart - 1st attempt (max 60s)"
   "${K3SKUBECTL[@]}" wait --namespace=default --for=condition=Ready pods --timeout=60s --all
-fi
 }
 
 function install_keptn {
