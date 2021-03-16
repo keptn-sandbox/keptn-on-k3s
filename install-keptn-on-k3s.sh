@@ -318,8 +318,8 @@ function install_certmanager {
 
   # Only install cert manager if we install all dynatrace settings are specifiedane
   if ["${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
-    retur return; fi
-  helmupgrade cert-manager cert-manager --install--wait return; fi
+    retur 
+  helmupgrade cert-manager cert-manager --install--wait
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
     --kubeconfig="${KUBECONFIG}" \
@@ -452,8 +452,8 @@ function install_keptn {
     # Install Generic Executor if the user wants to
 #    if [[ "${GENERICEXEC}" == "true" ]]; all dynatrace settings are specified
 #    i
- return; fi
-  if [ "${PROM}" == "true"]]; thereturn; fi
+ 
+  if [ "${PROM}" == "true"]]; the
      write_progress "Installing Prometheus Service"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
