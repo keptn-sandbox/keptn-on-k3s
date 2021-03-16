@@ -316,10 +316,15 @@ function check_k8s {
 
 function install_certmanager {
 
-  # Only install cert manager if we install all dynatrace settings are specifiedane
-  if ["${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
-    retur return; fi
-  helmupgrade cert-manager cert-manager --install--wait return; fi
+  # Only install cert manager if we install control or delivery plane
+  if [[ "${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
+    return
+  fi 
+
+  write_progress "Installing Cert-Manager"
+  create_namespace cert-manager
+
+  helm upgrade cert-manager cert-manager --install --wait \
     --create-namespace --namespace=cert-manager \
     --repo="https://charts.jetstack.io" \
     --kubeconfig="${KUBECONFIG}" \
