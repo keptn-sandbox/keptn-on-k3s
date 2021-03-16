@@ -382,6 +382,7 @@ EOF
   sleep 5
   echo "Waiting for Nginx Ingress to restart - 1st attempt (max 60s)"
   "${K3SKUBECTL[@]}" wait --namespace=default --for=condition=Ready pods --timeout=60s --all
+fi
 }
 
 function install_keptn {
