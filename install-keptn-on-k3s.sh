@@ -4,6 +4,7 @@ set -eu
 
 # Keptn Version Information
 KEPTNVERSION="0.8.0"
+KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
 KEPTN_CONTROLPLANE=true
@@ -251,6 +252,7 @@ function get_oneagent {
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
     -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
     ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
 
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -693,7 +695,6 @@ function install_demo_dynatrace {
     gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
   fi
-
 }
 
 function install_demo {
@@ -857,6 +858,7 @@ function main {
         ;;
     --controlplane)
         echo "Installing Keptn Control Plane"
+        KEPTN_TYPE="controlplane"
         KEPTN_DELIVERYPLANE="false"
         KEPTN_EXECUTIONPLANE="false"
         KEPTN_CONTROLPLANE="true"
@@ -864,6 +866,7 @@ function main {
         ;;
     --deliveryplane)
         echo "Installing Keptn Delivery Plane"
+        KEPTN_TYPE="deliveryplane"
         KEPTN_DELIVERYPLANE="true"
         KEPTN_EXECUTIONPLANE="false"
         KEPTN_CONTROLPLANE="false"
@@ -871,6 +874,7 @@ function main {
         ;;
     --executionplane)
         echo "Installing Keptn Execution Plane"
+        KEPTN_TYPE="executionplane"
         KEPTN_DELIVERYPLANE="false"
         KEPTN_EXECUTIONPLANE="true"
         KEPTN_CONTROLPLANE="false"
