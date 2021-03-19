@@ -46,6 +46,7 @@ FQDN="none"
 KEPTN_DOMAIN="none"
 PREFIX="https"
 CERTS="selfsigned"
+CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
 XIP="false"
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
@@ -843,7 +844,7 @@ function main {
     --letsencrypt)
         echo "Will try to create LetsEncrypt certs"
         CERTS="letsencrypt"
-        if [[ "$CERT_EMAIL" == "" ]]; then
+        if [[ "$CERT_EMAIL" == "none" ]]; then
           if [[ "$OWNER_EMAIL" == "none" ]]; then
             echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
             exit 1
