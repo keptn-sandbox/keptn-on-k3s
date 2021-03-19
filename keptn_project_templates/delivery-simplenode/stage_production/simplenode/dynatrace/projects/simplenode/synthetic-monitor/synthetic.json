@@ -29,7 +29,7 @@
       ]
     },
     "locations": [
-      "GEOLOCATION-388A5AD15726CB6F"
+      "{{ .location }}"
     ],
     "anomalyDetection": {
       "outageHandling": {

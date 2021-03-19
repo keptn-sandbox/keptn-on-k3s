@@ -19,9 +19,10 @@
 
 # The files in the repo can contain certain PLACEHOLDERS which will be replaced before uploaded. 
 # The replacement happens in .tmp files - so - no original files will be changed. Here the list of REPLACE options
-# REPLACE_KEPTN_BRIDGE   with -> KEPTN_BRIDGE_PROJECT_ESCAPED
-# REPLACE_OWNER_EMAIL    with -> OWNER_EMAIL
-# REPLACE_KEPTN_INGRESS  with -> KEPTN_INGRESS
+# REPLACE_KEPTN_BRIDGE         with -> KEPTN_BRIDGE_PROJECT_ESCAPED
+# REPLACE_OWNER_EMAIL          with -> OWNER_EMAIL
+# REPLACE_KEPTN_INGRESS        with -> KEPTN_INGRESS
+# REPLACE_SYNTHETIC_LOCATION   with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
 
 # default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
@@ -30,6 +31,7 @@ TEMPLATE_DIRECTORY="keptn_project_templates"
 TEMPLATE_NAME=${1:-none}
 OWNER_EMAIL=${2:-none}
 PROJECT_NAME=${3:-none}
+SYNTHETIC_LOCATION=${SYNTHETIC_LOCATION:-GEOLOCATION-45AB48D9D6925ECC}
 
 # Expected Env Variables that should be set!
 # KEPTN_ENDPOINT="https://keptn.yourkeptndomain.abc

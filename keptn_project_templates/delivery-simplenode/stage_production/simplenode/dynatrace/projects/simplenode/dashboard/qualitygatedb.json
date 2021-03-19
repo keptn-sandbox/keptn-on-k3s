@@ -28,7 +28,7 @@
         "tileFilter": {},
         "filterConfig": {
             "type": "MIXED",
-            "customName": "Server side response time;sli=response_time_p95;pass=<600;warning=<=800",
+            "customName": "Server side response time;sli=response_time_p95;pass=<800;warning=<=1000",
             "defaultName": "Custom chart",
             "chartConfig": {
                 "legendShown": true,
@@ -94,7 +94,7 @@
         "tileFilter": {},
         "filterConfig": {
             "type": "MIXED",
-            "customName": "Server side response time;sli=response_time_p90;pass=<=500;warning=<=600",
+            "customName": "Server side response time;sli=response_time_p90;pass=<=800;warning=<=1000",
             "defaultName": "Custom chart",
             "chartConfig": {
                 "legendShown": true,
@@ -138,7 +138,7 @@
         },
         "tileFilter": {}
     }, {
-        "name": "SLOs for Server Side Response Times (p50, p90, p95)",
+        "name": "SLOs for Throughput",
         "tileType": "HEADER",
         "configured": true,
         "bounds": {
@@ -149,7 +149,7 @@
         },
         "tileFilter": {}
     }, {
-        "name": "SLOs for Server Side Response Times (p50, p90, p95)",
+        "name": "SLOs for Failure Rate",
         "tileType": "HEADER",
         "configured": true,
         "bounds": {
@@ -172,7 +172,7 @@
         "tileFilter": {},
         "filterConfig": {
             "type": "MIXED",
-            "customName": "Throuhput (Server Side Request Count);sli=throughput;pass=>4000",
+            "customName": "Throuhput (Server Side Request Count);sli=throughput;pass=>3000",
             "defaultName": "Custom chart",
             "chartConfig": {
                 "legendShown": true,

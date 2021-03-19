@@ -8,3 +8,4 @@ synthetic_http_prod_check:
     - project: "{{ .Env.KEPTN_PROJECT }}"
     - stage: "{{ .Env.KEPTN_STAGE }}"
     - service: "{{ .Env.KEPTN_SERVICE }}"
+    - location: "REPLACE_SYNTHETIC_LOCATION"  # Frankfurt (AWS) would be GEOLOCATION-388A5AD15726CB6F

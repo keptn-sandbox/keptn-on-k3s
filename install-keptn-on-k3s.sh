@@ -30,7 +30,7 @@ PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.11.0"
 DT_SLI_SERVICE_VERSION="release-0.8.0"
-GENERICEXEC_SERVICE_VERSION="release-0.3"
+GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
 MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
 
 # Dynatrace Credentials
@@ -844,8 +844,13 @@ function main {
         echo "Will try to create LetsEncrypt certs"
         CERTS="letsencrypt"
         if [[ "$CERT_EMAIL" == "" ]]; then
-          echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
-          exit 1
+          if [[ "$OWNER_EMAIL" == "none" ]]; then
+            echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
+            exit 1
+          else 
+            echo "As CERT_EMAIL is not set taking $OWNER_EMAIL for CERT_EMAIL"
+            CERT_EMAIL="$OWNER_EMAIL"
+          fi 
         fi
         if [[ "$LE_STAGE" != "production" ]]; then
           echo "Be aware that this will issue staging certificates"
