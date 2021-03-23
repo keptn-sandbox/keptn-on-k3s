@@ -8,10 +8,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ template "podtatohead.fullname" . }}.{{ .Release.Namespace }}
+    - {{ .Values.ingress.hostNameMain }}
     secretName: {{ .Values.ingress.secretName }}
   rules:
-    - host: {{ template "podtatohead.fullname" . }}.{{ .Release.Namespace }}
+    - host: {{ .Values.ingress.hostNameMain }}
       http:
         paths:
           - path: /
@@ -32,10 +32,10 @@ metadata:
 spec:
   tls:
   - hosts:
-    - {{ template "podtatohead.fullname" . }}-preview.{{ .Release.Namespace }}
+    - {{ .Values.ingress.hostNamePreview }}
     secretName: {{ .Values.ingress.secretName }}
   rules:
-    - host: {{ template "podtatohead.fullname" . }}-preview.{{ .Release.Namespace }}
+    - host: {{ .Values.ingress.hostNamePreview }}
       http:
         paths:
           - path: /

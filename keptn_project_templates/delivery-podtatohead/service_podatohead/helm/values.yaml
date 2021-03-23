@@ -12,6 +12,8 @@ image:
 ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
+  hostNameMain: podatohead.delivery-podtatohead-prod.keptn08-agrabner.demo.keptn.sh
+  hostNamePreview: podatohead-preview.delivery-podtatohead-prod.keptn08-agrabner.demo.keptn.sh
 
 service:
   type: ClusterIP
