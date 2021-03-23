@@ -10,7 +10,8 @@ image:
   pullPolicy: Always
 
 ingress:
-  hostname: {{ template "podtatohead.fullname" . }}.delivery-podtatohead-prod
+  cluster-issuer: issuer.letsencrypt
+  secretName: keptn-tls
 
 service:
   type: ClusterIP
