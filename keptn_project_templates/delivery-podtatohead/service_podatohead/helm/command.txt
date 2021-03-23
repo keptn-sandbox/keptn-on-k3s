@@ -1,5 +1,20 @@
-kubectl argo rollouts list rollouts
 
-kubectl argo rollouts get rollout helloservice-rollout  -w
+# Helm Service: Create NS and install chart!
+kubectl create ns delivery-podtatohead-prod
+helm upgrade --install podtatohead . -n delivery-podtatohead-prod
 
-kubectl argo rollouts promote helloservice-rollout
+# Rollout: Validate that rollouts are listed!
+kubectl argo rollouts list rollouts -n delivery-podtatohead-prod
+
+# Rollout: Watch rollout status
+kubectl argo rollouts get rollout podtatohead-prod -n delivery-podtatohead-prod -w
+
+
+kubectl argo rollouts promote podtatohead-prod -n delivery-podtatohead-prod
+
+
+
+
+http://podtatohead-podtatoserver-demo.delivery-podtatohead-prod.keptn.keptn08-agrabner.demo.keptn.sh/
+http://simplenode.demo-delivery-production.keptn.keptn08-agrabner.demo.keptn.sh/
+http://simplenode.demo-delivery-production.keptn.keptn08-agrabner.demo.keptn.sh/
