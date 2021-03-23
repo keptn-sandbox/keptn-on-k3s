@@ -9,6 +9,9 @@ image:
   tag: v0.1.0
   pullPolicy: Always
 
+ingress:
+  hostname: {{ template "podtatohead.fullname" . }}.delivery-podtatohead-prod
+
 service:
   type: ClusterIP
   port: 9000

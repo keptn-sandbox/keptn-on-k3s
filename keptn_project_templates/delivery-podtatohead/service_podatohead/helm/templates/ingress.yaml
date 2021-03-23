@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ template "podtatohead.fullname" . }}-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: issuer.letsencrypt
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.ingress.host }}
+    secretName: keptn-tls
+  rules:
+    - host: {{ .Values.ingress.host }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ template "podtatohead.fullname" . }}
+                port: 
+                  number: 80
