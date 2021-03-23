@@ -3,13 +3,13 @@ kind: Ingress
 metadata:
   name: {{ template "podtatohead.fullname" . }}-ingress
   annotations:
-    cert-manager.io/cluster-issuer: {{ Values.ingress.cluster-issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.cluster-issuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
     - {{ template "podtatohead.fullname" . }}.{{ Release.Namespace }}
-    secretName: {{ Values.ingress.secretName }}
+    secretName: {{ .Values.ingress.secretName }}
   rules:
     - host: {{ template "podtatohead.fullname" . }}.{{ Release.Namespace }}
       http:
@@ -27,13 +27,13 @@ kind: Ingress
 metadata:
   name: {{ template "podtatohead.fullname" . }}-preview-ingress
   annotations:
-    cert-manager.io/cluster-issuer: {{ Values.ingress.cluster-issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.cluster-issuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
     - {{ template "podtatohead.fullname" . }}-preview.{{ Release.Namespace }}
-    secretName: {{ Values.ingress.secretName }}
+    secretName: {{ .Values.ingress.secretName }}
   rules:
     - host: {{ template "podtatohead.fullname" . }}-preview.{{ Release.Namespace }}
       http:
