@@ -160,9 +160,6 @@ do
         continue; 
     fi
 
-    # any other file or folder in a service_XXXX directory we simply ignore
-    if [[ "${localFileName}" == *"/service_"* ]]; then continue; fi
-
     # Lets validate that the file is actually a file!
     if ! [ -f "$localFileName" ]; then continue; fi
 
@@ -171,12 +168,21 @@ do
 
     # Validate if the file is in stage_STAGENAME directory. If so set STAGE_NAME lets remove that directory for the uploaded resourceUri
     RESOURCE_STAGE_NAME=""
+    RESOURCE_SERVICE_NAME=""
     REMOVE_FROM_REMOTE_FILENAME=""
     if [[ "${localFileName}" == *"/stage_"* ]]; then 
       RESOURCE_STAGE_NAME=$(echo "${localFileName##*/stage_}")
       RESOURCE_STAGE_NAME=$(echo "${RESOURCE_STAGE_NAME%%/*}")
       REMOVE_FROM_REMOTE_FILENAME="stage_${RESOURCE_STAGE_NAME}"
       echo $REMOVE_FROM_REMOTE_FILENAME
+    fi
+
+    # Validate if the file is in service_SERVICENAME directory. If so set SERVICE_NAME lets remove that directory for the uploaded resourceUri
+    if [[ "${localFileName}" == *"/service_"* ]]; then 
+        RESOURCE_SERVICE_NAME=$(echo "${localFileName##*/service_}")
+        RESOURCE_SERVICE_NAME=$(echo "${RESOURCE_SERVICE_NAME%%/*}")
+        REMOVE_FROM_REMOTE_FILENAME="service_${RESOURCE_SERVICE_NAME}"
+        echo $REMOVE_FROM_REMOTE_FILENAME    
     fi
 
     #
@@ -197,7 +203,7 @@ do
     # echo "Processing localFileName: ${localFileName}"
     # echo "Using remoteFileName: ${remoteFileName}"
     # Lets upload our file
-    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileName}"
+    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --service="${RESOURCE_SERVICE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileName}"
 
     # remove tmp file
     rm ${localFileName}.tmp
