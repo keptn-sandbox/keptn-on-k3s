@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: {{ template "podtatohead.fullname" . }}-ingress
   annotations:
-    cert-manager.io/cluster-issuer: {{ .Values.ingress.cluster-issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
@@ -27,7 +27,7 @@ kind: Ingress
 metadata:
   name: {{ template "podtatohead.fullname" . }}-preview-ingress
   annotations:
-    cert-manager.io/cluster-issuer: {{ .Values.ingress.cluster-issuer }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:

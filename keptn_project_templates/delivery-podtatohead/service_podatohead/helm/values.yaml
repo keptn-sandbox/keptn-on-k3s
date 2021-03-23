@@ -10,7 +10,7 @@ image:
   pullPolicy: Always
 
 ingress:
-  cluster-issuer: issuer.letsencrypt
+  clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
 
 service:
