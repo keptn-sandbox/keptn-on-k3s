@@ -16,6 +16,8 @@ ingress:
   hostNamePreview: podatohead-preview.delivery-podtatohead-prod.keptn08-agrabner.demo.keptn.sh
 
 service:
+  name: podtatohead
+  stage: prod
   type: ClusterIP
   port: 9000
 

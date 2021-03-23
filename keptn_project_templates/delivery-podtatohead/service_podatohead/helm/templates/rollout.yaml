@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ template "podtatohead.fullname" . }}
+  name: {{ .Values.service.name }}-{{ .Values.service.stage }}
   labels:
     app: {{ template "podtatohead.name" . }}
     chart: {{ template "podtatohead.chart" . }}
