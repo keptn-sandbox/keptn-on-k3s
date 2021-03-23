@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Rollout
 metadata:
-  name: {{ .Values.service.name }}-{{ .Values.service.stage }}
+  name: {{ .Values.keptn.service }}-{{ .Values.keptn.stage }}
   labels:
     app: {{ template "podtatohead.name" . }}
     chart: {{ template "podtatohead.chart" . }}
@@ -33,6 +33,13 @@ spec:
       labels:
         app: {{ template "podtatohead.name" . }}
         release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ .Values.keptn.service }}
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+        app.kubernetes.io/component: api
+        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+        app.kubernetes.io/managed-by: Keptn
+        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
       containers:
         - name: {{ .Chart.Name }}

@@ -1,17 +1,17 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "podtatohead.fullname" . }}-ingress
+  name: podtatohead-ingress
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
-    - {{ .Values.ingress.hostNameMain }}
+    - {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
     secretName: {{ .Values.ingress.secretName }}
   rules:
-    - host: {{ .Values.ingress.hostNameMain }}
+    - host: {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
       http:
         paths:
           - path: /
@@ -25,17 +25,17 @@ spec:
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: {{ template "podtatohead.fullname" . }}-preview-ingress
+  name: podtatohead-preview-ingress
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:
   tls:
   - hosts:
-    - {{ .Values.ingress.hostNamePreview }}
+    - {{ .Values.keptn.service }}-preview.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
     secretName: {{ .Values.ingress.secretName }}
   rules:
-    - host: {{ .Values.ingress.hostNamePreview }}
+    - host: {{ .Values.keptn.service }}-preview.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
       http:
         paths:
           - path: /
