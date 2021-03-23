@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "helloservice-demo.fullname" . }}
+  name: {{ template "podtatohead.fullname" . }}
   labels:
-    app: {{ template "helloservice-demo.name" . }}
-    chart: {{ template "helloservice-demo.chart" . }}
+    app: {{ template "podtatohead.name" . }}
+    chart: {{ template "podtatohead.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -16,16 +16,16 @@ spec:
       name: http
   type: ClusterIP    
   selector:
-    app: {{ template "helloservice-demo.name" . }}
+    app: {{ template "podtatohead.name" . }}
     release: {{ .Release.Name }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "helloservice-demo.fullname" . }}-preview
+  name: {{ template "podtatohead.fullname" . }}-preview
   labels:
-    app: {{ template "helloservice-demo.name" . }}
-    chart: {{ template "helloservice-demo.chart" . }}
+    app: {{ template "podtatohead.name" . }}
+    chart: {{ template "podtatohead.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -36,5 +36,5 @@ spec:
       protocol: TCP
       name: http
   selector:
-    app: {{ template "helloservice-demo.name" . }}
+    app: {{ template "podtatohead.name" . }}
     release: {{ .Release.Name }}
