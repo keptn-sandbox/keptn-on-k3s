@@ -1,0 +1,29 @@
+{
+    "type": "sh.keptn.event.prod.delivery.triggered",
+    "shkeptnspecversion": "0.2.0",
+    "specversion": "1.0",
+    "source": "test",
+    "contenttype": "application/json",
+    "data": {
+      "project": "delivery-podtatohead",
+      "stage": "prod",
+      "service": "podtatohead",
+      "labels": {
+        "deployWith": "ArgoRollout",
+        "buildId": "build1",
+        "owner": "Andi"
+      },
+      "configurationChange": {
+      },
+
+      "deployment": {
+        "deploymentNames": [
+            "user_managed"
+        ],          
+        "deploymentURIsPublic": [
+            "http://podtatohead-podtatoserver-demo-preview.delivery-podtatohead-prod.keptn08-agrabner.demo.keptn.sh/"
+          ],
+          "deploymentstrategy": "user_managed"
+      }
+    }
+}

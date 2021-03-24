@@ -38,7 +38,7 @@ spec:
         app.kubernetes.io/component: api
         app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
         app.kubernetes.io/managed-by: Keptn
-        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
+        app.kubernetes.io/version: {{ .Values.image.tag }}
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
       containers:
