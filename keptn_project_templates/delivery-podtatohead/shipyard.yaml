@@ -26,7 +26,8 @@ spec:
       - name: release
       - name: test
         properties:
-          teststrategy: performance
+          teststrategy: canary_wait
+          CanaryWaitDuration: 2m
       - name: evaluation
       - name: approval
         properties:
@@ -42,7 +43,8 @@ spec:
       - name: release
       - name: test
         properties:
-          teststrategy: performance
+          teststrategy: canary_wait
+          CanaryWaitDuration: 2m
       - name: evaluation
       - name: approval
         properties:

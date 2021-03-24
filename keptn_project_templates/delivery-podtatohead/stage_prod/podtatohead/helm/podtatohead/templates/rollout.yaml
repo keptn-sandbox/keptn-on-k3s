@@ -20,13 +20,11 @@ spec:
       # activeService: {{ template "podtatohead.fullname" . }}
       # previewService: {{ template "podtatohead.fullname" . }}-preview
        steps:
-       - setWeight: 20
+       - setWeight: 25
        - pause: {}
-       - setWeight: 40
+       - setWeight: 50
        - pause: {}
-       - setWeight: 60
-       - pause: {}
-       - setWeight: 80
+       - setWeight: 75
        - pause: {}      
   template:
     metadata:
