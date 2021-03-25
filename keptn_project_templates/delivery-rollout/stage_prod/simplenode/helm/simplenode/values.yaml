@@ -18,7 +18,7 @@ service:
   name: simplenode
   stage: prod
   type: ClusterIP
-  port: 9000
+  port: 8080
 
 resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious

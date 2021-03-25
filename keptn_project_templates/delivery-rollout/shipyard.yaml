@@ -4,11 +4,10 @@ metadata:
   name: "shipyard-delivery-rollout"
 spec:
   stages:
-  - name: prod
+  - name: prod           # Initial Deployment, Test and Evaluation
     sequences:
     - name: delivery
       tasks:
-      # Initial Deployment, Test and Evaluation
       - name: deployment
         properties:
           deploymentstrategy: user_managed
@@ -18,20 +17,17 @@ spec:
       - name: evaluation
       - name: approval
         properties:
-          pass: automatic
-          warning: automatic
-      # Phase 1 of Rollout: Release, Test, Evaluate
-      - name: release
-      - name: test
-        properties:
-          teststrategy: real-user
-          canarywaitduration: 2m
-      - name: evaluation
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic
-      # Phase 2 of Rollout: Release, Test, Evaluate
+          pass: manual
+          warning: manual
+  - name: canary_rollout_1  # Phase 1 of Rollout: Release, Test, Evaluate
+    sequences:
+    - name: delivery
+      triggeredOn:
+        - event: prod.delivery.finished
+          selector:
+            match:
+              result: "pass"
+      tasks:
       - name: release
       - name: test
         properties:
@@ -44,7 +40,34 @@ spec:
           warning: automatic
     - name: rollback
       triggeredOn:
-      - event: prod.delivery.finished
+      - event: canary_rollout_1.delivery.finished
+        selector:
+          match:
+            result: "fail"
+      tasks:
+      - name: rollback          
+  - name: canary_rollout_2   # Phase 2 of Rollout: Release, Test, Evaluate
+    sequences:
+    - name: delivery
+      triggeredOn:
+        - event: canary_rollout_1.delivery.finished
+          selector:
+            match:
+              result: "pass"
+      tasks:
+      - name: release
+      - name: test
+        properties:
+          teststrategy: real-user
+          canarywaitduration: 2m
+      - name: evaluation
+      - name: approval
+        properties:
+          pass: automatic
+          warning: automatic
+    - name: rollback
+      triggeredOn:
+      - event: canary_rollout_2.delivery.finished
         selector:
           match:
             result: "fail"
