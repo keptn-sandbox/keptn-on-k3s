@@ -34,6 +34,7 @@ DT_SERVICE_VERSION="release-0.11.0"
 DT_SLI_SERVICE_VERSION="release-0.8.0"
 GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
 MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
+ARGO_SERVICE_VERSION="updates/finalize08" # release-0.8.0
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -437,6 +438,9 @@ function install_keptn {
 
     # now we need to restart the helm service for it to pick up istio
     kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
+
+    # Install the Argo Service
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
@@ -460,6 +464,9 @@ function install_keptn {
     yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+
+    # Install the Argo Service
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
