@@ -19,7 +19,7 @@ spec:
         properties:
           pass: manual
           warning: manual
-  - name: canary_rollout_1  # Phase 1 of Rollout: Release, Test, Evaluate
+  - name: canaryphase1  # Phase 1 of Rollout: Release, Test, Evaluate
     sequences:
     - name: delivery
       triggeredOn:
@@ -40,17 +40,17 @@ spec:
           warning: automatic
     - name: rollback
       triggeredOn:
-      - event: canary_rollout_1.delivery.finished
+      - event: canaryphase1.delivery.finished
         selector:
           match:
             result: "fail"
       tasks:
       - name: rollback          
-  - name: canary_rollout_2   # Phase 2 of Rollout: Release, Test, Evaluate
+  - name: canaryphase2   # Phase 2 of Rollout: Release, Test, Evaluate
     sequences:
     - name: delivery
       triggeredOn:
-        - event: canary_rollout_1.delivery.finished
+        - event: canaryphase1.delivery.finished
           selector:
             match:
               result: "pass"
@@ -67,7 +67,7 @@ spec:
           warning: automatic
     - name: rollback
       triggeredOn:
-      - event: canary_rollout_2.delivery.finished
+      - event: canaryphase2.delivery.finished
         selector:
           match:
             result: "fail"
