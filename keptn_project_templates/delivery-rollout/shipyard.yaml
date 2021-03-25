@@ -24,7 +24,7 @@ spec:
       - name: release
       - name: test
         properties:
-          teststrategy: canarywait
+          teststrategy: real-user
           canarywaitduration: 2m
       - name: evaluation
       - name: approval
@@ -35,7 +35,7 @@ spec:
       - name: release
       - name: test
         properties:
-          teststrategy: canarywait
+          teststrategy: real-user
           canarywaitduration: 2m
       - name: evaluation
       - name: approval

@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: podtatohead-ingress
+  name: simplenode-ingress
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -18,14 +18,14 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ template "podtatohead.fullname" . }}
+                name: {{ template "simplenode.fullname" . }}
                 port: 
                   number: 80
 ---
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: podtatohead-preview-ingress
+  name: simplenode-preview-ingress
   annotations:
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -42,6 +42,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: {{ template "podtatohead.fullname" . }}-preview
+                name: {{ template "simplenode.fullname" . }}-preview
                 port: 
                   number: 80

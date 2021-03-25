@@ -23,30 +23,30 @@ kubectl argo rollouts version
 ## Create a project
 
 ```
-kubectl create ns demospace-argo
-helm install hs-rollout . -n demospace-argo
+kubectl create ns delivery-simplenode-prod
+helm install hs-rollout . -n delivery-simplenode-prod
 ```
 
 ## Find our current rollout with the command line
 
 ```
-kubectl argo rollouts list rollouts -n demospace-argo
+kubectl argo rollouts list rollouts -n delivery-simplenode-prod
 ```
 
 ## Watch the current rollout on the command line
 
 ```
-kubectl argo rollouts get rollout podtatoserver-demo  -w -n demospace-argo
+kubectl argo rollouts get rollout simplenode-prod  -w -n delivery-simplenode-prod
 ```
 
 ## Update the release in the values file
 
 ```
-helm upgrade hs-rollout . -n demospace-argo --set image.tag=v0.1.2
+helm upgrade hs-rollout . -n delivery-simplenode-prod --set image.tag=2.0.0
 ```
 
 ## Manually promote the rollout after the first canary steps
 
 ```
-kubectl argo rollouts promote podtatoserver-demo -n demospace-argo
+kubectl argo rollouts promote simplenode-prod -n delivery-simplenode-prod
 ```

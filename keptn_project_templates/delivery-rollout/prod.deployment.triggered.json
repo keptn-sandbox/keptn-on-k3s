@@ -2,15 +2,15 @@
     "type": "sh.keptn.event.prod.delivery.triggered",
     "shkeptnspecversion": "0.2.0",
     "specversion": "1.0",
-    "source": "test",
+    "source": "triggered-via-api",
     "contenttype": "application/json",
     "data": {
-      "project": "delivery-podtatohead",
+      "project": "delivery-simplenode",
       "stage": "prod",
-      "service": "podtatohead",
+      "service": "simplenode",
       "labels": {
         "deployWith": "ArgoRollout",
-        "buildId": "build1",
+        "buildId": "1.0.0",
         "owner": "Andi"
       },
       "configurationChange": {
@@ -21,9 +21,9 @@
             "user_managed"
         ],          
         "deploymentURIsPublic": [
-            "http://podtatohead-podtatoserver-demo-preview.delivery-podtatohead-prod.keptn08-agrabner.demo.keptn.sh/"
+            "http://simplenode.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS"
           ],
-          "deploymentstrategy": "user_managed"
+        "deploymentstrategy": "user_managed"
       }
     }
 }

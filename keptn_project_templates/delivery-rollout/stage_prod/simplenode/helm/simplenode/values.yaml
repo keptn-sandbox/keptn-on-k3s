@@ -5,19 +5,19 @@
 replicaCount: 5
 
 image:
-  repository: ghcr.io/podtato-head/podtatoserver
-  tag: v0.1.0
+  repository: docker.io/grabnerandi/simplenodeservice
+  tag: 1.0.0
   pullPolicy: Always
 
 ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
   ingressHost: REPLACE_KEPTN_INGRESS
-  hostNameMain: podatohead.delivery-podtatohead-prod.REPLACE_KEPTN_INGRESS
-  hostNamePreview: podatohead-preview.delivery-podtatohead-prod.REPLACE_KEPTN_INGRESS
+  hostNameMain: podatohead.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS
+  hostNamePreview: podatohead-preview.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS
 
 service:
-  name: podtatohead
+  name: simplenode
   stage: prod
   type: ClusterIP
   port: 9000

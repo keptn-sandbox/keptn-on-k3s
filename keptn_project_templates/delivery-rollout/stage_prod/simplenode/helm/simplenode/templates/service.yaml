@@ -1,10 +1,10 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "podtatohead.fullname" . }}
+  name: {{ template "simplenode.fullname" . }}
   labels:
-    app: {{ template "podtatohead.name" . }}
-    chart: {{ template "podtatohead.chart" . }}
+    app: {{ template "simplenode.name" . }}
+    chart: {{ template "simplenode.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -17,16 +17,16 @@ spec:
       port: 80
   type: ClusterIP    
   selector:
-    app: {{ template "podtatohead.name" . }}
+    app: {{ template "simplenode.name" . }}
     release: {{ .Release.Name }}
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: {{ template "podtatohead.fullname" . }}-preview
+  name: {{ template "simplenode.fullname" . }}-preview
   labels:
-    app: {{ template "podtatohead.name" . }}
-    chart: {{ template "podtatohead.chart" . }}
+    app: {{ template "simplenode.name" . }}
+    chart: {{ template "simplenode.chart" . }}
     release: {{ .Release.Name }}
     heritage: {{ .Release.Service }}
 spec:
@@ -38,5 +38,5 @@ spec:
       name: http
       port: 80
   selector:
-    app: {{ template "podtatohead.name" . }}
+    app: {{ template "simplenode.name" . }}
     release: {{ .Release.Name }}
