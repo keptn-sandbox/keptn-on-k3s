@@ -8,6 +8,7 @@ spec:
     sequences:
     - name: delivery
       tasks:
+      # Initial Deployment, Test and Evaluation
       - name: deployment
         properties:
           deploymentstrategy: user_managed
@@ -19,32 +20,23 @@ spec:
         properties:
           pass: automatic
           warning: automatic
-    - name: delivery_canary_step1
-      triggeredOn:
-      - event: prod.delivery.finished
-      tasks:  
+      # Phase 1 of Rollout: Release, Test, Evaluate
       - name: release
       - name: test
         properties:
-          teststrategy: canary_wait
-          CanaryWaitDuration: 2m
+          teststrategy: canarywait
+          canarywaitduration: 2m
       - name: evaluation
       - name: approval
         properties:
           pass: automatic
           warning: automatic
-    - name: delivery_canary_step2
-      triggeredOn:
-      - event: delivery_canary_step1
-        selector:
-          match:
-            result: "pass"      
-      tasks:  
+      # Phase 2 of Rollout: Release, Test, Evaluate
       - name: release
       - name: test
         properties:
-          teststrategy: canary_wait
-          CanaryWaitDuration: 2m
+          teststrategy: canarywait
+          canarywaitduration: 2m
       - name: evaluation
       - name: approval
         properties:
@@ -56,13 +48,5 @@ spec:
         selector:
           match:
             result: "fail"
-      - event: prod.delivery_canary_step1.finished
-        selector:
-          match:
-            result: "fail"
-      - event: prod.delivery_canary_step2.finished
-        selector:
-          match:
-            result: "fail"              
       tasks:
       - name: rollback

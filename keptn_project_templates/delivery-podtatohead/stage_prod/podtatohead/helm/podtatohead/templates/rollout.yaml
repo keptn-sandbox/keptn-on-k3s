@@ -43,6 +43,16 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
+        - name: DT_CUSTOM_PROP
+          value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
+        - name: KEPTN_PROJECT
+          value: "{{ .Values.keptn.project }}"
+        - name: KEPTN_STAGE
+          value: "{{ .Values.keptn.stage }}"
+        - name: KEPTN_SERVICE
+          value: "{{ .Values.keptn.service }}"
+        - name: KEPTN_DEPLOYMENT
+          value: "{{ .Values.keptn.deployment }}"
           ports:
             - name: http
               containerPort: 9000
