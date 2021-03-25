@@ -13,8 +13,6 @@ ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
   ingressHost: REPLACE_KEPTN_INGRESS
-  hostNameMain: podatohead.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS
-  hostNamePreview: podatohead-preview.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS
 
 service:
   name: simplenode

@@ -5,7 +5,7 @@
     "source": "triggered-via-api",
     "contenttype": "application/json",
     "data": {
-      "project": "delivery-simplenode",
+      "project": "delivery-rollout",
       "stage": "prod",
       "service": "simplenode",
       "labels": {
@@ -21,7 +21,7 @@
             "user_managed"
         ],          
         "deploymentURIsPublic": [
-            "http://simplenode.delivery-simplenode-prod.REPLACE_KEPTN_INGRESS"
+            "http://simplenode.delivery-rollout-prod.REPLACE_KEPTN_INGRESS"
           ],
         "deploymentstrategy": "user_managed"
       }
