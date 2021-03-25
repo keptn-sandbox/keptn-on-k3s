@@ -20,6 +20,8 @@ spec:
         properties:
           pass: manual
           warning: manual
+
+
     # Phase 1 of Rollout: Release, Test, Evaluate
     - name: canaryphase1
       triggeredOn:
@@ -37,7 +39,8 @@ spec:
       - name: approval
         properties:
           pass: automatic
-          warning: automatic
+          warning: manual
+
     # Phase 2 of Rollout: Release, Test, Evaluate
     - name: canaryphase2
       triggeredOn:
@@ -56,6 +59,25 @@ spec:
         properties:
           pass: automatic
           warning: automatic
+
+    # Phase 3 (Final) of Rollout: Release, Test, Evaluate
+    - name: canaryphase3
+      triggeredOn:
+        - event: prod.canaryphase2.finished
+          selector:
+            match:
+              result: "pass"
+      tasks:
+      - name: release
+      - name: test
+        properties:
+          teststrategy: real-user
+          canarywaitduration: 2m
+      - name: evaluation
+      - name: approval
+        properties:
+          pass: automatic
+          warning: automatic          
     - name: rollback
       triggeredOn:
       - event: prod.delivery.finished
@@ -70,5 +92,9 @@ spec:
         selector:
           match:
             result: "fail"
+      - event: prod.canaryphase3.finished
+        selector:
+          match:
+            result: "fail"            
       tasks:
       - name: rollback          

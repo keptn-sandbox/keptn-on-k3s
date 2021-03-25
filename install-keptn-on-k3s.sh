@@ -14,6 +14,8 @@ INGRESS_PORT="80"
 INGRESS_PROTOCOL="http"
 ISTIO_GATEWAY="public-gateway.istio-system"
 
+ARGO_ROLLOUTS_VERSION="stable"
+
 # For execution plane these are the env-variables that identify the keptn control plane
 # KEPTN_CONTROL_PLANE_DOMAIN=""
 # KEPTN_CONTROL_PLANE_API_TOKEN=""
@@ -101,6 +103,8 @@ KEPTN_DELIVERY_STAGE_DEV="dev"
 KEPTN_DELIVERY_STAGE_STAGING="staging"
 KEPTN_DELIVERY_STAGE_PRODUCTION="production"
 KEPTN_DELIVERY_SERVICE="simplenode"
+
+KEPTN_ROLLOUT_PROJECT="demo-rollout"
 
 KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
 KEPTN_ADV_PERFORMANCE_STAGE="performance"
@@ -272,13 +276,26 @@ function get_helm {
   /tmp/get_helm.sh
 }
 
+function get_argorollouts {
+  echo "Install Argo Rollouts from ${ARGO_ROLLOUTS_VERSION}"
+
+  # First installing Argo Rollouts itself
+  "${K3SKUBECTL[@]}" create namespace argo-rollouts
+  "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
+
+  # now also installing the argo rollout extension for kubectl
+  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_VERSION}/download/kubectl-argo-rollouts-linux-amd64
+  sudo chmod +x ./kubectl-argo-rollouts-linux-amd64
+  sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+}
+
 function get_istio {
   ISTIO_EXISTS=$(kubectl get po -n istio-system | grep Running | wc | awk '{ print $1 }')
   if [[ "$ISTIO_EXISTS" -gt "0" ]]
   then
-    echo "3. Istio already installed on k8s"
+    echo "Istio already installed on k8s"
   else
-    echo "3. Downloading and installing Istio ${ISTIO_VERSION}"
+    echo "Downloading and installing Istio ${ISTIO_VERSION}"
     curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIO_VERSION} sh -
     sudo mv istio-${ISTIO_VERSION}/bin/istioctl /usr/local/bin/istioctl
 
@@ -416,6 +433,7 @@ function install_keptn {
 
     # need to install Istio for Delivery Plane as we are potentially depoying sevices blue / green
     get_istio
+    get_argorollouts
 
     # now we need to restart the helm service for it to pick up istio
     kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
@@ -430,6 +448,7 @@ function install_keptn {
 
     # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
     get_istio
+    get_argorollouts
 
     # Install the Helm Service
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
@@ -674,7 +693,7 @@ function install_demo_dynatrace {
   ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT}
 
   # ==============================================================================================
-  # Demo 4: Delivery
+  # Demo 4: Blue/Green Delivery with Istio
   # Creates a 3 stage delivery project to delivery the singlenode sample app in dev, staging and production
   # ==============================================================================================
   echo "----------------------------------------------"
@@ -682,7 +701,15 @@ function install_demo_dynatrace {
   ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT}
 
   # ==============================================================================================
-  # Demo 5: Advanced Performance
+  # Demo 5: Canary Delivery with Argo Rollouts
+  # Creates canary delivery project using Argo Rollouts
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_ROLLOUT_PROJECT}"
+  ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}
+
+  # ==============================================================================================
+  # Demo 6: Advanced Performance
   # Creates a project with 3 sequences of performance testing: functional, simple load, performance
   # ==============================================================================================
   echo "----------------------------------------------"
@@ -727,7 +754,7 @@ fi
   if [[ "${DEMO}" == "dynatrace" ]]; then
   write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
   cat << EOF
-3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+6 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 
 For the Quality Gate Use case you can do this::
 1: Open the Keptn's Bridge for your Quality Gate Project: 
@@ -764,6 +791,14 @@ To trigger a delivery simple do this
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+For the Canary Delivery Use Case we have created project ${KEPTN_ROLLOUT_PROJECT} that uses Argo Rollouts for production canary deployments
+To trigger a delivery simple do this
+1: Trigger a delivery through the Keptn API as explained in the readme
+2: Watch the delivery progress in Keptn's bridge
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
 
 For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
 To trigger a delivery simple do this
