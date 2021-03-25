@@ -4,9 +4,10 @@ metadata:
   name: "shipyard-delivery-rollout"
 spec:
   stages:
-  - name: prod           # Initial Deployment, Test and Evaluation
+  - name: prod           
     sequences:
-    - name: delivery
+    # Initial Deployment, Test and Evaluation
+    - name: delivery        
       tasks:
       - name: deployment
         properties:
@@ -19,9 +20,8 @@ spec:
         properties:
           pass: manual
           warning: manual
-  - name: canaryphase1  # Phase 1 of Rollout: Release, Test, Evaluate
-    sequences:
-    - name: delivery
+    # Phase 1 of Rollout: Release, Test, Evaluate
+    - name: canaryphase1
       triggeredOn:
         - event: prod.delivery.finished
           selector:
@@ -38,19 +38,10 @@ spec:
         properties:
           pass: automatic
           warning: automatic
-    - name: rollback
+    # Phase 2 of Rollout: Release, Test, Evaluate
+    - name: canaryphase2
       triggeredOn:
-      - event: canaryphase1.delivery.finished
-        selector:
-          match:
-            result: "fail"
-      tasks:
-      - name: rollback          
-  - name: canaryphase2   # Phase 2 of Rollout: Release, Test, Evaluate
-    sequences:
-    - name: delivery
-      triggeredOn:
-        - event: canaryphase1.delivery.finished
+        - event: prod.canaryphase1.finished
           selector:
             match:
               result: "pass"
@@ -67,9 +58,17 @@ spec:
           warning: automatic
     - name: rollback
       triggeredOn:
-      - event: canaryphase2.delivery.finished
+      - event: prod.delivery.finished
+        selector:
+          match:
+            result: "fail"
+      - event: prod.canaryphase1.finished
+        selector:
+          match:
+            result: "fail"
+      - event: prod.canaryphase2.finished
         selector:
           match:
             result: "fail"
       tasks:
-      - name: rollback
+      - name: rollback          
