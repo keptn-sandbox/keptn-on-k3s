@@ -1,0 +1,50 @@
+apiVersion: spec.keptn.sh/0.1.4
+kind: Remediation
+metadata:
+  name: dynatrace-demo-remediation
+spec:
+  remediations:  
+  - problemType: Simulated Power outage
+    actionsOnOpen:
+    - name: Handle Power Outage
+      action: poweroutageaction
+      description: In a power outage scenario we make sure nobody dripped on a cable
+      value:
+        Message: Please make sure nobody dripped on a cable!
+    - name: Escalate
+      action: escalate
+      description: Escalate to somebody that knows how to fix this
+      value:
+        Message: We are having a power outage!!
+  - problemType: Critical Performance Issue
+    actionsOnOpen:
+    - name: We escalate performance issues right away
+      action: escalate
+      description: Lets escalate performance issues for now
+      value:
+        Message: Help Us! We have a critical performance issue!
+  - problemType: Browser monitor global outage
+    actionsOnOpen:
+    - name: Validate DNS entries
+      action: validatedns
+      description: In a global outage we first validate if DNS is the problem
+    - name: Escalate
+      action: escalate
+      description: Escalate to humans in case DNS wasnt the issue
+      value:
+        Message: Global outage not caused by DNS
+  - problemType: default
+    actionsOnOpen:
+    - name: Our First Action
+      action: firstaction
+      description: This is the first remediation action triggered for any type of problem
+      value:
+        CustomKey1: customValue1
+        CustomKey2: customValue2
+    - name: Our Second Action
+      action: secondaction
+      description: This is the second remediation action triggered for any type of problem
+      value:
+        CustomKey1: customValue1
+        CustomKey2: customValue2
+    

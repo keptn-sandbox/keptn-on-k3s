@@ -1,0 +1,15 @@
+---
+spec_version: '0.1.0'
+workloads:
+  - teststrategy: canarywait
+    vuser: 1
+    loopcount: 5
+    thinktime: 250
+    acceptederrorrate: 1.0
+    script: jmeter/basiccheck.jmx
+  - teststrategy: performance
+    vuser: 10
+    loopcount: 100
+    thinktime: 250
+    acceptederrorrate: 1.0
+    script: jmeter/basiccheck.jmx

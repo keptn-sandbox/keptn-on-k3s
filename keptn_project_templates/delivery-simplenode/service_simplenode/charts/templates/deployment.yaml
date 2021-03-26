@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: simplenode
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: simplenode
+  template:
+    metadata: 
+      labels:
+        app: simplenode
+        app.kubernetes.io/name: {{ .Values.keptn.service }}
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+        app.kubernetes.io/component: api
+        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+        app.kubernetes.io/managed-by: Keptn
+        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    spec:
+      containers:
+      - name: simplenode
+        image: "{{ .Values.image }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: 8080
+        env:
+# Following DT_CLUSTER_ID would "hard code" the PGI naming which we will do through a naming rule using the meta data on this container
+#        - name: DT_CLUSTER_ID
+#          value: "{{ .Values.keptn.project }}.{{ .Values.keptn.service }}.{{ .Values.keptn.stage }}.{{ .Values.keptn.deployment }}"
+        - name: DT_CUSTOM_PROP
+          value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.name"
+        - name: DEPLOYMENT_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['deployment']"
+        - name: CONTAINER_IMAGE
+          value: "{{ .Values.image }}"
+        - name: KEPTN_PROJECT
+          value: "{{ .Values.keptn.project }}"
+        - name: KEPTN_STAGE
+          value: "{{ .Values.keptn.stage }}"
+        - name: KEPTN_SERVICE
+          value: "{{ .Values.keptn.service }}"
+        - name: KEPTN_DEPLOYMENT
+          value: "{{ .Values.keptn.deployment }}"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8080
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 15
+        resources:
+          limits:
+            cpu: 100m
+            memory: 200Mi
+          requests:
+            cpu: 100m
+            memory: 200Mi

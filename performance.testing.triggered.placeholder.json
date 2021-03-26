@@ -1,0 +1,23 @@
+{
+  "data": {
+    "project": "$PROJECT",
+    "stage": "$STAGE",
+    "service": "$SERVICE",
+    "labels": {
+      "user" : "$USER",
+      "buildId" : "$VERSION"
+    },
+    "test": {
+      "teststrategy": "$TESTSTRATEGY"
+    },
+    "deployment": {
+      "deploymentURIsPublic": [
+        "$URL"
+      ]
+    }
+  },
+  "source": "my-automation-script",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.$STAGE.testing.triggered",
+  "shkeptnspecversion": "0.2.0"
+}

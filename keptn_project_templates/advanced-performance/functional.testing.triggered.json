@@ -1,0 +1,23 @@
+{
+    "data": {
+      "project": "demo-adv-performance",
+      "stage": "functional",
+      "service": "appundertest",
+      "labels": {
+        "user" : "andi",
+        "buildId" : "2"
+      },
+      "test": {
+        "teststrategy": "performance"
+      },
+      "deployment": {
+        "deploymentURIsPublic": [
+          "http://simplenode.keptn07project-dev.keptn07-agrabner.demo.keptn.sh/"
+        ]
+      }
+    },
+    "source": "my-automation-script",
+    "specversion": "1.0",
+    "type": "sh.keptn.event.functional.testing.triggered",
+    "shkeptnspecversion": "0.2.0"
+  }

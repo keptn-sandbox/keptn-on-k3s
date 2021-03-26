@@ -2,31 +2,78 @@
 
 set -eu
 
+# Keptn Version Information
+KEPTNVERSION="0.8.1"
+KEPTN_TYPE="controlplane"
+KEPTN_DELIVERYPLANE=false
+KEPTN_EXECUTIONPLANE=false
+KEPTN_CONTROLPLANE=true
+
+ISTIO_VERSION="1.9.1"
+INGRESS_PORT="80"
+INGRESS_PROTOCOL="http"
+ISTIO_GATEWAY="public-gateway.istio-system"
+
+ARGO_ROLLOUTS_VERSION="stable"
+
+# For execution plane these are the env-variables that identify the keptn control plane
+# KEPTN_CONTROL_PLANE_DOMAIN=""
+# KEPTN_CONTROL_PLANE_API_TOKEN=""
+
+# For execution plane here are the filters
+# KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
+# KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
+# KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
+
+# JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
+JMETER_SERVICE_VERSION="0.8.0"
+
+PROM_SERVICE_VERSION="release-0.4.0"
+PROM_SLI_SERVICE_VERSION="release-0.3.0"
+DT_SERVICE_VERSION="release-0.12.0"
+DT_SLI_SERVICE_VERSION="release-0.9.0"
+GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
+MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
+ARGO_SERVICE_VERSION="updates/finalize08" # release-0.8.0
+
+# Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
+DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
+OWNER_EMAIL=${OWNER_EMAIL:-none}
 
+# Install Flags
 PROVIDER="none"
-BINDIR="/usr/local/bin"
-KEPTNVERSION="0.7.3"
-JMETER_SERVICE_BRANCH="feature/2552/jmeterextensions"
-KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 MY_IP="none"
 FQDN="none"
 KEPTN_DOMAIN="none"
-K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 PREFIX="https"
+CERTS="selfsigned"
+CERT_EMAIL=${CERT_EMAIL:-none}
+LE_STAGE=${LE_STAGE:-none}
+XIP="false"
+INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
+
 PROM="false"
 DYNA="false"
 GITEA="false"
 JMETER="false"
-CERTS="selfsigned"
 SLACK="false"
-XIP="false"
-DEMO="false"
 GENERICEXEC="false"
+
+DEMO="false"
+
+
+# Keptn Credentials
+KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
+
+# k8s config
+K3SVERSION="v1.19"
+BINDIR="/usr/local/bin"
+K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-LE_STAGE=${LE_STAGE:-none}
+
 
 #Gitea - default values
 GIT_USER="keptn"
@@ -42,17 +89,28 @@ TOKEN_FILE=$GIT_TOKEN.json
 KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="quality-gate"
 KEPTN_QG_SERVICE="demo"
+
 KEPTN_PERFORMANCE_PROJECT="demo-performance"
 KEPTN_PERFORMANCE_STAGE="performance"
 KEPTN_PERFORMANCE_SERVICE="appundertest"
 KEPTN_PERFORMANCE_EASYTRAVEL="easytravel"
+
 KEPTN_REMEDIATION_PROJECT="demo-remediation"
 KEPTN_REMEDIATION_STAGE="production"
 KEPTN_REMEDIATION_SERVICE="default"
+
 KEPTN_DELIVERY_PROJECT="demo-delivery"
 KEPTN_DELIVERY_STAGE_DEV="dev"
-KEPTN_DELIVERY_STAGE_STAGING="dev"
+KEPTN_DELIVERY_STAGE_STAGING="staging"
+KEPTN_DELIVERY_STAGE_PRODUCTION="production"
 KEPTN_DELIVERY_SERVICE="simplenode"
+
+KEPTN_ROLLOUT_PROJECT="demo-rollout"
+
+KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
+KEPTN_ADV_PERFORMANCE_STAGE="performance"
+KEPTN_ADV_PERFORMANCE_SERVICE="appundertest"
+
 
 function create_namespace {
   namespace="${1:-none}"
@@ -139,6 +197,8 @@ function get_fqdn {
 
   KEPTN_DOMAIN="keptn.${FQDN}"
   GIT_DOMAIN="git.${FQDN}"
+  # always acceses git via http as we otherwise may have problem with self-signed certificate!
+  GIT_SERVER="http://$GIT_DOMAIN"
 }
 
 function apply_manifest {
@@ -161,17 +221,105 @@ function apply_manifest_ns_keptn {
   fi
 }
 
+function get_kubectl {
+  if ! [ -x "$(command -v kubectl)" ]; then
+    write_progress "Installing kubectl"
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+
+    sudo install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl
+  fi  
+}
+
 function get_k3s {
-  write_progress "Installing K3s"
-  curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" sh -
+  write_progress "Installing K3s (${K3SVERSION}) with NGINX instead of Traefik Ingress"
+  curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
+
+  # set the kubeconfig
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  kubectl get pods -A
+
+  # install ingress nginx
+  helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
+  helm repo update
+
+  helm install ingress-nginx ingress-nginx/ingress-nginx  
+}
+
+# Installs Dynatrace OneAgent Operator on the k3s cluster
+function get_oneagent {
+  # only install if all dynatrace settings are specified
+  if [ "$DT_TENANT" == "none" ]; then return; fi
+  if [ "$DT_API_TOKEN" == "none" ]; then return; fi
+  if [ "$DT_PAAS_TOKEN" == "none" ]; then return; fi
+
+  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+  "${K3SKUBECTL[@]}" create namespace dynatrace
+
+  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  helm install dynatrace-oneagent-operator \
+    dynatrace/dynatrace-oneagent-operator -n\
+    dynatrace --values oneagent_values.yaml
+
+  rm oneagent_values.yaml
 }
 
 function get_helm {
-  write_progress "Installing Helm"
+  write_progress "Installing Helm 3"
 
   curl -fsSL -o /tmp/get_helm.sh https://raw.githubusercontent.com/helm/helm/master/scripts/get-helm-3
   chmod 700 /tmp/get_helm.sh
   /tmp/get_helm.sh
+}
+
+function get_argorollouts {
+  echo "Install Argo Rollouts from ${ARGO_ROLLOUTS_VERSION}"
+
+  # First installing Argo Rollouts itself
+  "${K3SKUBECTL[@]}" create namespace argo-rollouts
+  "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
+
+  # now also installing the argo rollout extension for kubectl
+  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_VERSION}/download/kubectl-argo-rollouts-linux-amd64
+  sudo chmod +x ./kubectl-argo-rollouts-linux-amd64
+  sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
+}
+
+function get_istio {
+  ISTIO_EXISTS=$(kubectl get po -n istio-system | grep Running | wc | awk '{ print $1 }')
+  if [[ "$ISTIO_EXISTS" -gt "0" ]]
+  then
+    echo "Istio already installed on k8s"
+  else
+    echo "Downloading and installing Istio ${ISTIO_VERSION}"
+    curl -L https://istio.io/downloadIstio | ISTIO_VERSION=${ISTIO_VERSION} sh -
+    sudo mv istio-${ISTIO_VERSION}/bin/istioctl /usr/local/bin/istioctl
+
+    istioctl install -y
+
+    write_progress "Configuring Istio Ingress Object"
+    sed -e 's~issuer.placeholder~'"$CERTS"'~' \
+        ./files/istio/istio-ingress.yaml > istio-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n istio-system -f istio-ingress_gen.yaml
+    rm istio-ingress_gen.yaml
+
+    "${K3SKUBECTL[@]}" apply -n istio-system -f ./files/istio/istio-gateway.yaml
+  fi
+
+  # TODO - maybe use FQDN instead of KEPTN_DOMAIN as prefix
+  # Create ConfigMap Entry for keptn's helm service
+  "${K3SKUBECTL[@]}" create configmap -n keptn ingress-config \
+      --from-literal=ingress_hostname_suffix=${KEPTN_DOMAIN} \
+      --from-literal=ingress_port=${INGRESS_PORT} \
+      --from-literal=ingress_protocol=${INGRESS_PROTOCOL} \
+      --from-literal=istio_gateway=${ISTIO_GATEWAY} \
+      -oyaml --dry-run | kubectl replace -f -
+
 }
 
 function check_k8s {
@@ -186,6 +334,12 @@ function check_k8s {
 
 
 function install_certmanager {
+
+  # Only install cert manager if we install control or delivery plane
+  if [[ "${KEPTN_CONTROLPLANE}" == "false" ]] && [[ "${KEPTN_DELIVERYPLANE}" == "false" ]]; then
+    return
+  fi 
+
   write_progress "Installing Cert-Manager"
   create_namespace cert-manager
 
@@ -206,16 +360,16 @@ spec:
   selfSigned: {}
 EOF
 
-  check_delete_secret traefik-default-cert kube-system
+  check_delete_secret nginx-default-cert kube-system
 
   cat << EOF | apply_manifest -
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: traefik-default
+  name: nginx-default
   namespace: kube-system
 spec:
-  secretName: traefik-default-cert
+  secretName: nginx-default-cert
   issuerRef:
     name: selfsigned-issuer
     kind: ClusterIssuer
@@ -241,38 +395,97 @@ spec:
     email: $CERT_EMAIL
     server: $ACME_SERVER
     privateKeySecretRef:
-      # Secret resource that will be used to store the account's private key.
       name: letsencrypt-issuer-account-key
-    # Add a single challenge solver, HTTP01 using nginx
     solvers:
     - http01:
         ingress:
-          class: traefik
+          class: nginx
 EOF
 fi
-  "${K3SKUBECTL[@]}" rollout restart deployment traefik -n kube-system
+  "${K3SKUBECTL[@]}" rollout restart deployment ingress-nginx-controller
   sleep 5
-  echo "Waiting for Traefik to restart - 1st attempt (max 60s)"
-  "${K3SKUBECTL[@]}" wait --namespace=kube-system --for=condition=Ready pods --timeout=60s -l app=traefik
+  echo "Waiting for Nginx Ingress to restart - 1st attempt (max 60s)"
+  "${K3SKUBECTL[@]}" wait --namespace=default --for=condition=Ready pods --timeout=60s --all
 }
 
 function install_keptn {
-  write_progress "Installing Keptn"
-  helm upgrade keptn keptn --install --wait \
-    --version="${KEPTNVERSION}" \
-    --create-namespace --namespace=keptn \
-    --repo="https://storage.googleapis.com/keptn-installer" \
-    --kubeconfig="$KUBECONFIG"
 
-  # Lets install the Statistics Service
-  write_progress "Installing Keptn Statistics Service"
-  apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/statistics-service/release-0.2.0/deploy/service.yaml"
+  if [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+    write_progress "Installing Keptn Control Plane"
+    helm upgrade keptn keptn --install --wait \
+      --version="${KEPTNVERSION}" \
+      --create-namespace --namespace=keptn \
+      --repo="https://storage.googleapis.com/keptn-installer" \
+      --set=continuous-delivery.enabled=false \
+      --kubeconfig="$KUBECONFIG"
+  fi 
 
-    # Enable Monitoring support for either Prometheus or Dynatrace by installing the services and sli-providers
-  if [[ "${PROM}" == "true" ]]; then
+  if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
+    write_progress "Installing Keptn for Continuous Delivery (Control & Execution Plane)"
+    helm upgrade keptn keptn --install --wait \
+      --version="${KEPTNVERSION}" \
+      --create-namespace --namespace=keptn \
+      --repo="https://storage.googleapis.com/keptn-installer" \
+      --set=continuous-delivery.enabled=true \
+      --kubeconfig="$KUBECONFIG"
+
+    # no need to additionally install jmeter as we install a delivery plane anyway!
+    JMETER="false"
+
+    # need to install Istio for Delivery Plane as we are potentially depoying sevices blue / green
+    get_istio
+    get_argorollouts
+
+    # now we need to restart the helm service for it to pick up istio
+    kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
+
+    # Install the Argo Service
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+  fi
+
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    # following instructions from https://keptn.sh/docs/0.8.x/operate/multi_cluster/#install-keptn-execution-plane
+    write_progress "Installing Keptn Execution Plane to connect to ${KEPTN_CONTROL_PLANE_DOMAIN}"
+
+    # lets make sure the keptn namespace is created
+    create_namespace "keptn"
+
+    # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
+    get_istio
+    get_argorollouts
+
+    # Install the Helm Service
+    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
+    yq w /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
+    yq w /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+    yq w /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+    yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+
+    # Install the Argo Service
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+
+    # Install JMeter if the user wants to
+    if [[ "${JMETER}" == "true" ]]; then
+      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      yq w /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      yq w /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+      yq w /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+    fi
+  fi
+ 
+  if [ "${PROM}" == "true"]]; then
      write_progress "Installing Prometheus Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/release-0.3.6/deploy/service.yaml"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/0.2.3/deploy/service.yaml "
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -288,11 +501,11 @@ function install_keptn {
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
     # Installing core dynatrace services
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/0.10.3/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/0.7.3/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
 
     # Installing monaco service
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/release-0.2.1/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
 
     # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
     "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
@@ -302,48 +515,30 @@ function install_keptn {
     write_progress "Installing Gitea for upstream git"
     helm repo add gitea-charts https://dl.gitea.io/charts/
 
+    # removing any previous git-token files that might be left-over from a previous install
+    if [ -f "${TOKEN_FILE}" ]; then 
+      rm "${TOKEN_FILE}"     
+    fi
+
     echo "Create namespace for git"
     "${K3SKUBECTL[@]}" create ns git
-
-    # always acceses git via http as we otherwise may have problem with self-signed certificate!
-    GIT_SERVER="http://$GIT_DOMAIN"
-    curl -fsSL -o helm-gitea.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/gitea/helm-gitea.yaml
 
     # Download helm yaml
     sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
         -e 's~GIT_USER.placeholder~'"$GIT_USER"'~' \
         -e 's~GIT_PASSWORD.placeholder~'"$GIT_PASSWORD"'~' \
-        helm-gitea.yaml > helm-gitea_gen.yaml
+        ./files/gitea/helm-gitea.yaml > helm-gitea_gen.yaml
 
     echo "Install gitea via Helmchart"
     helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
+    rm helm-gitea_gen.yaml
     
     write_progress "Configuring Gitea Ingress Object (${GIT_DOMAIN})"
-
-  cat << EOF |  "${K3SKUBECTL[@]}" apply -n git -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: gitea-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: $CERTS-issuer
-spec:
-  tls:
-  - hosts:
-    - "${GIT_DOMAIN}"
-    secretName: keptn-tls
-  rules:
-    - host: "${GIT_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: gitea-http
-                port: 
-                  number: 3000
-EOF
+    sed -e 's~domain.placeholder~'"$GIT_DOMAIN"'~' \
+        -e 's~issuer.placeholder~'"$CERTS"'~' \
+        ./files/gitea/gitea-ingress.yaml > gitea-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n git -f gitea-ingress_gen.yaml
+    rm gitea-ingress_gen.yaml    
 
     write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
@@ -352,7 +547,7 @@ EOF
   if [[ "${GENERICEXEC}" == "true" ]]; then
     write_progress "Installing Generic Executor Service"
 
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/master/deploy/service.yaml"
+    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${SLACK}" == "true" ]]; then
@@ -363,38 +558,18 @@ EOF
     "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
   fi
 
-  # Installing JMeter Extended Service
+  # Installing JMeter Service on the control plane if requested!
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/deploy/service.yaml"
+    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
-
-  cat << EOF |  "${K3SKUBECTL[@]}" apply -n keptn -f -
-apiVersion: networking.k8s.io/v1
-kind: Ingress
-metadata:
-  name: keptn-ingress
-  annotations:
-    cert-manager.io/cluster-issuer: $CERTS-issuer
-spec:
-  tls:
-  - hosts:
-    - "${KEPTN_DOMAIN}"
-    secretName: keptn-tls
-  rules:
-    - host: "${KEPTN_DOMAIN}"
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: api-gateway-nginx
-                port: 
-                  number: 80
-EOF
+  sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
+    -e 's~issuer.placeholder~'"$CERTS"'~' \
+    ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
+  "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
+  rm keptn-ingress_gen.yaml
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
@@ -407,7 +582,7 @@ function install_keptncli {
   KEPTN_API_TOKEN="$(get_keptn_token)"
 
   echo "Installing and Authenticating Keptn CLI"
-  curl -sL https://get.keptn.sh | sudo -E bash
+  curl -sL https://get.keptn.sh | KEPTN_VERSION=${KEPTNVERSION} sudo -E bash
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
@@ -419,7 +594,7 @@ function install_keptncli {
 # Create Token
 gitea_createApiToken(){
     echo "Creating token for $GIT_USER from $GIT_SERVER"
-    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    curl -vkL --user $GIT_USER:$GIT_PASSWORD \
     -X POST "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" \
     -d "{ \"name\": \"$GIT_TOKEN\" }" -o $TOKEN_FILE
@@ -427,14 +602,14 @@ gitea_createApiToken(){
 
 gitea_getApiTokens(){
     echo "Get tokens for $GIT_USER from $GIT_SERVER"
-    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    curl -vkL --user $GIT_USER:$GIT_PASSWORD \
     -X GET "$GIT_SERVER/api/v1/users/$GIT_USER/tokens" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8"
 }
 
 gitea_deleteApiToken(){
     echo "Deleting token for $GIT_USER from $GIT_SERVER"
-    curl -vk --user $GIT_USER:$GIT_PASSWORD \
+    curl -vkL --user $GIT_USER:$GIT_PASSWORD \
     -X DELETE "$GIT_SERVER/api/v1/users/$GIT_USER/tokens/$TOKEN_ID" \
     -H "accept: application/json" -H "Content-Type: application/json; charset=utf-8" 
 }
@@ -487,7 +662,6 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
-
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -496,126 +670,24 @@ function install_demo_dynatrace {
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
   # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
-  DYNATRACE_TENANT="https://${DT_TENANT}"
-  DYNATRACE_ENDPOINT=$DYNATRACE_TENANT/api/config/v1/dashboards
-  DYNATRACE_TOKEN="${DT_API_TOKEN}"
-
-  KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
-  KEPTN_BRIDGE_PROJECT="${KEPTN_ENDPOINT}/bridge/project/${KEPTN_QG_PROJECT}"
-  KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
-
-  mkdir -p keptn/${KEPTN_QG_PROJECT}/dynatrace
-  cat > keptn/${KEPTN_QG_PROJECT}/shipyard.yaml << EOF
-stages:
-- name: "${KEPTN_QG_STAGE}"
-  test_strategy: "performance"
-EOF
-
+  export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  export KEPTN_INGRESS=${FQDN}
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  keptn create project "${KEPTN_QG_PROJECT}" --shipyard=keptn/${KEPTN_QG_PROJECT}/shipyard.yaml
-
-  echo "Create Keptn Service: ${KEPTN_QG_SERVICE}"
-  keptn create service "${KEPTN_QG_SERVICE}" --project="${KEPTN_QG_PROJECT}"
-  
-  echo "Adding Dynatrace SLI/SLO Dashboard Monaco Files for ${KEPTN_QG_PROJECT}.${KEPTN_QG_STAGE}.${KEPTN_QG_SERVICE}"
-  mkdir -p keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard
-  curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.json
-  curl -fsSL -o keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/monaco/dashboard/qgdashboard.yaml
-  
-  # Replace one placeholder with the keptn bridge url
-  sed -i "s/\${KEPTN_BRIDGE_PROJECT}/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json
-
-  # upload monaco files
-  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json --resourceUri=dynatrace/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.json
-  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/monaco/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml --resourceUri=dynatrace/projects/${KEPTN_QG_SERVICE}/dashboard/qgdashboard.yaml
-
-  echo "Add dynatrace.conf.yaml to enable SLI/SLO Dashboard query"
-  cat > keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
-spec_version: '0.1.0'
-dashboard: query
-attachRules:
-  tagRule:
-  - meTypes:
-    - SERVICE
-    tags:
-    - context: CONTEXTLESS
-      key: keptn_service
-      value: \$SERVICE
-    - context: CONTEXTLESS
-      key: keptn_managed
-EOF
-  keptn add-resource --project="${KEPTN_QG_PROJECT}" --resource=keptn/${KEPTN_QG_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
-
-
-  echo "Send keptn configuration change to apply config changes"
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT}
 
   echo "Run first Dynatrace Quality Gate"
-  keptn send event start-evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}"
+  keptn trigger evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
+
 
   # ==============================================================================================
   # Demo 2: Performance as a Self-service Project
   # Creates a single stage project that will execute JMeter performance tests against any URL you give it
   # To get Keptn also send events to a Dynatrace Monitored Entity simply tag the entity with ${KEPTN_QG_STAGE}
   # ==============================================================================================
-  mkdir -p keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace
-  mkdir -p keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter
-  cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml << EOF
-stages:
-- name: "${KEPTN_PERFORMANCE_STAGE}"
-EOF
-
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  keptn create project "${KEPTN_PERFORMANCE_PROJECT}" --shipyard=keptn/${KEPTN_PERFORMANCE_PROJECT}/shipyard.yaml
-
-  echo "Create Keptn Service: ${KEPTN_PERFORMANCE_SERVICE}"
-  keptn create service "${KEPTN_PERFORMANCE_SERVICE}" --project="${KEPTN_PERFORMANCE_PROJECT}"
-
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/jmeter.conf.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basiccheck.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basiccheck_withdtmint.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basicload.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/basicload_withdtmint.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck.jmx --resourceUri=jmeter/basiccheck.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basiccheck_withdtmint.jmx --resourceUri=jmeter/basiccheck_withdtmint.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload.jmx --resourceUri=jmeter/basicload.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/basicload_withdtmint.jmx --resourceUri=jmeter/basicload_withdtmint.jmx
-
-  echo "Create Keptn Service: ${KEPTN_PERFORMANCE_EASYTRAVEL}"
-  keptn create service "${KEPTN_PERFORMANCE_EASYTRAVEL}" --project="${KEPTN_PERFORMANCE_PROJECT}"
-
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-jmeter.conf.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-classic-random-book.jmx
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/jmeter/easytravel-users.txt
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --service=${KEPTN_PERFORMANCE_EASYTRAVEL} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-jmeter.conf.yaml --resourceUri=jmeter/jmeter.conf.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-classic-random-book.jmx --resourceUri=jmeter/easytravel-classic-random-book.jmx
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage=${KEPTN_PERFORMANCE_STAGE} --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/jmeter/easytravel-users.txt --resourceUri=jmeter/easytravel-users.txt
-
-  cat > keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
-spec_version: '0.1.0'
-dashboard: query
-attachRules:
-  tagRule:
-  - meTypes:
-    - SERVICE
-    tags:
-    - context: CONTEXTLESS
-      key: \$SERVICE
-EOF
-
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
-
-  # adding SLI/SLO
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/sli.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_sli.yaml
-  curl -fsSL -o keptn/${KEPTN_PERFORMANCE_PROJECT}/slo.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/performance_slo.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/dynatrace/sli.yaml --resourceUri=dynatrace/sli.yaml
-  keptn add-resource --project="${KEPTN_PERFORMANCE_PROJECT}" --stage="${KEPTN_PERFORMANCE_STAGE}" --service="${KEPTN_PERFORMANCE_SERVICE}" --resource=keptn/${KEPTN_PERFORMANCE_PROJECT}/slo.yaml --resourceUri=slo.yaml
-
-  # Download helper files to send a deployment finished event
-  echo "Downloading helper script senddeployfinished.sh"
-  curl -fsSL -o senddeployfinished.sh https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/senddeploymentfinished.sh
-  curl -fsSL -o deployment.finished.event.placeholders.json https://raw.githubusercontent.com/keptn/keptn/${JMETER_SERVICE_BRANCH}/jmeter-service/events/deployment.finished.event.placeholder.json
-  chmod +x senddeployfinished.sh
+  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT}
 
   # ==============================================================================================
   # Demo 3: Auto-Remediation
@@ -623,56 +695,44 @@ EOF
   # The service will have its own remediation.yaml to execute remediation scripts
   # This demo will leverage the generic-executor-service to execute bash or python scripts for remediation
   # ==============================================================================================
-  mkdir -p keptn/${KEPTN_REMEDIATION_PROJECT}/dynatrace
-  mkdir -p keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor
-  cat > keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml << EOF
-stages:
-- name: "${KEPTN_REMEDIATION_STAGE}"
-  remediation_strategy: automated
-EOF
-
+  echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  keptn create project "${KEPTN_REMEDIATION_PROJECT}" --shipyard=keptn/${KEPTN_REMEDIATION_PROJECT}/shipyard.yaml
+  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT}
 
-  echo "Create Keptn Service: ${KEPTN_REMEDIATION_SERVICE}"
-  keptn create service "${KEPTN_REMEDIATION_SERVICE}" --project="${KEPTN_REMEDIATION_PROJECT}"
+  # ==============================================================================================
+  # Demo 4: Blue/Green Delivery with Istio
+  # Creates a 3 stage delivery project to delivery the singlenode sample app in dev, staging and production
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_DELIVERY_PROJECT}"
+  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT}
 
-  cat > keptn/${KEPTN_REMEDIATION_PROJECT}/dynatrace/dynatrace.conf.yaml << EOF
-spec_version: '0.1.0'
-dashboard: query
-EOF
+  # ==============================================================================================
+  # Demo 5: Canary Delivery with Argo Rollouts
+  # Creates canary delivery project using Argo Rollouts
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_ROLLOUT_PROJECT}"
+  ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}
 
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/dynatrace/dynatrace.conf.yaml --resourceUri=dynatrace/dynatrace.conf.yaml
-
-  # remediation.yaml and remediation scripts
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/remediation.yaml
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.firstaction.sh
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.secondaction.sh
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.escalate.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.escalate.sh
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.validatedns.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.validatedns.sh
-  curl -fsSL -o keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.poweroutageaction.py https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/action.triggered.poweroutageaction.py
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --stage="${KEPTN_REMEDIATION_STAGE}" --service="${KEPTN_REMEDIATION_SERVICE}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/remediation.yaml --resourceUri=remediation.yaml
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.firstaction.sh --resourceUri=generic-executor/action.triggered.firstaction.sh
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.secondaction.sh --resourceUri=generic-executor/action.triggered.secondaction.sh
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.escalate.sh --resourceUri=generic-executor/action.triggered.escalate.sh
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.validatedns.sh --resourceUri=generic-executor/action.triggered.validatedns.sh
-  keptn add-resource --project="${KEPTN_REMEDIATION_PROJECT}" --resource=keptn/${KEPTN_REMEDIATION_PROJECT}/generic-executor/action.triggered.poweroutageaction.py --resourceUri=generic-executor/action.triggered.poweroutageaction.py
-
-  # Download helper files to create a dynatrace problem
-  echo "Downloading helper scripts: createdtproblem.sh, createdtnotification.sh"
-  curl -fsSL -o createdtproblem.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtproblem.sh
-  chmod +x createdtproblem.sh
-  curl -fsSL -o createdtnotification.sh https://raw.githubusercontent.com/keptn-sandbox/keptn-on-k3s/dynatrace-support/files/createdtnotification.sh
-  chmod +x createdtnotification.sh
+  # ==============================================================================================
+  # Demo 6: Advanced Performance
+  # Creates a project with 3 sequences of performance testing: functional, simple load, performance
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
+  ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
     gitea_readApiTokenFromFile
-    gitea_createKeptnRepo "dynatrace"
-    gitea_createKeptnRepo "demo-performance"
-    gitea_createKeptnRepo "demo-remediation"
+    gitea_createKeptnRepo "${KEPTN_QG_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
   fi
-
 }
 
 function install_demo {
@@ -702,35 +762,63 @@ fi
   if [[ "${DEMO}" == "dynatrace" ]]; then
   write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
   cat << EOF
-3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+6 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 
 For the Quality Gate Use case you can do this::
 1: Open the Keptn's Bridge for your Quality Gate Project: 
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_QG_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: Run another Quality Gate via: 
-   keptn send event start-evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
+   keptn trigger evaluation --project=${KEPTN_QG_PROJECT} --stage=${KEPTN_QG_STAGE} --service=${KEPTN_QG_SERVICE}
 3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
    More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
 For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
-Here are 3 things you can do:
+Here are things you can do:
 1: Open the Keptn's Bridge for your Performance Project:
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_PERFORMANCE_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_PERFORMANCE_SERVICE}
 3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_PERFORMANCE_PROJECT};service=${KEPTN_PERFORMANCE_SERVICE};stage=${KEPTN_PERFORMANCE_STAGE}
 4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
-   ./senddeployfinished.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
+   ./trigger.performance.testing.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
 For the Auto-Remediation Demo we have created project ${KEPTN_REMEDIATION_PROJECT} that contains a default remediation.yaml and some bash and python scripts
 In order for this to work do
 1: Create a new Problem Notification Integration as explained in the readme
-2: Either force Dynatrace to open a problem ticket, create one through the API or execute createdtproblem.sh
+2: Either force Dynatrace to open a problem ticket, create one through the API or execute ./dynatrace/createdtproblem.sh
 3: Watch the auto-remediation actions in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+For the Delivery Use Case we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
+To trigger a delivery simple do this
+1: Trigger a delivery through the Keptn CLI
+   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --service=${KEPTN_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+2: Watch the delivery progress in Keptn's bridge
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+For the Canary Delivery Use Case we have created project ${KEPTN_ROLLOUT_PROJECT} that uses Argo Rollouts for production canary deployments
+To trigger a delivery simple do this
+1: Trigger a delivery through the Keptn API as explained in the readme
+2: Watch the delivery progress in Keptn's bridge
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+
+
+For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
+To trigger a delivery simple do this
+1: Open the Keptn's Bridge for your Performance Project:
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_ADV_PERFORMANCE_PROJECT}
+   User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+2: In Dynatrace pick a service you want to run a simple test against and add the manual label: ${KEPTN_ADV_PERFORMANCE_SERVICE}
+3: (optional) Create an SLO-Dashboard in Dynatrace with the name: KQG;project=${KEPTN_ADV_PERFORMANCE_PROJECT};service=${KEPTN_ADV_PERFORMANCE_SERVICE};stage=${KEPTN_ADV_PERFORMANCE_STAGE}
+4: Trigger a Performance test for an application that is accessible from this machine, e.g. http://yourapp/yoururl
+   ./trigger.performance.testing.sh ${KEPTN_ADV_PERFORMANCE_PROJECT} functional ${KEPTN_ADV_PERFORMANCE_SERVICE} performance http://yourapp/yoururl
+5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
+
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
@@ -761,6 +849,10 @@ EOF
 function main {
   while true; do
   case "${1:-default}" in
+    --type)
+        INSTALL_TYPE="${2}"
+        shift 2
+      ;;
     --ip)
         MY_IP="${2}"
         shift 2
@@ -795,9 +887,14 @@ function main {
     --letsencrypt)
         echo "Will try to create LetsEncrypt certs"
         CERTS="letsencrypt"
-        if [[ "$CERT_EMAIL" == "" ]]; then
-          echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
-          exit 1
+        if [[ "$CERT_EMAIL" == "none" ]]; then
+          if [[ "$OWNER_EMAIL" == "none" ]]; then
+            echo "Enabling LetsEncrpyt Support requires you to set CERT_EMAIL"
+            exit 1
+          else 
+            echo "As CERT_EMAIL is not set taking $OWNER_EMAIL for CERT_EMAIL"
+            CERT_EMAIL="$OWNER_EMAIL"
+          fi 
         fi
         if [[ "$LE_STAGE" != "production" ]]; then
           echo "Be aware that this will issue staging certificates"
@@ -810,6 +907,46 @@ function main {
         XIP="true"
         shift
         ;;
+    --controlplane)
+        echo "Installing Keptn Control Plane"
+        KEPTN_TYPE="controlplane"
+        KEPTN_DELIVERYPLANE="false"
+        KEPTN_EXECUTIONPLANE="false"
+        KEPTN_CONTROLPLANE="true"
+        shift
+        ;;
+    --deliveryplane)
+        echo "Installing Keptn Delivery Plane"
+        KEPTN_TYPE="deliveryplane"
+        KEPTN_DELIVERYPLANE="true"
+        KEPTN_EXECUTIONPLANE="false"
+        KEPTN_CONTROLPLANE="false"
+        shift
+        ;;
+    --executionplane)
+        echo "Installing Keptn Execution Plane"
+        KEPTN_TYPE="executionplane"
+        KEPTN_DELIVERYPLANE="false"
+        KEPTN_EXECUTIONPLANE="true"
+        KEPTN_CONTROLPLANE="false"
+
+        # need keptn_endpoint, keptn_token and distributor filter project, stage & service
+        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "" ]]; then
+          echo "To install an execution plane set KEPTN_CONTROL_PLANE_DOMAIN to the HOSTNAME of the Keptn Control Plane, e.g: keptn.yourdomain.com"
+          exit 1
+        fi 
+        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "" ]]; then
+          echo "To install an execution plane set KEPTN_CONTROL_PLANE_API_TOKEN to the API_TOKEN of your of the Keptn Control Plane"
+          exit 1
+        fi 
+
+        echo "Here are the execution plane filters that will be used. If you want to change them set those env-variables before running the script"
+        echo "KEPTN_EXECUTION_PLANE_STAGE_FILTER=${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+        echo "KEPTN_EXECUTION_PLANE_SERVICE_FILTER=${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+        echo "KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+        
+        shift
+        ;;     
     --with-jmeter)
         echo "Enabling JMeter Support"
         JMETER="true"
@@ -831,6 +968,12 @@ function main {
         if [[ "$DT_API_TOKEN" == "none" ]]; then
           echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
           echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
+          exit 1
+        fi
+        if [[ "$DT_PAAS_TOKEN" == "none" ]]; then
+          echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+          echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
+          echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
           exit 1
         fi
 
@@ -862,6 +1005,13 @@ function main {
           exit 1
         fi 
 
+        if [[ $DEMO == "dynatrace" ]]; then 
+          if [[ $OWNER_EMAIL == "none" ]]; then 
+            echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
+            exit 1
+          fi 
+        fi
+
         # need to make sure we install the generic exector service for our demo as well as jmeter
         GENERICEXEC="true"
         JMETER="true"
@@ -888,23 +1038,58 @@ function main {
   # Check pre-req of jq
   if ! [ -x "$(command -v jq)" ]; then
     echo 'Error: jq is not installed.' >&2
+    echo 'Install it e.g: brew install jp or sudo apt-get install jq'
     exit 1
   fi
+  if ! [ -x "$(command -v yq)" ]; then
+    echo 'Error: yq is not installed.' >&2
+    echo 'Install it e.g: brew install yq or sudo apt-get install yq'
+    exit 1
+  fi  
   if ! [ -x "$(command -v curl)" ]; then
     echo 'Error: curl is not installed.' >&2
+    echo 'Install it e.g: brew install curl or sudo apt-get install curl'
     exit 1
   fi
 
   get_ip
   get_fqdn
-  get_k3s
-  get_helm
-  check_k8s
-  install_certmanager
-  install_keptn
-  install_keptncli
-  install_demo  
-  print_config
+  get_kubectl
+
+  if [[ "${INSTALL_TYPE}" == "all" ]]; then
+    get_helm
+    get_k3s
+    get_oneagent    
+    check_k8s
+    install_certmanager
+    install_keptn
+    install_keptncli
+    install_demo  
+    print_config
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "k3s" ]]; then
+    get_helm
+    get_k3s
+    get_oneagent    
+    check_k8s
+    install_certmanager
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "keptn" ]]; then
+    install_keptn
+    install_keptncli
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "demo" ]]; then
+    install_demo
+  fi
+
+  if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepos
+  fi
+
 }
 
 main "${@}"

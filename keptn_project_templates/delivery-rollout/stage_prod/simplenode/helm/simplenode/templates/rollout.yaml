@@ -1,0 +1,85 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Rollout
+metadata:
+  name: {{ .Values.keptn.service }}-{{ .Values.keptn.stage }}
+  labels:
+    app: {{ template "simplenode.name" . }}
+    chart: {{ template "simplenode.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  revisionHistoryLimit: 3
+  selector:
+    matchLabels:
+      app: {{ template "simplenode.name" . }}
+      release: {{ .Release.Name }}
+  strategy:
+     canary:
+    #blueGreen:
+      # activeService: {{ template "simplenode.fullname" . }}
+      # previewService: {{ template "simplenode.fullname" . }}-preview
+       steps:
+       - setWeight: 25
+       - pause: {}
+       - setWeight: 50
+       - pause: {}
+       - setWeight: 75
+       - pause: {}      
+  template:
+    metadata:
+      labels:
+        app: {{ template "simplenode.name" . }}
+        release: {{ .Release.Name }}
+        app.kubernetes.io/name: {{ .Values.keptn.service }}
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+        app.kubernetes.io/component: api
+        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+        app.kubernetes.io/managed-by: Keptn
+        app.kubernetes.io/version: {{ .Values.tag }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    spec:
+      containers:
+        - name: {{ .Chart.Name }}
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
+          env:
+          - name: DT_CUSTOM_PROP
+            value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
+          - name: KEPTN_PROJECT
+            value: "{{ .Values.keptn.project }}"
+          - name: KEPTN_STAGE
+            value: "{{ .Values.keptn.stage }}"
+          - name: KEPTN_SERVICE
+            value: "{{ .Values.keptn.service }}"
+          - name: KEPTN_DEPLOYMENT
+            value: "{{ .Values.keptn.deployment }}"
+          ports:
+            - name: http
+              containerPort: 8080
+              protocol: TCP
+              port: 80
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 8080
+          resources:
+{{ toYaml .Values.resources | indent 12 }}
+    {{- with .Values.nodeSelector }}
+      nodeSelector:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.affinity }}
+      affinity:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+    {{- with .Values.tolerations }}
+      tolerations:
+{{ toYaml . | indent 8 }}
+    {{- end }}
+
+

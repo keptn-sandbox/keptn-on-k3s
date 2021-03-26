@@ -1,0 +1,26 @@
+platform: "kubernetes"
+operator:
+  image: ""
+oneagent:
+  name: "oneagent"
+  apiUrl: "https://DT_TENANT/api"
+  image: ""
+  args:
+  - --set-host-group=DT_HOST_GROUP
+  - --set-host-tag=KeptnOnK3s
+  env: {}
+  nodeSelector: {}
+  labels: {}
+  skipCertCheck: false
+  disableAgentUpdate: false
+  enableIstio: false
+  dnsPolicy: ""
+  resources: {}
+  waitReadySeconds: null
+  priorityClassName: ""
+  serviceAccountName: ""
+  proxy: ""
+  trustedCAs: ""
+secret:
+  apiToken: "DT_API_TOKEN"
+  paasToken: "DT_PAAS_TOKEN"
