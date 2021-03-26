@@ -33,8 +33,8 @@ PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
 DT_SLI_SERVICE_VERSION="release-0.9.0"
 GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
-MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
-ARGO_SERVICE_VERSION="updates/finalize08" # release-0.8.0
+MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
+ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
