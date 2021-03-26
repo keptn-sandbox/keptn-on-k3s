@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.0"
+KEPTNVERSION="0.8.1"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -30,8 +30,8 @@ JMETER_SERVICE_VERSION="0.8.0"
 
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
-DT_SERVICE_VERSION="release-0.11.0"
-DT_SLI_SERVICE_VERSION="release-0.8.0"
+DT_SERVICE_VERSION="release-0.12.0"
+DT_SLI_SERVICE_VERSION="release-0.9.0"
 GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
 MONACO_SERVICE_VERSION="migratetokeptn08"  # release-0.8.0
 ARGO_SERVICE_VERSION="updates/finalize08" # release-0.8.0
