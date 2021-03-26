@@ -62,9 +62,6 @@ git checkout release-0.8.0
 ```
 
 ### Currently tested on:
-  * CentOS 8
-  * ArchLinux
-  * Debian on GCP
   * Amazon Linux 2
 
 **ATTENTION**: if you try this on an EC2, GCP, ... instance please make sure to allow inbound traffic for HTTP & HTTPS!

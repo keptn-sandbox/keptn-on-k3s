@@ -730,6 +730,7 @@ function install_demo_dynatrace {
     gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
   fi
 }
