@@ -1,5 +1,9 @@
 # Keptn for Dynatrace Users in 5 Minutes
 
+ATTENTION: This tutorial has recently been updated for Keptn 0.8.x and it added a couple of new use cases, e.g: Canary Deployments with Argo Rollout
+This description is not yet fully updated with all the latest. The best way to get started is just following the instructions on the main [README.md](README.md)
+
+
 If you follow this installation guide you will be able to explore the key Keptn use cases with Dynatrace:
 * SLI/SLO Based Quality Gates
 * Performance as a Self-Service
@@ -41,22 +45,22 @@ Good news is that the script provides the option (`--letsencrypt`) which creates
 
 The host you install Keptn on should be accessible via HTTPS. So - if you create an EC2 or GCP instance - please make sure that HTTP (80) & HTTPS (443) are enabled for inbound traffic. Otherwise installation will not work, e.g: letsencrypt wont issue or certificate or Dynatrace wont be able to call into your Keptn instance
 
-## Installation including 3 Demo Projects
+## Installation including 6 Demo Projects
 
 Let's first export all relevant environment variables we need:
 ```console
-$ export DT_TENANT=abc12345.live.dynatrace.com
-$ export DT_API_TOKEN=YOURTOKEN
-$ export OWNER_EMAIL=yourdynatraceuser@yourmail.com
-$ export LE_STAGE=staging
-$ export CERT_EMAIL=myemail@mydomain.com
+$ export DT_TENANT=abc12345.live.dynatrace.com        # Host name of your Dynatrace Tenant
+$ export DT_API_TOKEN=YOURTOKEN                       # Dynatrace API token to let Keptn pull SLIs from Dynatrace
+$ export DT_PAAS_TOKEN=YOURPAASTOKEN                  # Dynatrace PAAS token as script will install OneAgent
+$ export OWNER_EMAIL=yourdynatraceuser@yourmail.com   # Your username in Dynatrace
+$ export LE_STAGE=staging                             # This is needed for certificate creation
 ```
 
 **Option 1:** Install with xip.io domain and self-signed certificate
 
 You see that the sample uses the `--with-demo dynatrace`, `--letsencrypt` and `--provider aws` option:
 ```console
-$ ./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
+$ ./install-keptn-on-k3s.sh --delivery-plane --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea
 ``` 
 
 All URLs provided will be of form http(s)://keptn.12.23.34.45.xip.io. xip.io is a free DNS resolution service which will resolve any DNS request to that IP Address as part of the DNS name.
@@ -64,7 +68,7 @@ All URLs provided will be of form http(s)://keptn.12.23.34.45.xip.io. xip.io is 
 **Option 2:** Use your own custom domain that points to your host
 You see that the sample additionally uses the `--fqdn mykeptn.mydomain.com` option:
 ```console
-$ ./install-keptn-on-k3s.sh --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea --fqdn mykeptn.mydomain.com
+$ ./install-keptn-on-k3s.sh --delivery-plane --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea --fqdn mykeptn.mydomain.com
 ``` 
 
 All URLs provided will be of form http(s)://keptn.YOURDOMAIN. So - when setting up your own custom domain name make sure that you have a wildcard route so that all subdomains from your FQDN will also map to your machine where you install Keptn on k3s.
@@ -89,9 +93,9 @@ Git Password:    keptn#R0cks
 
 
 #######################################>
-# Dynatrace Demo Summary: 3 Use Cases to explore
+# Dynatrace Demo Summary: 6 Use Cases to explore
 #######################################>
-3 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+6 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 
 For the Quality Gate Use case you can do this::
 1: Open the Keptn's Bridge for your Quality Gate Project:
@@ -250,8 +254,30 @@ export DT_ENTITY_ID=HOST-YOURHOSTENTITYID
 Check out the [remediation.yaml](./files/remediation.yaml) that this sample uses to make yourself familiar with remediation workflows in Keptn.
 This demo also uses the [generic-executor-service that allows](https://github.com/keptn-sandbox/generic-executor-service/) you to execute any type of Python, Bash or HTTP script. You can find all the scripts either in this repo under [files](./files) or on your keptn k3s machine in the keptn folder!
 
+## Use Case 4: Multi-Stage Delivery with Blue/Green (using Istio)
+Please follow the instructions in the output of the installations script.
 
-### Cleanup: Uninstall k3s
+## Use Case 5: Canary Rollouts with Argo
+This is a rather new use case using Argo Rollouts for a Production Canary Rollout. As it leverages the Argo Rollout integration and the Helm Service capability to deploy a "user_managed" helm chart we can currently not use the keptn cli to trigger a deployment but we have to send in the trigger event through the Keptn API.
+
+### Deploy Version 1
+
+If you have installed Gitea then you can navigate to your Git repository for the delivery-rollout project. In the main branch you will find a file called `prod.deployment.triggered.json`. Take this and post it via the Keptn Swagger API as an Event. It will trigger the delivery of the first build of the simplenode app
+You can watch it in the bridge. Keptn will first deploy the helm chart of version 1. As this is the first deployment it will immediately go out to 100% canary coverage. For that reason you can also stop the rollout when you are asked as part of the first approval. We are all set now!
+
+### Deploy Version 2
+
+First we need to update our version to 2.0.0 in the helm chart. Therefore navigate to the Gitea repository. Navigate to the prod branch and there into simplenode/helm/simplenode. Edit the values.yaml and change the version to 2.0.0.
+Now we can trigger another deployment just as we did for Version 1 by sending an event to Keptn via the Keptn API. This will now force Keptn to first deploy the rollout changes for 2.0.0 which will result in the first rollout step of 25%. After tests are run you have an approval if you want to continue the rollout. You can now approve this and watch the next steps as the rollout continues with 50 to 75 and finally 100% coverage
+
+### Deploy Version 3 & 4
+
+You can repeat the same steps for version 3 & 4
+
+## Use Case 6: Advanced Performance Testing
+
+
+## Cleanup: Uninstall k3s
 ```console
 k3s-uninstall.sh
 ```
