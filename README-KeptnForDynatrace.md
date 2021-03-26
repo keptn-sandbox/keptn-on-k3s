@@ -262,13 +262,28 @@ This is a rather new use case using Argo Rollouts for a Production Canary Rollou
 
 ### Deploy Version 1
 
-If you have installed Gitea then you can navigate to your Git repository for the delivery-rollout project. In the main branch you will find a file called `prod.deployment.triggered.json`. Take this and post it via the Keptn Swagger API as an Event. It will trigger the delivery of the first build of the simplenode app
-You can watch it in the bridge. Keptn will first deploy the helm chart of version 1. As this is the first deployment it will immediately go out to 100% canary coverage. For that reason you can also stop the rollout when you are asked as part of the first approval. We are all set now!
+If you have installed Gitea then you can navigate to your Git repository for the delivery-rollout project. In the main branch you will find a file called `prod.deployment.triggered.json`. Take this and post it via the Keptn Swagger API as an Event. 
+
+![](./images/trigger_delivery_rollout_version1_api.png)
+
+It will trigger the delivery of the first build of the simplenode app
+You can watch it in the bridge. Keptn will first deploy the helm chart of version 1. As this is the first deployment it will immediately go out to 100% canary coverage. 
+
+![](./images/rollout_version1_done.png)
+
+For that reason you can also stop the rollout when you are asked as part of the first approval. We are all set now!
 
 ### Deploy Version 2
 
-First we need to update our version to 2.0.0 in the helm chart. Therefore navigate to the Gitea repository. Navigate to the prod branch and there into simplenode/helm/simplenode. Edit the values.yaml and change the version to 2.0.0.
-Now we can trigger another deployment just as we did for Version 1 by sending an event to Keptn via the Keptn API. This will now force Keptn to first deploy the rollout changes for 2.0.0 which will result in the first rollout step of 25%. After tests are run you have an approval if you want to continue the rollout. You can now approve this and watch the next steps as the rollout continues with 50 to 75 and finally 100% coverage
+First we need to update our version to 2.0.0 in the helm chart. Therefore navigate to the Gitea repository. Navigate to the prod branch and there into simplenode/helm/simplenode. Edit the values.yaml and change the version to 2.0.0. For this you need to logon to Gitea. You can find user name & pwd in the install script output.
+
+![](./images/rollout_version2_edit_values_yaml.png)
+
+Now we can trigger another deployment just as we did for Version 1 by sending an event to Keptn via the Keptn API. I would however change the label of buildId to 2.0.0 because it will make it easier to see which version was rolled out in the Keptns Bridge
+
+This will now force Keptn to first deploy the rollout changes for 2.0.0 which will result in the first rollout step of 25%. After tests are run you have an approval if you want to continue the rollout. You can now approve this and watch the next steps as the rollout continues with 50 to 75 and finally 100% coverage
+
+![](./images/rollout_version2_canaryphases.png)
 
 ### Deploy Version 3 & 4
 

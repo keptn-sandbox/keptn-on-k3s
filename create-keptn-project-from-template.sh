@@ -23,6 +23,7 @@
 # REPLACE_OWNER_EMAIL          with -> OWNER_EMAIL
 # REPLACE_KEPTN_INGRESS        with -> KEPTN_INGRESS
 # REPLACE_SYNTHETIC_LOCATION   with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
+# REPLACE_KEPTN_PROJECT        with -> Keptn Project Name
 
 # default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
@@ -185,6 +186,7 @@ do
     sed -i "s/REPLACE_KEPTN_BRIDGE/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./

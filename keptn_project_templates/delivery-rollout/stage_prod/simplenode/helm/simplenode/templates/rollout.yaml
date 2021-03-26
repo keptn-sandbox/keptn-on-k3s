@@ -36,13 +36,13 @@ spec:
         app.kubernetes.io/component: api
         app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
         app.kubernetes.io/managed-by: Keptn
-        app.kubernetes.io/version: {{ .Values.image.tag }}
+        app.kubernetes.io/version: {{ .Values.tag }}
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
+          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          imagePullPolicy: {{ .Values.pullPolicy }}
           env:
           - name: DT_CUSTOM_PROP
             value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
