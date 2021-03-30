@@ -4,9 +4,9 @@ metadata:
   name: "shipyard-delivery-rollout"
 spec:
   stages:
-  - name: prod           
+  - name: staging
     sequences:
-    # Initial Deployment, Test and Evaluation
+    # Start with a Blue/Green Deployment in Staging
     - name: delivery        
       tasks:
       - name: deployment
@@ -20,7 +20,37 @@ spec:
         properties:
           pass: manual
           warning: manual
+      - name: release
+    - name: rollback
+      triggeredOn:
+      - event: staging.delivery.finished
+        selector:
+          match:
+            result: "fail"
+      tasks:
+      - name: rollback     
 
+  - name: prod
+    sequences:
+    # If Staging==pass -> Initial Deployment, Test and Evaluation
+    - name: delivery
+      triggeredOn:
+        - event: staging.delivery.finished
+          selector:
+            match:
+              result: "pass"    
+      tasks:
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
+      - name: test
+        properties:
+          teststrategy: performance
+      - name: evaluation
+      - name: approval
+        properties:
+          pass: manual
+          warning: manual
 
     # Phase 1 of Rollout: Release, Test, Evaluate
     - name: canaryphase1

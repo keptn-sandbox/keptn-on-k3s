@@ -15,17 +15,10 @@ spec:
       app: {{ template "simplenode.name" . }}
       release: {{ .Release.Name }}
   strategy:
-     canary:
-    #blueGreen:
-      # activeService: {{ template "simplenode.fullname" . }}
-      # previewService: {{ template "simplenode.fullname" . }}-preview
-       steps:
-       - setWeight: 25
-       - pause: {}
-       - setWeight: 50
-       - pause: {}
-       - setWeight: 75
-       - pause: {}      
+    blueGreen:
+      autoPromotionEnabled: false
+      activeService: {{ template "simplenode.fullname" . }}
+      previewService: {{ template "simplenode.fullname" . }}-preview
   template:
     metadata:
       labels:
@@ -54,8 +47,6 @@ spec:
             value: "{{ .Values.keptn.service }}"
           - name: KEPTN_DEPLOYMENT
             value: "{{ .Values.keptn.deployment }}"
-          - name: DEPLOYMENT_GROUP_NAME
-            value: "Production"
           ports:
             - name: http
               containerPort: 8080

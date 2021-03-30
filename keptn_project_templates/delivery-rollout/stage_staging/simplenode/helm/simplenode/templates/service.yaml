@@ -1,0 +1,42 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "simplenode.fullname" . }}
+  labels:
+    app: {{ template "simplenode.name" . }}
+    chart: {{ template "simplenode.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080
+      protocol: TCP
+      name: http
+      port: 80
+  type: ClusterIP    
+  selector:
+    app: {{ template "simplenode.name" . }}
+    release: {{ .Release.Name }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ template "simplenode.fullname" . }}-preview
+  labels:
+    app: {{ template "simplenode.name" . }}
+    chart: {{ template "simplenode.chart" . }}
+    release: {{ .Release.Name }}
+    heritage: {{ .Release.Service }}
+spec:
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      targetPort: 8080
+      protocol: TCP
+      name: http
+      port: 80
+  selector:
+    app: {{ template "simplenode.name" . }}
+    release: {{ .Release.Name }}
