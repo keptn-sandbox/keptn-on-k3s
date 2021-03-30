@@ -16,7 +16,7 @@ spec:
       release: {{ .Release.Name }}
   strategy:
     blueGreen:
-      autoPromotionEnabled: false
+      autoPromotionEnabled: true
       activeService: {{ template "simplenode.fullname" . }}
       previewService: {{ template "simplenode.fullname" . }}-preview
   template:

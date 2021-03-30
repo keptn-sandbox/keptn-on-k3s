@@ -1,0 +1,33 @@
+{
+    "type": "sh.keptn.event.prod.delivery.triggered",
+    "shkeptnspecversion": "0.2.0",
+    "specversion": "1.0",
+    "source": "triggered-via-api",
+    "contenttype": "application/json",
+    "data": {
+      "project": "REPLACE_KEPTN_PROJECT",
+      "stage": "staging",
+      "service": "simplenode",
+      "labels": {
+        "deployWith": "ArgoRollout",
+        "buildId": "1.0.0",
+        "owner": "Andi"
+      },
+      "configurationChange": {
+        "values": {
+          "image": "docker.io/grabnerandi/simplenodeservice",
+          "tag": "1.0.0"
+        }        
+      },
+
+      "deployment": {
+        "deploymentNames": [
+            "user_managed"
+        ],          
+        "deploymentURIsPublic": [
+            "http://simplenode.REPLACE_KEPTN_PROJECT-staging.REPLACE_KEPTN_INGRESS/"
+          ],
+        "deploymentstrategy": "user_managed"
+      }
+    }
+}
