@@ -816,12 +816,12 @@ To trigger a delivery simple do this
 For the Canary Delivery Use Case using Argo Rollouts we have created project ${KEPTN_ROLLOUT_PROJECT} that deploys a simplenode app in 2 stages (blue/green in staging and canary in prod)
 To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI or the Keptn API as explained in the readme
-   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservcie --tag=1.0.0
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 3: To deliver the next version simply run
-   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservcie --tag=2.0.0
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=2.0.0
 
 ------------------------------------------------------------------------
 For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
