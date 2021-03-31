@@ -15,6 +15,7 @@ INGRESS_PROTOCOL="http"
 ISTIO_GATEWAY="public-gateway.istio-system"
 
 ARGO_ROLLOUTS_VERSION="stable"
+ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 
 # For execution plane these are the env-variables that identify the keptn control plane
 # KEPTN_CONTROL_PLANE_DOMAIN=""
@@ -288,7 +289,7 @@ function get_argorollouts {
   "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
 
   # now also installing the argo rollout extension for kubectl
-  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_VERSION}/download/kubectl-argo-rollouts-linux-amd64
+  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_EXTENSION_VERSION}/download/kubectl-argo-rollouts-linux-amd64
   sudo chmod +x ./kubectl-argo-rollouts-linux-amd64
   sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
 }
@@ -818,7 +819,7 @@ To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI or the Keptn API as explained in the readme
    keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
 2: Watch the delivery progress in Keptn's bridge
-   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_ROLLOUT_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 3: To deliver the next version simply run
    keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=2.0.0
