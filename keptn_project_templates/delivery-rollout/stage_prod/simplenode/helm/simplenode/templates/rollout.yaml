@@ -36,12 +36,12 @@ spec:
         app.kubernetes.io/component: api
         app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
         app.kubernetes.io/managed-by: Keptn
-        app.kubernetes.io/version: {{ .Values.tag }}
+        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
       containers:
         - name: {{ .Chart.Name }}
-          image: "{{ .Values.image }}:{{ .Values.tag }}"
+          image: "{{ .Values.image }}"
           imagePullPolicy: {{ .Values.pullPolicy }}
           env:
           - name: DT_CUSTOM_PROP

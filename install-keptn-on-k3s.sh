@@ -27,6 +27,7 @@ ARGO_ROLLOUTS_VERSION="stable"
 
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 JMETER_SERVICE_VERSION="0.8.0"
+HELM_SERVICE_IMAGE=grabnerandi/helm-service:0.8.1
 
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
@@ -427,6 +428,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
+      --set=continuous-delivery.helmService.image.repository="${HELM_SERVICE_IMAGE}" \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -462,6 +464,10 @@ function install_keptn {
     yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+    if [[ "${HELM_SERVICE_IMAGE}" != "" ]]; then
+      yq w /tmp/helm.values.yaml "distributor.image.repository" "${HELM_SERVICE_IMAGE}"
+    fi 
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
 

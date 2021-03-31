@@ -12,6 +12,7 @@ spec:
       - name: deployment
         properties:
           deploymentstrategy: user_managed
+      - name: release          
       - name: test
         properties:
           teststrategy: performance
@@ -20,7 +21,6 @@ spec:
         properties:
           pass: manual
           warning: manual
-      - name: release
     - name: rollback
       triggeredOn:
       - event: staging.delivery.finished
