@@ -27,7 +27,7 @@ ARGO_ROLLOUTS_VERSION="stable"
 
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 JMETER_SERVICE_VERSION="0.8.0"
-HELM_SERVICE_IMAGE=grabnerandi/helm-service:0.8.1
+HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
