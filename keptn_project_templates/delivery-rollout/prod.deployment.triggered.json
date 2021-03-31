@@ -15,19 +15,8 @@
       },
       "configurationChange": {
         "values": {
-          "image": "docker.io/grabnerandi/simplenodeservice",
-          "tag": "1.0.0"
+          "image": "docker.io/grabnerandi/simplenodeservice:1.0.0"
         }        
-      },
-
-      "deployment": {
-        "deploymentNames": [
-            "user_managed"
-        ],          
-        "deploymentURIsPublic": [
-            "http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS/"
-          ],
-        "deploymentstrategy": "user_managed"
       }
     }
 }
