@@ -9,6 +9,7 @@ spec:
     # Start with a Blue/Green Deployment in Staging
     - name: delivery        
       tasks:
+      - name: monaco
       - name: deployment
         properties:
           deploymentstrategy: user_managed
