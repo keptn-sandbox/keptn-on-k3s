@@ -1,5 +1,5 @@
 {
-    "type": "sh.keptn.event.prod.delivery.triggered",
+    "type": "sh.keptn.event.staging.delivery.triggered",
     "shkeptnspecversion": "0.2.0",
     "specversion": "1.0",
     "source": "triggered-via-api",
