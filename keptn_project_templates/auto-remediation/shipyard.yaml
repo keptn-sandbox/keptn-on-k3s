@@ -5,14 +5,3 @@ metadata:
 spec:
   stages:
   - name: "production"
-    sequences:
-      - name: remediation
-        triggeredOn:
-        - event: production.problem.open
-        - event: production.remediation.in-progress
-        tasks:
-        - name: remediation
-        - name: test
-          properties:
-            kind: real_user
-        - name: evaluation
