@@ -775,7 +775,8 @@ function install_prometheus_qg_demo {
   export KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PROMETHEUS_QG_PROJECT}"
-  ./create-keptn-project-from-template.sh prometheus ${OWNER_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
+  ./create-keptn-project-from-template.sh prometheus ${CERT_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
+
 
 
 
@@ -1060,13 +1061,14 @@ function main {
         if [[ $DEMO == "dynatrace" ]]; then 
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
-          JMETER="true"
-          
+         
           if [[ $OWNER_EMAIL == "none" ]]; then 
             echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
             exit 1
           fi 
         fi
+
+        JMETER="true"
 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
