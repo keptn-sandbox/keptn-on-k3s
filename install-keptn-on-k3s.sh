@@ -491,7 +491,7 @@ function install_keptn {
     fi
   fi
  
-  if [[ "${PROM}" == "true"]]; then
+  if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus"
      helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
      "${K3SKUBECTL[@]}" create ns prometheus
