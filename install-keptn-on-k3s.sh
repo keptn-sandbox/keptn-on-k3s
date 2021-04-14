@@ -775,7 +775,7 @@ function install_prometheus_qg_demo {
   export KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PROMETHEUS_QG_PROJECT}"
-  ./create-keptn-project-from-template.sh prometheus ${CERT_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
+  ./create-keptn-project-from-template.sh prometheus-qg ${CERT_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
 
   "${K3SKUBECTL[@]}" create secret -n keptn generic prometheus-credentials-podtatohead --from-file=prometheus-credentials=keptn_project_templates/"${KEPTN_PROMETHEUS_QG_PROJECT}"/sli-secret.yaml
   "${K3SKUBECTL[@]}" delete pod -n keptn --selector=run=prometheus-sli-service 
