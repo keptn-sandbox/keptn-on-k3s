@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloservice
-  namespace: podtatohead-quality-gate
+  namespace: prometheus-quality-gate
 spec:
   replicas: 1
   selector:
