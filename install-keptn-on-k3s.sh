@@ -505,7 +505,7 @@ function install_keptn {
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
 
      write_progress "Installing Prometheus SLI Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
+     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
