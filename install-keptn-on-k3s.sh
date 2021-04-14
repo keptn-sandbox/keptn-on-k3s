@@ -30,7 +30,7 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 JMETER_SERVICE_VERSION="0.8.0"
 HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
-PROM_SERVICE_VERSION="release-0.4.0"
+PROM_SERVICE_VERSION="master"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
 DT_SLI_SERVICE_VERSION="release-0.9.0"
@@ -53,7 +53,7 @@ PREFIX="https"
 CERTS="selfsigned"
 CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
-XIP="false"
+XIP="true"
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
@@ -491,9 +491,20 @@ function install_keptn {
     fi
   fi
  
-  if [ "${PROM}" == "true"]]; then
+  if [[ "${PROM}" == "true"]]; then
+     write_progress "Installing Prometheus"
+     helm repo add prometheus-community https://prometheus-community.github.io/helm-charts
+     "${K3SKUBECTL[@]}" create ns prometheus
+     helm install prometheus prometheus-community/prometheus --namespace prometheus
+
      write_progress "Installing Prometheus Service"
+
+     "${K3SKUBECTL[@]}" apply -f "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/role.yaml" -n prometheus
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
+
+     "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
+
+     write_progress "Installing Prometheus SLI Service"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
   fi
 
