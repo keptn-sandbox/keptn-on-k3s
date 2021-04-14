@@ -779,11 +779,20 @@ function install_prometheus_qg_demo {
   echo "Create Keptn Project: ${KEPTN_PROMETHEUS_QG_PROJECT}"
   ./create-keptn-project-from-template.sh prometheus-qg ${CERT_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
 
-  "${K3SKUBECTL[@]}" create secret -n keptn generic prometheus-credentials-podtatohead --from-file=prometheus-credentials="${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}"/sli-secret.yaml
+  "${K3SKUBECTL[@]}" create secret -n keptn generic prometheus-credentials-podtatohead --from-file=prometheus-credentials="${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/sli-secret.yaml"
   "${K3SKUBECTL[@]}" delete pod -n keptn --selector=run=prometheus-sli-service 
 
+  ${K3SKUBECTL[@]}" create ns prometheus-qg-quality-gate
   "${K3SKUBECTL[@]}" apply -f "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/podtato-head/deployment.yaml"
   "${K3SKUBECTL[@]}" apply -f "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/podtato-head/service.yaml"
+
+  PODTATO_DOMAIN=podtato.${FQDN}
+  write_progress "Configuring Podtato Ingress Object (${PODTATO_DOMAIN})"
+    sed -e 's~domain.placeholder~'"$PODTATO_DOMAIN"'~' \
+        -e 's~issuer.placeholder~'"$CERTS"'~' \
+        "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}"/podtato-ingress.yaml > podtato-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n ${KEPTN_PROMETHEUS_QG_PROJECT}-${KEPTN_QG_STAGE} -f podtato-ingress_gen.yaml
+    rm podtato-ingress_gen.yaml  
 
   echo "Run first Prometheus Quality Gate"
   keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
