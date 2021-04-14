@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: helloservice
-  namespace: prometheus-quality-gate
+  namespace: prometheus-qg-quality-gate
 spec:
   replicas: 1
   selector:
