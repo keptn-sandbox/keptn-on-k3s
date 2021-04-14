@@ -13,7 +13,7 @@ spec:
   rules:
     - host: "domain.placeholder"
       http:
-  paths:
+        paths:
           - path: /
             pathType: Prefix
             backend:
