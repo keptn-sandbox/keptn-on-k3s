@@ -115,6 +115,9 @@ KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
 KEPTN_ADV_PERFORMANCE_STAGE="performance"
 KEPTN_ADV_PERFORMANCE_SERVICE="appundertest"
 
+KEPTN_PROMETHEUS_QG_PROJECT="prometheus"
+KEPTN_PROMETHEUS_QG_STAGE="quality-gate"
+KEPTN_PROMETHEUS_QG_SERVICE="helloservice"
 
 function create_namespace {
   namespace="${1:-none}"
@@ -759,6 +762,27 @@ function install_demo {
   if [[ "${DEMO}" == "dynatrace" ]]; then
     install_demo_dynatrace
   fi 
+
+  if [[ "${DEMO}" == "prometheus" ]]; then
+    install_prometheus_qg_demo
+  fi 
+}
+
+function install_prometheus_qg_demo {
+  write_progress "Installing Prometheus Demo Projects"
+
+  export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  export KEPTN_INGRESS=${FQDN}
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_PROMETHEUS_QG_PROJECT}"
+  ./create-keptn-project-from-template.sh prometheus ${OWNER_EMAIL} ${KEPTN_PROMETHEUS_QG_PROJECT}
+
+
+
+  echo "Run first Prometheus Quality Gate"
+  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
+
+
 }
 
 function print_config {
@@ -1028,8 +1052,8 @@ function main {
        ;;
     --with-demo)
         DEMO="${2}"
-        if [[ $DEMO != "dynatrace" ]]; then 
-          echo "--with-demo parameter currently supports: dynatrace. Value passed is not allowed"
+        if [[ $DEMO != "dynatrace" ]] && [[ $DEMO != "prometheus" ]] ; then 
+          echo "--with-demo parameter currently supports: dynatrace or prometheus. Value passed is not allowed"
           exit 1
         fi 
 
