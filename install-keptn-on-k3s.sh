@@ -782,7 +782,7 @@ function install_prometheus_qg_demo {
   "${K3SKUBECTL[@]}" create secret -n keptn generic "prometheus-credentials-${KEPTN_PROMETHEUS_QG_PROJECT}" --from-file=prometheus-credentials="${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/sli-secret.yaml"
   "${K3SKUBECTL[@]}" delete pod -n keptn --selector=run=prometheus-sli-service 
 
-  ${K3SKUBECTL[@]}" create ns prometheus-qg-quality-gate
+  "${K3SKUBECTL[@]}" create ns prometheus-qg-quality-gate
   "${K3SKUBECTL[@]}" apply -f "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/podtato-head/deployment.yaml"
   "${K3SKUBECTL[@]}" apply -f "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/podtato-head/service.yaml"
 
