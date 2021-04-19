@@ -30,7 +30,7 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 JMETER_SERVICE_VERSION="0.8.0"
 HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
-PROM_SERVICE_VERSION="master"
+PROM_SERVICE_VERSION="release-0.5.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
 DT_SLI_SERVICE_VERSION="release-0.9.0"
@@ -53,7 +53,7 @@ PREFIX="https"
 CERTS="selfsigned"
 CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
-XIP="true"
+XIP="true" ## TODO replace XIP with NIP
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
@@ -795,7 +795,7 @@ function install_prometheus_qg_demo {
     rm podtato-ingress_gen.yaml  
 
   echo "Run first Prometheus Quality Gate"
-  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
+  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=30m
 
 
 }
@@ -1063,6 +1063,10 @@ function main {
         ;;
     --with-gitea)
        GITEA="true"
+       shift
+       ;;
+    --disable-bridge-login)
+       DISABLE_BRIDGE_LOGIN="true"
        shift
        ;;
     --with-demo)
