@@ -787,7 +787,7 @@ function install_prometheus_qg_demo {
   "${K3SKUBECTL[@]}" apply -f "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}/podtato-head/service.yaml"
 
   PROMETHEUS_DOMAIN="prometheus.${FQDN}"
-  write_progress "Configuring Prometheus Ingress Object (${PODTATO_DOMAIN})"
+  write_progress "Configuring Prometheus Ingress Object (${PROMETHEUS_DOMAIN})"
     sed -e 's~domain.placeholder~'"$PROMETHEUS_DOMAIN"'~' \
         -e 's~issuer.placeholder~'"$CERTS"'~' \
         "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}"/prometheus-ingress.yaml > prometheus-ingress_gen.yaml
