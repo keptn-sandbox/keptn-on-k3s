@@ -1,7 +1,7 @@
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
-  name: podtato-ingress
+  name: prometheus-ingress
   annotations:
     cert-manager.io/cluster-issuer: issuer.placeholder-issuer
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
@@ -18,7 +18,6 @@ spec:
             pathType: Prefix
             backend:
               service:
-                name: helloservice
+                name: prometheus-server
                 port:
                   number: 80
-
