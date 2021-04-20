@@ -1149,7 +1149,9 @@ function main {
     install_certmanager
     install_keptn
     install_keptncli
-    install_demo  
+    install_demo
+    gitea_readApiTokenFromFile
+    gitea_createKeptnRepos  
     print_config
   fi
 
