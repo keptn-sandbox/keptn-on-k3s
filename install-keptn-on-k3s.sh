@@ -360,7 +360,7 @@ function check_k8s {
   done
 }
 
-function disable_bridge_login {
+function disable_bridge_auth {
   ${K3SKUBECTL[@]} -n keptn delete secret bridge-credentials
   ${K3SKUBECTL[@]} -n keptn delete pods --selector=app.kubernetes.io/name=bridge
 }
@@ -612,8 +612,8 @@ function install_keptn {
     helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
   fi
 
-  if [[ "${DISABLE_BRIDGE_LOGIN}" == "true" ]]; then
-    disable_bridge_login
+  if [[ "${DISABLE_BRIDGE_AUTH}" == "true" ]]; then
+    disable_bridge_auth
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
@@ -834,8 +834,8 @@ function install_prometheus_qg_demo {
     "${K3SKUBECTL[@]}" apply -n ${KEPTN_PROMETHEUS_QG_PROJECT}-${KEPTN_QG_STAGE} -f podtato-ingress_gen.yaml
     rm podtato-ingress_gen.yaml  
 
-  write_progress "Waiting for Prometheus pods to be ready (max 5 minutes)"
-  "${K3SKUBECTL[@]}" wait --namespace=prometheus --for=condition=Ready pods --timeout=300s --all   
+  write_progress "Waiting for Prometheus server to be available (max 5 minutes)"
+  "${K3SKUBECTL[@]}" wait --namespace=prometheus --for=condition=Available deploy/prometheus-server --timeout=300s --all   
 
   write_progress "Generating traffic for Podtato-head application"
   curl -s  "${PODTATO_DOMAIN}?[1-1000]" > /dev/null
@@ -1117,8 +1117,8 @@ function main {
        GITEA="true"
        shift
        ;;
-    --disable-bridge-login)
-       DISABLE_BRIDGE_LOGIN="true"
+    --disable-bridge-auth)
+       DISABLE_BRIDGE_AUTH="true"
        shift
        ;;
     --with-demo)
