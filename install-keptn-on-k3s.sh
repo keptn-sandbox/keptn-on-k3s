@@ -53,7 +53,8 @@ PREFIX="https"
 CERTS="selfsigned"
 CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
-XIP="true" ## TODO replace XIP with NIP
+XIP="false" ## TODO replace XIP with NIP
+NIP="true"
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
@@ -190,6 +191,16 @@ function get_xip_address {
   fi
 }
 
+function get_nip_address {
+  address="${1:-none}"
+  if [[ $address != none ]]; then
+    echo "${address}.nip.io"
+  else
+    echo "No address given"
+    exit 1
+  fi
+}
+
 function get_fqdn {
   if [[ "$FQDN" == "none" ]]; then
 
@@ -200,6 +211,14 @@ function get_fqdn {
     fi
     if [[ "${LE_STAGE}" == "production" ]]; then
       echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
+      exit 1
+    fi
+
+    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${NIP}" == "true" ]]; then
+      FQDN="$(get_nip_address "${MY_IP}")"
+    fi
+    if [[ "${LE_STAGE}" == "production" ]]; then
+      echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
       exit 1
     fi
   fi
@@ -810,7 +829,8 @@ function install_prometheus_qg_demo {
   echo "Run first Prometheus Quality Gate"
   keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=30m
 
-
+  # deploy other version
+  # k3s kubectl set image deploy/helloservice server=gabrieltanner/hello-server:v0.1.2 --record -n prometheus-qg-quality-gate 
 }
 
 function print_config {
@@ -985,6 +1005,11 @@ function main {
     --use-xip)
         echo "Using xip.io"
         XIP="true"
+        shift
+        ;;
+    --use-nip)
+        echo "Using nip.io"
+        NIP="true"
         shift
         ;;
     --controlplane)
