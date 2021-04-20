@@ -360,6 +360,10 @@ function check_k8s {
   done
 }
 
+function disable_bridge_login {
+  ${K3SKUBECTL[@]} -n keptn delete secret bridge-credentials
+  ${K3SKUBECTL[@]} -n keptn delete pods --selector=app.kubernetes.io/name=bridge
+}
 
 function install_certmanager {
 
@@ -606,6 +610,10 @@ function install_keptn {
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
     helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
+  fi
+
+  if [[ "${DISABLE_BRIDGE_LOGIN}" == "true" ]]; then
+    disable_bridge_login
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
