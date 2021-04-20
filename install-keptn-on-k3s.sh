@@ -826,8 +826,14 @@ function install_prometheus_qg_demo {
     "${K3SKUBECTL[@]}" apply -n ${KEPTN_PROMETHEUS_QG_PROJECT}-${KEPTN_QG_STAGE} -f podtato-ingress_gen.yaml
     rm podtato-ingress_gen.yaml  
 
+  write_progress "Waiting for Prometheus pods to be ready (max 5 minutes)"
+  "${K3SKUBECTL[@]}" wait --namespace=prometheus --for=condition=Ready pods --timeout=300s --all   
+
+  write_progress "Generating traffic for Podtato-head application"
+  curl -s  "${PODTATO_DOMAIN}?[1-1000]" > /dev/null
+
   echo "Run first Prometheus Quality Gate"
-  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=30m
+  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=5m
 
   # deploy other version
   # k3s kubectl set image deploy/helloservice server=gabrieltanner/hello-server:v0.1.2 --record -n prometheus-qg-quality-gate 
