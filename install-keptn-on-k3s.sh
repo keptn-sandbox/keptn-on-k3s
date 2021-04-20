@@ -795,7 +795,7 @@ function install_prometheus_qg_demo {
     sed -e 's~domain.placeholder~'"$PROMETHEUS_DOMAIN"'~' \
         -e 's~issuer.placeholder~'"$CERTS"'~' \
         "${TEMPLATE_DIRECTORY}/${KEPTN_PROMETHEUS_QG_PROJECT}"/prometheus-ingress.yaml > prometheus-ingress_gen.yaml
-    "${K3SKUBECTL[@]}" apply -n ${KEPTN_PROMETHEUS_QG_PROJECT}-${KEPTN_QG_STAGE} -f prometheus-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n prometheus -f prometheus-ingress_gen.yaml
     rm prometheus-ingress_gen.yaml  
 
   # expose demo application
