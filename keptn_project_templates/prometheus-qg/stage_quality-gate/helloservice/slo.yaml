@@ -15,7 +15,6 @@ objectives:
   - sli: request_throughput
     pass:
       - criteria:
-          - "<=+100%"
           - ">=-80%"
   - sli: go_routines
     pass:
