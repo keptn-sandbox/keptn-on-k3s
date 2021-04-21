@@ -1,0 +1,8 @@
+<variable-file delimiters=";" filename="list_of_cities5520cc7e-7818-4cb6-b40b-e6faa63b3bdf.csv" name="Fil_cities" offset="1" order="2" policy="5" range="1" uid="bb02befa-e387-4734-b96e-18fd96047ef3" useFirstLine="true" whenOutOfValues="CYCLE_VALUES">
+<column name="" number="5"/>
+<column name="City" number="0"/>
+<column name="Country" number="1"/>
+<column name="Latitude" number="4"/>
+<column name="Longitude" number="3"/>
+<column name="Population" number="2"/>
+</variable-file>

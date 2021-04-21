@@ -1,0 +1,365 @@
+
+	<!DOCTYPE settings [
+	
+		<!ELEMENT settings (configuration?, clientCertificatesSettings?, pageNamingSettings?, jsPolicySettings?, errorHandleSettings?, globalAssertionSettings?, caApmSettings?, dynaTraceSettings?, appDynamicsSettings?, nudgeSettings?, amfSettings?, ofSettings?, performanceSettings?, statisticsSettings?, wsSecuritySettings?, media-streaming-settings?, plugin-identification-settings*, team-server-settings?, restApisSettings?, exportNeoSenseSettings?)>
+		
+	    <!ELEMENT configuration (#PCDATA)>
+	
+		<!ELEMENT clientCertificatesSettings (record? , playback?) >
+		<!ELEMENT record (#PCDATA)>
+		<!ELEMENT playback (#PCDATA)>
+		
+		<!ELEMENT plugin-identification-settings (request-headers?, response-headers?)>
+		<!ELEMENT request-headers (header*)>
+		<!ELEMENT response-headers (header*)>
+		<!ELEMENT header (#PCDATA)>
+		
+		<!ELEMENT globalAssertionSettings (contentType*)>
+		<!ATTLIST globalAssertionSettings
+			applyGlobalAssertionsOnCA CDATA #IMPLIED>
+		<!ELEMENT contentType (#PCDATA)>
+		
+		<!ELEMENT media-streaming-settings (content-types?, extensions?)>
+		<!ELEMENT content-types (content-type*)>
+		<!ELEMENT content-type (#PCDATA)>
+		<!ELEMENT extensions (extension*)>
+		<!ELEMENT extension (#PCDATA)>
+		
+		<!ATTLIST contentType
+			value CDATA #REQUIRED>
+			
+		<!ATTLIST configuration
+			openType CDATA #IMPLIED>
+		<!ATTLIST record
+		    certificateName CDATA #IMPLIED
+		    certificatePassword CDATA #IMPLIED>
+	  	<!ATTLIST playback
+	      	policy CDATA #REQUIRED
+		    certificateName CDATA #IMPLIED
+		    certificatePassword CDATA #IMPLIED>
+		    
+		<!ELEMENT wsSecuritySettings (wss-outProfile* , wss-inProfile*) >
+		<!ELEMENT wss-outProfile (wss-header+)>
+		<!ELEMENT wss-inProfile (#PCDATA)>
+		<!ELEMENT wss-header (wss-usernametoken*, wss-timestamp*, wss-encrypt*, wss-signature*)>
+		<!ELEMENT wss-usernametoken (#PCDATA)>
+		<!ELEMENT wss-timestamp (#PCDATA)>
+		<!ELEMENT wss-encrypt (wss-part*)>
+		<!ELEMENT wss-signature (wss-part*)>
+		
+		<!ATTLIST wss-outProfile 
+			name CDATA #REQUIRED>
+			
+		<!ATTLIST wss-inProfile 
+			name CDATA #REQUIRED
+			keystore CDATA #REQUIRED
+			password CDATA #REQUIRED>
+			
+		<!ATTLIST wss-header
+			actor CDATA #REQUIRED
+			mustUnderstand CDATA #REQUIRED>
+			
+		<!ATTLIST wss-usernametoken
+			username CDATA #IMPLIED
+			pwd CDATA #IMPLIED
+			pwdType CDATA #IMPLIED
+			nonce CDATA #IMPLIED 
+			created CDATA #IMPLIED 
+			useMAC CDATA #IMPLIED
+			salt CDATA #IMPLIED
+			iteration  CDATA #IMPLIED>
+			
+		<!ATTLIST wss-timestamp
+			timeToLive CDATA #IMPLIED
+			milliseconds CDATA #IMPLIED>
+			
+		<!ATTLIST wss-encrypt
+			keystore CDATA #IMPLIED
+			password CDATA #IMPLIED
+			alias CDATA #IMPLIED
+			embeddedKey CDATA #IMPLIED
+			embeddedKeyName CDATA #IMPLIED
+			keyTransport CDATA #IMPLIED
+			canonicalAlgo CDATA #IMPLIED
+			symEncAlgo CDATA #IMPLIED
+			keyIdentifier CDATA #IMPLIED
+			encryptSymKey CDATA #IMPLIED>
+			
+		<!ATTLIST wss-signature
+			keystore CDATA #IMPLIED
+			password CDATA #IMPLIED
+			alias CDATA #IMPLIED
+		    digestAlgo CDATA #IMPLIED
+		    signAlgo CDATA #IMPLIED
+			canonicalAlgo CDATA #IMPLIED
+			keyIdentifier CDATA #IMPLIED
+			useSingleCert CDATA #IMPLIED>
+			
+		<!ATTLIST wss-part
+			id CDATA #IMPLIED
+			name CDATA #IMPLIED
+			namespace CDATA #IMPLIED
+			encMod CDATA #REQUIRED>
+			
+		<!ELEMENT pageNamingSettings (template*)>
+		
+		<!ELEMENT template (#PCDATA)>    
+		
+		<!ATTLIST template
+			value CDATA #REQUIRED>
+			
+		<!ELEMENT jsPolicySettings (#PCDATA)>
+		
+		<!ATTLIST jsPolicySettings
+			jsLoggingLevel CDATA #REQUIRED>
+			
+		<!ELEMENT performanceSettings (#PCDATA)>
+		
+		<!ATTLIST performanceSettings
+			optimizationReferrerOnly CDATA #IMPLIED>
+			
+		<!ELEMENT statisticsSettings (#PCDATA)>
+		
+		<!ATTLIST statisticsSettings
+			zoneSplit CDATA #IMPLIED
+			migratedFrom3_1_X CDATA #IMPLIED
+			disableCacheForExtractors CDATA #IMPLIED
+			enableJSON CDATA #IMPLIED>
+			
+		<!ELEMENT errorHandleSettings (httpCode*)>
+		
+		<!ATTLIST errorHandleSettings
+			enabled CDATA #IMPLIED
+				alwaysApplyPacing CDATA #IMPLIED>
+			
+		<!ELEMENT httpCode (#PCDATA)>    
+		
+		<!ATTLIST httpCode
+			value CDATA #REQUIRED>
+
+		<!ELEMENT caApmSettings (headersSettings, workstationSettings, monitoredApps?)>
+		<!ELEMENT headersSettings (#PCDATA)>
+		<!ATTLIST headersSettings
+			headersEnabled CDATA #REQUIRED
+			vuEnabled CDATA #REQUIRED
+			containerEnabled CDATA #REQUIRED
+			logicalActionEnabled CDATA #REQUIRED
+			traceByVUEnabled CDATA #REQUIRED
+			percentageOfVUToTrace CDATA #REQUIRED>
+		<!ELEMENT workstationSettings (#PCDATA)>
+		<!ATTLIST workstationSettings
+			linksEnabled CDATA #REQUIRED
+			jwsHost CDATA #REQUIRED
+			jwsPort CDATA #REQUIRED
+			emLogin CDATA #REQUIRED
+			emPassword CDATA #REQUIRED
+			emDomain CDATA #REQUIRED
+			intervalStartDelay CDATA #REQUIRED
+			intervalEndDelay CDATA #REQUIRED>			
+		<!ELEMENT monitoredApps (monitoredApp*)>
+		<!ELEMENT monitoredApp (#PCDATA)>
+		<!ATTLIST monitoredApp
+			name CDATA #REQUIRED
+			mapping CDATA #REQUIRED
+			agentHostName CDATA #REQUIRED
+			agentProcessName CDATA #REQUIRED
+			agentName CDATA #REQUIRED
+			serverName CDATA #REQUIRED>			
+			
+		<!ELEMENT dynaTraceSettings (#PCDATA)>
+		
+		<!ATTLIST dynaTraceSettings
+			dynaTraceEnabled CDATA #REQUIRED
+			recordSessionEnabled CDATA #REQUIRED
+			logicalNamesEnabled CDATA #REQUIRED
+			containerNamesEnabled CDATA #REQUIRED
+			version CDATA #IMPLIED
+			server CDATA #REQUIRED
+			port CDATA #REQUIRED
+			ssl CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			systemName CDATA #REQUIRED
+			systemNames CDATA #REQUIRED>
+
+		<!ELEMENT appDynamicsSettings (#PCDATA)>
+		
+		<!ATTLIST appDynamicsSettings
+			appDynamicsEnabled CDATA #REQUIRED
+			vuNamesEnabled CDATA #REQUIRED
+			containerNamesEnabled CDATA #IMPLIED
+			logicalActionNamesEnabled CDATA #REQUIRED>
+			
+		<!ELEMENT nudgeSettings (#PCDATA)>
+		
+		<!ATTLIST nudgeSettings
+			nudgeEnabled CDATA #REQUIRED
+			vuNamesEnabled CDATA #REQUIRED
+			containerNamesEnabled CDATA #IMPLIED
+			logicalActionNamesEnabled CDATA #REQUIRED>
+
+		<!ELEMENT amfSettings (#PCDATA)>
+		
+		<!ATTLIST amfSettings
+			amfServer CDATA #IMPLIED
+			amfGDSLocale110GA CDATA #IMPLIED
+			handleIdsPerServlet CDATA #IMPLIED>
+		
+		<!ELEMENT ofSettings (#PCDATA)>	
+		
+		<!ATTLIST ofSettings
+			isHandlerIdErrorReportingEnabled CDATA #IMPLIED
+			isHandlerIdAutomaticManagementEnabled CDATA #IMPLIED
+			isHandlerIdCleanedAtRecord CDATA #IMPLIED>
+			
+		<!ATTLIST plugin-identification-settings
+			plugin CDATA #REQUIRED>
+			
+		<!ATTLIST header
+			value CDATA #REQUIRED>
+			
+		<!ELEMENT team-server-settings (#PCDATA)>	
+		
+		<!ATTLIST team-server-settings
+			protocol CDATA #IMPLIED
+			tunnel CDATA #IMPLIED
+			hostAddress CDATA #IMPLIED
+			port CDATA #IMPLIED
+			repository CDATA #IMPLIED
+			resourcesFolderName CDATA #IMPLIED
+			thirdParty CDATA #IMPLIED>
+			
+		<!ELEMENT restApisSettings (identification)>
+		<!ELEMENT identification (key*)>
+		<!ELEMENT key (#PCDATA)>
+		
+		<!ATTLIST identification
+			isEnabled CDATA #IMPLIED>
+			
+		<!ATTLIST key
+			value CDATA #IMPLIED
+			comment CDATA #IMPLIED>
+		
+		<!-- Since 5.2.0 -->
+		<!ELEMENT exportNeoSenseSettings (#PCDATA)>
+		
+		<!ATTLIST exportNeoSenseSettings
+			screenShotsExported CDATA #REQUIRED		
+			recordedReqRespExported CDATA #REQUIRED 
+			destination CDATA #IMPLIED
+			lastAppName CDATA #IMPLIED
+			mode CDATA #REQUIRED> 
+	]>
+<settings>
+<clientCertificatesSettings>
+<playback policy="none"/>
+</clientCertificatesSettings>
+<pageNamingSettings>
+<template value="$plugin$"/>
+<template value="$path$"/>
+</pageNamingSettings>
+<jsPolicySettings jsLoggingLevel="ERROR"/>
+<errorHandleSettings enabled="false">
+<httpCode value="404"/>
+</errorHandleSettings>
+<globalAssertionSettings applyGlobalAssertionsOnCA="false">
+<contentType value="text/html"/>
+<contentType value="text/xhtml"/>
+</globalAssertionSettings>
+<caApmSettings>
+<headersSettings containerEnabled="true" headersEnabled="false" logicalActionEnabled="true" percentageOfVUToTrace="10" traceByVUEnabled="false" vuEnabled="true"/>
+<workstationSettings emDomain="SuperDomain" emLogin="admin" emPassword="" intervalEndDelay="0" intervalStartDelay="0" jwsHost="localhost" jwsPort="8081" linksEnabled="false"/>
+</caApmSettings>
+<dynaTraceSettings dynaTraceEnabled="true" dynatraceHeader="X-Dynatrace-Test" dynatraceType="Dynatrace" logicalNamesEnabled="false" login="admin" password="" port="2020" recordSessionEnabled="false" server="" sessionLockingEnabled="false" ssl="false" systemName="" version="2.X"/>
+<appDynamicsSettings appDynamicsEnabled="false" containerNamesEnabled="false" logicalActionNamesEnabled="false" vuNamesEnabled="false"/>
+<nudgeSettings containerNamesEnabled="false" enabled="false" logicalActionNamesEnabled="false" vuNamesEnabled="false"/>
+<amfSettings amfGDSLocale110GA="false" amfServer="1"/>
+<ofSettings isHandlerIdAutomaticManagementEnabled="true" isHandlerIdCleanedAtRecord="true" isHandlerIdErrorReportingEnabled="true"/>
+<performanceSettings optimizationReferrerOnly="false"/>
+<statisticsSettings disableCacheForExtractors="true" enableJSON="false" zoneSplit="true"/>
+<wsSecuritySettings/>
+<media-streaming-settings>
+<content-types>
+<content-type>video/avi</content-type>
+<content-type>video/x-msvideo</content-type>
+<content-type>video/msvideo</content-type>
+<content-type>video/mp4</content-type>
+<content-type>video/x-flv</content-type>
+<content-type>video/x-f4v</content-type>
+<content-type>audio/mpeg</content-type>
+<content-type>audio/xmpeg</content-type>
+<content-type>audio/x-mpeg</content-type>
+<content-type>audio/mpg</content-type>
+<content-type>audio/xmpg</content-type>
+<content-type>audio/x-mpg</content-type>
+<content-type>audio/mp3</content-type>
+<content-type>audio/xmp3</content-type>
+<content-type>audio/x-mp3</content-type>
+<content-type>audio/mpeg3</content-type>
+<content-type>audio/xmpeg3</content-type>
+<content-type>audio/x-mpeg3</content-type>
+<content-type>audio/x-mpegaudio</content-type>
+</content-types>
+<extensions>
+<extension>avi</extension>
+<extension>mp4</extension>
+<extension>flv</extension>
+<extension>f4v</extension>
+<extension>mp3</extension>
+</extensions>
+</media-streaming-settings>
+<plugin-identification-settings plugin="AMF">
+<request-headers>
+<header value="application/x-amf"/>
+<header value="application/xml"/>
+</request-headers>
+<response-headers>
+<header value="application/x-amf"/>
+<header value="application/xml"/>
+</response-headers>
+</plugin-identification-settings>
+<plugin-identification-settings plugin="RTMP">
+<request-headers>
+<header value="application/x-fcs"/>
+</request-headers>
+<response-headers>
+<header value="application/x-fcs"/>
+</response-headers>
+</plugin-identification-settings>
+<plugin-identification-settings plugin="GWT">
+<request-headers>
+<header value="text/x-gwt-rpc"/>
+</request-headers>
+<response-headers>
+<header value="application/json"/>
+</response-headers>
+</plugin-identification-settings>
+<plugin-identification-settings plugin="HESSIAN">
+<request-headers>
+<header value="x-application/hessian"/>
+<header value="application/x-hessian"/>
+</request-headers>
+<response-headers>
+<header value="x-application/hessian"/>
+<header value="application/x-hessian"/>
+</response-headers>
+</plugin-identification-settings>
+<plugin-identification-settings plugin="JAVA">
+<request-headers>
+<header value="application/x-java-serialized-object"/>
+</request-headers>
+<response-headers>
+<header value="application/x-java-serialized-object"/>
+</response-headers>
+</plugin-identification-settings>
+<plugin-identification-settings plugin="CUSTOM"/>
+<team-server-settings port="0" protocol="svn" resourcesFolderName="%resources%" thirdParty="false"/>
+<exportNeoSenseSettings destination="" mode="" recordedReqRespExported="false" screenShotsExported="false"/>
+<restApisSettings>
+<identification isEnabled="false"/>
+</restApisSettings>
+<exportNeoSenseSettings destination="" mode="" recordedReqRespExported="false" screenShotsExported="false"/>
+<restApisSettings>
+<identification isEnabled="false"/>
+</restApisSettings>
+</settings>

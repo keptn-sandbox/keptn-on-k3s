@@ -1,0 +1,6 @@
+<lg-host citrixSupport="false"
+    hostname="rhodes.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="48722232-9ae6-4dcb-9ad2-6d954e33a647" version="6.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>

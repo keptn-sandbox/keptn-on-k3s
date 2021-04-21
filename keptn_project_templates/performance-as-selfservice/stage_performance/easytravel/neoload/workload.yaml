@@ -1,0 +1,15 @@
+workloads:
+- teststrategy: performance
+  script:
+    repository: GIT_SERVER_TO_REPLACE/REPO_TO_REPLACE/REPLACE_KEPTN_PROJECT.git
+    branch: performance
+    project:
+    - path: /neoload/easytravel_basic.yaml
+    - path: /neoload/easytravel/easytravel.nlp
+  properties:
+    scenario: EasyTravelload
+  description: EasyTravelload
+  infrastructure:
+    managedbyKeptn: true
+    numberOfMachine: 1
+    zoneId: On10d

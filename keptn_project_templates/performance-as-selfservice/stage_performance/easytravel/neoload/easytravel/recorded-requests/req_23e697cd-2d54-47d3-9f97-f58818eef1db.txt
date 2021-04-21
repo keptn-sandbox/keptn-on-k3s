@@ -1,0 +1,10 @@
+GET http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/css-images/cal_off.gif HTTP/1.1
+Host: ec2-54-84-118-207.compute-1.amazonaws.com:8079
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0
+Accept: */*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Referer: http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/rime.css
+Cookie: JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961007002|1506959179370; dtSa=-; dtLatC=6; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1
+Connection: keep-alive
+

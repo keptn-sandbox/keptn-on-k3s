@@ -1,0 +1,6 @@
+<zone cloudProvider="SoftLayer" dnsOverrideEnabled="false"
+    latitude="43.653226" longitude="-79.383184" proxyType="NO_PROXY"
+    proxyTypeLg="COMMON" uid="Amérique-Nord Canada (Toronto 1)">
+    <description>Amérique-Nord Canada (Toronto 1)</description>
+    <embedded-action>c1e60c60-e9df-4c4c-96de-7066d52073e3</embedded-action>
+</zone>

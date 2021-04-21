@@ -1,0 +1,6 @@
+<zone cloudProvider="Amazon Web Services" dnsOverrideEnabled="false"
+    latitude="50.117" longitude="8.683" proxyType="NO_PROXY"
+    proxyTypeLg="COMMON" uid="Europe Allemagne (Francfort 1)">
+    <description>Europe Allemagne (Francfort 1)</description>
+    <embedded-action>5482971b-586d-4f74-847c-3cd73d0a6888</embedded-action>
+</zone>

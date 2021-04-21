@@ -1,0 +1,34 @@
+<lg-host citrixSupport="false" hostname="naxos.intranet.neotys.com:7100"
+    loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="true"
+    uid="6efd7296-47f7-411a-8ce4-2d958312a9fd" version="6.2.0;build=20171027-107">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Carte Ethernet virtuelle Hyper-V #2"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) 82579LM Gigabit Network Connection"
+        enabled="false" isLoopBack="false" name="eth78">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="naxos.intranet.neotys.com">
+            <ip value="10.0.4.149"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:8480:224a:3eae:96ca%eth78">
+            <ip value="fe80:0:0:0:8480:224a:3eae:96ca%eth78"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

@@ -1,0 +1,233 @@
+
+	<!DOCTYPE scenarios [
+		<!ELEMENT scenarios (scenario*)>
+		<!ELEMENT scenario (description? | population-policy? |  dashboards? | charts-model-description? | population-result-filter? | zone-result-filter? | time-interval-result-filter? | error-result-filter? | rdv-fixed-vu-count-policy? | rdv-percentile-vu-count-policy? | rdv-manual-policy? | debug-policy? | request-path-exclusion-filter?)*>
+		
+	  	<!ELEMENT population-policy (duration-policy-entry?, volume-policy-entry?, start-stop-policy-entry?, runtime-policy?, lg-hosts)>
+		<!ELEMENT volume-policy-entry (constant-volume-policy? | rampup-volume-policy? | peaks-volume-policy? | custom-volume-policy?)*>
+		<!ELEMENT description (#PCDATA)>
+		<!ELEMENT constant-volume-policy (#PCDATA)>
+		<!ELEMENT rampup-volume-policy (#PCDATA)>
+		<!ELEMENT peaks-volume-policy (#PCDATA)>
+		<!ELEMENT custom-volume-policy (custom-load-node*)>
+		<!ELEMENT custom-load-node (#PCDATA)>
+		<!ELEMENT duration-policy-entry (#PCDATA)>
+		<!ELEMENT start-stop-policy-entry (#PCDATA)>
+		<!ELEMENT lg-hosts (lg-host-entry*)>
+		<!ELEMENT lg-host-entry (#PCDATA)>
+		<!ELEMENT runtime-policy (#PCDATA)>
+		<!ELEMENT dashboards (#PCDATA)>
+		<!ELEMENT charts-model-description (chart-description? | empty-chart-description?)*>
+		<!ELEMENT empty-chart-description (#PCDATA)>
+		<!ELEMENT chart-description (monitor-curve-description? | action-curve-description?)*>
+		<!ELEMENT monitor-curve-description (#PCDATA)>
+		<!ELEMENT action-curve-description (#PCDATA)>
+		<!ELEMENT population-result-filter (#PCDATA)>
+		<!ELEMENT error-result-filter (#PCDATA)>
+		<!ELEMENT zone-result-filter (#PCDATA)>
+		<!ELEMENT time-interval-result-filter (#PCDATA)>
+		<!ELEMENT rdv-fixed-vu-count-policy (#PCDATA)>
+		<!ELEMENT rdv-manual-policy (#PCDATA)>
+		<!ELEMENT rdv-percentile-vu-count-policy (#PCDATA)>
+		<!ELEMENT debug-policy (#PCDATA)>
+		<!ELEMENT request-path-exclusion-filter (regexps?)>
+		<!ELEMENT regexps (regexp*)>
+		<!ELEMENT regexp (#PCDATA)>
+		
+		<!ATTLIST scenarios>
+
+		<!ATTLIST scenario
+		    uid CDATA #REQUIRED
+		    prebenchVUName CDATA #IMPLIED
+		    postbenchVUName CDATA #IMPLIED
+		    postMonitoringTime CDATA #IMPLIED
+		    preMonitoringTime CDATA #IMPLIED
+		    virtualUsersStates CDATA #IMPLIED
+		    slaProfileEnabled CDATA #IMPLIED
+		    slaProfileUID CDATA #IMPLIED
+		    slaProfileName CDATA #IMPLIED>
+		    
+		<!ATTLIST population-policy
+			name CDATA #REQUIRED>
+		    
+		<!ATTLIST volume-policy-entry>
+		    
+		<!ATTLIST constant-volume-policy
+			iterationNumber CDATA #IMPLIED
+		    userNumber CDATA #REQUIRED>
+		    
+		<!ATTLIST rampup-volume-policy
+			iterationNumber CDATA #IMPLIED
+	   		initialUserNumber CDATA #REQUIRED
+			maxUserNumber CDATA #REQUIRED
+			delayTypeIncrement CDATA #REQUIRED
+			delayIncrement CDATA #REQUIRED
+			userIncrement CDATA #REQUIRED>
+			
+		<!ATTLIST peaks-volume-policy
+			iterationNumber CDATA #IMPLIED
+	   		defaultUserNumber CDATA #REQUIRED
+			peakUserNumber CDATA #REQUIRED
+			defaultDelayType CDATA #REQUIRED
+			peakDelayType CDATA #REQUIRED
+			defaultDelay CDATA #REQUIRED
+			peakDelay CDATA #REQUIRED
+			startPoint CDATA #REQUIRED>
+			
+		<!ATTLIST custom-volume-policy
+			maxUsers CDATA #IMPLIED
+			totalLength CDATA #IMPLIED
+			useIteration CDATA #IMPLIED
+			iteration CDATA #IMPLIED>
+			
+		<!ATTLIST custom-load-node
+			users CDATA #REQUIRED
+			time CDATA #REQUIRED
+			iteration CDATA #REQUIRED
+			position CDATA #REQUIRED>
+			
+		<!ATTLIST start-stop-policy-entry
+			start-type CDATA #REQUIRED
+			start-delay CDATA #IMPLIED
+			start-population CDATA #IMPLIED
+			stop-type CDATA #REQUIRED
+			stop-delay CDATA #IMPLIED>
+		
+		<!ATTLIST duration-policy-entry
+			type CDATA #IMPLIED
+	   		time CDATA #IMPLIED
+	   		timeUnit CDATA #IMPLIED
+			iterations CDATA #IMPLIED>
+					
+		<!ATTLIST runtime-policy
+	   		vuStartDelay CDATA #IMPLIED
+	   		vuStartMode CDATA #IMPLIED
+			continueOnError CDATA #IMPLIED
+			thinktimePolicy CDATA #IMPLIED
+			thinktimeValue CDATA #IMPLIED
+			populationName CDATA #IMPLIED
+			jsLogLevel CDATA #IMPLIED>
+			
+	   	<!ATTLIST dashboards
+			defaultDashboardUid CDATA #REQUIRED>	
+		<!ATTLIST charts-model-description
+			name CDATA #IMPLIED>
+		<!ATTLIST chart-description
+			title CDATA #IMPLIED
+			description CDATA #IMPLIED
+			domainMarkerVisible CDATA #REQUIRED
+			rangeMarkerVisible CDATA #REQUIRED
+			chart-description-type CDATA #REQUIRED
+			customID CDATA #IMPLIED
+			typeName CDATA #IMPLIED
+			includeInReport CDATA #IMPLIED
+			xAxisMonitorName CDATA #IMPLIED
+			xAxisConnectionName CDATA #IMPLIED
+			xAxisMonitoredHostName CDATA #IMPLIED>
+		<!ATTLIST empty-chart-description>
+		<!ATTLIST monitor-curve-description
+			benchUid CDATA #IMPLIED
+			color CDATA #REQUIRED
+			dashed CDATA #REQUIRED
+			scale CDATA #IMPLIED
+			selected CDATA #REQUIRED
+			monitoredHostName CDATA #REQUIRED
+			connectionName CDATA #REQUIRED
+			monitorName CDATA #REQUIRED>
+			
+		<!ATTLIST action-curve-description
+			benchUid CDATA #IMPLIED
+			color CDATA #REQUIRED
+			dashed CDATA #REQUIRED
+			scale CDATA #IMPLIED
+			selected CDATA #REQUIRED
+			actionUid CDATA #IMPLIED
+			statisticName CDATA #REQUIRED
+			populationName CDATA #REQUIRED
+			virtualUserUid CDATA #IMPLIED
+			zoneName CDATA #REQUIRED>
+			
+        <!ATTLIST third-party-data-curve-description
+            benchUid CDATA #IMPLIED
+            color CDATA #REQUIRED
+            dashed CDATA #REQUIRED
+            scale CDATA #IMPLIED
+            selected CDATA #REQUIRED
+            hw CDATA #IMPLIED
+            loc CDATA #IMPLIED
+            path CDATA #REQUIRED
+            script CDATA #IMPLIED
+            soft CDATA #IMPLIED
+            unit CDATA #REQUIRED>
+
+		<!ATTLIST population-result-filter
+			accepted-object-names CDATA #IMPLIED
+			accepted-object-ids CDATA #REQUIRED>
+		
+		<!ATTLIST zone-result-filter
+			accepted-object-names CDATA #IMPLIED
+			accepted-object-ids CDATA #REQUIRED>
+		
+		<!ATTLIST time-interval-result-filter
+			creationTimestampRelativeToBenchStartTime CDATA #REQUIRED
+			endTimestampRelativeToBenchStartTime CDATA #REQUIRED>
+		
+		<!ATTLIST error-result-filter
+			booleanValue CDATA #REQUIRED>
+
+		<!ATTLIST rdv-fixed-vu-count-policy
+			rendezVousName CDATA #REQUIRED
+			timeout CDATA #REQUIRED
+			isEnabled CDATA #REQUIRED
+			fixedVirtualUserCount CDATA #REQUIRED>
+			
+		<!ATTLIST rdv-percentile-vu-count-policy
+			rendezVousName CDATA #REQUIRED
+			timeout CDATA #REQUIRED
+			isEnabled CDATA #REQUIRED
+			percentileVirtualUserCount CDATA #REQUIRED>
+		
+		<!ATTLIST rdv-manual-policy
+			rendezVousName CDATA #REQUIRED
+			timeout CDATA #REQUIRED
+			isEnabled CDATA #REQUIRED>
+			
+		<!ATTLIST debug-policy
+			mode CDATA #REQUIRED>
+			
+		<!ATTLIST request-path-exclusion-filter 
+			isEnabled CDATA #REQUIRED>
+	]>
+
+
+<scenarios>
+<scenario postMonitoringTime="-1" preMonitoringTime="-1" slaProfileEnabled="false" uid="scenario1" virtualUsersStates="true">
+<!--****** DASHBOARDS  ******-->
+<!--****** END DASHBOARDS  ******-->
+<!--****** START DATA FILTERS  ******-->
+<!--****** END DATA FILTERS  ******-->
+<!--****** START RENDEZ-VOUS POLICIES  ******-->
+<!--****** END RENDEZ-VOUS POLICIES  ******-->
+<!--****** START DEBUG POLICY ******-->
+<debug-policy mode="0"/>
+<!--****** END DEBUG POLICY ******-->
+<!--****** START VU STATES ******-->
+<!--****** END VU STATES ******-->
+<request-path-exclusion-filter isEnabled="false">
+<regexps>
+<regexp>.*\.jpg</regexp>
+<regexp>.*\.jpeg</regexp>
+<regexp>.*\.gif</regexp>
+<regexp>.*\.png</regexp>
+<regexp>.*\.bmp</regexp>
+<regexp>.*\.css</regexp>
+<regexp>.*\.js</regexp>
+<regexp>.*\.swf</regexp>
+<regexp>.*\.ico</regexp>
+<regexp>.*\.jar</regexp>
+<regexp>.*\.class</regexp>
+<regexp>.*\.properties</regexp>
+</regexps>
+</request-path-exclusion-filter>
+</scenario>
+</scenarios>

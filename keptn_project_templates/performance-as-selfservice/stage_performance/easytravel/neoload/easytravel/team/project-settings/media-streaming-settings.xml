@@ -1,0 +1,30 @@
+<media-streaming-settings>
+    <content-types>
+        <content-type>video/avi</content-type>
+        <content-type>video/x-msvideo</content-type>
+        <content-type>video/msvideo</content-type>
+        <content-type>video/mp4</content-type>
+        <content-type>video/x-flv</content-type>
+        <content-type>video/x-f4v</content-type>
+        <content-type>audio/mpeg</content-type>
+        <content-type>audio/xmpeg</content-type>
+        <content-type>audio/x-mpeg</content-type>
+        <content-type>audio/mpg</content-type>
+        <content-type>audio/xmpg</content-type>
+        <content-type>audio/x-mpg</content-type>
+        <content-type>audio/mp3</content-type>
+        <content-type>audio/xmp3</content-type>
+        <content-type>audio/x-mp3</content-type>
+        <content-type>audio/mpeg3</content-type>
+        <content-type>audio/xmpeg3</content-type>
+        <content-type>audio/x-mpeg3</content-type>
+        <content-type>audio/x-mpegaudio</content-type>
+    </content-types>
+    <extensions>
+        <extension>avi</extension>
+        <extension>mp4</extension>
+        <extension>flv</extension>
+        <extension>f4v</extension>
+        <extension>mp3</extension>
+    </extensions>
+</media-streaming-settings>

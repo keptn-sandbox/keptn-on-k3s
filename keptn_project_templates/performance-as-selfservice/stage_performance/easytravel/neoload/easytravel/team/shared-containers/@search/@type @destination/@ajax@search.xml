@@ -1,0 +1,3 @@
+<loop-action loop="${JS_DEST_matchNr}" name="AjaxSearch" uid="51234c6f-0653-405c-b816-b04e835a5843">
+    <embedded-action>746fe19d-47d6-4030-8ca8-e8d3db0e00a6</embedded-action>
+</loop-action>

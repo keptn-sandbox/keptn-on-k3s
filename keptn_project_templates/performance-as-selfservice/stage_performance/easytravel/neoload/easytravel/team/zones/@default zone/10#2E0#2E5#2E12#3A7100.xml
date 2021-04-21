@@ -1,0 +1,26 @@
+<lg-host citrixSupport="false" hostname="10.0.5.12:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="58aa7267-a60e-49a1-a79f-e7431428c406" version="6.1.1;build=20170915-49">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="enp0s25" enabled="false"
+        isLoopBack="false" name="enp0s25">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="abitbol">
+            <ip value="10.0.5.12"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:63fe:865c:7fa7:a1fa%enp0s25">
+            <ip value="fe80:0:0:0:63fe:865c:7fa7:a1fa%enp0s25"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo" enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost.localdomain">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1%lo">
+            <ip value="0:0:0:0:0:0:0:1%lo"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

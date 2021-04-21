@@ -1,0 +1,37 @@
+<lg-host citrixSupport="false" hostname="192.168.11.161:7100"
+    loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false"
+    uid="eecfdf23-271f-4c4d-b284-afbf7b970b59" version="5.3.0;build=20161121-60">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface
+        description="Bluetooth Device (Personal Area Network)"
+        enabled="false" isLoopBack="false" name="eth8">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:c10:7c57:fe77:ff4b%eth8">
+            <ip value="fe80:0:0:0:c10:7c57:fe77:ff4b%eth8"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Dell Wireless 1830 802.11ac"
+        enabled="false" isLoopBack="false" name="wlan2">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="krusty.intranet.neotys.com">
+            <ip value="192.168.11.161"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:503:60a5:c63b:60b5%wlan2">
+            <ip value="fe80:0:0:0:503:60a5:c63b:60b5%wlan2"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

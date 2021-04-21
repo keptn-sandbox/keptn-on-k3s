@@ -1,0 +1,1616 @@
+<!--****** MONITORED HOSTS ******-->
+<monitored-host-system host-name="" load-generator="false" uid="NeoLoad">
+    <embedded-action>6b39185e-cef0-4b1f-92f4-b63d1cb56ef4</embedded-action>
+</monitored-host-system>
+<monitored-host-system host-name="localhost:7100" load-generator="true" uid="LG localhost:7100">
+    <embedded-action>21da3bce-6344-4eaa-ba3c-f6fc01a44326</embedded-action>
+</monitored-host-system>
+<!--****** END MONITORED HOSTS ******-->
+<!--****** MONITOR CONNECTIONS ******-->
+<connection-system interval="1000" name="NeoLoad" server-port="0" uid="6b39185e-cef0-4b1f-92f4-b63d1cb56ef4">
+    <monitor-category name="Default" short-display-name="Default">
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="UserLoad" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="throughput" sampling="0" unit="Mb/s"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="Alerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="CriticalAlerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="WarningAlerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="cpu" sampling="0"
+            threshold="3d1b0357-fcc9-48d4-a1ff-2be295a5f54e" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="memory" sampling="0"
+            threshold="970cab28-de54-4201-b130-9aec2c0c7bd1" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="threadcount" sampling="0" unit=""/>
+        <monitor-category name="Load Generator Connections" short-display-name="Load Generator Connections">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="connectedlg" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="totallgdisconnections"
+                sampling="0"
+                threshold="484cf565-6605-4ea4-98c1-397142156d17" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="totallgreconnections" sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-category name="Network" short-display-name="Network">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="otcp.NeoLoad" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="tcp.NeoLoad" sampling="0" unit=""/>
+            <monitor-category
+                name="eth4 (Intel(R) PRO/1000 MT Network Connection #2)" short-display-name="eth4 (Intel(R) PRO/1000 MT Network Connection #2)">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="ibytesperinterface~NeoLoad~eth4" sampling="0" unit="Mb/s"/>
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="obytesperinterface~NeoLoad~eth4" sampling="0" unit="Mb/s"/>
+            </monitor-category>
+        </monitor-category>
+        <monitor-category name="NeoLoad Web" short-display-name="NeoLoad Web">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="nlwebdownload" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="nlwebupload" sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="SapUserLoad" sampling="0" unit=""/>
+    </monitor-category>
+    <monitor-category name="Zones" short-display-name="Zones">
+        <monitor-category name="Default zone" short-display-name="Default zone">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="zoneuserload~Default zone"
+                sampling="0" unit=""/>
+            <monitor-category name="dynatrace" short-display-name="dynatrace">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="zoneuserloadperpopulation~Default zone~dynatrace"
+                    sampling="0" unit=""/>
+                <monitor-category name="Dynatrace" short-display-name="Dynatrace">
+                    <monitor-wrapped-statistic callTime="ON_BENCH"
+                        computing="0" format="NUMBER"
+                        name="zoneuserloadperpopulation~Default zone~dynatrace~Dynatrace"
+                        sampling="0" unit=""/>
+                </monitor-category>
+            </monitor-category>
+            <monitor-category name="EasyTravel" short-display-name="EasyTravel">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="zoneuserloadperpopulation~Default zone~EasyTravel"
+                    sampling="0" unit=""/>
+                <monitor-category name="EasyTravel_Search&amp;booking" short-display-name="EasyTravel_Search&amp;booking">
+                    <monitor-wrapped-statistic callTime="ON_BENCH"
+                        computing="0" format="NUMBER"
+                        name="zoneuserloadperpopulation~Default zone~EasyTravel~EasyTravel_Search&amp;booking"
+                        sampling="0" unit=""/>
+                </monitor-category>
+                <monitor-category name="Easytravel_Search" short-display-name="Easytravel_Search">
+                    <monitor-wrapped-statistic callTime="ON_BENCH"
+                        computing="0" format="NUMBER"
+                        name="zoneuserloadperpopulation~Default zone~EasyTravel~Easytravel_Search"
+                        sampling="0" unit=""/>
+                </monitor-category>
+                <monitor-category name="Easytravel_SpecialOffer" short-display-name="Easytravel_SpecialOffer">
+                    <monitor-wrapped-statistic callTime="ON_BENCH"
+                        computing="0" format="NUMBER"
+                        name="zoneuserloadperpopulation~Default zone~EasyTravel~Easytravel_SpecialOffer"
+                        sampling="0" unit=""/>
+                </monitor-category>
+            </monitor-category>
+        </monitor-category>
+        <monitor-category name="Europe Allemagne (Francfort 1)" short-display-name="Europe Allemagne (Francfort 1)">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER"
+                name="zoneuserload~Europe Allemagne (Francfort 1)"
+                sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-category name="Amérique-Nord Canada (Toronto 1)" short-display-name="Amérique-Nord Canada (Toronto 1)">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER"
+                name="zoneuserload~Amérique-Nord Canada (Toronto 1)"
+                sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-category name="USA Centre - Iowa (Council Bluffs)" short-display-name="USA Centre - Iowa (Council Bluffs)">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER"
+                name="zoneuserload~USA Centre - Iowa (Council Bluffs)"
+                sampling="0" unit=""/>
+        </monitor-category>
+    </monitor-category>
+    <threshold enabled="true" uid="3d1b0357-fcc9-48d4-a1ff-2be295a5f54e">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="en">
+                <threshold-content>Controller CPU high.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>CPU du Contrï¿½leur surchargï¿½.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="en">
+                <threshold-content>Controller CPU high.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>CPU du Contrï¿½leur surchargï¿½.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="970cab28-de54-4201-b130-9aec2c0c7bd1">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="484cf565-6605-4ea4-98c1-397142156d17">
+        <threshold-condition durationKind="NB_OF_TIMES"
+            durationNumber="1" operator="GREATER_THAN" severity="LOW"
+            valueMax="Infinity" valueMin="1.0">
+            <threshold-comment language="en">
+                <threshold-content>Load Generator Diconnected &gt;=1</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Injecteur  dï¿½connectï¿½ &gt;= 1</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+</connection-system>
+<connection-system interval="1000" name="NeoLoad" server-port="0" uid="21da3bce-6344-4eaa-ba3c-f6fc01a44326">
+    <monitor-category name="Default" short-display-name="Default">
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="lgcpu.localhost:7100" sampling="0"
+            threshold="238081f5-438f-410b-9a67-601e60bc5601" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="lgmemory.localhost:7100" sampling="0"
+            threshold="30c3b5da-7102-4d30-a4be-21d6faef556a" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="lgthroughput.localhost:7100"
+            sampling="0" unit="Mb/s"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER"
+            name="lguserloadperpopulation~localhost:7100" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="lgthreadcount.localhost:7100"
+            sampling="0" unit=""/>
+        <monitor-category name="Http client" short-display-name="Http client">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER"
+                name="lg.jetty.httpclient.threadpool.used.localhost:7100"
+                sampling="0" unit="%"/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER"
+                name="lg.jetty.httpclient.taskpool.used.localhost:7100"
+                sampling="0"
+                threshold="1dd3fecf-c54e-4b7a-89b5-3a2f8f01ea07" unit="%"/>
+        </monitor-category>
+        <monitor-category name="Controller Connection" short-display-name="Controller Connection">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="lgdisconnections.localhost:7100"
+                sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="lgreconnections.localhost:7100"
+                sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="lgping.localhost:7100"
+                sampling="0" unit="ms"/>
+        </monitor-category>
+        <monitor-category name="Network" short-display-name="Network">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="lgotcp.localhost:7100"
+                sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="lgtcp.localhost:7100" sampling="0" unit=""/>
+            <monitor-category
+                name="eth4 (Intel(R) PRO/1000 MT Network Connection #2)" short-display-name="eth4 (Intel(R) PRO/1000 MT Network Connection #2)">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="lgibytesperinterface~localhost:7100~eth4"
+                    sampling="0" unit="Mb/s"/>
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="lgobytesperinterface~localhost:7100~eth4"
+                    sampling="0" unit="Mb/s"/>
+            </monitor-category>
+        </monitor-category>
+    </monitor-category>
+    <threshold enabled="true" uid="238081f5-438f-410b-9a67-601e60bc5601">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="en">
+                <threshold-content>Load generator CPU high.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>CPU de l'injecteur surchargï¿½.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="en">
+                <threshold-content>Load generator CPU high.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>CPU de l'injecteur surchargï¿½.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="30c3b5da-7102-4d30-a4be-21d6faef556a">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="1dd3fecf-c54e-4b7a-89b5-3a2f8f01ea07">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="70.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of tasks queue by Jetty</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de tï¿½ches Jetty en cours d'exï¿½cution ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of tasks queue by Jetty</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de tï¿½ches Jetty en cours d'exï¿½cution ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+</connection-system>
+<!--****** END MONITOR CONNECTIONS ******-->
+<!--****** DASHBOARDS  ******-->
+<dashboards defaultDashboardUid="Global Analysis"/>
+<charts-model-description name="Global Analysis">
+    <empty-chart-description/>
+    <empty-chart-description/>
+</charts-model-description>
+<charts-model-description name="Monitoring"/>
+<charts-model-description name="Network Impact"/>
+<charts-model-description name="Graph board"/>
+<charts-model-description name="Graph board_1"/>
+<charts-model-description name="Graph board_2"/>
+<charts-model-description name="Graph board_3"/>
+<charts-model-description name="Graph board_4"/>
+<charts-model-description name="Graph board_5"/>
+<charts-model-description name="Graph board_6"/>
+<charts-model-description name="Graph board_7"/>
+<charts-model-description name="Graph board_8"/>
+<charts-model-description name="Graph board_9"/>
+<charts-model-description name="Graph board_10"/>
+<charts-model-description name="Graph board_11">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="d9e1e5f0-23d4-4ef7-97de-3eda55db8d0c"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="d9e1e5f0-23d4-4ef7-97de-3eda55db8d0c"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_12">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="2571d5bd-908d-49cf-93e4-f1e6189503bb"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="2571d5bd-908d-49cf-93e4-f1e6189503bb"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="2571d5bd-908d-49cf-93e4-f1e6189503bb"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.responsetime" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="2571d5bd-908d-49cf-93e4-f1e6189503bb"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.responsetime"
+            scale="1.0" selected="true" unit="MicroSecond (Â_s)"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.requestspermin" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="2571d5bd-908d-49cf-93e4-f1e6189503bb"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.requestspermin"
+            scale="1.0" selected="true" unit="PerMinute (count/min)"/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_13">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="fe9d94a4-8f68-4c9b-ae58-116c47bed91d"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="fe9d94a4-8f68-4c9b-ae58-116c47bed91d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="fe9d94a4-8f68-4c9b-ae58-116c47bed91d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_14">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.responsetime" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.responsetime"
+            scale="1.0" selected="true" unit="MicroSecond (Â_s)"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.requestspermin" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.launcher.CommandlineLauncher easytravel-_-x_/com.dynatrace.builtin/service.requestspermin"
+            scale="1.0" selected="true" unit="PerMinute (count/min)"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.customer.frontend.jar easytravel-_-x_/com.dynatrace.builtin/service.responsetime" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="124ca238-1a80-4db3-8630-aed109c7025d"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.customer.frontend.jar easytravel-_-x_/com.dynatrace.builtin/service.responsetime"
+            scale="1.0" selected="true" unit="MicroSecond (Â_s)"/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_15">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="c7edcc48-563e-4d79-a820-6738c9df936e"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="c7edcc48-563e-4d79-a820-6738c9df936e"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="c7edcc48-563e-4d79-a820-6738c9df936e"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_16">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="37265b7f-3cc3-4afd-9450-6d769f13b0c3"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="37265b7f-3cc3-4afd-9450-6d769f13b0c3"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="37265b7f-3cc3-4afd-9450-6d769f13b0c3"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="37265b7f-3cc3-4afd-9450-6d769f13b0c3"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="Easytravel_Search" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/ConfigurationService/com.dynatrace.builtin/service.responsetime" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="37265b7f-3cc3-4afd-9450-6d769f13b0c3"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/ConfigurationService/com.dynatrace.builtin/service.responsetime"
+            scale="1.0" selected="true" unit="MicroSecond (Â_s)"/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_17">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="Easytravel_Search" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/ConfigurationService/com.dynatrace.builtin/service.requestspermin" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/ConfigurationService/com.dynatrace.builtin/service.requestspermin"
+            scale="1.0" selected="true" unit="PerMinute (count/min)"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/cpv1.intranet.neotys.com/com.dynatrace.builtin/host.cpu.idle" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="d5c5f4bc-eabc-460b-ae49-4061a1dfeb5d"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/cpv1.intranet.neotys.com/com.dynatrace.builtin/host.cpu.idle"
+            scale="1.0" selected="true" unit="Percent (%)"/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_18">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="2f002433-af42-4a4a-ac36-c90fdce15d7a"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="2f002433-af42-4a4a-ac36-c90fdce15d7a"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="2f002433-af42-4a4a-ac36-c90fdce15d7a"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="2f002433-af42-4a4a-ac36-c90fdce15d7a"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="Easytravel_Search" zoneName=""/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_19">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="Easytravel_Search" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/JourneyService/Process/total cpu usage" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/JourneyService/Process/total cpu usage"
+            scale="1.0" selected="false" unit="%"/>
+        <third-party-data-curve-description
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="20,106,203" dashed="false"
+            path="Dynatrace/JourneyService/Process/Number of Process"
+            scale="1.0" selected="true" unit="Number of Process"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.customer.frontend.jar easytravel-_-x_/Process/Number of Process" typeName="CLASSIC">
+        <third-party-data-curve-description
+            benchUid="2fcd974c-0a9b-4dbe-bec7-5537510977f4"
+            color="178,140,0" dashed="false"
+            path="Dynatrace/Requests executed in background threads of com.dynatrace.easytravel.customer.frontend.jar easytravel-_-x_/Process/Number of Process"
+            scale="1.0" selected="true" unit="Number of Process"/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_20">
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="FULL" includeInReport="false"
+        rangeMarkerVisible="true" title="Controller/User Load" typeName="CLASSIC">
+        <monitor-curve-description
+            benchUid="94cd3eca-81b3-4d0e-9ddb-2b19fdef3917"
+            color="20,106,203" connectionName="NeoLoad" dashed="false"
+            monitorName="UserLoad" monitoredHostName="NeoLoad"
+            scale="1.0" selected="true"/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true"
+        title="&lt;toutes les requêtes> - Durée moyenne" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="2ee035d5-0178-378f-8d0a-63218f082d2f"
+            benchUid="94cd3eca-81b3-4d0e-9ddb-2b19fdef3917"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="94cd3eca-81b3-4d0e-9ddb-2b19fdef3917"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="EasyTravel_Search&amp;booking" zoneName=""/>
+    </chart-description>
+    <chart-description autoRange="true"
+        chart-description-type="chart-description-type"
+        domainMarkerVisible="true" granularityLevel="0"
+        historyState="XMIN" includeInReport="false"
+        rangeMarkerVisible="true" title="Home Page - Average duration" typeName="CLASSIC">
+        <action-curve-description
+            actionUid="19e7cdbc-f545-4eb5-9bd2-a034905c7143"
+            benchUid="94cd3eca-81b3-4d0e-9ddb-2b19fdef3917"
+            color="153,153,0" dashed="false" populationName=""
+            scale="1.0" selected="true"
+            statisticName="result.average.duration"
+            virtualUserUid="Easytravel_Search" zoneName=""/>
+    </chart-description>
+</charts-model-description>
+<charts-model-description name="Graph board_21">
+    <empty-chart-description/>
+    <empty-chart-description/>
+</charts-model-description>
+<!--****** END DASHBOARDS  ******-->
+<!--****** RESULTS GRAPH DESC TEMPLATES ******-->
+<charts-templates-description name="template.customs"/>
+<!--****** END RESULTS GRAPH DESC TEMPLATES******-->
+<!--****** CloudModel ******-->
+<cloud-model>
+    <!--****** Cloud Workgroups ******-->
+    <cloud-workgroup id="a0320000009R6MBAA0" licenseMode="CLASSIC" name="PS Neotys France"/>
+    <cloud-workgroup id="a03g000000482neAAA" licenseMode="CLASSIC" name="Cloud Large Workgroup Unit Test"/>
+    <!--******End Cloud  Workgroups ******-->
+    <!--******Cloud sessions******-->
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1404459415690" licenseMode="CLASSIC" name="Ushahidi"
+        nlBuildNumber="241" nlPatchVersion="V5.0.0"
+        owner="claude.carpentier@neotys.com" startDate="1404459720000" workgroupId="a03g000000482neAAA">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1407315259849" licenseMode="CLASSIC" name="Ushahidi_Weekly"
+        nlBuildNumber="180714-508" nlPatchVersion="V5.0.0"
+        owner="henrik.rexed@neotys.com" startDate="1407315480000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="7200"
+        id="1404468096534" licenseMode="CLASSIC" name="Ushahidi"
+        nlBuildNumber="241" nlPatchVersion="V5.0.0"
+        owner="claude.carpentier@neotys.com" startDate="1404468360000" workgroupId="a03g000000482neAAA">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="2340"
+        id="1435076594451" licenseMode="CLASSIC"
+        name="Nl51_webinar_demo" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1435077180000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="10020"
+        id="1413381115473" licenseMode="CLASSIC"
+        name="Ushahidi_Intechnica" nlBuildNumber="021014-689"
+        nlPatchVersion="V5.0.1" owner="henrik.rexed@neotys.com"
+        startDate="1413381480000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="4920"
+        id="1435932439973" licenseMode="CLASSIC"
+        name="NL51_Sample_Project" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1435932900000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="2520"
+        id="1507033108469" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507033500000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1409041508772" licenseMode="CLASSIC" name="Webinar"
+        nlBuildNumber="" nlPatchVersion="V5.0.0"
+        owner="henrik.rexed@neotys.com" startDate="1409044200000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="10800"
+        id="1507137654249" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507138200000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="2220"
+        id="1413549974505" licenseMode="CLASSIC"
+        name="Ushahidi_Intechnica" nlBuildNumber="021014-689"
+        nlPatchVersion="V5.0.1" owner="henrik.rexed@neotys.com"
+        startDate="1413550260000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="1860"
+        id="1448644575162" licenseMode="CLASSIC" name="Sample_Project"
+        nlBuildNumber="20150730-282" nlPatchVersion="V5.1.3"
+        owner="henrik.rexed@neotys.com" startDate="1448644860000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="16140"
+        id="1408968292378" licenseMode="CLASSIC"
+        name="Ushahidi_Intechnica" nlBuildNumber="180714-508"
+        nlPatchVersion="V5.0.0" owner="henrik.rexed@neotys.com"
+        startDate="1408968540000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="14400"
+        id="1507221892285" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507222320000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="7200"
+        id="1435137664375" licenseMode="CLASSIC"
+        name="Nl51_webinar_demo" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1435138020000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="10800"
+        id="1507039573849" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507040100000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="7200"
+        id="1413558431513" licenseMode="CLASSIC"
+        name="Ushahidi_Intechnica" nlBuildNumber="021014-689"
+        nlPatchVersion="V5.0.1" owner="henrik.rexed@neotys.com"
+        startDate="1413558720000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="10800"
+        id="1507123333212" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507123560000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="7200"
+        id="1435068054693" licenseMode="CLASSIC"
+        name="Nl51_webinar_demo" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1435068420000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="1920"
+        id="1448873416105" licenseMode="CLASSIC" name="Sample_Project"
+        nlBuildNumber="20150730-282" nlPatchVersion="V5.1.3"
+        owner="henrik.rexed@neotys.com" startDate="1448873760000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="1320"
+        id="1406579935876" licenseMode="CLASSIC" name="Ushahidi"
+        nlBuildNumber="180714-508" nlPatchVersion="V5.0.0"
+        owner="henrik.rexed@neotys.com" startDate="1406580360000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1436171489136" licenseMode="CLASSIC"
+        name="NL51_Sample_Project" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1436171820000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" cost="6" duration="10800"
+        endDate="1507204800000" id="1507193721323" licenseMode="CLASSIC"
+        name="Dynatrace_PerfClinic" nlBuildNumber="20170915-49"
+        nlPatchVersion="V6.1.1" owner="henrik.rexed@neotys.com"
+        startDate="1507194000000" status="TERMINATED" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="5760"
+        id="1406792909066" licenseMode="CLASSIC" name="Ushahidi"
+        nlBuildNumber="180714-508" nlPatchVersion="V5.0.0"
+        owner="henrik.rexed@neotys.com" startDate="1406793180000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="1740"
+        id="1407944247940" licenseMode="CLASSIC"
+        name="Ushahidi_Intechnica" nlBuildNumber="180714-508"
+        nlPatchVersion="V5.0.0" owner="henrik.rexed@neotys.com"
+        startDate="1407944700000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="2880"
+        id="1435147568133" licenseMode="CLASSIC"
+        name="Nl51_webinar_demo" nlBuildNumber="20150610-244"
+        nlPatchVersion="V5.1.0" owner="henrik.rexed@neotys.com"
+        startDate="1435147980000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1448463439055" licenseMode="CLASSIC" name="Sample_Project"
+        nlBuildNumber="20150730-282" nlPatchVersion="V5.1.3"
+        owner="henrik.rexed@neotys.com" startDate="1448463780000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="3600"
+        id="1448470479553" licenseMode="CLASSIC" name="Sample_Project"
+        nlBuildNumber="20150730-282" nlPatchVersion="V5.1.3"
+        owner="henrik.rexed@neotys.com" startDate="1448470980000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Heure d'été d'Europe centrale (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <cloud-session architecture="MEDIUM" duration="1440"
+        id="1406646488598" licenseMode="CLASSIC" name="Ushahidi"
+        nlBuildNumber="180714-508" nlPatchVersion="V5.0.0"
+        owner="henrik.rexed@neotys.com" startDate="1406646840000" workgroupId="a0320000009R6MBAA0">
+        <cloud-timezone id="Europe/Paris"
+            longName="(GMT+01:00) Central European Summer Time (Europe/Paris)"
+            mediumName="(GMT+01:00) CEST" shortName="CEST"/>
+    </cloud-session>
+    <!--******End Cloud sessions ******-->
+    <!--******Cloud lgs ******-->
+    <cloud-lg createDate="1435068395000" endDate="1435075999000"
+        id="1435068054693-390Server" publicIPAddress="23.99.60.230"
+        runningDate="1435068435000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="USA West - California (San Francisco)"/>
+    <cloud-lg createDate="1507222050000" id="lg-1507221892285-2414"
+        port="443" publicIPAddress="54.93.221.21"
+        runningDate="1507222101000" sessionId="1507221892285" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1448644838000" endDate="1448646553000"
+        id="1448644575162-39Server" port="443"
+        publicIPAddress="54.74.211.237" runningDate="1448644882000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Irlande (Dublin 1)"/>
+    <cloud-lg createDate="1448873573000" endDate="1448875480000"
+        id="1448873416105-10Server" port="443"
+        publicIPAddress="92.222.89.37" runningDate="1448873632000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1448644774000" endDate="1448646734000"
+        id="1448644575162-37Server" port="443"
+        publicIPAddress="159.122.83.132" runningDate="1448644820000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Allemagne (Francfort 2)"/>
+    <cloud-lg createDate="1448644774000" endDate="1448646763000"
+        id="1448644575162-38Server" port="443"
+        publicIPAddress="159.122.147.90" runningDate="1448644834000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Italie (Milan)"/>
+    <cloud-lg createDate="1448873710000" endDate="1448875677000"
+        id="1448873416105-11Server" port="443"
+        publicIPAddress="159.8.81.84" runningDate="1448873774000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1406580216000" endDate="1406581736000"
+        id="1406579935876-1337Server" publicIPAddress="54.215.49.156"
+        runningDate="1406580223000" sessionId="1406579935876"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1436171847000" endDate="1436175873000"
+        id="1436171489136-502Server" port="443"
+        publicIPAddress="50.97.154.85" runningDate="1436171877000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="USA Centre - Texas (Dallas 2)"/>
+    <cloud-lg createDate="1448644611000" endDate="1448646547000"
+        id="1448644575162-42Server" port="443"
+        publicIPAddress="104.155.94.28" runningDate="1448644672000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Belgique (Saint-Ghislain)"/>
+    <cloud-lg createDate="1406580413000" endDate="1406581696000"
+        id="1406579935876-1336Server" publicIPAddress="95.138.161.123"
+        runningDate="1406580417000" sessionId="1406579935876"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1448644749000" endDate="1448646734000"
+        id="1448644575162-44Server" port="443"
+        publicIPAddress="159.8.125.86" runningDate="1448644815000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1448644790000" endDate="1448646733000"
+        id="1448644575162-40Server" port="443"
+        publicIPAddress="159.8.207.22" runningDate="1448644861000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 3)"/>
+    <cloud-lg createDate="1436171724000" endDate="1436175962000"
+        id="1436171489136-500Server" port="443"
+        publicIPAddress="158.85.75.84" runningDate="1436171750000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="Amérique-Nord Canada (Toronto 1)"/>
+    <cloud-lg createDate="1435076777000" endDate="1435079277000"
+        id="1435076594451-405Server" publicIPAddress="52.28.96.152"
+        runningDate="1435076805000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="Europe Germany (Frankfurt 1)"/>
+    <cloud-lg createDate="1507137810000" endDate="1507149400000"
+        id="lg-1507137654249-2111" port="443"
+        publicIPAddress="35.159.25.26" runningDate="1507137890000"
+        sessionId="1507137654249" status="TERMINATED" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1406646746000" endDate="1406648316000"
+        id="1406646488598-1345Server" publicIPAddress="54.193.213.111"
+        runningDate="1406646865000" sessionId="1406646488598"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1435076786000" endDate="1435079266000"
+        id="1435076594451-407Server" publicIPAddress="192.99.73.204"
+        runningDate="1435076828000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="North-America Canada (Montreal 1)"/>
+    <cloud-lg createDate="1435137991000" endDate="1435145892000"
+        id="1435137664375-365Server" publicIPAddress="173.193.197.230"
+        runningDate="1435138021000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="USA East - Washington, D.C. - Beta"/>
+    <cloud-lg createDate="1435068332000" endDate="1435076228000"
+        id="1435068054693-385Server" publicIPAddress="159.122.135.7"
+        runningDate="1435068357000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="Europe Italy (Milan) - Beta"/>
+    <cloud-lg createDate="1435076877000" endDate="1435079277000"
+        id="1435076594451-409Server" publicIPAddress="54.203.54.100"
+        runningDate="1435076909000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="USA West - Oregon (Portland)"/>
+    <cloud-lg createDate="1404459744000" endDate="1404463709000"
+        id="1404459415690-8Server" publicIPAddress="162.13.87.201"
+        runningDate="1404459749000" sessionId="1404459415690"
+        status="TERMINATED" zoneName="Europe West - England (London)"/>
+    <cloud-lg createDate="1435068278000" endDate="1435076002000"
+        id="1435068054693-387Server" publicIPAddress="54.94.41.218"
+        runningDate="1435068315000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="South-America Brazil (Sao Paulo 1)"/>
+    <cloud-lg createDate="1435137926000" endDate="1435145896000"
+        id="1435137664375-361Server" publicIPAddress="159.122.140.24"
+        runningDate="1435137956000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="Europe Italy (Milan) - Beta"/>
+    <cloud-lg createDate="1435137842000" endDate="1435145589000"
+        id="1435137664375-363Server" publicIPAddress="92.222.72.204"
+        runningDate="1435137879000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1435137814000" endDate="1435145652000"
+        id="1435137664375-367Server" publicIPAddress="15.125.114.244"
+        runningDate="1435137942000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="USA West - Nevada - Beta"/>
+    <cloud-lg createDate="1507039970000" endDate="1507051456000"
+        id="lg-1507039573849-1261" port="443"
+        publicIPAddress="159.8.104.157" runningDate="1507040113000"
+        sessionId="1507039573849" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1406793166000" endDate="1406798971000"
+        id="1406792909066-1360Server" publicIPAddress="54.176.129.25"
+        runningDate="1406793188000" sessionId="1406792909066"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1448873728000" endDate="1448875491000"
+        id="1448873416105-7Server" port="443"
+        publicIPAddress="168.63.16.116" runningDate="1448873807000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 2)"/>
+    <cloud-lg createDate="1448873585000" endDate="1448875483000"
+        id="1448873416105-6Server" port="443"
+        publicIPAddress="134.213.217.209" runningDate="1448873646000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Royaume-Uni (Londres 1)"/>
+    <cloud-lg createDate="1435147745000" endDate="1435150651000"
+        id="1435147568133-375Server" publicIPAddress="92.222.73.143"
+        runningDate="1435147780000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1435147834000" endDate="1435150911000"
+        id="1435147568133-374Server" publicIPAddress="159.122.140.21"
+        runningDate="1435147859000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="Europe Italy (Milan) - Beta"/>
+    <cloud-lg createDate="1507138182000" endDate="1507149465000"
+        id="lg-1507137654249-2112" port="443"
+        publicIPAddress="184.173.94.186" runningDate="1507138237000"
+        sessionId="1507137654249" status="TERMINATED" zoneName="USA Centre - Texas (Dallas 2)"/>
+    <cloud-lg createDate="1507193854000" endDate="1507205324000"
+        id="lg-1507193721323-2312" port="443"
+        publicIPAddress="52.240.147.33" runningDate="1507193915000"
+        sessionId="1507193721323" status="TERMINATED" zoneName="USA Centre - Illinois (Chicago 2)"/>
+    <cloud-lg createDate="1448873675000" endDate="1448875490000"
+        id="1448873416105-3Server" port="443"
+        publicIPAddress="52.28.179.75" runningDate="1448873719000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1407315482000" endDate="1407319489000"
+        id="1407315259849-1641Server" publicIPAddress="5.79.17.27"
+        runningDate="1407315487000" sessionId="1407315259849"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1407315496000" endDate="1407319496000"
+        id="1407315259849-1642Server" publicIPAddress="184.169.254.224"
+        runningDate="1407315503000" sessionId="1407315259849"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1435932687000" endDate="1435937850000"
+        id="1435932439973-464Server" port="443"
+        publicIPAddress="159.8.220.150" runningDate="1435932713000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 3) - Beta"/>
+    <cloud-lg createDate="1408968535000" endDate="1408984703000"
+        id="1408968292378-3564Server" publicIPAddress="95.138.162.39"
+        runningDate="1408968541000" sessionId="1408968292378"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1435932625000" endDate="1435937535000"
+        id="1435932439973-465Server" port="443"
+        publicIPAddress="92.222.79.145" runningDate="1435932660000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1413550160000" endDate="1413552437000"
+        id="1413549974505-13Server" publicIPAddress="162.13.80.67"
+        runningDate="1413550223000" sessionId="1413549974505"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1435932877000" endDate="1435937821000"
+        id="1435932439973-468Server" port="443"
+        publicIPAddress="184.173.177.28" runningDate="1435932904000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="USA Est - Washington, D.C. - Beta"/>
+    <cloud-lg createDate="1435932755000" endDate="1435937564000"
+        id="1435932439973-461Server" port="443"
+        publicIPAddress="137.116.154.92" runningDate="1435932803000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Asie-Pacifique Singapour 2"/>
+    <cloud-lg createDate="1435932682000" endDate="1435937547000"
+        id="1435932439973-469Server" port="443"
+        publicIPAddress="104.130.252.239" runningDate="1435932730000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="USA Centre - Texas (Dallas 1)"/>
+    <cloud-lg createDate="1507039607000" endDate="1507051296000"
+        id="lg-1507039573849-1262" port="443"
+        publicIPAddress="35.203.175.149" runningDate="1507039681000"
+        sessionId="1507039573849" status="TERMINATED" zoneName="USA Ouest - Oregon (The Dalles)"/>
+    <cloud-lg createDate="1409042620000" endDate="1409047992000"
+        id="1409041508772-3789Server" publicIPAddress="95.138.161.63"
+        runningDate="1409042626000" sessionId="1409041508772"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1448463671000" endDate="1448467752000"
+        id="1448463439055-461Server" port="443"
+        publicIPAddress="92.222.66.173" runningDate="1448463745000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1448463473000" endDate="1448467753000"
+        id="1448463439055-460Server" port="443"
+        publicIPAddress="146.148.19.39" runningDate="1448463533000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Belgique (Saint-Ghislain)"/>
+    <cloud-lg createDate="1436171765000" endDate="1436176024000"
+        id="1436171489136-497Server" port="443"
+        publicIPAddress="159.122.143.185" runningDate="1436171786000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="Europe Italie (Milan) - Beta"/>
+    <cloud-lg createDate="1436171591000" endDate="1436175826000"
+        id="1436171489136-503Server" port="443"
+        publicIPAddress="15.125.127.0" runningDate="1436171670000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="region.us-west-4 - Beta"/>
+    <cloud-lg createDate="1448644805000" endDate="1448646672000"
+        id="1448644575162-41Server" port="443"
+        publicIPAddress="159.8.139.182" runningDate="1448644860000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe Royaume-Uni (Londres 2)"/>
+    <cloud-lg createDate="1413550213000" endDate="1413552482000"
+        id="1413549974505-16Server" publicIPAddress="50.18.102.40"
+        runningDate="1413550290000" sessionId="1413549974505"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1406646662000" endDate="1406648278000"
+        id="1406646488598-1344Server" publicIPAddress="162.13.43.214"
+        runningDate="1406646684000" sessionId="1406646488598"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1507193970000" endDate="1507205394000"
+        id="lg-1507193721323-2311" port="443"
+        publicIPAddress="169.50.15.164" runningDate="1507194041000"
+        sessionId="1507193721323" status="TERMINATED" zoneName="Europe Allemagne (Francfort 2)"/>
+    <cloud-lg createDate="1435068247000" endDate="1435075983000"
+        id="1435068054693-386Server" publicIPAddress="192.99.73.155"
+        runningDate="1435068289000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="North-America Canada (Montreal 1)"/>
+    <cloud-lg createDate="1435077154000" endDate="1435079394000"
+        id="1435076594451-408Server" publicIPAddress="108.168.162.220"
+        runningDate="1435077181000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="USA East - Washington, D.C. - Beta"/>
+    <cloud-lg createDate="1435137895000" endDate="1435145887000"
+        id="1435137664375-364Server" publicIPAddress="169.54.126.180"
+        runningDate="1435137930000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="North-America Canada (Montreal 2)"/>
+    <cloud-lg createDate="1507033370000" endDate="1507035954000"
+        id="lg-1507033108469-1239" port="443"
+        publicIPAddress="184.173.62.254" runningDate="1507033455000"
+        sessionId="1507033108469" status="TERMINATED" zoneName="USA Centre - Texas (Houston)"/>
+    <cloud-lg createDate="1435147893000" endDate="1435150675000"
+        id="1435147568133-379Server" publicIPAddress="104.209.45.89"
+        runningDate="1435147935000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="USA West - California (San Francisco)"/>
+    <cloud-lg createDate="1448470722000" endDate="1448474962000"
+        id="1448470479553-569Server" port="443"
+        publicIPAddress="54.170.45.152" runningDate="1448470765000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Irlande (Dublin 1)"/>
+    <cloud-lg createDate="1435068382000" endDate="1435076006000"
+        id="1435068054693-382Server" publicIPAddress="23.100.117.162"
+        runningDate="1435068431000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="Asia-Pacific Singapore 2 "/>
+    <cloud-lg createDate="1435138003000" endDate="1435145608000"
+        id="1435137664375-368Server" publicIPAddress="104.42.109.51"
+        runningDate="1435138041000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="USA West - California (San Francisco)"/>
+    <cloud-lg createDate="1413381419000" endDate="1413391492000"
+        id="1413381115473-1396Server" publicIPAddress="104.45.81.228"
+        runningDate="1413381485000" sessionId="1413381115473"
+        status="TERMINATED" zoneName="Europe Ireland (Dublin 2)"/>
+    <cloud-lg createDate="1404468382000" id="1404468096534-9Server"
+        publicIPAddress="54.73.103.178" runningDate="1404468386000"
+        sessionId="1404468096534" zoneName="Europe West - Ireland 1 (Dublin)"/>
+    <cloud-lg createDate="1435137946000" endDate="1435145626000"
+        id="1435137664375-360Server" publicIPAddress="54.238.11.205"
+        runningDate="1435137988000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="Asia-Pacific Japan (Tokyo)"/>
+    <cloud-lg createDate="1413558608000" endDate="1413566277000"
+        id="1413558431513-18Server" publicIPAddress="104.41.1.118"
+        runningDate="1413558700000" sessionId="1413558431513"
+        status="TERMINATED" zoneName="South-America Brazil (Sao Paulo 2)"/>
+    <cloud-lg createDate="1507123478000" id="lg-1507123333212-2081"
+        port="443" publicIPAddress="104.130.137.93"
+        runningDate="1507123556000" sessionId="1507123333212" zoneName="USA Centre - Texas (Dallas 1)"/>
+    <cloud-lg createDate="1448463722000" endDate="1448467762000"
+        id="1448463439055-456Server" port="443"
+        publicIPAddress="54.74.241.66" runningDate="1448463765000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Irlande (Dublin 1)"/>
+    <cloud-lg createDate="1448463611000" endDate="1448467755000"
+        id="1448463439055-457Server" port="443"
+        publicIPAddress="134.213.210.222" runningDate="1448463661000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Royaume-Uni (Londres 1)"/>
+    <cloud-lg createDate="1448463754000" endDate="1448467763000"
+        id="1448463439055-458Server" port="443"
+        publicIPAddress="40.114.248.10" runningDate="1448463839000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 2)"/>
+    <cloud-lg createDate="1448463609000" endDate="1448467910000"
+        id="1448463439055-455Server" port="443"
+        publicIPAddress="159.122.148.138" runningDate="1448463677000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Italie (Milan)"/>
+    <cloud-lg createDate="1435932574000" endDate="1435937563000"
+        id="1435932439973-471Server" port="443"
+        publicIPAddress="15.125.82.30" runningDate="1435932654000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="region.us-west-4 - Beta"/>
+    <cloud-lg createDate="1435932749000" endDate="1435937558000"
+        id="1435932439973-472Server" port="443"
+        publicIPAddress="104.42.99.156" runningDate="1435932790000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="USA Ouest - Californie (San Francisco)"/>
+    <cloud-lg createDate="1435932751000" endDate="1435937826000"
+        id="1435932439973-470Server" port="443"
+        publicIPAddress="50.23.175.82" runningDate="1435932783000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="USA Ouest - Washington (Seattle) - Beta"/>
+    <cloud-lg createDate="1507033368000" endDate="1507036031000"
+        id="lg-1507033108469-1238" port="443"
+        publicIPAddress="159.8.104.157" runningDate="1507033444000"
+        sessionId="1507033108469" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1448463682000" endDate="1448467762000"
+        id="1448463439055-454Server" port="443"
+        publicIPAddress="52.28.62.115" runningDate="1448463726000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1407944737000" endDate="1407946446000"
+        id="1407944247940-2200Server" publicIPAddress="95.138.171.156"
+        runningDate="1407944741000" sessionId="1407944247940"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1407944506000" endDate="1407946391000"
+        id="1407944247940-2201Server" publicIPAddress="54.176.188.38"
+        runningDate="1407944513000" sessionId="1407944247940"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1435076900000" endDate="1435079282000"
+        id="1435076594451-410Server" publicIPAddress="191.239.56.50"
+        runningDate="1435076942000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="USA West - California (San Francisco)"/>
+    <cloud-lg createDate="1413381336000" endDate="1413391531000"
+        id="1413381115473-1399Server" publicIPAddress="54.193.168.224"
+        runningDate="1413381420000" sessionId="1413381115473"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1436171751000" endDate="1436175997000"
+        id="1436171489136-498Server" port="443"
+        publicIPAddress="159.8.230.136" runningDate="1436171786000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 3) - Beta"/>
+    <cloud-lg createDate="1404468329000" id="1404468096534-10Server"
+        publicIPAddress="162.13.43.66" runningDate="1404468335000"
+        sessionId="1404468096534" zoneName="Europe West - England (London)"/>
+    <cloud-lg createDate="1406793128000" endDate="1406798933000"
+        id="1406792909066-1359Server" publicIPAddress="162.13.2.61"
+        runningDate="1406793132000" sessionId="1406792909066"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1448470513000" endDate="1448474953000"
+        id="1448470479553-573Server" port="443"
+        publicIPAddress="146.148.19.39" runningDate="1448470573000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Belgique (Saint-Ghislain)"/>
+    <cloud-lg createDate="1448470682000" endDate="1448475192000"
+        id="1448470479553-575Server" port="443"
+        publicIPAddress="159.8.107.132" runningDate="1448470734000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1435147703000" endDate="1435150718000"
+        id="1435147568133-378Server" publicIPAddress="15.125.118.44"
+        runningDate="1435147810000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="USA West - Nevada - Beta"/>
+    <cloud-lg createDate="1507033310000" endDate="1507035855000"
+        id="lg-1507033108469-1237" port="443"
+        publicIPAddress="54.93.81.19" runningDate="1507033517000"
+        sessionId="1507033108469" status="TERMINATED" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1413558618000" endDate="1413566270000"
+        id="1413558431513-17Server" publicIPAddress="95.138.171.138"
+        runningDate="1413558687000" sessionId="1413558431513"
+        status="TERMINATED" zoneName="Europe United Kingdom (London 1)"/>
+    <cloud-lg createDate="1435147770000" endDate="1435150850000"
+        id="1435147568133-376Server" publicIPAddress="169.54.65.186"
+        runningDate="1435147798000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="North-America Canada (Montreal 2)"/>
+    <cloud-lg createDate="1448470885000" endDate="1448474965000"
+        id="1448470479553-571Server" port="443"
+        publicIPAddress="40.114.252.87" runningDate="1448471004000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Pays-Bas (Amsterdam 2)"/>
+    <cloud-lg createDate="1413558693000" endDate="1413566312000"
+        id="1413558431513-20Server" publicIPAddress="54.176.36.7"
+        runningDate="1413558771000" sessionId="1413558431513"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1448470710000" endDate="1448475103000"
+        id="1448470479553-568Server" port="443"
+        publicIPAddress="159.122.148.140" runningDate="1448470776000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Italie (Milan)"/>
+    <cloud-lg createDate="1448873617000" endDate="1448875710000"
+        id="1448873416105-4Server" port="443"
+        publicIPAddress="159.122.142.123" runningDate="1448873678000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Italie (Milan)"/>
+    <cloud-lg createDate="1448873635000" endDate="1448875490000"
+        id="1448873416105-5Server" port="443"
+        publicIPAddress="54.216.153.151" runningDate="1448873677000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Irlande (Dublin 1)"/>
+    <cloud-lg createDate="1435147897000" endDate="1435150687000"
+        id="1435147568133-372Server" publicIPAddress="104.41.189.197"
+        runningDate="1435147956000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="Asia-Pacific Japan (Saitama)"/>
+    <cloud-lg createDate="1448873450000" endDate="1448875482000"
+        id="1448873416105-9Server" port="443"
+        publicIPAddress="104.155.82.254" runningDate="1448873508000"
+        sessionId="1448873416105" status="TERMINATED" zoneName="Europe Belgique (Saint-Ghislain)"/>
+    <cloud-lg createDate="1404459692000" endDate="1404463717000"
+        id="1404459415690-7Server" publicIPAddress="54.195.81.56"
+        runningDate="1404459696000" sessionId="1404459415690"
+        status="TERMINATED" zoneName="Europe West - Ireland 1 (Dublin)"/>
+    <cloud-lg createDate="1507221940000" id="lg-1507221892285-2416"
+        port="443" publicIPAddress="35.184.250.80"
+        runningDate="1507222056000" sessionId="1507221892285" zoneName="USA Centre - Iowa (Council Bluffs)"/>
+    <cloud-lg createDate="1408968466000" endDate="1408984708000"
+        id="1408968292378-3565Server" publicIPAddress="23.99.81.171"
+        runningDate="1408968474000" sessionId="1408968292378"
+        status="TERMINATED" zoneName="USA West - California (San Francisco)"/>
+    <cloud-lg createDate="1413550148000" endDate="1413552445000"
+        id="1413549974505-14Server" publicIPAddress="104.41.1.60"
+        runningDate="1413550239000" sessionId="1413549974505"
+        status="TERMINATED" zoneName="South-America Brazil (Sao Paulo 2)"/>
+    <cloud-lg createDate="1435932678000" endDate="1435937558000"
+        id="1435932439973-467Server" port="443"
+        publicIPAddress="54.232.35.113" runningDate="1435932714000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Amérique-Sud Brésil (Sao Paulo 1)"/>
+    <cloud-lg createDate="1435932631000" endDate="1435937540000"
+        id="1435932439973-466Server" port="443"
+        publicIPAddress="192.99.65.26" runningDate="1435932688000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Amérique-Nord Canada (Montréal 1)"/>
+    <cloud-lg createDate="1409042686000" endDate="1409048036000"
+        id="1409041508772-3790Server" publicIPAddress="54.215.28.26"
+        runningDate="1409042694000" sessionId="1409041508772"
+        status="TERMINATED" zoneName="USA West - California (San Jose 1)"/>
+    <cloud-lg createDate="1435932718000" endDate="1435937823000"
+        id="1435932439973-463Server" port="443"
+        publicIPAddress="159.122.135.167" runningDate="1435932749000"
+        sessionId="1435932439973" status="TERMINATED" zoneName="Europe Italie (Milan) - Beta"/>
+    <cloud-lg createDate="1448463641000" endDate="1448467941000"
+        id="1448463439055-462Server" port="443"
+        publicIPAddress="159.8.70.118" runningDate="1448463702000"
+        sessionId="1448463439055" status="TERMINATED" zoneName="Europe France (Paris 1)"/>
+    <cloud-lg createDate="1436171769000" endDate="1436175869000"
+        id="1436171489136-501Server" port="443"
+        publicIPAddress="50.97.48.179" runningDate="1436171800000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="USA Est - Washington, D.C. - Beta"/>
+    <cloud-lg createDate="1448644703000" endDate="1448646546000"
+        id="1448644575162-43Server" port="443"
+        publicIPAddress="92.222.79.149" runningDate="1448644795000"
+        sessionId="1448644575162" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1413381376000" endDate="1413391531000"
+        id="1413381115473-1398Server" publicIPAddress="54.94.20.228"
+        runningDate="1413381483000" sessionId="1413381115473"
+        status="TERMINATED" zoneName="South-America Brazil (Sao Paulo 1)"/>
+    <cloud-lg createDate="1507123530000" id="lg-1507123333212-2080"
+        port="443" publicIPAddress="35.159.17.82"
+        runningDate="1507123604000" sessionId="1507123333212" zoneName="Europe Allemagne (Francfort 1)"/>
+    <cloud-lg createDate="1435076872000" endDate="1435079531000"
+        id="1435076594451-406Server" publicIPAddress="159.122.135.11"
+        runningDate="1435076892000" sessionId="1435076594451"
+        status="TERMINATED" zoneName="Europe Italy (Milan) - Beta"/>
+    <cloud-lg createDate="1507222327000" id="lg-1507221892285-2415"
+        port="443" publicIPAddress="158.85.77.243"
+        runningDate="1507222379000" sessionId="1507221892285" zoneName="Amérique-Nord Canada (Toronto 1)"/>
+    <cloud-lg createDate="1436171675000" endDate="1436175799000"
+        id="1436171489136-499Server" port="443"
+        publicIPAddress="92.222.88.108" runningDate="1436171710000"
+        sessionId="1436171489136" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1448470590000" endDate="1448474952000"
+        id="1448470479553-574Server" port="443"
+        publicIPAddress="92.222.67.161" runningDate="1448470647000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe France (Strasbourg)"/>
+    <cloud-lg createDate="1435137973000" endDate="1435145884000"
+        id="1435137664375-366Server" publicIPAddress="50.23.142.5"
+        runningDate="1435138004000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="USA West - Washington (Seattle) - Beta"/>
+    <cloud-lg createDate="1435068257000" endDate="1435075992000"
+        id="1435068054693-384Server" publicIPAddress="52.28.163.70"
+        runningDate="1435068277000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="Europe Germany (Frankfurt 1)"/>
+    <cloud-lg createDate="1435068396000" endDate="1435075997000"
+        id="1435068054693-388Server" publicIPAddress="65.52.221.157"
+        runningDate="1435068450000" sessionId="1435068054693"
+        status="TERMINATED" zoneName="USA Central - Illinois (Chicago 2)"/>
+    <cloud-lg createDate="1435137911000" endDate="1435145891000"
+        id="1435137664375-362Server" publicIPAddress="159.8.228.69"
+        runningDate="1435137941000" sessionId="1435137664375"
+        status="TERMINATED" zoneName="Europe Netherlands (Amsterdam 3) - Beta"/>
+    <cloud-lg createDate="1435148007000" endDate="1435150785000"
+        id="1435147568133-377Server" publicIPAddress="173.192.205.244"
+        runningDate="1435148038000" sessionId="1435147568133"
+        status="TERMINATED" zoneName="USA East - Washington, D.C. - Beta"/>
+    <cloud-lg createDate="1448470774000" endDate="1448475130000"
+        id="1448470479553-570Server" port="443"
+        publicIPAddress="159.122.246.7" runningDate="1448470832000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Royaume-Uni (Londres 2)"/>
+    <cloud-lg createDate="1448470702000" endDate="1448474962000"
+        id="1448470479553-567Server" port="443"
+        publicIPAddress="52.29.178.212" runningDate="1448470745000"
+        sessionId="1448470479553" status="TERMINATED" zoneName="Europe Allemagne (Francfort 1)"/>
+    <!--******End Cloud lgs ******-->
+</cloud-model>

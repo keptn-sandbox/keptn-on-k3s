@@ -1,0 +1,29 @@
+<lg-host citrixSupport="false"
+    hostname="phenix.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="a36a7a2a-a5e0-4485-be1d-681f973dbff1" version="5.5.0;build=20170420-14">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Broadcom NetXtreme 57xx Gigabit Controller"
+        enabled="false" isLoopBack="false" name="eth3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="phenix.intranet.neotys.com">
+            <ip value="10.0.4.19"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:59f9:f493:efa0:d66%eth3">
+            <ip value="fe80:0:0:0:59f9:f493:efa0:d66%eth3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

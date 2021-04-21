@@ -27,7 +27,7 @@ ARGO_ROLLOUTS_VERSION="stable"
 
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 JMETER_SERVICE_VERSION="0.8.0"
-
+NEOLOAD_SERVICE_VERSION="0.8.0"
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
@@ -41,6 +41,9 @@ DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
 DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
 OWNER_EMAIL=${OWNER_EMAIL:-none}
+
+
+
 
 # Install Flags
 PROVIDER="none"
@@ -60,7 +63,7 @@ GITEA="false"
 JMETER="false"
 SLACK="false"
 GENERICEXEC="false"
-
+NEOLOAD="false"
 DEMO="false"
 
 
@@ -84,7 +87,12 @@ GIT_DOMAIN="none"
 # static vars
 GIT_TOKEN="keptn-upstream-token"
 TOKEN_FILE=$GIT_TOKEN.json
-
+# Tricentis Neoload Credentials
+NL_WEB_HOST=${NL_WEB_HOST:-none}
+NL_WEBAPI_HOST=${NL_WEBAPI_HOST:-none}
+NL_API_TOKEN=${NL_API_TOKEN:-none}
+NL_ZONE_ID=${NL_ZONE_ID:-none}
+NL_WEBUPLOAD_HOST=${NL_WEBUPLOAD_HOST:-none}
 # keptn demo project defaults
 KEPTN_QG_PROJECT="dynatrace"
 KEPTN_QG_STAGE="quality-gate"
@@ -243,6 +251,30 @@ function get_k3s {
   helm repo update
 
   helm install ingress-nginx ingress-nginx/ingress-nginx  
+}
+
+# Installs Dynatrace OneAgent Operator on the k3s cluster
+function get_oneagent {
+  # only install if all dynatrace settings are specified
+  if [ "$DT_TENANT" == "none" ]; then return; fi
+  if [ "$DT_API_TOKEN" == "none" ]; then return; fi
+  if [ "$DT_PAAS_TOKEN" == "none" ]; then return; fi
+
+  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+  "${K3SKUBECTL[@]}" create namespace dynatrace
+
+  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+
+  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  helm install dynatrace-oneagent-operator \
+    dynatrace/dynatrace-oneagent-operator -n\
+    dynatrace --values oneagent_values.yaml
+
+  rm oneagent_values.yaml
 }
 
 # Installs Dynatrace OneAgent Operator on the k3s cluster
@@ -480,6 +512,10 @@ function install_keptn {
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
     fi
+
+   if [[ "${NEOLOAD}" == "true" ]]; then
+     install_neoload_service
+   fi
   fi
  
   if [ "${PROM}" == "true"]]; then
@@ -562,6 +598,12 @@ function install_keptn {
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
     helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
+  fi
+
+  # Installing JMeter Service on the control plane if requested!
+  if [[ "${NEOLOAD}" == "true" ]]; then
+    write_progress "Installing NEOLOAD Service"
+    install_neoload_service
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
@@ -662,6 +704,75 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
+
+function install_neoload_service {
+
+
+   if[ -z "$NL_WEB_HOST" ]; then
+     NL_WEB_HOST="neoload.saas.neotys.com"
+   fi
+
+   if[ -z "$NL_WEBAPI_HOST" ]; then
+     NL_WEBAPI_HOST="neoload-api.saas.neotys.com"
+   fi
+
+   if[ -z "$NL_WEBUPLOAD_HOST" ]; then
+     NL_WEBUPLOAD_HOST="neoload-files.saas.neotys.com"
+   fi
+
+   if[ -z "$NL_API_TOKEN"]; then
+      echo "The NeoLoad API TOKEN has not be configure. create the NL_API_TOKEN environment variable first"
+      exit 1
+   fi
+
+   if[ -z "$NL_ZONE_ID"]; then
+      echo "The NeoLoad Zone ID has not be configured. create the NL_ZONE_ID environment variable first"
+      exit 1
+   fi
+
+   NAMESPACE="keptn"
+   write_progress "Installing NeoLoad service"
+   echo "Downloading and installing Istio ${ISTIO_VERSION}"
+
+   if  [ ! -z "$GIT_USER" ] ;  then
+     if  [ ! -z "$GIT_PASSWORD" ] ; then
+     echo "Creating secret neoload with git credentials"
+      "${K3SKUBECTL[@]}" -n "$NAMESPACE" create secret generic neoload --from-literal="SECRET_SCM_USER=$GIT_USER" --from-literal="SECRET_SCM_PASSWORD=$GIT_PASSWORD" --from-literal="NL_API_TOKEN=$NL_API_TOKEN"
+    fi
+  else
+     echo "Creating secret neoload "
+     "${K3SKUBECTL[@]}" -n "$NAMESPACE" create secret generic neoload --from-literal="NL_API_TOKEN=$NL_API_TOKEN"
+  fi
+
+
+   echo "Deploying neoload-service $NEOLOAD_SERVICE_VERSION"
+   # to update the link
+    curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/distributor.yaml -O distributor.yaml
+    curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/role.yaml -O role.yaml
+
+    if [[ "${DYN}" == "true" ]] then
+      curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service_withdynatrace.yaml
+    else
+       curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service.yaml -O service.yaml
+    fi
+
+
+    echo "Creating neoload configmap"
+    "${K3SKUBECTL[@]}" -n "$NAMESPACE" create configmap neoload-config --from-literal="NL_WEB_HOST=$NL_WEB_HOST" --from-literal="NL_API_HOST=$NL_API_HOST"  --from-literal="NL_WEB_ZONEID=$NL_WEB_ZONEID" --from-literal="NL_UPLOAD_HOST=$NL_UPLOAD_HOST"
+
+
+   #replace the namespace in the deployment
+  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" service.yaml
+  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" distributor.yaml
+  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" role.yaml
+  "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f role.yaml
+  "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f service.yaml
+  "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f distributor.yaml
+
+  echo "Deleting jmeter-service"
+  "${K3SKUBECTL[@]}" delete deployment jmeter-service -n keptn
+}
+
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -674,7 +785,7 @@ function install_demo_dynatrace {
   export KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_QG_PROJECT}"
-  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT}
+  ./create-keptn-project-from-template.sh quality-gate-dynatrace ${OWNER_EMAIL} ${KEPTN_QG_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   echo "Run first Dynatrace Quality Gate"
   keptn trigger evaluation --project="${KEPTN_QG_PROJECT}" --stage="${KEPTN_QG_STAGE}" --service="${KEPTN_QG_SERVICE}" --timeframe=30m
@@ -687,7 +798,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT}
+  ./create-keptn-project-from-template.sh performance-as-selfservice ${OWNER_EMAIL} ${KEPTN_PERFORMANCE_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   # ==============================================================================================
   # Demo 3: Auto-Remediation
@@ -697,7 +808,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_REMEDIATION_PROJECT}"
-  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT}
+  ./create-keptn-project-from-template.sh auto-remediation ${OWNER_EMAIL} ${KEPTN_REMEDIATION_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   # ==============================================================================================
   # Demo 4: Blue/Green Delivery with Istio
@@ -705,7 +816,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_DELIVERY_PROJECT}"
-  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT}
+  ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   # ==============================================================================================
   # Demo 5: Canary Delivery with Argo Rollouts
@@ -713,7 +824,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_ROLLOUT_PROJECT}"
-  ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}
+  ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   # ==============================================================================================
   # Demo 6: Advanced Performance
@@ -721,7 +832,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
-  ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
+  ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT} ${GIT_SERVER} ${GIT_USER}
 
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
@@ -950,6 +1061,17 @@ function main {
     --with-jmeter)
         echo "Enabling JMeter Support"
         JMETER="true"
+        NEOLOAD="false"
+        shift
+        ;;
+      --with-neoload)
+        echo "Enabling NeoLoad Support"
+        JMETER="false"
+        NEOLOAD="true"
+         if [[ "$NL_API_TOKEN" == "none" ]]; then
+          echo "You have to set NL_API_TOKEN to a Token"
+          exit 1
+        fi
         shift
         ;;
     --with-prometheus)
@@ -1014,7 +1136,7 @@ function main {
 
         # need to make sure we install the generic exector service for our demo as well as jmeter
         GENERICEXEC="true"
-        JMETER="true"
+
 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2

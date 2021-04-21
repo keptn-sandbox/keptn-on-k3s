@@ -1,0 +1,8 @@
+<caApmSettings>
+    <headersSettings containerEnabled="true" headersEnabled="false"
+        logicalActionEnabled="true" percentageOfVUToTrace="10"
+        traceByVUEnabled="false" vuEnabled="true"/>
+    <workstationSettings emDomain="SuperDomain" emLogin="admin"
+        emPassword="" intervalEndDelay="0" intervalStartDelay="0"
+        jwsHost="localhost" jwsPort="8081" linksEnabled="false"/>
+</caApmSettings>

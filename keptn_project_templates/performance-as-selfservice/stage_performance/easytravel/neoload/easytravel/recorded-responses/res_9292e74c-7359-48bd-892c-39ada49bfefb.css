@@ -1,0 +1,3055 @@
+fieldset {
+    border: 0px none;
+}
+
+/*
+=================== Style class definitions for ICE Standard Extended Component Appearance ==============
+*/
+.iceInpTxt, .iceInpSecrt, .iceInpTxtArea {
+    margin: 2px;
+    padding: 3px;
+    font: 11px tahoma;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+}
+
+.iceSelMnyCb {
+    white-space: nowrap;
+}
+
+.iceSelMnyCb input, .iceSelOneRb input, .iceSelBoolChkbx {
+    margin: 2px;
+    padding: 2px;
+}
+
+.iceSelOneRb table tr td {
+    padding: 1px;
+}
+
+
+.iceSelOneMnu, .iceSelMnyLb, .iceSelMnyMnu, .iceSelOneLb {
+    margin: 2px;
+    padding: 3px;
+    font: 11px tahoma;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+}
+
+.iceInpTxtArea {
+    margin: 2px;
+    padding: 3px;
+    font: 11px tahoma;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+}
+
+.iceCmdLnk, .iceOutLnk {
+    text-decoration: none;
+    font-weight: normal;
+    color: #333333;
+}
+
+.iceOutTxt, .iceOutLbl {
+    font-family: Arial, Helvetica, sans-serif;
+    /*color: #000000;*/
+    padding-left: 0px;
+    padding-right: 0px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+}
+
+.iceOutLbl {
+    /*font-weight: bold;*/
+    /*color: #484848;*/
+    /*color: #323232;*/
+    font: 12px Arial,Helvetica,sans-serif;
+    line-height: 1.5em;
+}
+
+.iceCmdBtn {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/*
+=================== ICE Component Appearence ==============
+*/
+/*
+----------- Calendar Component classes
+*/
+.iceSelInpDate {
+/* calendar outline & background color */
+    background-color: #FFFFFF;
+    border-top: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
+    /*margin-top: 10px;*/
+}
+table.iceSelInpDate tbody tr td table{
+    border-right: 1px solid #d9d9d9;
+}
+
+.iceSelInpDateIFrameFix, .iceIEIFrameFix {
+    z-index: -1;
+    position: absolute;
+    display: block;
+    filter: mask();
+}
+
+.iceIEIFrameFix {
+    height: 0;
+}
+
+.iceSelInpDatePopup {
+    min-width: 172px;
+}
+
+.iceSelInpDateInput {
+    border: 1px solid #ABABAB;
+    background-color: #FFFFFF;
+    margin: 0px 0 0 2px;
+    padding: 2px;
+}
+
+.iceSelInpDateOpenPopup, .iceSelInpDateOpenPopup-dis {
+    display: inline;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: url( "./css-images/cal_button.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+}
+
+.iceSelInpDateClosePopup {
+    display: inline;
+    text-decoration: none;
+    background-color: transparent;
+    background-image: url( "./css-images/cal_off.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 16px;
+    height: 16px;
+    margin-left: 5px;
+}
+
+.iceSelInpDateMonthYear, .iceSelInpDateTime{
+    background: #F5F5F5;
+    font-weight: bold;
+    text-align: center;
+    color: #666;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 4px;
+    padding-bottom: 4px;
+
+}
+
+.iceSelInpDateTime{
+    border-left: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;        
+}
+
+.iceSelInpDateMoYrDropdown, .iceSelInpDateTimeDropDown {
+    background: #F5F5F5;
+    font-weight: bold;
+    color: #666;
+}
+
+.iceSelInpDateMonthYear img {
+    border: none;
+    margin-left: 3px;
+    padding: 3px;
+}
+
+.iceSelInpDateMovePrev {
+    text-decoration: none;
+    display: inline;
+    background-color: transparent;
+    background-image: url( "./css-images/cal_arrow_left.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 17px;
+    height: 16px;
+}
+
+.iceSelInpDateMoveNext {
+    text-decoration: none;
+    display: inline;
+    background-color: transparent;
+    background-image: url( "./css-images/cal_arrow_right.gif" );
+    background-repeat: no-repeat;
+    text-align: center;
+    border: none;
+    width: 17px;
+    height: 16px;
+}
+
+.iceSelInpDateWeek, .iceSelInpDateWeekNumHdr {
+/* the days of the week row */
+    font-weight: normal;
+    color: #666;
+    text-align: center;
+    padding: 3px;
+    border-top: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    /*width: 22px;*/
+}
+
+/* set the look for the days of the week backgrounds */
+
+.iceSelInpDateDay, .iceSelInpDateWeekNum {
+    text-align: center;
+    border-right: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 3px;
+}
+
+.iceSelInpDateWeekNum, .iceSelInpDateWeekNum-dis {
+    background-color: #F5F5F5;
+}
+
+.iceSelInpDateCur {
+    background: #faa620;
+    text-align: center;
+    border-right: 1px solid #d9d9d9;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.iceSelInpDateCur .iceCmdLnk {
+    background: none;
+    border: none;
+}
+
+.iceSelInpDateCur .iceOutTxt {
+    color: #FFFFFF;
+}
+
+.weekend {
+    background: #e9e9e9;
+}
+
+.weekend .iceOutTxt {
+    color: #666;
+}
+
+.weekend .iceCmdLnk {
+    background: none;
+    border: none;
+}
+
+/* now set the attributes for the numbers for each day of the week */
+
+.iceSelInpDateDay a {
+/* the day text */
+    text-decoration: none;
+    background-color: #FFFFFF;
+    /*border: 1px solid #FFFFFF;*/
+    color: #000000;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+}
+.iceSelInpDateDay .iceOutTxt {
+    color: #000000;
+}
+
+.iceSelInpDateCur a {
+    text-decoration: none;
+    background-color: #2A6CC2;
+    border: 1px solid #2A6CC2;
+    color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+}
+
+/* now set the color attributes for the hover effect on non-current days */
+.iceSelInpDateDay a:hover {
+/* the day text */
+    text-decoration: none;
+    color: #666;
+}
+
+.exampleBoxCol1 {
+    padding: 7px;
+}
+
+/*
+----------- Output Table Component classes
+*/
+
+/*
+.firstChildTitle .icePnlGrd {
+    margin-top: 10px;
+    border: 1px solid #d9d9d9;
+    border-collapse: collapse;
+}
+
+.firstChildTitle .icePnlGrdRow1 {
+    background: #f1f1f1;
+    border-left: 1px solid #d9d9d9;
+}
+
+.firstChildTitle .icePnlGrdRow2 {
+    background: #FFF;
+    border-left: 1px solid #d9d9d9;
+}
+
+.firstChildTitle .icePnlGrdCol1 {
+    font-weight: bold;
+    padding: 7px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    text-align: left;
+}
+
+.firstChildTitle .icePnlGrdCol2 {
+    padding: 7px;
+    border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;
+    text-align: left;
+
+}
+*/
+
+/*
+----------- Data Table Component classes
+*/
+.iceDatTbl {
+/* was iceDataTblOutline */
+    /*background-color: #FFFFFF;*/
+    /*border-collapse: collapse;*/
+    border: none;
+    /*border-left: 1px solid #d9d9d9;*/
+    margin: 10px 0 0 0;
+}
+
+.iceDatTbl table {
+    border-collapse: collapse;
+}
+
+.iceDatTblColHdr, .iceDatTblColHdr1, .iceDatTblColHdr2, .iceDatTblColGrpHdrCol, .iceDatTblFtr {
+/* was iceTblHeader */
+    text-align: center;
+    font: 11px tahoma;
+    color: #484848;
+    padding: 5px;
+    font-weight: bold;
+    /*background: #FFF url( './css-images/table_col_header.gif' ) repeat-x bottom left;
+    border: 1px solid #d9d9d9;*/
+    display: none;
+}
+
+.iceDatTblResHdlr {
+    margin:0px;; 
+    padding:0px;
+    border-width: 0px;
+    width:2px;
+    background-color:transparent;
+ 
+}
+
+.iceDatTblResBor {
+    margin:0px;; 
+    padding:0px;
+    background-color: #d9d9d9;
+    background-position: bottom;
+    background-repeat: repeat-x;
+    width:2px;   
+    border-top: 1px solid #CCCCCC; 
+}
+
+.iceDatTblBlkTd {
+    border-bottom: 1px solid #CCCCCC;   
+    background-color: #d9d9d9;   
+}
+/* data tables are rendered with alternating row colors */
+
+.iceDatTblRow1 {
+/* was iceTblRow1 */
+    /*background: #FFF;*/
+    border-left: 1px solid #d9d9d9;
+}
+
+.iceDatTblRow2 {
+/* was iceTblRow2 */
+    /*background: #F7F7F7;*/
+    border-left: 1px solid #d9d9d9;
+}
+
+/* set the common attributes for the column classes */
+.iceDatTblCol, .iceDatTblCol1, .iceDatTblCol2 {
+/*was column, column1, column2, column3*/
+    color: #000000;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    /*border-right: 1px solid #CCCCCC;
+    border-bottom: 1px solid #CCCCCC;*/
+    text-align: left;
+}
+
+.iceDatTblHdr {
+}
+
+/*was iceTblHeader */
+.iceDatTblFtr {
+	background: none;
+    border-top: 1px solid #d9d9d9; 	
+}
+
+.iceDatTblScrlSpr{ 
+    background: url( './css-images/table_col_header.gif' ) repeat-x bottom left; 
+    border-top: 1px solid #d9d9d9; 
+    border-right: 1px solid #d9d9d9;
+}
+
+.iceDatTblScrlSprFtr{ 
+    border-bottom: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;        
+}
+
+.iceDatTblScrlSprFtr .iceDatTblFtr{ 
+    border-bottom: none;     
+}
+
+.iceDatTblScrlSpr .iceDatTblColHdr1, .iceDatTblScrlSpr .iceDatTblColHdr2 {
+    border-left-style: none;
+    border-top-style: none;
+}
+
+.iceDatTblActvSrtHdr{}
+/*was iceTblFooter */
+
+/*
+----- for datatable when cell content length exceeds-----
+*/
+
+.iceDatTbl td span.iceOutTxt {
+    overflow: hidden;
+    display: block;
+    padding: 2px 0px;
+}
+
+/* etc */
+
+/*
+----------- Data Scroller Component classes
+*/
+.iceDatPgrScrOut {
+/* the class for the outside table */
+    background-color: transparent;
+    margin: 10px;
+}
+
+.iceDatPgrScrBtn {
+/* the cells behind the scroll buttons */
+    background-color: transparent;
+    padding: 2px;
+}
+
+.iceDatPgrScrBtn .iceCmdLnk-dis {
+       border-bottom:none;
+}
+
+.iceDatPgrTbl {
+/* the container for the pagination*/
+    background-color: transparent;
+}
+
+/* set the common attributes for the pagination numbers */
+.iceDatPgrScrCol a, .iceDatPgrCol a {
+    text-decoration: none;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    color: #656565;
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    border: 1px solid #DBDBDB;
+}
+
+/** html .iceDatPgrCol a {*/
+    /*width: 1%;*/
+/*}*/
+
+/* override the attributes for the currently selected page */
+.iceDatPgrScrCol a {
+    color: #FFFFFF;
+    border: 1px solid #DBDBDB;
+    background-color: #FFA600;
+}
+
+/** html .iceDatPgrScrCol a {*/
+    /*width: 1%;*/
+/*}*/
+
+/* set the attributes for the mouseover on none-current pages */
+.iceDatPgrCol a:hover {
+    color: #000000;
+    border: 1px solid #FFA600;
+    text-decoration: none;
+    padding-bottom: 1px;
+}
+.iceDatPgrScrCol a:hover {
+    color: #000000;
+    border: 1px solid #DBDBDB;
+    text-decoration: none;
+    padding-bottom: 1px;
+}
+
+/*
+----------- commandSortHeader classes
+*/
+.iceCmdSrtHdrAsc, .iceCmdSrtHdrDesc{
+    background-repeat: no-repeat;
+    background-position: center;
+    width:10px;
+    height:10px;
+}
+.iceCmdSrtHdrAsc{
+    background-image: url('./css-images/column_sort_asc.gif');
+}
+.iceCmdSrtHdrDesc{
+    background-image: url('./css-images/column_sort_desc.gif');
+}
+
+/*
+----------- Tabbed Pane Component classes
+*/
+
+/* tabOn style classes */
+
+.icePnlTbOn {
+    margin-right: 0;
+}
+
+.icePnlTbOn .MidMid td, .icePnlTbOn .MidMid div.ptfd {
+    font-weight: bold;
+    white-space: nowrap;
+    text-align: center;
+}
+
+.icePnlTbOn .LftTop {
+    background: url( './css-images/Tab_LftTop.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOn .MidTop {
+    background: url( './css-images/Tab_MidTop.gif' ) repeat-x top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOn .RtTop {
+    background: url( './css-images/Tab_RtTop.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOn .LftMid {
+    background: url( './css-images/Tab_LftMid.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOn .MidMid {
+    background: url( './css-images/Tab_MidMid.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOn .MidMid a, .icePnlTbOn .MidMid div.ptfd {
+    background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
+    border: none;
+    padding: 4px 8px 5px 28px;
+    margin: 3px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOn .MidMid div.ptfd {
+    padding: 1px 8px 5px 28px;	
+}
+
+.icePnlTbOn .RtMid {
+    background: url( './css-images/Tab_RtMid.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOn .LftBtm {
+    background: #f7f7f7;
+
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOn .MidBtm {
+    background: #f7f7f7;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOn .RtBtm {
+    background: #f7f7f7;
+
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+* html .icePnlTbOn .MidMid a,  * html .icePnlTbOn .MidMid div.ptfd{
+    width: 1%;
+}
+
+/* tabOff style classes */
+
+.icePnlTbOff {
+    margin-right: 0;
+}
+
+.icePnlTbOff .MidMid td, .icePnlTbOff .MidMid div.ptfd {
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.icePnlTbOff .LftTop {
+    background: url( './css-images/Tab_LftTop_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOff .MidTop {
+    background: url( './css-images/Tab_MidTop_off.gif' ) repeat-x top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOff .RtTop {
+    background: url( './css-images/Tab_RtTop_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOff .LftMid {
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOff .MidMid {
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOff .MidMid a, .icePnlTbOff .MidMid div.ptfd {
+    background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 4px 8px 5px 28px;
+    margin: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOff .MidMid div.ptfd {
+    padding: 1px 8px 5px 28px;	
+}
+
+.icePnlTbOff .MidMid a:hover {
+    font-weight: bold;
+}
+.icePnlTbOff .MidMid td:hover{
+    color: #3581A5;
+}
+
+.icePnlTbOff .RtMid {
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOff .LftBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOff .MidBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOff .RtBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+* html .icePnlTbOff .MidMid a,  * html .icePnlTbOff .MidMid div.ptfd{
+    width: 1%;
+}
+
+/* tabOver style classes */
+
+.icePnlTbOver {
+/* was iceTabSetTabOver */
+
+}
+
+.icePnlTbOver .MidMid td, .icePnlTbOver .MidMid div.ptfd{
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.icePnlTbOver .LftTop {
+    background: url( './css-images/Tab_LftTop_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOver .MidTop {
+    background: url( './css-images/Tab_MidTop_off.gif' ) repeat-x top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOver .RtTop {
+    background: url( './css-images/Tab_RtTop_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOver .LftMid {
+    background: url( './css-images/Tab_LftMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOver .MidMid {
+    background: url( './css-images/Tab_MidMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOver .MidMid a, .icePnlTbOver .MidMid div.ptfd {
+    background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
+    border: none;
+    padding: 4px 8px 5px 28px;
+    margin: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOver .MidMid  div.ptfd {
+    padding: 1px 8px 5px 28px;	
+}
+
+.icePnlTbOver .MidMid a:hover {
+    font-weight: bold;
+    color: #3581A5;
+}
+
+.icePnlTbOver .RtMid {
+    background: url( './css-images/Tab_RtMid_off.gif' ) repeat top left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOver .LftBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOver .MidBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOver .RtBtm {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+* html .icePnlTbOver .MidMid a, * html .icePnlTbOver .MidMid div.ptfd  {
+    width: 1%;
+}
+
+/* tabSpacer */
+
+.icePnlTbSetSpcr {
+    width: 100%;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+/* tabPanel */
+.icePnlTbSet {
+/* was iceTabSet*/
+    width: 100%;
+}
+
+.icePnlTbSetCnt {
+/*newly added class*/
+    background: #FFF url( './css-images/contentContainer_bg.gif' ) repeat-x top left;
+    border-bottom: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    padding: 20px;
+}
+
+.icePnlTbSetCntBtm {
+/*was iceTabSetBottom*/
+    background: url( './css-images/contentContainer_bg_up.gif' ) repeat-x top left;
+    border-top: 1px solid #d9d9d9;
+    border-left: 1px solid #d9d9d9;
+    border-right: 1px solid #d9d9d9;
+    padding: 20px;
+}
+
+/* TABS ON BOTTOM STYLE CLASSES */
+/* tabOn style classes */
+
+.icePnlTbOnBtm {
+    margin-right: 0;
+}
+
+.icePnlTbOnBtm .MidMid td, .icePnlTbOnBtm .MidMid div.ptfd {
+    font-weight: bold;
+    text-align: center;
+    white-space: nowrap;
+}
+
+.icePnlTbOnBtm .LftTop {
+    background: #f7f7f7;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+
+}
+
+.icePnlTbOnBtm .MidTop {
+    background: #f7f7f7;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOnBtm .RtTop {
+    background: #f7f7f7;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOnBtm .LftMid {
+    background: url( './css-images/Tab_Btm_LftMid.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOnBtm .MidMid {
+    background: url( './css-images/Tab_Btm_MidMid.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOnBtm .MidMid a, .icePnlTbOnBtm .MidMid div.ptfd{
+    background: url( './css-images/Tab_MidMid_bullet.gif' ) no-repeat top left;
+    border: none;
+    padding: 3px 8px 2px 28px;
+    margin: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOnBtm .MidMid div.ptfd {
+    padding: 0px 0px 0px 28px;
+}	
+
+
+.icePnlTbOnBtm .RtMid {
+    background: url( './css-images/Tab_Btm_RtMid.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOnBtm .LftBtm {
+    background: url( './css-images/Tab_Btm_LftBtm.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOnBtm .MidBtm {
+    background: url( './css-images/Tab_Btm_MidBtm.gif' ) repeat-x bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOnBtm .RtBtm {
+    background: url( './css-images/Tab_Btm_RtBtm.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+* html .icePnlTbOnBtm .MidMid a, * html .icePnlTbOnBtm .MidMid div.ptfd {
+    width: 1%;
+}
+
+/* tabOff style classes */
+
+.icePnlTbOffBtm {
+    margin-right: 0;
+}
+
+.icePnlTbOffBtm .MidMid td, .icePnlTbOffBtm .MidMid div.ptfd {
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.icePnlTbOffBtm .LftTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOffBtm .MidTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOffBtm .RtTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOffBtm .LftMid {
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOffBtm .MidMid {
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOffBtm .MidMid a, .icePnlTbOffBtm .MidMid div.ptfd {
+    background: url( './css-images/Tab_MidMid_bullet_off.gif' ) no-repeat top left;
+    border: none;
+    padding: 3px 8px 2px 28px;
+    margin: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOffBtm .MidMid div.ptfd{
+    padding: 0px 0px 0px 28px;
+}		
+
+.icePnlTbOffBtm .MidMid a:hover, .icePnlTbOffBtm .MidMid>td:hover {
+    font-weight: bold;
+}
+
+.icePnlTbOffBtm .RtMid {
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOffBtm .LftBtm {
+    background: url( './css-images/Tab_Btm_LftBtm_off.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOffBtm .MidBtm {
+    background: url( './css-images/Tab_Btm_MidBtm_off.gif' ) repeat-x bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOffBtm .RtBtm {
+    background: url( './css-images/Tab_Btm_RtBtm_off.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+* html .icePnlTbOffBtm .MidMid a, * html .icePnlTbOffBtm .MidMid td{
+    width: 1%;
+}
+
+/* tabOver style classes */
+
+.icePnlTbOverBtm {
+/* was iceTabSetTabOverBottom*/
+
+}
+
+.icePnlTbOverBtm .MidMid td, .icePnlTbOverBtm .MidMid div.ptfd {
+    text-align: center;
+    white-space: nowrap;
+    font-weight: bold;
+}
+
+.icePnlTbOverfBtm .LftTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOverBtm .MidTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 1px;
+}
+
+.icePnlTbOverBtm .RtTop {
+    background: #d9d9d9;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 1px;
+}
+
+.icePnlTbOverBtm .LftMid {
+    background: url( './css-images/Tab_Btm_LftMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOverBtm .MidMid {
+    background: url( './css-images/Tab_Btm_MidMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+}
+
+.icePnlTbOverBtm .MidMid a, .icePnlTbOverBtm .MidMid div.ptfd {
+    background: url( './css-images/Tab_MidMid_bullet_over.gif' ) no-repeat top left;
+    border: none;
+    padding: 3px 8px 2px 28px;    
+    margin: 3px;
+    font-weight: bold;
+    text-decoration: none;
+    color: #666;
+    cursor: pointer;
+    display: block;
+}
+
+.icePnlTbOverBtm .MidMid div.ptfd {
+    padding: 0px 0px 0px 28px;
+}
+
+.icePnlTbOverBtm .MidMid a:hover, .icePnlTbOverBtm .MidMid td:hover {
+    font-weight: bold;
+}
+
+.icePnlTbOverBtm .RtMid {
+    background: url( './css-images/Tab_Btm_RtMid_off.gif' ) repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+}
+
+.icePnlTbOverBtm .LftBtm {
+    background: url( './css-images/Tab_Btm_LftBtm_off.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+.icePnlTbOverBtm .MidBtm {
+    background: url( './css-images/Tab_Btm_MidBtm_off.gif' ) repeat-x bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    height: 4px;
+}
+
+.icePnlTbOverBtm .RtBtm {
+    background: url( './css-images/Tab_Btm_RtBtm_off.gif' ) no-repeat bottom left;
+    border: none;
+    padding: 0;
+    text-align: center;
+    width: 4px;
+    height: 4px;
+}
+
+* html .icePnlTbOverBtm .MidMid a {
+
+}
+
+/* tabSpacer */
+.icePnlTbSetSpcrBtm {
+    width: 100%;
+    border-top: 1px solid #d9d9d9;
+}
+
+/* tabPanel */
+
+.icePnlTbSetBtm {
+    padding-top: 10px;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    border-right: 1px solid #ABABAB;
+    border-top: 1px solid #ABABAB;
+    border-left: 1px solid #ABABAB;
+    background-color: #FFFFFF;
+}
+
+.icePnlTbOn .MidMid div.ptfd a , 
+.icePnlTbOff .MidMid div.ptfd a ,
+.icePnlTbOver .MidMid div.ptfd a ,
+.icePnlTbOnBtm .MidMid div.ptfd a ,
+.icePnlTbOffBtm .MidMid div.ptfd a ,
+.icePnlTbOverBtm .MidMid div.ptfd a {
+	background-image:none;
+	border:none;
+	margin:0;
+	padding:0;
+}
+
+
+/*
+------------- BorderLayout
+*/
+.icePnlBrdrNorth {
+    padding: 5px;
+    background: #FFF;
+    font-weight: bold;
+    height: 60px;
+    text-align: center;
+}
+
+.icePnlBrdrEast {
+    width: 10%;
+    background-color: #FFFFFF;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.icePnlBrdrWest {
+    width: 20%;
+    background-color: #FFFFFF;
+    vertical-align: top;
+}
+
+.icePnlBrdrCenter {
+    width: 70%;
+    background-color: #FFFFFF;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.icePnlBrdrSouth {
+    border-top: 1px solid #FFFFFF;
+    color: #666666;
+    padding: 4px;
+}
+
+/*
+------------- PanelLayout
+*/
+
+.pageHdr {
+    font-weight: bold;
+    height: 80px;
+    background-color: #CDCDCD;
+    padding: 5px;
+    text-align: center;
+}
+
+.icePnlBrdrStyle {
+    background-color: #FFFFFF;
+    border: 1px solid #ABABAB;
+    margin: 10px;
+    width: 97%;
+}
+
+.pageNavigation {
+    width: 20%;
+    background-color: #DEDEDE;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.pageBody {
+    width: 80%;
+    background-color: #FFFFFF;
+    padding: 5px;
+    vertical-align: top;
+}
+
+.pageFtr {
+    border-top: 1px solid #ABABAB;
+    color: #666666;
+    padding: 4px;
+}
+
+/*
+------------ PanelNavigation
+*/
+
+.navFormOutline {
+    background-color: #DEDEDE;
+    margin: 0px;
+    width: 100%;
+    padding: 0px;
+}
+
+.navItem, .navActvItem, .navOpenItem {
+    color: #333333;
+    text-decoration: none;
+    background-color: #CDCDCD;
+    width: 100%;
+    border: 1px solid #CDCDCD;
+    border-bottom: 1px solid #FFFFFF;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 5px;
+    padding-right: 1px;
+    display: block;
+}
+
+.navItem:hover, .navActvItem:hover, .navOpenItem:hover {
+    background-color: #FFFFFF;
+    color: #000000;
+    border: 1px solid #2A6CC2;
+}
+
+.navOpenItem {
+    white-space: nowrap;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.navActvItem {
+    width: 100%;
+    background-color: #2A6CC2;
+    color: #FFFFFF;
+    background-image: url( ./css-images/cal_arrow_right.gif );
+    background-position: center right;
+    background-repeat: no-repeat;
+}
+
+.navSeparator {
+    width: 100%;
+    height: 1px;
+    padding: 0px;
+    margin: 0px;
+    background-color: #CDCDCD;
+    border-bottom: 1px solid #DEDEDE;
+}
+
+/*
+--------------- Progress bar
+*/
+.iceOutProg {
+    margin: 0;
+}
+
+.iceOutProgBg {
+    width: 300px;
+    height: 17px;
+    border: 1px solid #d9d9d9;
+    background: #FFF;
+}
+
+.iceOutProgFill {
+    display: block;
+    margin: 1px;
+    height: 17px;
+    background: url( './css-images/ProgFill_bg.gif' ) repeat-x top left;
+}
+
+.iceOutProgTxt {
+    color: #484848;
+}
+
+/*
+--------------- autoComplete classes ------
+*/
+
+.iceSelInpTxtTxt {
+    border: 1px solid #ABABAB;
+    background-color: #FFFFFF;
+    margin: 0px 0 0 2px;
+    padding: 2px;
+}
+
+.iceSelInpTxtList {
+    position: absolute;
+    display: block;
+    border-top: 1px solid #ABABAB;
+    border-right: 1px solid #666666;
+    border-left: 1px solid #ABABAB;
+    border-bottom: 1px solid #333333;
+	z-index: 10;
+}
+
+.iceSelInpTxtRow {
+    display: block;
+    background-color: #FFFFFF;
+    color: #333333;
+    padding: 2px;
+    padding-left: 10px;
+    border-bottom: 1px solid #DEDEDE;
+    position: relative;
+}
+
+.iceSelInpTxtSelRow {
+    display: block;
+    background-color: #4591A1;
+    color: #FFFFFF;
+    padding: 2px;
+    padding-left: 10px;
+    border-bottom: 1px solid #FFFFFF;
+    position: relative;
+}
+
+.iceSelInpTxtSelRow span {
+    color: #FFFFFF;
+}
+
+/*
+--------------- autoComplete disable class ------
+*/
+
+.iceSelInpTxtTxt-dis {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .95em;
+    color: #ABABAB;
+    border: 1px dotted #CCCCCC;
+    cursor: default;
+}
+
+/*
+----------- FileUpload Component classes
+*/
+.iceInpFile {
+    overflow: hidden;
+}
+
+.iceInpFileTxt {
+    border: 1px solid #ABABAB;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #000000;
+}
+
+.iceInpFileBtn {
+    border: 1px solid #ABABAB;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+
+    color: #000000;
+}
+
+/*
+----------- Data Navigation Bar classes
+*/
+
+.tablebg {
+    background-color: #EEF3FB;
+    border: 1px solid #6392C6;
+    width: 70%;
+}
+
+.oddRow {
+    background-color: #FFFFFF;
+}
+
+.evenRow {
+    background-color: #EEF3FB;
+}
+
+.barCol1 {
+    width: 40%;
+    text-align: left;
+}
+
+.barCol2 {
+    width: 15%;
+    text-align: left;
+}
+
+.barCol3 {
+    width: 20%;
+    text-align: left;
+}
+
+.barCol4 {
+    width: 15%;
+    text-align: right;
+}
+
+.barCol5 {
+    width: 15%;
+    text-align: left;
+}
+
+/*
+----------- TreeView component
+*/
+
+.iceTreeRow {
+    white-space: nowrap;
+    vertical-align: middle;
+    padding: 0;
+}
+
+.iceTreeRow a {
+    text-decoration: none;
+    color: #000000;
+    cursor: pointer;
+    padding: 0;
+    /*padding-left: 3px;*/
+    vertical-align: middle;
+}
+
+.iceTreeRow a:hover {
+    text-decoration: underline;
+}
+
+.iceTreeRow img {
+    border: 0;
+    vertical-align: middle;
+    background-repeat: repeat-y;
+    padding: 0;
+}
+.iceTreeRow > img{
+    /*width: 10px;*/
+    /*height:16px;*/
+}
+
+
+.iceTreeRow a img {
+/* vertical-align: top; - Bug in FF, when img has focus it is not highlighted with a box.*/
+    background-repeat: repeat-y;
+    border: 0;
+    padding: 0;
+}
+
+.iceTreeRow * div {
+    padding: 0;
+    vertical-align: middle;
+}
+
+/* ------------ Menu Classes --
+*/
+
+.iceMnuBar, .iceMnuBarVrt {
+    padding: 0;
+    margin: 0;
+    white-space: nowrap;
+    background-image: none;
+    background-color: #FCFCFC;
+}
+
+.iceMnuBarItem, .iceMnuBarVrtItem {
+    border: 1px solid #DBDBDB;
+    float: left;
+    white-space: nowrap;
+    background-color: #FCFCFC;
+}
+
+.iceMnuBarVrtItem {
+    float: none;
+}
+
+.iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover, .iceMnuBarVrtItem a, .iceMnuBarVrtItem span, .iceMnuBarVrtItem a:hover {
+    text-decoration: none;
+    font-weight: bold;
+    display: block;
+    font-size: 1.0em;
+    color: #000000;
+}
+
+.iceMnuBarItem a, .iceMnuBarItem span, .iceMnuBarItem a:hover {
+    padding: 3px 6px 3px 6px;
+}
+
+.iceMnuBarVrtItem a, .iceMnuBarVrtItem span, .iceMnuBarVrtItem a:hover {
+    padding: 3px 0 3px 6px;
+}
+
+.iceMnuBarItem a, .iceMnuBarVrtItem a {
+    background-image: url( "./css-images/bottom_menu_bg.png" );
+}
+
+.iceMnuBarItem a:hover, .iceMnuBarVrtItem a:hover {
+    background-image: url( "./css-images/bottom_menu_btn_bg_on.png" );
+}
+
+.iceMnuItmSep {
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.iceMnuItmSep hr {
+    width: 100%;
+    /*border: 1px inset #000000;*/
+}
+
+.iceMnuBarSubMenu, .iceMnuBarVrtSubMenu {
+    position: absolute;
+    background-color: #FCFCFC;
+    display: block;
+    width: 145px;
+    border-right: 1px solid #DBDBDB;
+    border-left: 1px solid #DBDBDB;
+    border-top: 1px solid #DBDBDB;
+    z-index: 1000;
+}
+
+.iceMnuItm {
+    padding: 0;
+    margin: 0;
+    vertical-align: top;
+    border-bottom: 1px solid #DBDBDB;
+}
+
+.iceMnuItm a, .iceMnuItm a:hover, .iceMnuItmVrt a, .iceMnuItmVrt a:hover {
+    border: 0;
+    padding: 0;
+    margin: 0;
+    display: block;
+    text-decoration: none;
+    text-align: left;
+    vertical-align: top;
+    line-height: 25px;
+    height: 25px;
+    width: 100%;
+}
+
+.iceMnuItm a, .iceMnuItmVrt a {
+    background-color: #FCFCFC;
+    color: #000000;
+}
+
+.iceMnuItm a:hover, .iceMnuItmVrt a:hover {
+    background-color: #4591A1;
+    color: #4591A1;
+}
+
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt {
+    color: #FFFFFF;
+}
+
+.iceMnuItm a:hover .iceOutTxt, .iceMnuItmVrt a:hover .iceOutTxt, .iceMnuItm a:hover .iceMnuItmLabel {
+    color: #FFFFFF;
+}
+
+.iceMnuItmLabel {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 7px;
+    font-weight: normal;
+}
+
+.iceMnuItmLabel, .iceMnuBarItemLabel {
+    font-size: 1.0em;
+    /*width: 100%;*/
+    vertical-align: top;
+}
+
+.iceDatTbl td span.iceMnuItmLabel {
+    display: inline;
+    padding: 0 0 0 7px;
+}
+
+.iceMnuItmImage, .iceMnuBarItemImage, .iceMnuBarVrtItemImage {
+    display: inline;
+}
+
+.iceMnuItmImage, .iceMnuItmLabel {
+    vertical-align: middle;
+}
+
+.iceMnuBarSubMenuInd {
+    float: right;
+    padding: 5px 0 0 0;
+    margin: 0;
+}
+
+.iceMnuBarVrt {
+    width: 160px;
+    display: block;
+}
+
+.iceMnuBarVrtSubMenuInd {
+    display: inline;
+    float: right;
+    padding-top: 3px;
+    padding-right: 1px;
+}
+
+/*
+----------- PanelPopup ----------
+*/
+
+.iceMnuPopVrtItemLabel {
+    vertical-align: middle;
+    color: #333333;
+}
+
+.iceMnuPopVrtItemImage {
+    width: 19px;
+    vertical-align: middle;
+}
+
+.iceMnuPopVrt {
+/* was iceMenu_vertical */
+    float: left;
+    white-space: nowrap;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width: 0px;
+    height: 0px;
+}
+
+.iceMnuPopVrtTopSubMenu {
+    padding: 1px;
+    width: 160px;
+    background-color: #FCFCFC;
+    border: 1px solid #999999;
+    position: absolute;
+    font-size: 10px;
+    height: auto;
+    display: block;
+}
+
+.iceMnuPopVrtItem {
+/* was iceMenu_verticalItem */
+    width: 160px;
+    display: block;
+}
+
+.iceMnuPopVrtItem a {
+/* was iceMenu_verticalItem */
+/*    background-color: #DDDDDD;*/
+    height: auto;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+    color: #333333;
+    font-size: 1.1em;
+    margin-bottom: 1px;
+    float: none;
+    display: block;
+    text-decoration: none;
+    border: 0px solid #FFFFFF; /*width: 100%;*/
+}
+
+.iceMnuPopVrtItem a:hover {
+/* was iceMenu_verticalItem */
+    background-color: #4591A1;
+    color: #4591A1;
+    text-decoration: none;
+}
+
+.iceMnuPopVrtItem a:hover .iceMnuPopVrtItemLabel {
+    color: #FFFFFF;
+}
+
+.iceMnuPopVrtSubMenu {
+/* was iceSubMenu_vertical*/
+    padding: 1px;
+    width: 160px;
+    background-color: #EFEFEF;
+    border-top: 1px solid #999999;
+    border-right: 1px solid #999999;
+    border-left: 1px solid #999999;
+    border-bottom: 1px solid #999999;
+    position: absolute;
+    height: auto;
+    display: block;
+}
+
+.iceMnuPopVrtSubMenuInd {
+/* was iceSubMenuDividerVert */
+    display: inline;
+    float: right;
+    padding-top: 0px;
+    padding-right: 1px;
+}
+
+/*
+----------- PanelPopup & panelTooltip ----------
+*/
+
+.icePnlPop, .icePnlTlTip {
+    padding: 0px;
+    z-index: 1000;
+    background: #FFF;
+    border: 1px solid #d9d9d9;
+    color: #666666;
+    width: 480px;
+}
+
+.icePnlPopHdr, .icePnlTlTipHdr {
+    height: 2.0em;
+    font-weight: bold;
+    /*background: #FFF url( './css-images/PnlHdr_bgslice.gif' ) repeat-x top left;*/
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.icePnlPopHdr .iceOutTxt, .icePnlTlTipHdr .iceOutTxt {
+    padding: 4px;
+    text-align: center;
+    vertical-align: middle;
+    font: 11px tahoma;
+    color: #484848;
+    font-weight: bold;
+}
+
+.icePnlPopBody, .icePnlTlTipBody {
+    padding: 10px;
+}
+
+.icePnlPopFtr, .icePnlTlTipFtr {
+    float: right;
+    height: auto;
+    background-color: #DDDDDD;
+}
+
+.popupTopTextDrag, .popupTopTextModal {
+    margin: 2px 0 0 4px;
+    display: inline;
+    float: left;
+}
+
+.popupTopClose, .popupTopCloseModal {
+    vertical-align: middle;
+    margin: 4px;
+    display: inline;
+    float: right;
+}
+
+.popupContentText {
+    display: block;
+}
+
+/*
+   Classes for the output progress bar
+*/
+
+.iceOutProgIndetActv {
+    margin: 1px;
+    height: 17px;
+    background: url( './css-images/ProgFill_Indet_Bg_active.gif' ) repeat-x top left;
+}
+
+.iceOutProgIndetInactv {
+    margin: 1px;
+    height: 17px;
+    background: url( './css-images/ProgFill_Indet_Bg_inactive.gif' ) repeat-x top left;
+}
+
+/* XP Disabled styles CSS Document  v1.0 mar 31 2006 */
+
+.iceCmdBtn-dis {
+}
+
+.iceCmdLnk-dis, .iceOutLnk-dis {
+    color: #ABABAB;
+    text-decoration: none;
+    border-bottom: 1px dotted #CCCCCC;
+    cursor: default;
+}
+
+.iceOutTxt-dis, .iceOutLbl-dis {
+    color: #ABABAB;
+    text-decoration: none;
+    border-bottom: 1px dotted #CCCCCC;
+    cursor: default;
+}
+
+.iceInpTxt-dis, .iceInpSecrt-dis {
+    color: #ABABAB;
+    cursor: default;
+    margin: 2px;
+    padding: 3px;
+    font: 11px tahoma;
+    border: 1px dotted #CCCCCC;
+}
+
+.iceInpTxtArea-dis {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: .95em;
+    color: #ABABAB;
+    border: 1px dotted #CCCCCC;
+    cursor: default;
+    margin: 2px;
+    padding: 2px;
+}
+
+.iceSelMnyCb-dis {
+    background-color: #CCCCCC;
+    padding: 2px;
+    margin: 2px;
+    cursor: default;
+    color: #CCCCCC;
+    border: none;
+}
+
+.iceSelOneMnu-dis, .iceSelMnyLb-dis, .iceSelMnyMnu-dis, .iceSelOneLb-dis {
+    font-family: Arial, Helvetica, sans-serif;
+    color: #CCCCCC;
+    padding: 2px;
+    font-size: .95em;
+    cursor: default;
+    border: none;
+}
+
+.iceSelOneRb-dis {
+    background-color: #CCCCCC;
+    padding: 2px;
+    margin: 2px;
+    cursor: default;
+    color: #444444;
+    border: none;
+}
+
+.iceInpFileTxt-dis {
+    border: none;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #CCCCCC;
+    cursor: default;
+}
+
+.iceInpFileBtn-dis {
+    border: 1px solid #CCCCCC;
+    background-color: #FFFFFF;
+    margin: 2px;
+    padding: 2px;
+    font-family: Arial, Helvetica, sans-serif;
+    color: #CCCCCC;
+    cursor: default;
+}
+
+/* submenu disabled style classes */
+.iceSubMenuRowLabel-dis {
+    color: #ABABAB;
+    text-decoration: none;
+    cursor: default;
+}
+
+.iceSubMenuRow-dis {
+    color: #ABABAB;
+    text-decoration: none;
+    cursor: default;
+    padding: 0px;
+    display: block;
+    height: auto;
+}
+
+.iceSubMenuRow-dis a {
+    color: #333333;
+    text-decoration: none;
+    cursor: default;
+    display: block;
+    padding-left: 3px;
+    padding-right: 3px;
+    padding-top: 3px;
+    padding-bottom: 3px;
+
+}
+
+.iceSubMenuRow-dis a:hover {
+    color: #ABABAB;
+    text-decoration: none;
+    border-bottom: 1px dotted #CCCCCC;
+    cursor: default;
+}
+
+/* panel tabs disabled style classes */
+.icePnlTbOff {
+/* was iceTabSetTabOff*/
+
+}
+
+.icePnlTbOff .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOff .MidTop-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOff .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOff .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOff .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOff .MidMid-dis a, .icePnlTbOff .MidMid-dis div.ptfd {
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+
+}
+
+.icePnlTbOff .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOff .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOff .MidBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOff .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/* disabled bottom tab off */
+.icePnlTbOffBtm .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOffBtm .MidBtm-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOffBtm .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOffBtm .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOffBtm .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOffBtm .MidMid-dis a, .icePnlTbOffBtm .MidMid-dis div.ptfd{
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+
+}
+
+.icePnlTbOffBtm .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOffBtm .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOffBtm .MidTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOffBtm .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/* disabled bottom tab on */
+
+.icePnlTbOnBtm .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOnBtm .MidBtm-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOnBtm .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOnBtm .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOnBtm .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOnBtm .MidMid-dis a, .icePnlTbOnBtm .MidMid-dis a{
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+}
+
+.icePnlTbOnBtm .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOnBtm .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOnBtm .MidTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOnBtm .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/* tab on disabled */
+.icePnlTbOn {
+
+}
+
+.icePnlTbOn .LftTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+    height: 4px;
+}
+
+.icePnlTbOn .MidTop-dis {
+    background-color: #DEDEDE;
+    background-image: url( './css-images/off-mid-top-dis.gif' );
+    background-repeat: repeat-x;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOn .RtTop-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-top-dis.gif" );
+    background-repeat: no-repeat;
+    background-position: bottom;
+    text-align: center;
+    padding-top: 1px;
+    border: none;
+}
+
+.icePnlTbOn .LftMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-left-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOn .MidMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-mid-mid.gif");
+    background-repeat:repeat-x;*/
+    text-align: center;
+    padding-top: 5px;
+    padding-right: 15px;
+    padding-left: 15px;
+    border: none;
+    white-space: nowrap;
+    color: #ABABAB;
+}
+
+.icePnlTbOn .MidMid-dis a, .icePnlTbOn .MidMid-dis div.ptfd {
+    text-decoration: none;
+    color: #ABABAB;
+    cursor: default;
+}
+
+.icePnlTbOn .RtMid-dis {
+    background-color: #DEDEDE;
+    /*    background-image: url("./css-images/off-right-mid.gif");
+    background-repeat:no-repeat;*/
+    text-align: center;
+    padding-top: 15px;
+    border: none;
+}
+
+.icePnlTbOn .LftBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-left-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+.icePnlTbOn .MidBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-mid-bot.gif" );
+    background-repeat: repeat-x;
+    border: none;
+}
+
+.icePnlTbOn .RtBtm-dis {
+    background-color: transparent;
+    background-image: url( "./css-images/off-right-bot.gif" );
+    background-repeat: no-repeat;
+    border: none;
+}
+
+/*
+data scroller classes disabled styles
+*/
+.sclBtnCell-dis {
+/* the cells behind the scroll buttons */
+    background-color: #FFFFFF;
+    padding: 2px;
+}
+
+.sclBtnCell-dis img {
+    cursor: default;
+}
+
+.icePaginatorTbl-dis {
+/* the container for the pagination*/
+    background-color: #FFFFFF;
+}
+
+/* set the common attributes for the pagination numbers */
+.icePaginatorAtvCol-dis a, .icePaginatorCol-dis a {
+    text-decoration: none;
+    font-weight: normal;
+    background-color: #FFFFFF;
+    color: #ABABAB;
+    display: block;
+    padding-left: 5px;
+    padding-right: 5px;
+    border: 1px solid #FFFFFF;
+    cursor: default;
+}
+
+/* override the attributes for the currently selected page */
+.icePaginatorAtvCol-dis a {
+    color: #ABABAB;
+    /*    border:1px solid #2A6CC2;
+        background-color:#2A6CC2;
+    */
+    cursor: default;
+}
+
+/* set the attributes for the mouseover on none-current pages */
+.icePaginatorCol-dis a:hover {
+    /*    color:#000000;
+  border:1px solid #2A6CC2;*/
+}
+
+/*
+Disabled classes for the calendar controls
+*/
+
+.iceSelInpDate-dis {
+/* calendar outline & background color */
+    background-color: #FFFFFF;
+    border: 1px solid #DEDEDE; /* removed margin from calendar outline - better absolute positioning of popup */
+/*margin:10px;*/
+}
+
+.iceSelInpDateMonthYear-dis {
+    background-color: #EFEFEF;
+    /*    background-image: url("./css-images/table_col_header.gif");
+    background-position:bottom;
+    background-repeat:repeat-x;*/
+    font-weight: normal;
+    text-align: center;
+    color: #999999;
+    padding-left: 1px;
+    padding-right: 1px;
+    padding-top: 4px;
+    padding-bottom: 4px; /*border-right:1px solid #CCCCCC;*/
+}
+
+.iceSelInpDateMoYrDropdown-dis {
+    background-color: #EFEFEF;
+    color: #999999;
+}
+
+.iceSelInpDateMonthYear-dis img {
+    cursor: default;
+}
+
+.iceSelInpDateWeek-dis, .iceSelInpDateWeekNumHdr-dis {
+/* the days of the week row */
+    font-weight: normal;
+    color: #999999;
+    background-color: #EFEFEF;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-bottom: 1px solid #ABABAB;
+}
+
+/* set the look for the days of the week backgrounds */
+.iceSelInpDateDay-dis, .iceSelInpDateCur-dis, .iceSelInpDateWeekNum-dis {
+/* the background & alignment for the days */
+    padding: 3px;
+    text-align: center;
+}
+
+/* now set the attributes for the numbers for each day of the week */
+.iceSelInpDateDay-dis a {
+/* the day text */
+    text-decoration: none;
+    background-color: #FFFFFF;
+    border: 1px solid #FFFFFF;
+    color: #ABABAB;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+    cursor: default;
+}
+
+.iceSelInpDateCur-dis a {
+    text-decoration: none;
+    background-color: #ABABAB;
+    border: 1px solid #ABABAB;
+    color: #FFFFFF;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+    cursor: default;
+}
+
+/*
+----------- commandSortHeader ----------
+*/
+.iceCmdSrtHdr {
+    text-decoration: none; /*border: 1px solid #ABABAB;*/
+    color: #333333;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+}
+
+.iceCmdSrtHdr table {
+    display: inline;
+}
+
+.iceCmdSrtHdr-dis {
+    text-decoration: none; /*border: 1px solid #ABABAB;*/
+    color: #999999;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+    display: block;
+    cursor: default;
+}
+
+/* IE specific CSS to enlarge clickable area of SortHeader links */
+* html .iceCmdSrtHdr {
+    height: 1%;
+}
+
+/*
+----------- form ----------
+*/
+.iceFrm {
+
+}
+
+/*
+----------- graphicImage ----------
+*/
+.iceGphImg {
+
+}
+
+/*
+----------- message ----------
+*/
+.iceMsg {
+
+}
+
+.iceMsgFatal {
+
+}
+
+.iceMsgError {
+
+}
+
+.iceMsgWarn {
+
+}
+
+.iceMsgInfo {
+
+}
+
+/*
+----------- messages ----------
+*/
+.iceMsgs {
+
+}
+
+.iceMsgsFatal {
+
+}
+
+.iceMsgsError {
+
+}
+
+.iceMsgsWarn {
+
+}
+
+.iceMsgsInfo {
+
+}
+
+/*
+----------- panelGrid ----------
+*/
+.icePnlGrd {
+
+}
+
+.icePnlGrdHdr {
+
+}
+
+.icePnlGrdFtr {
+
+}
+
+.icePnlGrdRow1 {
+
+}
+
+.icePnlGrdRow2 {
+
+}
+
+.icePnlGrdCol1 {
+
+}
+
+.icePnlGrdCol2 {
+
+}
+
+/*
+----------- panelGroup ----------
+*/
+.icePnlGrp {
+
+}
+
+/*
+----------- outputFormat ----------
+*/
+.iceOutFrmt {
+
+}
+
+/*
+----------- tree ----------
+*/
+.iceTree {
+
+}
+
+.iceTreeRow {
+
+}
+
+/*
+----------- panelSeries ----------
+*/
+.icePnlSrs {
+
+}
+
+/*
+----------- positionedPanel ----------
+*/
+.icePnlPos {
+
+}
+
+.icePnlPos-dis {
+
+}
+
+/*
+----------- positionedPanel ----------
+*/
+.icePnlStk {
+}
+
+.icePnlStkRow {
+}
+
+.icePnlStkCol {
+}
+
+/*
+----------- panelTab header ----------
+*/
+.icePnlTbSetHdrIconLft {
+    display: none;
+    width: 0;
+    height: 0;
+
+}
+
+.icePnlTbSetHdrIconRt {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.icePnlTbSetHdrLbl {
+    padding-top: 2px;
+    padding-bottom: 2px;
+    white-space: nowrap;
+}
+
+/*
+----------- Table Row Selection --------
+*/
+.iceRowSelSelected {
+    background: #E5E5E5;
+}
+.iceRowSelSelected .iceOutTxt{
+    color: #578E93;
+}
+.iceRowSelSelected .iceOutTxt {
+    color: #428F99;
+}
+.iceRowSelSelectedMouseOver {
+    background: #FFA326;
+}
+.iceRowSelSelectedMouseOver  .iceOutTxt {
+    color: white;
+}
+.iceRowSelMouseOver {
+    color: white;
+    background: #4591A1;
+}
+.iceRowSelMouseOver .iceOutTxt {
+    color: white;
+}
+
+/*
+----------- outputChart --------
+*/
+
+.iceOutChrt {
+
+}
+
+/*
+----------- Panel Collapsible --------
+*/
+
+.icePnlClpsbl, .icePnlClpsbl-dis {
+    border: 1px solid #d9d9d9;
+}
+
+.icePnlClpsblCnt .icePnlClpsbl {
+    border: none;
+}
+
+.icePnlClpsblHdr, .icePnlClpsblHdr-dis {
+    font: 11px tahoma;
+    color: #484848;
+    padding: 3px 0 1px 4px;
+    font-weight: bold;
+    height: 20px;
+    background: #FFF url( './css-images/table_col_header.gif' ) repeat-x top left;
+    border-bottom: 1px solid #d9d9d9;
+}
+
+.icePnlClpsblHdr-dis {
+    background: #FFF url( './css-images/table_col_header_dis.gif' ) repeat-x top left;
+}
+
+.icePnlClpsblHdr .iceCmdLnk, .icePnlClpsblColpsdHdr .iceCmdLnk {
+    padding-left: 22px;
+}
+
+.icePnlClpsblHdr .icePnlGrp a, .icePnlClpsblHdr-dis .icePnlGrp a {
+	font-weight: bold;
+}
+
+.icePnlClpsblCnt, .icePnlClpsblCnt-dis {
+    font: 11px / 17px tahoma;
+    color: #494949;
+    background: #f5f5f5;
+    padding: 4px 4px 4px 9px;
+    border-bottom: none;
+}
+
+.icePnlClpsblCnt-dis {
+    background-color: #e5e5e5;
+}
+
+.icePnlClpsblCnt .icePnlClpsblHdr {
+    font: 11px tahoma;
+    color: #484848;
+    padding: 0 0 0 0;
+    font-weight: bold;
+    height: 20px;
+    border: none;
+    margin-top: 8px;
+}
+
+.icePnlClpsblCnt .icePnlClpsblHdr .iceOutTxt {
+    background: none;
+}
+
+.icePnlClpsblCnt .icePnlClpsblColpsdHdr {
+    font: 11px tahoma;
+    color: #484848;
+    padding: 0 0 0 0;
+    font-weight: bold;
+    height: 20px;
+    border: none;
+    margin-top: 8px;
+}
+
+.icePnlClpsblCnt .icePnlClpsblColpsdHdr .iceOutTxt{
+    background: none;
+}
+
+.icePnlClpsblCnt .icePnlClpsblCnt {
+    border-left: none;
+    border-right: none;
+    padding: 0 0 0 10px;
+}
+
+.icePnlClpsblColpsd, .icePnlClpsblColpsd-dis {
+    border: 1px solid #d9d9d9;
+}
+
+.icePnlClpsblCnt .icePnlClpsblColpsd {
+    border: none;
+}
+
+.icePnlClpsblColpsdHdr, .icePnlClpsblColpsdHdr-dis {
+    font: 11px tahoma;
+    color: #484848;
+    padding: 3px 0 1px 4px;
+    font-weight: bold;
+    height: 20px;
+    background: #FFF url( './css-images/table_col_header.gif' ) repeat-x top left;
+    border-bottom: none;
+}
+
+.icePnlClpsblColpsdHdr-dis {
+    background: #FFF url( './css-images/table_col_header_dis.gif' ) repeat-x top left;
+}
+
+.icePnlClpsblColpsdHdr .iceOutTxt, .icePnlClpsblHdr .iceOutTxt, 
+.icePnlClpsblColpsdHdr-dis .iceOutTxt, .icePnlClpsblHdr-dis .iceOutTxt {
+    padding-left: 21px;
+}
+
+.icePnlClpsblColpsdCnt, .icePnlClpsblColpsdCnt-dis {
+    border: none;
+}
+
+.icePnlClpsblHdr, .icePnlClpsblColpsdHdr {
+    cursor: pointer;
+}
+
+.icePnlClpsblHdr-dis, .icePnlClpsblColpsdHdr-dis {
+    cursor: default;
+}
+
+.icePnlClpsblHdr div, .icePnlClpsblHdr-dis div, .icePnlClpsblColpsdHdr div, .icePnlClpsblColpsdHdr-dis div {
+    background-repeat: no-repeat;
+    background-position: left top;
+    height: 21px;
+}
+
+.icePnlClpsblHdr div {
+    background: url( './css-images/PnlHdr_down.gif' ) no-repeat top left;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;   
+}
+
+.icePnlClpsblHdr-dis div {
+    background: url( './css-images/PnlHdr_down_dis.gif' ) no-repeat top left;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;     
+}
+
+.icePnlClpsblColpsdHdr div {
+    background: url( './css-images/PnlHdr_collapsed.gif' ) no-repeat top left;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;     
+}
+
+.icePnlClpsblColpsdHdr-dis div {
+    background: url( './css-images/PnlHdr_collapsed_dis.gif' ) no-repeat top left;
+    padding: 5px 0 0 5px;
+    margin: -2px 0 0 -2px;
+    background-position: 3px 2px;    
+}
+
+.icePnlClpsbl-dis, .icePnlClpsblHdr-dis, .icePnlClpsblCnt-dis,
+.icePnlClpsblColpsd-dis, .icePnlClpsblColpsdHdr-dis, .icePnlClpsblColpsdCnt-dis{
+    color: #999;
+}
+
+.icePnlClpsblHdr-dis .iceOutTxt, .icePnlClpsblCnt-dis .iceOutTxt,
+.icePnlClpsblColpsdHdr-dis .iceOutTxt, .icePnlClpsblColpsdCnt-dis .iceOutTxt {
+    color: #999;
+}
+
+.icePnlClpsblHdr img, .icePnlClpsblColpsdHdr img {
+    border: 0;
+}
+/*
+----------- Google Maps --------
+*/
+
+.iceGmp{
+    border-collapse:collapse;
+    border-spacing:0px;
+    padding:0px;
+}
+
+.iceGmpMapTd {
+    vertical-align: top;
+}
+
+.iceGmpMapTd div.gmap {
+    width: 600px;
+    height: 400px;
+}
+
+.iceInpRchTxt {
+    width: 100%;
+}
+
+/* panel divider */
+.icePnlDvr, .icePnlDvrHor {
+    width: 800px;
+    height: 400px;
+}
+
+.icePnlDvrCnt, .icePnlDvrHorCnt {
+    border: 1px solid #ABABAB;
+    /*width: 100%;*/
+    height: 100%;
+}
+
+.icePnlDvrFst, .icePnlDvrSnd {
+    height: 100%;
+    display: block;
+    float: left;
+    overflow: auto;
+}
+
+.icePnlDvrSpt {
+    width: 2px;
+    height: 100%;
+    display: inline;
+    background-color: #EFEFEF;
+    border-left: 1px solid #ABABAB;
+    border-right: 1px solid #ABABAB;
+    float: left;
+    cursor: e-resize;
+}
+
+.icePnlDvrHorFst, .icePnlDvrHorSnd {
+    width: 100%;
+    display: block;
+    overflow: auto;
+    display: block;
+}
+
+.icePnlDvrHorSpt {
+    width: 100%;
+    height: 2px;
+    background-color: #EFEFEF;
+    border-top: 1px solid #ABABAB;
+    border-bottom: 1px solid #ABABAB;
+    cursor: n-resize;
+}
+
+.iceSelMnyCb input, .iceSelOneRb input, .iceSelBoolChkbx {
+    margin: 0 5px 2px 2px;
+    padding: 2px;
+    vertical-align: middle;
+}
+
+/*
+----------- PanelConfirmation ----------
+*/
+
+.icePnlCnf {
+    background-color: #F5F5F5;
+    border: 1px solid #d9d9d9;
+    width: 300px;
+    padding: 0;
+    z-index: 1000;
+    color: #666666;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.icePnlCnfHdr {
+    background: #FFF url( './css-images/PnlHdr_bgslice.gif' ) repeat-x top left;
+    border-bottom: 1px solid #d9d9d9;
+    height: 2.0em;
+    padding: 4px;
+    text-align: left;
+    vertical-align: middle;
+    font: 11px tahoma;
+    color: #484848;
+    font-weight: bold;
+}
+
+.icePnlCnfBody {
+    padding: 10px 10px 5px 10px;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.icePnlCnfBtns {
+    padding: 5px 10px 10px 10px;
+    text-align: center;
+    font-size: 1em;
+    font-weight: normal;
+}
+
+.icePnlCnfBtns input {
+    margin: 0 20px 0 20px;
+}
+
+/*
+----------- DataExporter ----------
+*/
+.iceDatExp img {
+    border: none;
+}
+
+.iceDatExp input{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.icePnlTbLblLnk img {
+    border: 0;
+}
+
+/*
+----------- focus hidden link ----------
+*/
+
+.iceHdnLnk {
+    float:left;
+    border:none;
+    margin:0px;
+}
+
+.iceHdnLnk img{
+    border: 0;	
+    width:0px;
+}	

@@ -1,0 +1,125 @@
+<http-page executeResourcesDynamically="false" name="/orange.jsf_1"
+    playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/820ac03d-0acb-40eb-b688-9f71a93420a2.zip"
+    slaProfileEnabled="false" thinkTime="990"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="820ac03d-0acb-40eb-b688-9f71a93420a2">
+    <embedded-action>075b9a46-4cd0-4351-a7d7-1990787ee8e0</embedded-action>
+    <embedded-action>a4bb778d-7be2-4805-b3bd-e068045140aa</embedded-action>
+    <embedded-action>8b963578-2334-4584-b9d1-215c7709e5d4</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_9edaed9e-b3c7-4385-b3c5-7557cf811883.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="image/gif"
+    eTag="W/&quot;582-1601651650000&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/css/css-images/cal_off.gif"
+    path="/css/css-images/cal_off.gif" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/820ac03d-0acb-40eb-b688-9f71a93420a2.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="075b9a46-4cd0-4351-a7d7-1990787ee8e0" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_075b9a46-4cd0-4351-a7d7-1990787ee8e0.gif</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_23e697cd-2d54-47d3-9f97-f58818eef1db.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961007002|1506959179370; dtSa=-; dtLatC=6; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/rime.css"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:38 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"582-1491992757000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:25:57 GMT&#xd;
+Content-Type: image/gif&#xd;
+Content-Length: 582&#xd;
+X-Varnish: 768238396&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/gif"
+    eTag="W/&quot;211-1601651650000&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/css/css-images/cal_arrow_left.gif"
+    path="/css/css-images/cal_arrow_left.gif" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/820ac03d-0acb-40eb-b688-9f71a93420a2.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="a4bb778d-7be2-4805-b3bd-e068045140aa" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_a4bb778d-7be2-4805-b3bd-e068045140aa.gif</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_65c3b748-b015-495a-8551-f102c08af11a.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961007002|1506959179370; dtSa=-; dtLatC=6; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/rime.css"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:38 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"211-1491992757000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:25:57 GMT&#xd;
+Content-Type: image/gif&#xd;
+Content-Length: 211&#xd;
+X-Varnish: 768432719&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/gif"
+    eTag="W/&quot;213-1601651650000&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/css/css-images/cal_arrow_right.gif"
+    path="/css/css-images/cal_arrow_right.gif" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/820ac03d-0acb-40eb-b688-9f71a93420a2.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="8b963578-2334-4584-b9d1-215c7709e5d4" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_8b963578-2334-4584-b9d1-215c7709e5d4.gif</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_9cd22173-fcdd-4e44-a69b-99040fcca2e2.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961007002|1506959179370; dtSa=-; dtLatC=6; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/rime.css"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:38 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"213-1491992757000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:25:57 GMT&#xd;
+Content-Type: image/gif&#xd;
+Content-Length: 213&#xd;
+X-Varnish: 767550224&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

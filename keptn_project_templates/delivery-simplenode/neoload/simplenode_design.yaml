@@ -1,0 +1,71 @@
+name: Catalog_BasicCheck_neoload
+variables:
+  - constant:
+      name: basicpath
+      value: CHECK_TO_REPLACE
+  - constant:
+      name: tagurl
+      value: TAGURL_TO_REPLACE
+  - constant:
+      name: server_host
+      value: HOST_TO_REPLACE
+  - constant:
+      name: server_port
+      value: PORT_TO_REPLACE
+  - random_number:
+      name: random_number_variable
+      min: 0
+      max: 999
+      predictable: false
+      change_policy: each_request
+servers:
+  - name: simple_host
+    host: ${server_host}
+    port: ${server_port}
+user_paths:
+  - name: SimpleCheck
+    actions:
+      steps:
+        - transaction:
+            name: Basic Check
+            steps:
+              - request:
+                  url: /
+                  server: simple_host
+                  method: GET
+        - think_time: 3500ms
+  - name: SimpleLoad
+    actions:
+      steps:
+        - transaction:
+            name: Home Page
+            steps:
+              - request:
+                  url: /
+                  server: simple_host
+                  method: GET
+        - think_time: 2500ms
+        - transaction:
+            name: Version
+            steps:
+              - request:
+                  url: /api/version
+                  server: simple_host
+                  method: GET
+        - think_time: 2500ms
+        - transaction:
+            name: Echo
+            steps:
+              - request:
+                  url: /api/echo?test="this a perf check ${random_number_variable}"
+                  server: simple_host
+                  method: GET
+        - think_time: 3500ms
+        - transaction:
+            name: Invoke
+            steps:
+              - request:
+                  url: /api/invoke?url="http://wwww.dynatrace.com"
+                  server: simple_host
+                  method: GET
+        - think_time: 3500ms

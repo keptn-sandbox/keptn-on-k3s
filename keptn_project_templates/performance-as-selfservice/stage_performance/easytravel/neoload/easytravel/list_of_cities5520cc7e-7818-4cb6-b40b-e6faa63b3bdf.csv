@@ -1,0 +1,96 @@
+City;Country;Population;Longitude;Latitude;
+ADDIS ABABA;Ethiopia;2316400;38.7;9.05;ADDIS ABABA
+Ahmedabad;India;2876710;72.67;23;Ahmedabad
+Alexandria;Egypt;3380000;29.92;31.22;Alexandria
+ANKARA;Turkey;2837937;32.83;39.92;ANKARA
+Anshan;China;2478650;122.95;41.12;Anshan
+BAGHDAD;Iraq;3841268;44.43;33.33;BAGHDAD
+Bandung;Indonesia;2368200;107.57;-6.95;Bandung
+Bangalore;India;2660088;77.58;12.97;Bangalore
+BEIJING;China;7362426;116.4;39.93;BEIJING
+Belo Horizonte;Brazil;2060804;-43.9;-19.9;Belo Horizonte
+BERLIN;Germany;3472009;13.42;52.53;BERLIN
+Bombay;India;9925891;72.85;18.98;Bombay
+BUCURESTI;Romania;2060551;26.17;44.45;BUCURESTI
+BUENOS AIRES;Argentina;2960976;-58.5;-34.67;BUENOS AIRES
+Busan;Korea, South;3802319;129.02;35.1;Busan
+CAIRO;Egypt;6800000;31.25;30.05;CAIRO
+Calcutta;India;4399819;88.33;22.5;Calcutta
+Changchun;China;2980870;125.35;43.87;Changchun
+Chengdu;China;3483834;104.07;30.67;Chengdu
+Chicago;United States;2731743;-87.75;41.83;Chicago
+Chiniot;Pakistan;2952689;73;31.67;Chiniot
+Chongqing;China;3122704;106.58;29.57;Chongqing
+Daegu;Korea, South;2255805;128.6;35.87;Daegu
+Dalian;China;3473832;121.65;38.92;Dalian
+Delhi;India;7206704;77.23;28.67;Delhi
+Giza;Egypt;2144000;30.85;30.05;Giza
+Guangzhou;China;3918010;113.25;23.12;Guangzhou
+Hangzhou;China;2589504;120.17;30.25;Hangzhou
+Harbin;China;3597404;126.65;45.75;Harbin
+Ho Chi Minh;Vietnam;3015743;106.72;10.77;Ho Chi Minh
+Hong Kong;Hong Kong;6190000;114.17;22.27;Hong Kong
+Huaiyin;China;2613804;119.03;33.58;Huaiyin
+Hyderabad;India;2964638;78.43;17.37;Hyderabad
+Hyderabad;India;2964638;78.43;17.37;Hyderabad
+Inchon;Korea, South;2203102;126.67;37.51;Inchon
+Istanbul;Turkey;7774169;28.95;41.03;Istanbul
+Izmir;Turkey;2017699;27.17;38.42;Izmir
+JAKARTA;Indonesia;9160500;106.75;-6.13;JAKARTA
+Jilin;China;2251848;126.55;43.85;Jilin
+Jinan;China;2403946;117;36.67;Jinan
+Jinhua;China;2215666;119.65;29.12;Jinhua
+Khon Kaen;Thailand;5876000;102.83;16.42;Khon Kaen
+KIEV;Ukraine;2646100;30.5;50.42;KIEV
+KINSHASA;Congo, Democratic Republic of the;2664309;15.3;-4.36;KINSHASA
+LA HABANA;Cuba;2175888;-82.37;23.13;LA HABANA
+LIMA;Peru;6414500;-77.05;-12.1;LIMA
+LONDON;United Kingdom;6962319;-0.17;51.5;LONDON
+Los Angeles;United States;3448613;-118.17;34;Los Angeles
+Madras;India;3841396;80.28;13.08;Madras
+MADRID;Spain;2976064;-3.71;40.41;MADRID
+Melbourne;Australia;3189200;144.97;-37.75;Melbourne
+MEXICO, CIUDAD DE;Mexico;8235744;-99.17;19.42;MEXICO, CIUDAD DE
+MOSCOW;Russia;8436447;37.7;55.75;MOSCOW
+Nagoya;Japan;2153293;136.88;35.13;Nagoya
+Nanjiang;China;2610594;118.78;32.05;Nanjiang
+New York;United States;7333253;-73.98;40.75;New York
+Ningbo;China;3350851;121.55;29.88;Ningbo
+Okara;Pakistan;5180562;73.52;30.82;Okara
+Osaka;Japan;2575042;135.5;34.67;Osaka
+Padova;Italy;2693383;11.88;45.4;Padova
+PARIS;France;2152329;2.33;48.87;PARIS
+Qingdo;China;5124868;120.32;36.07;Qingdo
+Rio de Janeiro;Brazil;5547033;-43.28;-22.88;Rio de Janeiro
+Saidpur;Bangladesh;3397187;89;25.8;Saidpur
+Salvador;Brazil;2174072;-38.48;-12.97;Salvador
+SANTIAGO;Chile;4229970;-70.67;-33.5;SANTIAGO
+SANTO DOMINGO;Dominican Republic;2134779;-69.95;18.5;SANTO DOMINGO
+Sao Paolo;Brazil;9842059;-46.63;-23.55;Sao Paolo
+SEOUL;Korea, South;10776201;127;37.5;SEOUL
+Shanghai;China;8205598;121.47;31.23;Shanghai
+Shenyang;China;4655280;123.45;41.8;Shenyang
+SINGAPORE;Singapore;2987000;103.85;1.28;SINGAPORE
+St. Petersburg;Russia;4273001;30.42;59.92;St. Petersburg
+Surabaya;Indonesia;2701300;112.75;-7.23;Surabaya
+Suzhou;China;3273010;120.62;31.3;Suzhou
+Sydney;Australia;3713500;151.17;-33.92;Sydney
+Taian;China;3824748;117.12;36.2;Taian
+Taiyan;China;2224580;112.55;37.87;Taiyan
+Tanger;Morocco;2943000;-5.83;35.74;Tanger
+TASHKENT;Uzbekistan;2094000;69.22;41.27;TASHKENT
+TEHRAN;Iran;6750043;51.43;35.67;TEHRAN
+Tianjin;China;5804023;117.2;39.13;Tianjin
+Tokyo;Japan;8129377;139.75;35.67;Tokyo
+Tulua;Colombia;3974813;-76.2;4.08;Tulua
+Weifang;China;3037535;119.1;36.72;Weifang
+Wuhan;China;3832536;114.27;30.58;Wuhan
+Wuxi;China;3181985;120.3;31.58;Wuxi
+Xian;China;2872539;108.9;34.27;Xian
+Xiangfan;China;2985978;112.13;32.02;Xiangfan
+YANGON;Myanmar;2513023;96.17;16.78;YANGON
+Yangzhou;China;2769300;119.43;32.4;Yangzhou
+Yantai;China;3204669;121.4;37.53;Yantai
+Yokohama;Japan;3300513;139.63;35.47;Yokohama
+Zaozhuang;China;3191974;117.57;34.88;Zaozhuang
+Zibo;China;2484206;118.05;36.8;Zibo

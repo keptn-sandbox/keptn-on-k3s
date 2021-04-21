@@ -1,0 +1,122 @@
+<http-page executeResourcesDynamically="false"
+    name="/CalculateRecommendations" playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/aa6577df-6f29-40c9-bd19-b99458ee64db.zip"
+    slaProfileEnabled="false" thinkTime="69"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="aa6577df-6f29-40c9-bd19-b99458ee64db">
+    <embedded-action>802eec37-c8bf-47c2-991a-d30a545f0084</embedded-action>
+    <embedded-action>5d79e254-36ab-4fd8-9a8b-62ee0e03f416</embedded-action>
+    <embedded-action>be968e3e-42ab-4f98-8087-bbf8eaf37b4c</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_aa6577df-6f29-40c9-bd19-b99458ee64db.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/CalculateRecommendations"
+    path="/CalculateRecommendations" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/aa6577df-6f29-40c9-bd19-b99458ee64db.zip"
+    recordedResponseCode="200" responseSize="1936"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="802eec37-c8bf-47c2-991a-d30a545f0084" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_802eec37-c8bf-47c2-991a-d30a545f0084.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_802eec37-c8bf-47c2-991a-d30a545f0084.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="_"
+        recordRawValue="1506959186786" separator="=" value="${TS}" valueMode="USE_VALUE"/>
+    <header name="Accept" value="text/html, */*; q=0.01"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-Type" value="application/x-www-form-urlencoded; charset=UTF-8"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h2vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506960985781|1506959179370; dtSa=-; dtLatC=12"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <header name="X-Requested-With" value="XMLHttpRequest"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:18 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: text/html;charset=UTF-8&#xd;
+X-Varnish: 767550033&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Content-Length: 1936&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;36906-1601651650000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/result_pic_0.png"
+    path="/img/result_pic_0.png" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/aa6577df-6f29-40c9-bd19-b99458ee64db.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="5d79e254-36ab-4fd8-9a8b-62ee0e03f416" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_5d79e254-36ab-4fd8-9a8b-62ee0e03f416.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_5d79e254-36ab-4fd8-9a8b-62ee0e03f416.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h2vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506960985781|1506959179370; dtSa=-; dtLatC=12"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:19 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"36906-1491992757000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:25:57 GMT&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 36906&#xd;
+X-Varnish: 767550035&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;32929-1601651650000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/result_pic_1.png"
+    path="/img/result_pic_1.png" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/aa6577df-6f29-40c9-bd19-b99458ee64db.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="be968e3e-42ab-4f98-8087-bbf8eaf37b4c" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_be968e3e-42ab-4f98-8087-bbf8eaf37b4c.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_be968e3e-42ab-4f98-8087-bbf8eaf37b4c.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h2vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506960985781|1506959179370; dtSa=-; dtLatC=12"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:19 GMT&#xd;
+Server: CouchDB&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 32049&#xd;
+X-Varnish: 768238230&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

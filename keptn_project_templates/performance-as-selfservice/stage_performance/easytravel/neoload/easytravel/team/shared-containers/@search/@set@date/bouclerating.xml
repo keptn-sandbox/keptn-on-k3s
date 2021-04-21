@@ -1,0 +1,3 @@
+<loop-action loop="${journey_id-rating_matchNr}" name="bouclerating" uid="c0fb19fb-0643-49ed-9a22-b4d0f132fb5b">
+    <embedded-action>ee3981d7-1ff2-4cbd-bf27-ed45559d19d4</embedded-action>
+</loop-action>

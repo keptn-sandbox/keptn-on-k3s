@@ -1,0 +1,6 @@
+<lg-host citrixSupport="false" hostname="pc023.intranet.neotys.com:7100"
+    loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false"
+    uid="3fd5f648-707b-45ce-94c0-f4eae89a15b5" version="6.1.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>

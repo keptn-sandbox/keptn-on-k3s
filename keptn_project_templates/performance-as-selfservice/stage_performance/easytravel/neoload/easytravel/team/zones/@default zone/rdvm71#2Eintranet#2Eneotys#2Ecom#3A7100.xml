@@ -1,0 +1,6 @@
+<lg-host citrixSupport="false"
+    hostname="rdvm71.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="a04e31b3-c0ba-4367-b496-745b969bdbf3" version="5.3.1;build=20170209-202">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>

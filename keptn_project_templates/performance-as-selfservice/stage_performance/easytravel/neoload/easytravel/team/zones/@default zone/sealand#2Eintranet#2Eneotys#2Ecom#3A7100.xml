@@ -1,0 +1,61 @@
+<lg-host citrixSupport="false"
+    hostname="sealand.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="029c25f6-82ac-4e79-8ab4-7e9802b7f8e5" version="6.1.2;build=20170926-55">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Intel(R) Dual Band Wireless-AC 7265"
+        enabled="false" isLoopBack="false" name="wlan1">
+        <!--****** LG ADDRESSES ******-->
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Microsoft Wi-Fi Direct Virtual Adapter"
+        enabled="false" isLoopBack="false" name="wlan0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:f091:60ae:94d2:2b72%wlan0">
+            <ip value="fe80:0:0:0:f091:60ae:94d2:2b72%wlan0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (3) I218-LM"
+        enabled="false" isLoopBack="false" name="eth7">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="sealand.intranet.neotys.com">
+            <ip value="10.0.4.98"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:89cb:9ab8:2ba6:75b4%eth7">
+            <ip value="fe80:0:0:0:89cb:9ab8:2ba6:75b4%eth7"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Dell Wireless 5809e Gobi? 4G LTE Mobile Broadband Card"
+        enabled="false" isLoopBack="false" name="net1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:8d1f:e186:785b:923%net1">
+            <ip value="fe80:0:0:0:8d1f:e186:785b:923%net1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Bluetooth Device (Personal Area Network)"
+        enabled="false" isLoopBack="false" name="eth1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:e463:bbbd:ec54:4200%eth1">
+            <ip value="fe80:0:0:0:e463:bbbd:ec54:4200%eth1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

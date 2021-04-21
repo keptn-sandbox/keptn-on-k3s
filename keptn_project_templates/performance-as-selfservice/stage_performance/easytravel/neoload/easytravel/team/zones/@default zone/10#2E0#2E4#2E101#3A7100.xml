@@ -1,0 +1,63 @@
+<lg-host citrixSupport="false" hostname="10.0.4.101:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="true"
+    uid="9a217b04-8d06-4df5-89a4-1685bd934561" version="6.1.1;build=20170915-49">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Intel(R) Dual Band Wireless-AC 7260"
+        enabled="false" isLoopBack="false" name="wlan0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="wallis.intranet.neotys.com">
+            <ip value="10.0.4.101"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:453d:6bde:ba84:76fb%wlan0">
+            <ip value="fe80:0:0:0:453d:6bde:ba84:76fb%wlan0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth15">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:e841:7890:ac3e:28b7%eth15">
+            <ip value="fe80:0:0:0:e841:7890:ac3e:28b7%eth15"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Fortinet virtual adapter"
+        enabled="false" isLoopBack="false" name="eth17">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:c00a:35e8:df28:fb48%eth17">
+            <ip value="fe80:0:0:0:c00a:35e8:df28:fb48%eth17"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Intel(R) Ethernet Connection I218-LM"
+        enabled="false" isLoopBack="false" name="eth13">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="wallis.intranet.neotys.com">
+            <ip value="10.0.4.62"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:8dfb:c453:3673:11e%eth13">
+            <ip value="fe80:0:0:0:8dfb:c453:3673:11e%eth13"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Périphérique Bluetooth (réseau personnel)"
+        enabled="false" isLoopBack="false" name="eth12">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:192d:fe55:9bd0:9d4d%eth12">
+            <ip value="fe80:0:0:0:192d:fe55:9bd0:9d4d%eth12"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

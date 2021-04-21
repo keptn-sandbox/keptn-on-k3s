@@ -1,0 +1,21 @@
+workloads:
+- teststrategy: performance
+  script:
+    repository: GIT_SERVER_TO_REPLACE/REPO_TO_REPLACE/REPLACE_KEPTN_PROJECT.git
+    branch: master
+    project:
+    - path: /neoload/simplenode_design.yaml
+    - path: /neoload/simplenode_basic.yaml
+    - path: /neoload/load_template/load_template.nlp
+  properties:
+    scenario: Simpleload_Peak
+    constant_variables:
+    - name: server_host
+      value: simplenode.demo-delivery-staging.svc.cluster.local
+    - name: server_port
+      value: 80
+  description: Simpleload_Peak
+  infrastructure:
+    managedbyKeptn: true
+    numberOfMachine: 1
+    zoneId: On10d

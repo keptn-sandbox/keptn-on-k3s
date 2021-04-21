@@ -1,0 +1,47 @@
+<http-page executeResourcesDynamically="false"
+    name="/se/0/_/+1/fastbutton" playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@home @page/%resources%/recorded-artifacts/5d6bf570-7a15-4a44-b653-985d5f1a6f8b.zip"
+    slaProfileEnabled="false" thinkTime="0"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="5d6bf570-7a15-4a44-b653-985d5f1a6f8b">
+    <embedded-action>680ee95a-eab5-42bf-b838-06bfba8ce9aa</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_8375c0ec-78a5-409a-8a38-337ae04cff9c.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;2864-1601651650000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Fri, 02 Oct 2020 15:14:10 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/menupunkt_auswahl_transparent.png"
+    path="/img/menupunkt_auswahl_transparent.png" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@home @page/%resources%/recorded-artifacts/5d6bf570-7a15-4a44-b653-985d5f1a6f8b.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="680ee95a-eab5-42bf-b838-06bfba8ce9aa" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_680ee95a-eab5-42bf-b838-06bfba8ce9aa.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_7ba9f574-05e2-430e-be8d-833d8c08c95f.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h1vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506960979380|1506959179370; dtSa=-; dtLatC=12"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/orange.css"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:13 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"2864-1491992757000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:25:57 GMT&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 2864&#xd;
+X-Varnish: 768293661&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

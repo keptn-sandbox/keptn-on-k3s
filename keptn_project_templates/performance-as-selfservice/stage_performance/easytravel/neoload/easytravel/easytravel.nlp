@@ -1,0 +1,13 @@
+# Project description file
+
+project.name=easytravel
+project.version=8.2
+project.original.version=4.2
+product.name=NeoLoad
+product.original.name=
+product.version=7.9.0
+product.original.version=
+project.id=240556a0-c250-4edf-be56-0b72ac7fb448
+project.config.path=team
+project.config.storage=XML_MULTI
+team.server.enabled=false

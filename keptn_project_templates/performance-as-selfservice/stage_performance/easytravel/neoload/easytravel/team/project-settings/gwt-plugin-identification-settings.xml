@@ -1,0 +1,8 @@
+<plugin-identification-settings plugin="GWT">
+    <request-headers>
+        <header value="text/x-gwt-rpc"/>
+    </request-headers>
+    <response-headers>
+        <header value="application/json"/>
+    </response-headers>
+</plugin-identification-settings>

@@ -1,0 +1,10 @@
+GET http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/img/booking/stepindicator_3_inactive.png HTTP/1.1
+Host: ec2-54-84-118-207.compute-1.amazonaws.com:8079
+User-Agent: Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0
+Accept: */*
+Accept-Language: fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3
+Accept-Encoding: gzip, deflate
+Referer: http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/css/orange.css
+Cookie: JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420333320_503h1vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022133357|1507020305483; dtSa=-; dtLatC=20; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1
+Connection: keep-alive
+

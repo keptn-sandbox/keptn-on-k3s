@@ -32,6 +32,8 @@ TEMPLATE_DIRECTORY="keptn_project_templates"
 TEMPLATE_NAME=${1:-none}
 OWNER_EMAIL=${2:-none}
 PROJECT_NAME=${3:-none}
+GIT_SERVER=${4:-none}
+GIT_USER=${5:-none}
 SYNTHETIC_LOCATION=${SYNTHETIC_LOCATION:-GEOLOCATION-45AB48D9D6925ECC}
 
 # Expected Env Variables that should be set!
@@ -180,6 +182,7 @@ do
       echo $REMOVE_FROM_REMOTE_FILENAME
     fi
 
+
     #
     # create a tmp file so we can do any IN-FILE replacements
     cp ${localFileName} ${localFileName}.tmp
@@ -187,7 +190,13 @@ do
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_SERVICE/${SERVICE_NAME}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_SERVICE/${$STAGE_NAME}/" ${localFileName}.tmp
 
+    if [[ "${localFileName}" == *"workload.yaml" ]]; then
+      sed -i "s/GIT_SERVER_TO_REPLACE/$GIT_SERVER/" ${localFileName}.tmp
+      sed -i "s/REPO_TO_REPLACE/$GIT_USER/" ${localFileName}.tmp
+    fi
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
     remoteFileName=$(echo "${localFileName/.\//}")

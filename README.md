@@ -75,11 +75,12 @@ The script allows a couple of parameters
 | ------------------------------ | ------ | --------|
 | `--type` | all (default), k3s, keptn, demo, gitus | Will either install everything (all), just k3s, just keptn (assuming that kubectl is pointing to a k8s cluster), demo (just the demo components), gitus (will create Git Upstreams for each Keptn Project) |
 | `--controlplane` | | This is default, it will just install Keptn Control Plane on this k3s allowing Quality Gates & Auto-Remediation |
-| `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm (for Deployment) + JMeter (for Testing). This will also install Istio |
-| `--executionplane` | | This option only installs Keptn's Execution Plane + Helm (for Deployment) + JMeter (for Testing) + Istio. This also requires you to set some Env-Variables pointing to the Keptn Control Plane |
+| `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm (for Deployment) + JMeter or NeoLoad ( by using the --with-jmeter or --with-neoload) (for Testing). This will also install Istio |
+| `--executionplane` | | This option only installs Keptn's Execution Plane + Helm (for Deployment) + JMeter or NeoLoad( by using the --with-jmeter or --with-neoload) (for Testing) + Istio. This also requires you to set some Env-Variables pointing to the Keptn Control Plane |
 | `--with-prometheus` | | Will enable Prometheus Support |
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will make sure to install JMeter Service in case not already selected by another option, e.g: deliveryplane or execution plane |
+| `--with-neoload` | | Will make sure to install NeoLoad Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
 | `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
 | `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |

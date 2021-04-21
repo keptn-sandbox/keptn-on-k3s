@@ -1,0 +1,6 @@
+<http-server hostname="ec2-54-202-52-28.us-west-2.compute.amazonaws.com"
+    port="80" ssl="false"
+    uid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    urlrewriting-argument-name="jsessionid" urlrewriting-enabled="true"
+    urlrewriting-path-extension="true"
+    urlrewriting-path-not-equals="false" urlrewriting-path-separator=";"/>

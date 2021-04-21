@@ -1,0 +1,19 @@
+scenarios:
+  - name: EasyTravelload
+    populations:
+      - name: EasyTravel
+        rampup_load:
+          min_users: 10
+          duration: 5m
+          increment_users: 25
+          increment_every: 90s
+    apm_configuration:
+      dynatrace_tags:
+        - "keptn_project:REPLACE_KEPTN_PROJECT"
+        - "keptn_service:REPLACE_KEPTN_SERVICE"
+        - "keptn_stage:REPLACE_KEPTN_STAGE"
+      dynatrace_anomaly_rules:
+        - metric_id: builtin:service.responsetime
+          operator: ABOVE
+          value: 100
+          severity: PERFORMANCE

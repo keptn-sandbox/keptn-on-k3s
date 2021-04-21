@@ -1,0 +1,6 @@
+<zone cloudProvider="Google Compute Engine" dnsOverrideEnabled="false"
+    latitude="41.262639" longitude="-95.861789" proxyType="NO_PROXY"
+    proxyTypeLg="COMMON" uid="USA Centre - Iowa (Council Bluffs)">
+    <description>USA Centre - Iowa (Council Bluffs)</description>
+    <embedded-action>5b0da160-bf64-4704-bbbc-e554effa6c64</embedded-action>
+</zone>

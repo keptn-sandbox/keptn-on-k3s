@@ -1,0 +1,3355 @@
+<?xml version="1.1" encoding="UTF-8"?>
+
+	<!DOCTYPE repository [
+		<!ELEMENT repository (http-page | basic-logical-action-container | random-logical-action-container | http-action | http-dynamic-resources-action | http-soap-action | loop-action | while-action | if-action | try-action | delay-action | gotonext-action | stopvu-action | js-action | variable-modifier-action | wait-until-action | fork-action | shared-element | virtual-user | population | server | http-server | variable-counter | variable-date | variable-file | variable-sql | variable-list | variable-random-number | variable-random-string | variable-currentdate | variable-constant | variable-random-uuid | variable-shared-queue | variable-javascript | js-library | me-host | monitored-host | monitored-host-system | connection-weblogic | connection-weblogic9 | connection-weblogic10 | connection-weblogic11 | connection-websphere | connection-websphere_liberty | connection-tomcat | connection-tomcat6 | connection-tomcat7 | connection-oas | connection-jonas | connection-apache | connection-oas-http | connection-rstat | connection-imported | connection-oracle | connection-mysql | connection-db2 | connection-db2105 | connection-postgre | connection-postgre92 | connection-jboss | connection-jboss6 | connection-jmx-custom | connection-kaazing | connection-jboss71 | connection-json | connection-snmp | connection-telnet | connection-ssh | connection-win | connection-iis | connection-sqlserver | connection-dotnet | connection-glassfish | connection-netweaver70 | connection-netweaver71 | connection-lcds | connection-vmware | connection-system | sla-threshold | dashboards | charts-model-description? | charts-templates-description | http-push-action | http-plugin-action | http-plugin-push-action | socket-plugin-action | socket-plugin-push-action | http-media-action | socket-media-action | rdv-action | push-message | custom-action | zones | zone | lg-host | cloud-model | websocket-plugin-action | websocket-action | websocket-channel-action)*>
+		<!ELEMENT http-page ((description?) , (embedded-action*), screenshotFileDescription?) >
+		<!ELEMENT http-action ((description?),(binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (postContentUnzipped?), (multiparts?), (response-storage?))>
+		<!ELEMENT http-dynamic-resources-action ((description?),(binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (response-storage?))>
+		<!ELEMENT http-soap-action ((description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?),(soap-method?), (response-storage?))>
+		<!ELEMENT http-push-action ((description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (embedded-action*), (push-handler), (response-storage?))>
+		<!ELEMENT websocket-channel-action ((description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (embedded-action*), (push-handler), (response-storage?))>
+		<!ELEMENT http-plugin-action ((plugin-handler), (description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (response-storage?))>
+		<!ELEMENT websocket-action ((description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?))>
+		<!ELEMENT websocket-plugin-action ((plugin-handler), (description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (textPostContent?))>
+		<!ELEMENT http-plugin-push-action ((plugin-handler), (embedded-action*), (push-handler), (description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (failed-list-file-element*), (response-storage?))>
+		<!ELEMENT http-media-action ((description?), (binaryPostContentBase64?), (responsePageFileDescription?), (requestContentFileDescription?), (variable-extractor*), (assertions?), (parameter*), (urlPostParameter*), (header*), (responseHeaders?), (extractor-html-infos?), (record-html-infos?), (textPostContent?), (multiparts?), (embedded-action*), (media-handler), (response-storage?))>
+		<!ELEMENT socket-plugin-action ((plugin-handler), (description?), (responsePage?), (responsePageFileDescription?), (requestContentFileDescription?), (assertions?), (variable-extractor*))>
+		<!ELEMENT socket-plugin-push-action ((plugin-handler), (embedded-action*), (push-handler), (description?), (responsePage?), (responsePageFileDescription?), (requestContentFileDescription?), (assertions?), (variable-extractor*), (failed-list-file-element*))>
+		<!ELEMENT socket-media-plugin-action ((plugin-handler), (embedded-action*), (media-handler), (description?), (responsePage?), (responsePageFileDescription?), (requestContentFileDescription?), (assertions?), (variable-extractor*), (failed-list-file-element*))>
+		<!ELEMENT plugin-handler ((requestXMLDataBase64?), (responseXMLDataBase64?), (serviceParameters?))>
+		<!ELEMENT push-handler (result-handler?, push-classnames?, conditions?)>
+		<!ELEMENT push-classnames (push-classname*)>
+		<!ELEMENT push-classname (#PCDATA)>
+		<!ELEMENT failed-list-file-element (#PCDATA)>
+		<!ELEMENT result-handler (timestamp-extractor?)>
+		<!ELEMENT timestamp-extractor (variable-extractor-group*)>
+		<!ELEMENT push-message ((description?), (weighted-embedded-action*), (embedded-action*), (assertions?), (conditions?), (variable-extractor*))>
+		<!ELEMENT requestXMLDataBase64 (#PCDATA)>
+		<!ELEMENT responseXMLDataBase64 (#PCDATA)>
+		<!ELEMENT media-handler (#PCDATA)>
+
+		<!ELEMENT serviceParameters (parameterClass*)>
+		<!ELEMENT parameterClass (#PCDATA)>
+
+		<!ELEMENT basic-logical-action-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT init-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT actions-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT end-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT try-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT catch-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT then-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT else-container (description? , (weighted-embedded-action*), (embedded-action*), assertions?)>
+		<!ELEMENT loop-action (description? , (embedded-action*) )>
+		<!ELEMENT while-action (description? , (embedded-action*), conditions )>
+		<!ELEMENT fork-action (description? , (embedded-action*) )>
+		<!ELEMENT if-action (description? , then-container, else-container, conditions )>
+		<!ELEMENT try-action (description? , try-container, catch-container )>
+		<!ELEMENT delay-action (description?)>
+		<!ELEMENT rdv-action (description?)>
+		<!ELEMENT gotonext-action (description?)>
+		<!ELEMENT stopvu-action (description?)>
+		<!ELEMENT js-action (description?)>
+		<!ELEMENT variable-modifier-action (description?)>
+		<!ELEMENT wait-until-action (description?, conditions?)>
+		<!ELEMENT custom-action (description?, (custom-action-parameter*), (responsePageFileDescription?), (assertions?), (variable-extractor*))>
+		<!ELEMENT server (description?)>
+		<!ELEMENT http-server (description?, authorization*)>
+		<!ELEMENT authorization (description?)>
+		<!ELEMENT shared-element (#PCDATA)>
+		<!ELEMENT virtual-user (description? , init-container, actions-container, end-container, thinktime-policy?, assertions?)>
+		<!ELEMENT population (description? , (split*) )>
+		<!ELEMENT thinktime-policy EMPTY>
+
+		<!ELEMENT assertions ((assertion-duration) |(assertion-size)|(assertion-response)|(assertion-content)|(assertion-plugin-content)|(assertion-plugin-response))*>
+
+		<!ELEMENT assertion-duration (#PCDATA) >
+		<!ELEMENT assertion-response (testString) >
+		<!ELEMENT assertion-content (#PCDATA) >
+
+		<!ELEMENT assertion-plugin-content (#PCDATA) >
+		<!ELEMENT assertion-plugin-response (testString) >
+		<!ELEMENT assertion-size (#PCDATA) >
+		<!ELEMENT variable-counter (description?)>
+		<!ELEMENT variable-date (description?)>
+		<!ELEMENT variable-file (description?, (column*) )>
+		<!ELEMENT variable-sql ((description?), (sql-database-connection))>
+		<!ELEMENT sql-database-connection (#PCDATA)>
+		<!ELEMENT variable-list (description?, (column*), (values?) )>
+		<!ELEMENT variable-random-number (description?)>
+		<!ELEMENT variable-random-string (description?)>
+		<!ELEMENT variable-extractor (variable-extractor-group*)>
+		<!ELEMENT record-variable-extractor (variable-extractor-group*)>
+		<!ELEMENT variable-extractor-group (#PCDATA)>
+		<!ELEMENT variable-currentdate (description?)>
+		<!ELEMENT variable-constant (description?)>
+		<!ELEMENT variable-random-uuid (description?)>
+		<!ELEMENT variable-shared-queue (description?)>
+		<!ELEMENT variable-javascript ((description?), (column*), (script))>
+		<!ELEMENT extractor-html-infos (#PCDATA) >
+		<!ELEMENT record-html-infos (#PCDATA) >
+		<!ELEMENT response-storage (#PCDATA) >
+		<!ELEMENT js-library (description?)>
+		<!ELEMENT column (description?)>
+		<!ELEMENT script EMPTY>
+
+		<!ELEMENT threshold ((one-value-condition | two-values-condition | threshold-condition)*)>
+		<!ELEMENT sla-threshold ((threshold-condition)*)>
+		<!ELEMENT one-value-condition ((threshold-comment )*)>
+		<!ELEMENT two-values-condition ((threshold-comment )*)>
+		<!ELEMENT threshold-condition ((threshold-comment )*)>
+		<!ELEMENT threshold-comment ((threshold-content )*)>
+		<!ELEMENT threshold-content (#PCDATA)>
+
+		<!ELEMENT me-host (networkiface | lg-networkiface?)*>
+		<!ELEMENT monitored-host-system (description?, (embedded-action )*)>
+		<!ELEMENT monitored-host (description?, (embedded-action )*)>
+		<!ELEMENT monitor-category (description?, (monitor-userload | monitor-wrapped-statistic | monitor-win32 | monitor-apache | monitor-oas-http | monitor-rstat | monitor-imported | monitor-snmp | monitor-jmx | monitor-jboss71 | monitor-json | monitor-virtual | monitor-oracle| monitor-mysql | monitor-db2 | monitor-postgre | monitor-vmware | virtual-monitor-vmware | (simple-monitor-telnet) | (disk-monitor-telnet) | (process-monitor-telnet) | (network-monitor-telnet) | (tcp-monitor-telnet) | monitor-mongodb | monitor-category)*)>
+	
+		<!ELEMENT connection-mongodb (description?, monitor-category*, monitor-mongodb*, threshold*)>
+		<!ELEMENT connection-apache (description?, monitor-category*, monitor-apache*, threshold*)>
+		<!ELEMENT connection-oas-http (description?, monitor-category*, monitor-oas-http*, threshold*)>
+		<!ELEMENT connection-rstat (description?, monitor-category* , monitor-rstat*, threshold*)>
+		<!ELEMENT connection-imported (description?, monitor-category* , monitor-imported*, threshold*)>
+		<!ELEMENT connection-snmp (description?, monitor-category* , monitor-snmp*, threshold*)>
+		<!ELEMENT connection-weblogic (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-weblogic9 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-weblogic10 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-weblogic11 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-websphere (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-websphere_liberty (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-telnet (description?, monitor-category* , ((simple-monitor-telnet) | (disk-monitor-telnet) | (process-monitor-telnet) | (network-monitor-telnet) | (tcp-monitor-telnet))*, threshold*)>
+		<!ELEMENT connection-ssh (description?, monitor-category* , ((simple-monitor-telnet) | (disk-monitor-telnet) | (process-monitor-telnet) | (network-monitor-telnet) | (tcp-monitor-telnet))*, threshold*)>
+		<!ELEMENT connection-tomcat (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-tomcat6 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-tomcat7 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-oas (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-jonas (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-oracle (description?, monitor-category* , monitor-oracle*, threshold*)>
+		<!ELEMENT connection-mysql (description?, monitor-category* , monitor-mysql*, threshold*)>
+		<!ELEMENT connection-db2 (description?, monitor-category* , monitor-db2*, threshold*)>
+        <!ELEMENT connection-db2105 (description?, monitor-category* , monitor-db2*, threshold*)>
+        <!ELEMENT connection-postgre (description?, monitor-category* , monitor-postgre*, threshold*)>
+		<!ELEMENT connection-postgre92 (description?, monitor-category* , monitor-postgre*, threshold*)>
+		<!ELEMENT connection-jboss (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-jboss6 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-jmx-custom ((connection-weblogic | connection-weblogic9 | connection-weblogic10 | connection-weblogic11 | connection-websphere | connection-tomcat | connection-tomcat6 | connection-tomcat7 | connection-oas | connection-jonas | connection-jboss | connection-jboss6 | connection-java-url | connection-glassfish | connection-netweaver70 | connection-netweaver71 | connection-lcds), monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+        <!ELEMENT connection-kaazing (connection-java-url, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+        <!ELEMENT connection-jboss71 (description?, monitor-category* , monitor-jboss71*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-json (description?, monitor-category* , monitor-json*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-java-url EMPTY>
+		<!ELEMENT connection-glassfish (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-netweaver70 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-netweaver71 (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-lcds (description?, monitor-category* , monitor-jmx*, monitor-virtual*, threshold*)>
+		<!ELEMENT connection-vmware (description?, monitor-category* , monitor-vmware*, virtual-monitor-vmware*, threshold*)>
+		<!ELEMENT connection-win (description?, monitor-category* , monitor-win32*, threshold*)>
+		<!ELEMENT connection-iis (description?, monitor-category* , monitor-win32*, threshold*)>
+		<!ELEMENT connection-dotnet (description?, monitor-category* , monitor-win32*, threshold*)>
+		<!ELEMENT connection-sqlserver (description?, monitor-category* , monitor-win32*, threshold*)>
+		<!ELEMENT connection-system (description?, monitor-category* , monitor-userload* , monitor-wrapped-statistic*, threshold*)>
+		<!ELEMENT monitor-rstat (description?)>
+		<!ELEMENT monitor-imported (description?)>
+        <!ELEMENT monitor-jmx (description?,monitor-value-pattern*)>
+        <!ELEMENT monitor-jboss71 (description?,monitor-value-pattern*)>
+		<!ELEMENT monitor-json (description?,monitor-value-pattern*)>
+		<!ELEMENT monitor-virtual ((description | monitor-jmx |monitor-virtual)*)>
+		<!ELEMENT monitor-snmp (description?)>
+		<!ELEMENT monitor-mongodb (description?)>
+		<!ELEMENT monitor-apache (description?)>
+		<!ELEMENT monitor-oas-http (description?)>
+		<!ELEMENT monitor-oracle (description?)>
+		<!ELEMENT monitor-mysql (description?)>
+		<!ELEMENT monitor-db2 (description?)>
+		<!ELEMENT monitor-postgre (description?)>
+		<!ELEMENT monitor-vmware (description?)>
+		<!ELEMENT virtual-monitor-vmware (description?)>
+		<!ELEMENT simple-monitor-telnet (description?)>
+		<!ELEMENT disk-monitor-telnet (description?)>
+		<!ELEMENT process-monitor-telnet (description?)>
+		<!ELEMENT network-monitor-telnet (description?)>
+		<!ELEMENT tcp-monitor-telnet (description?)>		
+		<!ELEMENT monitor-win32 (description?)>		
+		<!ELEMENT monitor-userload (#PCDATA)>
+		<!ELEMENT monitor-wrapped-statistic (#PCDATA)>
+		<!ELEMENT monitor-value-pattern (#PCDATA)>
+		<!ELEMENT multiparts ((multipart-string?) , (multipart-file?), (multipart-mimefile?))* >
+		<!ELEMENT multipart-string ((variable-extractor?), (record-variable-extractor?))>
+		<!ELEMENT multipart-file (attachedFileContentBase64?)>
+		<!ELEMENT multipart-mimefile (headers?)>
+		<!ELEMENT conditions (condition*)>
+		<!ELEMENT condition (#PCDATA)>
+		<!ELEMENT attachedFileContentBase64 (#PCDATA)>
+		<!ELEMENT parameter ((variable-extractor?), (record-variable-extractor?))>
+		<!ELEMENT urlPostParameter ((variable-extractor?), (record-variable-extractor?))>
+		<!ELEMENT custom-action-parameter (#PCDATA)>
+		<!ELEMENT headers (header*)>
+		<!ELEMENT header (#PCDATA)>
+		<!ELEMENT description (#PCDATA)>
+		<!ELEMENT binaryPostContentBase64 (#PCDATA)>
+		<!ELEMENT textPostContent (#PCDATA)>
+		<!ELEMENT responsePage (#PCDATA)>
+		<!ELEMENT screenshotFileDescription (#PCDATA)>
+		<!ELEMENT responsePageFileDescription (#PCDATA)>
+		<!ELEMENT requestContentFileDescription (#PCDATA)>
+		<!ELEMENT embedded-action (#PCDATA)>
+		<!ELEMENT weighted-embedded-action EMPTY>
+		<!ELEMENT responseHeaders (#PCDATA)>
+		<!ELEMENT split ((browser-profile?),(wan-emulation-profile?))>
+		<!ELEMENT browser-profile (#PCDATA)>
+		<!ELEMENT wan-emulation-profile (#PCDATA)>
+		<!ELEMENT values (#PCDATA)>
+		<!ELEMENT property (#PCDATA)>
+		<!ELEMENT testString (#PCDATA)>
+		<!ELEMENT soap-method (soap-headers?,soap-possibleHeaders?,soap-parameters?)>
+		<!ELEMENT soap-headers (soap-header*)>
+		<!ELEMENT soap-possibleHeaders (soap-header*)>
+		<!ELEMENT soap-parameters (soap-paramValue*)>
+		<!ELEMENT soap-header (soap-paramValue?)>
+		<!ELEMENT soap-paramValue (soap-attributes?,soap-possibleAttributes?,soap-children?,soap-possibleChildren?,facets?) >
+		<!ELEMENT soap-children (soap-paramValue*)>
+		<!ELEMENT soap-possibleChildren (soap-paramValue*)>
+		<!ELEMENT soap-attributes (soap-attribute*)>
+		<!ELEMENT soap-possibleAttributes (soap-attribute*)>
+		<!ELEMENT soap-attribute (facets?)>
+		<!ELEMENT facets (restriction-facet*)>
+		<!ELEMENT restriction-facet (possibleValue*)>
+		<!ELEMENT possibleValue (#PCDATA)>
+		
+		<!ELEMENT dashboards (#PCDATA)>
+		<!ELEMENT charts-templates-description (charts-model-description*)>
+		<!ELEMENT charts-model-description (description? | chart-description? | empty-chart-description?)*>
+		<!ELEMENT chart-description (monitor-curve-description? | action-curve-description?)*>
+		<!ELEMENT empty-chart-description (#PCDATA)>
+		<!ELEMENT monitor-curve-description (#PCDATA)>
+		<!ELEMENT action-curve-description (#PCDATA)>
+
+		<!ELEMENT zones (#PCDATA)>
+		<!ELEMENT zone (proxy-config? | description? | embedded-action?)*>
+		<!ELEMENT lg-host (networkiface | lg-networkiface?)*>
+  		<!ELEMENT lg-networkiface (lg-address?)*>
+  		<!ELEMENT lg-address (ip?)>
+  		<!ELEMENT networkiface (#PCDATA)>
+  		<!ELEMENT ip (#PCDATA)>
+  		<!ELEMENT proxy-config (#PCDATA)>
+
+		<!ELEMENT cloud-model (cloud-workgroup | cloud-session | cloud-lg)*>
+		<!ELEMENT cloud-workgroup (#PCDATA)>
+		<!ELEMENT cloud-session (cloud-timezone)>
+		<!ELEMENT cloud-lg (#PCDATA)>
+		<!ELEMENT cloud-timezone (#PCDATA)>
+
+		<!ATTLIST http-page
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    thinkTime CDATA #REQUIRED
+		    thinkTimeMode CDATA #IMPLIED
+		    thinkTimeRangeStart CDATA #IMPLIED
+		    thinkTimeRangeEnd CDATA #IMPLIED
+			playRequestsSequentially CDATA #IMPLIED
+			executeResourcesDynamically CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			dynamicAction CDATA #IMPLIED>
+
+		<!ATTLIST basic-logical-action-container
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST init-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST actions-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			clearUserIterationData CDATA #REQUIRED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST end-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST then-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST else-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST try-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+			<!ATTLIST catch-container
+		    pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+		    pacingMode CDATA #IMPLIED
+			execution-type CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			element-number CDATA #REQUIRED
+			weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST weighted-embedded-action
+			uid CDATA #REQUIRED
+			weight CDATA #IMPLIED>
+
+		<!ATTLIST http-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		 	recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+				followRedirects CDATA #IMPLIED
+			customMethod CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			binaryType CDATA #IMPLIED
+			binaryFileName CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST http-dynamic-resources-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #IMPLIED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #IMPLIED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			customMethod CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			binaryType CDATA #IMPLIED
+			binaryFileName CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST http-plugin-action
+			plugin CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST websocket-plugin-action
+			plugin CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+			labelBase64 CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			websocket-body-type CDATA #REQUIRED
+			websocket-channel-uid CDATA #REQUIRED>
+
+		<!ATTLIST http-push-action
+			pushType CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+			
+		<!ATTLIST websocket-channel-action
+			pushType CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST http-plugin-push-action
+			plugin CDATA #REQUIRED
+			pushType CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED>
+
+		<!ATTLIST http-media-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    path CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST socket-plugin-action
+			plugin CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    serverUid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED>
+			
+		<!ATTLIST websocket-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED
+			websocket-body-type CDATA #REQUIRED
+			websocket-channel-uid CDATA #REQUIRED>
+
+		<!ATTLIST socket-plugin-push-action
+			plugin CDATA #REQUIRED
+			pushType CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    serverUid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED>
+
+		<!ATTLIST socket-plugin-media-action
+			plugin CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    serverUid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED>
+
+		<!ATTLIST failed-list-file-element
+			elementName CDATA #REQUIRED
+			rtmpContentType CDATA #IMPLIED>
+
+		<!ATTLIST plugin-handler
+			networkType CDATA #IMPLIED
+			labelBase64 CDATA #IMPLIED
+			plugin CDATA #REQUIRED
+			conversionSuccessful CDATA #IMPLIED
+			isRequestConversionSuccessful CDATA #REQUIRED
+			isResponseConversionSuccessful CDATA #REQUIRED
+			protocol CDATA #IMPLIED
+			protocolVersion CDATA #IMPLIED
+			flags CDATA #IMPLIED
+			moduleBase CDATA #IMPLIED
+			strongId CDATA #IMPLIED
+			parameterClass CDATA #IMPLIED
+			resultClass CDATA #IMPLIED
+			streamID CDATA #IMPLIED
+			rtmpContentType CDATA #IMPLIED>
+
+		<!ATTLIST push-handler
+			pushType CDATA #REQUIRED
+			filecount CDATA #IMPLIED
+			filename CDATA #IMPLIED
+			streamingType CDATA #IMPLIED>
+
+		<!ATTLIST result-handler
+			type CDATA #IMPLIED
+			responseSource CDATA #REQUIRED
+			messageSplitterRegexp CDATA #IMPLIED
+			messageSplitterRegexpGroup CDATA #IMPLIED
+			endOfPacket CDATA #IMPLIED>
+
+		<!ATTLIST timestamp-extractor
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    refererUid CDATA #IMPLIED
+		    regExp CDATA #IMPLIED
+		    matchNumber CDATA #IMPLIED
+			extractFromVarName CDATA #IMPLIED
+			setDefaultValue CDATA #REQUIRED
+		    defaultValue CDATA #REQUIRED
+		    template CDATA #REQUIRED
+		    extractType CDATA #REQUIRED
+			displayMode CDATA #IMPLIED
+			regExpAdv CDATA #IMPLIED
+		    matchNumberAdv CDATA #IMPLIED
+		    templateAdv CDATA #IMPLIED
+		    extractTypeAdv CDATA #IMPLIED
+			extractFromVarNameAdv CDATA #IMPLIED
+			valueEncoded CDATA #IMPLIED
+			valueHtmlEncoded CDATA #IMPLIED
+			valueUrlEncoded CDATA #IMPLIED
+			startsWithSimple CDATA #IMPLIED
+			endsWithSimple CDATA #IMPLIED
+			matchNumberSimple CDATA #IMPLIED
+			extractTypeSimple CDATA #IMPLIED
+			extractFromVarNameSimple CDATA #IMPLIED
+			xpath CDATA #IMPLIED
+			jsonpath CDATA #IMPLIED
+			assertionOnNoMatch CDATA #IMPLIED>
+
+		<!ATTLIST push-message
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+			pacingMode CDATA #IMPLIED
+			pacingValue CDATA #IMPLIED
+		    pacingStart CDATA #IMPLIED
+		    pacingEnd  CDATA #IMPLIED
+			className CDATA #IMPLIED
+			messageType CDATA #REQUIRED
+		    responseCharset CDATA #IMPLIED
+		    execution-type CDATA #REQUIRED
+		    element-number CDATA #REQUIRED
+		    weightsEnabled CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST media-handler
+			bitrate CDATA #REQUIRED
+			bitrate-strategy CDATA #REQUIRED
+        	bitrate-unit CDATA #IMPLIED
+        	buffer-length CDATA #REQUIRED
+        	duration CDATA #REQUIRED
+        	duration-strategy CDATA #REQUIRED
+        	mediaType CDATA #REQUIRED
+        	simulation CDATA #REQUIRED>
+
+		<!ATTLIST http-soap-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    serverUid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+		    responseSize CDATA #IMPLIED
+		    recordedResponseCode CDATA #IMPLIED
+		    eTag CDATA #IMPLIED
+		    lastModified CDATA #IMPLIED
+		    recordedETag CDATA #IMPLIED
+		    recordedLastModified CDATA #IMPLIED
+		    path CDATA #IMPLIED
+		    method CDATA #REQUIRED
+		    useKeepAlive CDATA #IMPLIED
+			postType CDATA #IMPLIED
+			postCharset CDATA #IMPLIED
+			generatedByClient CDATA #IMPLIED
+			soap-mode CDATA #REQUIRED
+			soap-wsdl CDATA #IMPLIED
+			refererUid CDATA #IMPLIED
+                followRedirects CDATA #IMPLIED
+			linkExtractorType CDATA #IMPLIED
+			linkExtractorSeveralMatchPolicy CDATA #IMPLIED
+			linkExtractorSeveralMatchOccurrence CDATA #IMPLIED
+			extractorInjectPathPolicy CDATA #IMPLIED
+			extractorPath CDATA #IMPLIED
+			extractorPathPolicy CDATA #IMPLIED
+			extractorServerUid CDATA #IMPLIED
+			confFormExtractorParameters CDATA #IMPLIED
+			wss-out-profile CDATA #IMPLIED
+		    wss-in-profile CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED
+			recordedResponseTime CDATA #IMPLIED>
+
+		<!ATTLIST variable-extractor
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    refererUid CDATA #IMPLIED
+		    regExp CDATA #IMPLIED
+		    matchNumber CDATA #IMPLIED
+			extractFromVarName CDATA #IMPLIED
+			setDefaultValue CDATA #REQUIRED
+		    defaultValue CDATA #REQUIRED
+		    template CDATA #REQUIRED
+		    extractType CDATA #REQUIRED
+			displayMode CDATA #IMPLIED
+			regExpAdv CDATA #IMPLIED
+		    matchNumberAdv CDATA #IMPLIED
+		    templateAdv CDATA #IMPLIED
+		    extractTypeAdv CDATA #IMPLIED
+			extractFromVarNameAdv CDATA #IMPLIED
+			valueHtmlEncoded CDATA #IMPLIED
+			extractOnce CDATA #IMPLIED
+			startsWithSimple CDATA #IMPLIED
+			endsWithSimple CDATA #IMPLIED
+			matchNumberSimple CDATA #IMPLIED
+			extractTypeSimple CDATA #IMPLIED
+			extractFromVarNameSimple CDATA #IMPLIED
+			xpath CDATA #IMPLIED
+			jsonpath CDATA #IMPLIED
+			assertionOnNoMatch CDATA #IMPLIED
+			random-seed CDATA #IMPLIED>
+
+		<!ATTLIST record-variable-extractor
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    refererUid CDATA #IMPLIED
+		    regExp CDATA #IMPLIED
+		    matchNumber CDATA #IMPLIED
+			extractFromVarName CDATA #IMPLIED
+			setDefaultValue CDATA #REQUIRED
+		    defaultValue CDATA #REQUIRED
+		    template CDATA #REQUIRED
+		    extractType CDATA #REQUIRED
+			displayMode CDATA #IMPLIED
+			regExpAdv CDATA #IMPLIED
+		    matchNumberAdv CDATA #IMPLIED
+		    templateAdv CDATA #IMPLIED
+		    extractTypeAdv CDATA #IMPLIED
+			extractFromVarNameAdv CDATA #IMPLIED
+			startsWithSimple CDATA #IMPLIED
+			endsWithSimple CDATA #IMPLIED
+			matchNumberSimple CDATA #IMPLIED
+			extractTypeSimple CDATA #IMPLIED
+			extractFromVarNameSimple CDATA #IMPLIED
+			xpath CDATA #IMPLIED
+			jsonpath CDATA #IMPLIED
+			assertionOnNoMatch CDATA #IMPLIED>
+
+		<!ATTLIST variable-extractor-group
+		    extract CDATA #REQUIRED
+		    type CDATA #REQUIRED
+		    pattern CDATA #IMPLIED
+		    occurs CDATA #REQUIRED>
+
+		<!ATTLIST extractor-html-infos
+		    extractorId CDATA #IMPLIED
+		    extractorName CDATA #IMPLIED
+		    extractorContent CDATA #IMPLIED
+			extractorAlt CDATA #IMPLIED
+			extractorRegExp CDATA #IMPLIED
+		    extractorOccurence CDATA #IMPLIED
+		    htmlType CDATA #IMPLIED>
+
+		<!ATTLIST record-html-infos
+		    extractorId CDATA #IMPLIED
+		    extractorName CDATA #IMPLIED
+		    extractorContent CDATA #IMPLIED
+			extractorAlt CDATA #IMPLIED
+			extractorRegExp CDATA #IMPLIED
+		    extractorOccurence CDATA #IMPLIED
+		    htmlType CDATA #IMPLIED>
+		    
+		<!ATTLIST response-storage
+		    enabled CDATA #IMPLIED
+		    relative-file-path CDATA #IMPLIED
+		    response-file-variable CDATA #IMPLIED
+			storage-type CDATA #IMPLIED>
+
+	   <!ATTLIST server
+	   		uid CDATA #REQUIRED
+			port CDATA #REQUIRED
+			hostname CDATA #REQUIRED>
+
+		<!ATTLIST http-server
+	   		uid CDATA #REQUIRED
+			port CDATA #REQUIRED
+			hostname CDATA #REQUIRED
+			ssl CDATA #IMPLIED
+			urlrewriting-enabled CDATA #IMPLIED
+			urlrewriting-argument-name CDATA #IMPLIED
+			urlrewriting-path-separator CDATA #IMPLIED
+			urlrewriting-path-extension CDATA #IMPLIED
+			urlrewriting-path-not-equals CDATA #IMPLIED
+			slaProfileEnabled CDATA #IMPLIED>
+
+		<!ATTLIST authorization
+	   		scheme CDATA #REQUIRED
+			path CDATA #IMPLIED
+			realm CDATA #IMPLIED
+			userName CDATA #REQUIRED
+			password CDATA #REQUIRED>
+
+		<!ATTLIST loop-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    loop CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST while-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST fork-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			copyVariables CDATA #IMPLIED>
+
+		<!ATTLIST if-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST try-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			catch-errors CDATA #REQUIRED
+			catch-assertions CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST delay-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    duration CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST rdv-action
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+		    rendezVousName CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST gotonext-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST stopvu-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			startNewVu CDATA #IMPLIED>
+
+		<!ATTLIST js-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    filename CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			ts CDATA #IMPLIED>
+
+		<!ATTLIST variable-modifier-action
+			variable-category CDATA #REQUIRED
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    variable-name CDATA #REQUIRED
+		    definedMode CDATA #REQUIRED
+			sharedMode CDATA #REQUIRED
+			shared-variable-name CDATA #REQUIRED
+			src-variable-name CDATA #REQUIRED
+			dest-variable-name CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST wait-until-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    wait-timeout CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+			
+		<!ATTLIST custom-action
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    actionType CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST js-library
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    filename CDATA #REQUIRED
+		    ts CDATA #IMPLIED>
+
+		<!ATTLIST virtual-user
+		    uid CDATA #REQUIRED
+		    errorPolicy CDATA #REQUIRED
+		    failedAssertionPolicy CDATA #REQUIRED
+		    slaProfileEnabled CDATA #IMPLIED
+			slaProfileUID CDATA #IMPLIED
+			slaProfileName CDATA #IMPLIED>
+
+		<!ATTLIST population
+		    uid CDATA #REQUIRED>
+
+		<!ATTLIST thinktime-policy
+			thinktimePolicy CDATA #REQUIRED
+			thinktimeValue CDATA #REQUIRED
+			thinktimeFactorValue CDATA #IMPLIED
+			thinktimeRangeValue CDATA #IMPLIED
+			thinkTimeMode CDATA #IMPLIED>
+
+		<!ATTLIST split
+			virtualUserUid CDATA #REQUIRED
+		    factor CDATA #REQUIRED
+		    cache CDATA #IMPLIED>
+
+		<!ATTLIST browser-profile
+		    name CDATA #REQUIRED
+		    cookies CDATA #REQUIRED
+		    connections CDATA #REQUIRED
+		    userAgent CDATA #IMPLIED
+		    http2 CDATA #REQUIRED>
+
+    	<!ATTLIST wan-emulation-profile
+		    name CDATA #REQUIRED
+		    isRadio CDATA #IMPLIED
+		    signalStrength CDATA #IMPLIED
+		    uploadBandwidth CDATA #REQUIRED
+		    downloadBandwidth CDATA #REQUIRED
+		    uploadLatency CDATA #IMPLIED
+		    downloadLatency CDATA #IMPLIED
+		    uploadPacketLoss CDATA #IMPLIED
+		    downloadPacketLoss CDATA #IMPLIED
+		    averageUploadBandwidth CDATA #IMPLIED
+		    averageDownloadBandwidth CDATA #IMPLIED
+		    averageUploadLatency CDATA #IMPLIED
+		    averageDownloadLatency CDATA #IMPLIED
+		    averageUploadPacketLoss CDATA #IMPLIED
+		    averageDownloadPacketLoss CDATA #IMPLIED
+		    poorUploadBandwidth CDATA #IMPLIED
+		    poorDownloadBandwidth CDATA #IMPLIED
+		    poorUploadLatency CDATA #IMPLIED
+		    poorDownloadLatency CDATA #IMPLIED
+		    poorUploadPacketLoss CDATA #IMPLIED
+		    poorDownloadPacketLoss CDATA #IMPLIED>
+
+		<!ATTLIST assertion-duration
+			duration CDATA #REQUIRED>
+
+		<!ATTLIST assertion-response
+			name CDATA #REQUIRED
+			matchType CDATA #IMPLIED
+			notType CDATA #IMPLIED
+			containsType CDATA #IMPLIED>
+
+		<!ATTLIST assertion-plugin-response
+			name CDATA #REQUIRED
+			matchType CDATA #IMPLIED
+			notType CDATA #IMPLIED
+			byXPath CDATA #REQUIRED
+			xPath CDATA #IMPLIED
+			containsType CDATA #IMPLIED>
+
+		<!ATTLIST assertion-content
+			name CDATA #REQUIRED
+			pattern CDATA #REQUIRED
+			notType CDATA #IMPLIED>
+
+		<!ATTLIST assertion-plugin-content
+			name CDATA #REQUIRED
+			pattern CDATA #REQUIRED
+			byXPath CDATA #REQUIRED
+			xPath CDATA #IMPLIED
+			notType CDATA #IMPLIED>
+
+		<!ATTLIST assertion-size
+			size CDATA #REQUIRED
+			operator CDATA #REQUIRED>
+
+		<!ATTLIST variable-counter
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    starting CDATA #REQUIRED
+		    inc CDATA #REQUIRED
+		    max CDATA #REQUIRED
+		    order CDATA #REQUIRED
+		    whenOutOfValues CDATA #REQUIRED>
+
+		<!ATTLIST variable-date
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+			order CDATA #IMPLIED
+			start-date CDATA #REQUIRED
+		    pattern CDATA #REQUIRED
+		    inc-type CDATA #REQUIRED
+		    inc-value CDATA #REQUIRED
+		    whenOutOfValues CDATA #REQUIRED>
+
+		<!ATTLIST variable-file
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    filename CDATA #REQUIRED
+		    delimiters CDATA #REQUIRED
+		    isRandom CDATA #IMPLIED
+		    order CDATA #REQUIRED
+		    useFirstLine CDATA #IMPLIED
+		    whenOutOfValues CDATA #REQUIRED
+		    offset CDATA #REQUIRED>
+
+		<!ATTLIST variable-sql
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    filename CDATA #REQUIRED
+		    delimiters CDATA #REQUIRED
+		    isRandom CDATA #IMPLIED
+		    order CDATA #REQUIRED
+		    useFirstLine CDATA #IMPLIED
+			query CDATA #REQUIRED
+			whenOutOfValues CDATA #REQUIRED
+			offset CDATA #REQUIRED>
+
+		<!ATTLIST sql-database-connection
+			dbDriver CDATA #REQUIRED
+			dbHost CDATA #REQUIRED
+			dbName CDATA #REQUIRED
+			dbPort CDATA #REQUIRED
+			dbLogin CDATA #REQUIRED
+			dbPassword CDATA #REQUIRED
+			dbProtocol CDATA #REQUIRED
+			manualMode CDATA #IMPLIED
+			manualUrl CDATA #IMPLIED>
+
+		<!ATTLIST variable-list
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    isRandom CDATA #IMPLIED
+		    order CDATA #REQUIRED
+		    whenOutOfValues CDATA #REQUIRED
+		    offset CDATA #REQUIRED
+		    order CDATA #IMPLIED
+		    slaProfileEnabled CDATA #IMPLIED>
+
+		<!ATTLIST variable-random-number
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    min-value CDATA #REQUIRED
+		    max-value CDATA #REQUIRED
+		    whenOutOfValues CDATA #IMPLIED
+		    order CDATA #IMPLIED
+		    random-seed CDATA #IMPLIED>
+
+		<!ATTLIST variable-random-string
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    min-lenght CDATA #REQUIRED
+		    max-lenght CDATA #REQUIRED
+		    whenOutOfValues CDATA #IMPLIED
+		    order CDATA #IMPLIED
+		    random-seed CDATA #IMPLIED>
+
+		<!ATTLIST variable-currentdate
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    policy CDATA #REQUIRED
+			range CDATA #REQUIRED
+		    pattern CDATA #REQUIRED
+		    inc-type CDATA #IMPLIED
+		    inc-value CDATA #IMPLIED
+		    whenOutOfValues CDATA #IMPLIED
+		    order CDATA #IMPLIED>
+
+		<!ATTLIST variable-constant
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+		    constantValue CDATA #REQUIRED
+			range CDATA #REQUIRED
+			policy CDATA #REQUIRED
+			whenOutOfValues CDATA #IMPLIED
+			order CDATA #IMPLIED>
+
+		<!ATTLIST variable-random-uuid
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+		    isUpperCase CDATA #REQUIRED
+			range CDATA #REQUIRED
+			policy CDATA #REQUIRED
+			whenOutOfValues CDATA #IMPLIED
+			order CDATA #IMPLIED
+			random-seed CDATA #IMPLIED>
+
+		<!ATTLIST variable-shared-queue
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+			range CDATA #REQUIRED
+			policy CDATA #REQUIRED
+			queueSize CDATA #REQUIRED
+			consTimeout CDATA #REQUIRED
+			swapActivated CDATA #REQUIRED
+			swapFile CDATA #REQUIRED
+			delimiter CDATA #REQUIRED
+			swapLoadedEnabled CDATA #REQUIRED
+			swapDumpEnabled CDATA #REQUIRED
+			policy CDATA #REQUIRED
+			whenOutOfValues CDATA #IMPLIED
+			order CDATA #IMPLIED>
+
+		<!ATTLIST variable-javascript
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+			range CDATA #REQUIRED
+			policy CDATA #REQUIRED
+			whenOutOfValues CDATA #IMPLIED
+			order CDATA #IMPLIED
+			offset CDATA #REQUIRED>
+
+		<!ATTLIST column
+			name CDATA #REQUIRED
+		    number CDATA #REQUIRED>
+
+		<!ATTLIST script
+			name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    filename CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			ts CDATA #IMPLIED>
+
+		<!ATTLIST threshold
+			uid CDATA #IMPLIED
+		    enabled CDATA #REQUIRED>
+
+	<!ATTLIST sla-threshold
+			uid CDATA #REQUIRED
+			percent CDATA #IMPLIED
+			identifier CDATA #REQUIRED
+			enabled CDATA #REQUIRED
+			family CDATA #REQUIRED>
+
+		<!ATTLIST one-value-condition
+		    severity CDATA #REQUIRED
+		    durationNumber CDATA #REQUIRED
+		    durationKind CDATA #REQUIRED
+		    operator CDATA #REQUIRED
+		    value CDATA #REQUIRED>
+
+		<!ATTLIST two-values-condition
+		    severity CDATA #REQUIRED
+		    durationNumber CDATA #REQUIRED
+		    durationKind CDATA #REQUIRED
+		    operator CDATA #REQUIRED
+		    valueMin CDATA #REQUIRED
+		    valueMax CDATA #REQUIRED>
+
+		<!ATTLIST threshold-condition
+		    severity CDATA #REQUIRED
+		    durationNumber CDATA #REQUIRED
+		    durationKind CDATA #REQUIRED
+		    operator CDATA #REQUIRED
+		    valueMin CDATA #REQUIRED
+		    valueMax CDATA #REQUIRED>
+
+		<!ATTLIST threshold-comment
+		    language CDATA #REQUIRED>
+
+		<!ATTLIST me-host
+		    uid CDATA #REQUIRED
+			loadWeight CDATA #IMPLIED
+	   		version CDATA #REQUIRED
+	   		standalone CDATA #IMPLIED
+	   		cloudLoadGeneratorId CDATA #IMPLIED
+	   		cloudSessionId CDATA #IMPLIED
+	   		supportWANEmulation CDATA #IMPLIED>
+
+		<!ATTLIST monitored-host-system
+		    uid CDATA #REQUIRED
+		    host-name CDATA #IMPLIED
+		    load-generator CDATA #IMPLIED>
+
+		<!ATTLIST monitored-host
+		    uid CDATA #REQUIRED
+		    host-name CDATA #IMPLIED
+		    mehost-name CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-category
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #REQUIRED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-mongodb
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    sslEnabled CDATA #REQUIRED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			path CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+		    interval CDATA #IMPLIED
+		    slow-operations CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-apache
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-name CDATA #REQUIRED
+			url CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-oas-http
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-name CDATA #REQUIRED
+			url CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-mongodb
+		    id CDATA #REQUIRED
+		    database-name CDATA #REQUIRED		    
+		    short-display-name CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			path CDATA #IMPLIED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-apache
+		    name CDATA #REQUIRED		    
+		    short-display-name CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			statistic CDATA #REQUIRED
+			path CDATA #IMPLIED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-oas-http
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			statistic CDATA #REQUIRED
+			path CDATA #IMPLIED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-weblogic
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			sslEnabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-websphere
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-websphere_liberty
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-tomcat
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-tomcat6
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-tomcat7
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-oas
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-jonas
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-weblogic9
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			sslEnabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-weblogic10
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			sslEnabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-weblogic11
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			sslEnabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-jboss
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-jboss6
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-jmx-custom
+			enabled CDATA #IMPLIED
+			uid CDATA #REQUIRED>
+			
+        <!ATTLIST connection-kaazing
+            enabled CDATA #IMPLIED
+            uid CDATA #REQUIRED>
+
+        <!ATTLIST connection-jboss71
+            name CDATA #REQUIRED
+            path CDATA #REQUIRED
+            uid CDATA #REQUIRED
+            connection-type CDATA #IMPLIED
+            interval CDATA #IMPLIED
+            server-address CDATA #REQUIRED
+            server-port CDATA #REQUIRED
+            login CDATA #REQUIRED
+            password CDATA #REQUIRED
+            enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-json
+			name CDATA #REQUIRED
+			uid CDATA #REQUIRED
+			connection-type CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			interval CDATA #IMPLIED
+			server-name CDATA #REQUIRED
+			url CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-java-url
+            name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+		    url CDATA #REQUIRED
+		    login CDATA #REQUIRED
+            password CDATA #REQUIRED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-glassfish
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-netweaver70
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-netweaver71
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-lcds
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			domain CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+        <!ATTLIST monitor-jmx
+            name CDATA #REQUIRED
+            short-display-name CDATA #IMPLIED
+            computing CDATA #REQUIRED
+            sampling CDATA #REQUIRED
+            unit CDATA #REQUIRED
+            category CDATA #IMPLIED
+            monitor CDATA #REQUIRED
+            connection-type CDATA #REQUIRED
+            attribute CDATA #REQUIRED
+            object-name CDATA #REQUIRED
+            monitorType CDATA #IMPLIED
+            path CDATA #IMPLIED
+            jdbc-pool-name CDATA #IMPLIED
+            queue-name CDATA #IMPLIED
+            server-name CDATA #IMPLIED
+            counter CDATA #IMPLIED
+            counter-name CDATA #IMPLIED
+            stat-name CDATA #IMPLIED
+            stat-type CDATA #IMPLIED
+            stat-path CDATA #IMPLIED
+            class CDATA #IMPLIED
+            javaClass CDATA #IMPLIED
+            key CDATA #IMPLIED
+            label CDATA #IMPLIED
+            method CDATA #IMPLIED
+            parameters CDATA #IMPLIED
+            parametersTypes CDATA #IMPLIED
+            format CDATA #IMPLIED
+            callTime CDATA #IMPLIED
+            type CDATA #IMPLIED
+            helpID CDATA #IMPLIED
+            shortId CDATA #IMPLIED
+            threshold CDATA #IMPLIED
+            enabled CDATA #IMPLIED>
+
+        <!ATTLIST monitor-jboss71
+            counter-id CDATA #REQUIRED
+            gui-path CDATA #REQUIRED
+            name CDATA #REQUIRED
+            short-display-name CDATA #IMPLIED
+            computing CDATA #REQUIRED
+            sampling CDATA #REQUIRED
+            unit CDATA #REQUIRED
+            category CDATA #IMPLIED
+            monitor CDATA #REQUIRED
+            connection-type CDATA #REQUIRED
+            attribute CDATA #REQUIRED
+            object-name CDATA #REQUIRED
+            monitorType CDATA #IMPLIED
+            jdbc-pool-name CDATA #IMPLIED
+            queue-name CDATA #IMPLIED
+            server-name CDATA #IMPLIED
+            counter CDATA #IMPLIED
+            counter-name CDATA #IMPLIED
+            stat-name CDATA #IMPLIED
+            stat-type CDATA #IMPLIED
+            stat-path CDATA #IMPLIED
+            class CDATA #IMPLIED
+            javaClass CDATA #IMPLIED
+            key CDATA #IMPLIED
+            label CDATA #IMPLIED
+            method CDATA #IMPLIED
+            parameters CDATA #IMPLIED
+            parametersTypes CDATA #IMPLIED
+            format CDATA #IMPLIED
+            callTime CDATA #IMPLIED
+            type CDATA #IMPLIED
+            helpID CDATA #IMPLIED
+            shortId CDATA #IMPLIED
+            threshold CDATA #IMPLIED
+            enabled CDATA #IMPLIED>
+
+			<!ATTLIST monitor-json
+					counter-id CDATA #REQUIRED
+					gui-path CDATA #REQUIRED
+					name CDATA #REQUIRED
+					short-display-name CDATA #IMPLIED
+					computing CDATA #REQUIRED
+					sampling CDATA #REQUIRED
+					unit CDATA #REQUIRED
+					category CDATA #IMPLIED
+					monitor CDATA #REQUIRED
+					connection-type CDATA #REQUIRED
+					attribute CDATA #REQUIRED
+					object-name CDATA #REQUIRED
+					monitorType CDATA #IMPLIED
+					jdbc-pool-name CDATA #IMPLIED
+					queue-name CDATA #IMPLIED
+					server-name CDATA #IMPLIED
+					counter CDATA #IMPLIED
+					counter-name CDATA #IMPLIED
+					stat-name CDATA #IMPLIED
+					stat-type CDATA #IMPLIED
+					stat-path CDATA #IMPLIED
+					class CDATA #IMPLIED
+					javaClass CDATA #IMPLIED
+					key CDATA #IMPLIED
+					label CDATA #IMPLIED
+					method CDATA #IMPLIED
+					parameters CDATA #IMPLIED
+					parametersTypes CDATA #IMPLIED
+					format CDATA #IMPLIED
+					callTime CDATA #IMPLIED
+					type CDATA #IMPLIED
+					helpID CDATA #IMPLIED
+					shortId CDATA #IMPLIED
+					threshold CDATA #IMPLIED
+					enabled CDATA #IMPLIED>
+
+			<!ATTLIST monitor-value-pattern
+			pattern CDATA #REQUIRED>
+
+		<!ATTLIST monitor-virtual
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			category CDATA #IMPLIED
+			monitor CDATA #REQUIRED
+			connection-type CDATA #REQUIRED
+			attribute CDATA #REQUIRED
+			object-name CDATA #REQUIRED
+			monitorType CDATA #IMPLIED
+			path CDATA #IMPLIED
+			jdbc-pool-name CDATA #IMPLIED
+			queue-name CDATA #IMPLIED
+			server-name CDATA #IMPLIED
+			counter CDATA #IMPLIED
+			counter-name CDATA #IMPLIED
+			stat-name CDATA #IMPLIED
+			stat-path CDATA #IMPLIED
+			class CDATA #IMPLIED
+			javaClass CDATA #IMPLIED
+			key CDATA #IMPLIED
+			label CDATA #IMPLIED
+			method CDATA #IMPLIED
+			parameters CDATA #IMPLIED
+			parametersTypes CDATA #IMPLIED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			type CDATA #IMPLIED
+			helpID CDATA #IMPLIED
+			shortId CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+			operator CDATA #REQUIRED
+			operand-left CDATA #IMPLIED
+			operand-right CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-rstat
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-rstat
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    stat CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+		    
+		<!ATTLIST connection-imported
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-imported
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    stat CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-snmp
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			community CDATA #REQUIRED
+			enabled CDATA #IMPLIED
+			version CDATA #REQUIRED
+			authentication-type CDATA #IMPLIED
+			privacy-type CDATA #IMPLIED
+			privacy-password CDATA #IMPLIED
+			username CDATA #IMPLIED
+			password CDATA #IMPLIED
+			context-name CDATA #IMPLIED
+			context-engine-id CDATA #IMPLIED>
+
+		<!ATTLIST monitor-snmp
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    description CDATA #IMPLIED
+			oid CDATA #REQUIRED
+			oidType CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			mibPath CDATA #IMPLIED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-telnet
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			operatingSystem CDATA #REQUIRED
+			diskCommandOption CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-oracle
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			database CDATA #REQUIRED
+			custom-url CDATA #IMPLIED
+			use-custom-url CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			top-length CDATA #IMPLIED>
+
+		<!ATTLIST monitor-oracle
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    description CDATA #IMPLIED
+			categoryID CDATA #REQUIRED
+			counterID CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-mysql
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			database CDATA #REQUIRED
+			custom-url CDATA #IMPLIED
+			use-custom-url CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-mysql
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    description CDATA #IMPLIED
+			categoryID CDATA #REQUIRED
+			counterID CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-db2
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			database CDATA #REQUIRED
+			custom-url CDATA #IMPLIED
+			use-custom-url CDATA #IMPLIED
+			enabled CDATA #IMPLIED
+			top-length CDATA #IMPLIED>
+
+		<!ATTLIST monitor-db2
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    description CDATA #IMPLIED
+			categoryID CDATA #REQUIRED
+			counterID CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+        <!ATTLIST connection-db2105
+            name CDATA #REQUIRED
+            uid CDATA #REQUIRED
+            connection-type CDATA #IMPLIED
+            interval CDATA #IMPLIED
+            server-address CDATA #REQUIRED
+            server-port CDATA #REQUIRED
+            login CDATA #REQUIRED
+            password CDATA #REQUIRED
+            database CDATA #REQUIRED
+            custom-url CDATA #IMPLIED
+            use-custom-url CDATA #IMPLIED
+            enabled CDATA #IMPLIED
+            top-length CDATA #IMPLIED>
+
+		<!ATTLIST connection-postgre
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			database CDATA #REQUIRED
+			custom-url CDATA #IMPLIED
+			use-custom-url CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+			
+		<!ATTLIST connection-postgre92
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			database CDATA #REQUIRED
+			custom-url CDATA #IMPLIED
+			use-custom-url CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-postgre
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    description CDATA #IMPLIED
+			categoryID CDATA #REQUIRED
+			counterID CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-ssh
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #REQUIRED
+			server-port CDATA #REQUIRED
+			login CDATA #REQUIRED
+			password CDATA #REQUIRED
+			private-key CDATA #IMPLIED
+			cipher CDATA #IMPLIED
+			mac CDATA #IMPLIED
+			authentication CDATA #REQUIRED
+			operatingSystem CDATA #REQUIRED
+			diskCommandOption CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST simple-monitor-telnet
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    category CDATA #REQUIRED
+			monitor CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST disk-monitor-telnet
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    category CDATA #REQUIRED
+			monitor CDATA #REQUIRED
+			device CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST process-monitor-telnet
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    category CDATA #REQUIRED
+			monitor CDATA #REQUIRED
+			process CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST network-monitor-telnet
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    category CDATA #REQUIRED
+			monitor CDATA #REQUIRED
+			iface CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST tcp-monitor-telnet
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    category CDATA #REQUIRED
+			monitor CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-system
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-userload
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-wrapped-statistic
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-win
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-iis
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-sqlserver
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-dotnet
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-win32
+		    name CDATA #REQUIRED		    
+		    short-display-name CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+		    path CDATA #REQUIRED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			virtualCounterID CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST connection-vmware
+		    name CDATA #REQUIRED
+		    uid CDATA #REQUIRED
+		    connection-type CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			server-address CDATA #IMPLIED
+			server-port CDATA #IMPLIED
+			server-name CDATA #REQUIRED
+			url CDATA #REQUIRED
+			username CDATA #REQUIRED
+			password CDATA #REQUIRED
+			enabled CDATA #IMPLIED>
+
+		<!ATTLIST monitor-vmware
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+			counterID CDATA #REQUIRED
+			instance CDATA #IMPLIED
+			entity CDATA #REQUIRED
+			entityClass CDATA #REQUIRED
+			helpID CDATA #REQUIRED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST virtual-monitor-vmware
+		    name CDATA #REQUIRED
+		    short-display-name CDATA #IMPLIED
+		    interval CDATA #IMPLIED
+			computing CDATA #REQUIRED
+			sampling CDATA #REQUIRED
+			unit CDATA #REQUIRED
+			format CDATA #IMPLIED
+			callTime CDATA #IMPLIED
+			threshold CDATA #IMPLIED
+			counterID CDATA #REQUIRED
+			instance CDATA #IMPLIED
+			entity CDATA #REQUIRED
+			entityClass CDATA #REQUIRED
+			helpID CDATA #REQUIRED
+			operandA CDATA #REQUIRED
+			operandB CDATA #REQUIRED
+			operandIdA CDATA #REQUIRED
+			operandIdB CDATA #REQUIRED
+			operator CDATA #REQUIRED
+		    enabled CDATA #IMPLIED>
+
+		<!ATTLIST multipart-string
+		    name CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    charSet CDATA #IMPLIED
+		    transferEncoding CDATA #IMPLIED
+		    value CDATA #IMPLIED
+		    valueMode CDATA #IMPLIED
+		    recordRawValue CDATA #IMPLIED
+			extractVariable CDATA #IMPLIED>
+
+		<!ATTLIST multipart-file
+		    name CDATA #REQUIRED
+		    contentType CDATA #IMPLIED
+		    charSet CDATA #IMPLIED
+		    transferEncoding CDATA #IMPLIED
+		    filename CDATA #IMPLIED
+		    attachedFilename CDATA #IMPLIED
+		    extractVariable CDATA #IMPLIED>
+
+		<!ATTLIST multipart-mimefile
+		    name CDATA #IMPLIED
+		    contentType CDATA #IMPLIED
+		    charSet CDATA #IMPLIED
+		    contentID CDATA #IMPLIED
+		    transferEncoding CDATA #IMPLIED
+		    filename CDATA #IMPLIED
+		    attachedFilename CDATA #IMPLIED
+		>
+
+		<!ATTLIST parameter
+		    name CDATA #REQUIRED
+		    value CDATA #REQUIRED
+		    valueMode CDATA #IMPLIED
+		    recordRawValue CDATA #IMPLIED
+			separator CDATA #IMPLIED
+		    encodeName CDATA #IMPLIED
+		    encodeValue CDATA #IMPLIED
+			extractVariable CDATA #IMPLIED>
+
+		<!ATTLIST urlPostParameter
+		    name CDATA #REQUIRED
+		    value CDATA #REQUIRED
+		    valueMode CDATA #IMPLIED
+		    recordRawValue CDATA #IMPLIED
+			separator CDATA #IMPLIED
+		    encodeName CDATA #IMPLIED
+		    encodeValue CDATA #IMPLIED
+			extractVariable CDATA #IMPLIED>
+			
+		<!ATTLIST custom-action-parameter
+		    name CDATA #REQUIRED
+		    value CDATA #REQUIRED
+		    type CDATA #REQUIRED>
+
+		<!ATTLIST conditions
+		    match-type CDATA #REQUIRED>
+
+		<!ATTLIST condition
+		    operand1 CDATA #REQUIRED
+			operand2 CDATA #REQUIRED
+			operator CDATA #REQUIRED>
+
+		<!ATTLIST soap-method
+		    name CDATA #REQUIRED
+		    port CDATA #REQUIRED
+		    location CDATA #IMPLIED
+		    operationStyle CDATA #REQUIRED
+		    use CDATA #IMPLIED
+		    soapActionURI CDATA #IMPLIED
+		    useWrappedStyle CDATA #IMPLIED
+		    attachmentEncapsulationFormat CDATA #IMPLIED
+		    version CDATA #IMPLIED>
+
+		<!ATTLIST soap-header
+		    mustUnderstand CDATA #IMPLIED
+		    actor CDATA #IMPLIED>
+
+		<!ATTLIST header
+		    name CDATA #REQUIRED
+		    value CDATA #REQUIRED>
+
+		<!ATTLIST soap-paramValue
+				kind CDATA #REQUIRED
+				name CDATA #IMPLIED
+				digesterKind CDATA #REQUIRED
+				namespace CDATA #IMPLIED
+				type CDATA #IMPLIED
+				minOccurs CDATA #IMPLIED
+				maxOccurs CDATA #IMPLIED
+				maxOccursUnbounded CDATA #IMPLIED
+
+				arrayType CDATA #IMPLIED
+
+				value CDATA #IMPLIED
+				encode CDATA #IMPLIED
+				dataType CDATA #IMPLIED
+				empty CDATA #IMPLIED
+
+				binaryMode CDATA #IMPLIED
+				inlineEncoding CDATA #IMPLIED
+				contentType CDATA #IMPLIED
+				contentLocation CDATA #IMPLIED
+				filename CDATA #IMPLIED
+		>
+
+		<!ATTLIST restriction-facet
+				name CDATA #REQUIRED
+				value CDATA #IMPLIED
+		>
+
+		<!ATTLIST soap-attribute
+				name CDATA #REQUIRED
+				digesterKind CDATA #REQUIRED
+				required CDATA #IMPLIED
+				value CDATA #IMPLIED
+				encode CDATA #IMPLIED
+				dataType CDATA #IMPLIED
+		>
+
+		<!ATTLIST charts-templates-description
+				name CDATA #REQUIRED>
+		<!ATTLIST dashboards
+			defaultDashboardUid CDATA #REQUIRED>
+		<!ATTLIST charts-model-description
+			name CDATA #IMPLIED>
+		<!ATTLIST chart-description
+			title CDATA #IMPLIED
+			description CDATA #IMPLIED
+			chart-description-type CDATA #REQUIRED
+			domainMarkerVisible CDATA #REQUIRED
+			rangeMarkerVisible CDATA #REQUIRED
+			customID CDATA #IMPLIED
+			typeName CDATA #IMPLIED
+			includeInReport CDATA #IMPLIED
+			xAxisMonitorName CDATA #IMPLIED
+			xAxisConnectionName CDATA #IMPLIED
+			xAxisMonitoredHostName CDATA #IMPLIED
+			timeOrigin CDATA #IMPLIED>
+		
+		<!ATTLIST empty-chart-description>
+		<!ATTLIST monitor-curve-description
+			benchUid CDATA #IMPLIED
+			color CDATA #REQUIRED
+			dashed CDATA #REQUIRED
+			scale CDATA #IMPLIED
+			selected CDATA #REQUIRED
+			monitoredHostName CDATA #REQUIRED
+			connectionName CDATA #REQUIRED
+			monitorName CDATA #REQUIRED>
+
+		<!ATTLIST action-curve-description
+			benchUid CDATA #IMPLIED
+			color CDATA #REQUIRED
+			dashed CDATA #REQUIRED
+			scale CDATA #IMPLIED
+			selected CDATA #REQUIRED
+			actionUid CDATA #IMPLIED
+			statisticName CDATA #REQUIRED
+			populationName CDATA #REQUIRED
+			virtualUserUid CDATA #IMPLIED
+			zoneName CDATA #REQUIRED>
+
+        <!ATTLIST third-party-data-curve-description
+            benchUid CDATA #IMPLIED
+            color CDATA #REQUIRED
+            dashed CDATA #REQUIRED
+            scale CDATA #IMPLIED
+            selected CDATA #REQUIRED
+            hw CDATA #IMPLIED
+            loc CDATA #IMPLIED
+            path CDATA #REQUIRED
+            script CDATA #IMPLIED
+            soft CDATA #IMPLIED
+            unit CDATA #REQUIRED>
+
+		<!ATTLIST zones
+		    defaultZoneUid CDATA #REQUIRED>
+
+		<!ATTLIST zone
+			uid CDATA #REQUIRED
+			proxyType CDATA #IMPLIED>
+
+		<!ATTLIST lg-host
+		    uid CDATA #REQUIRED
+	   		loadWeight CDATA #IMPLIED
+	   		hostname CDATA #REQUIRED
+	   		version CDATA #REQUIRED
+	   		standalone CDATA #IMPLIED
+	   		supportWANEmulation CDATA #IMPLIED
+	   		cloudLoadGeneratorId CDATA #IMPLIED
+	   		cloudSessionId CDATA #IMPLIED>
+
+	   	<!ATTLIST networkiface
+	   		value CDATA #REQUIRED>
+
+	   	<!ATTLIST lg-networkiface
+	   		name CDATA #REQUIRED
+	   		description CDATA #IMPLIED
+	   		isLoopBack CDATA #IMPLIED
+	   		enabled CDATA #IMPLIED>
+
+		<!ATTLIST lg-address
+	   		hostname CDATA #IMPLIED
+	   		enabled CDATA #IMPLIED>
+
+	   	<!ATTLIST ip
+	   		value CDATA #REQUIRED>
+
+	   	<!ATTLIST proxy-config
+	   		cache CDATA #REQUIRED
+			autoDiscover CDATA #REQUIRED
+			autoConfig CDATA #REQUIRED
+			autoConfigScript CDATA #IMPLIED
+			manualConfig CDATA #REQUIRED
+			httpHost CDATA #IMPLIED
+			httpPort CDATA #IMPLIED
+			httpsHost CDATA #IMPLIED
+			httpsPort CDATA #IMPLIED
+			ftpHost CDATA #IMPLIED
+			ftpPort CDATA #IMPLIED
+			exclustionList CDATA #IMPLIED
+			login CDATA #IMPLIED
+			password CDATA #IMPLIED>
+
+		<!ATTLIST cloud-model>
+
+		<!ATTLIST cloud-workgroup
+	   		id CDATA #REQUIRED
+	   		name CDATA #IMPLIED>
+
+	   	<!ATTLIST cloud-session
+	   		id CDATA #REQUIRED
+	   		name CDATA #REQUIRED
+	   		workgroupId CDATA #REQUIRED
+	   		owner CDATA #REQUIRED
+	   		nlPatchVersion CDATA #REQUIRED
+	   		nlBuildNumber CDATA #REQUIRED
+	   		startDate CDATA #IMPLIED
+	   		availabilityDate CDATA #IMPLIED
+	   		endDate CDATA #IMPLIED
+	   		architecture CDATA #REQUIRED
+	   		cost CDATA #IMPLIED
+	   		status CDATA #IMPLIED>
+
+	   	<!ATTLIST cloud-lg
+	   		id CDATA #REQUIRED
+	   		sessionId CDATA #REQUIRED
+	   		zoneName CDATA #REQUIRED
+	   		createDate CDATA #IMPLIED
+	   		runningDate CDATA #IMPLIED
+	   		endDate CDATA #IMPLIED
+	   		publicIPAddress CDATA #IMPLIED
+	   		status CDATA #IMPLIED>
+
+	   	<!ATTLIST cloud-timezone
+	   		id CDATA #REQUIRED
+	   		shortName CDATA #REQUIRED
+	   		mediumName CDATA #REQUIRED
+	   		longName CDATA #REQUIRED>
+
+]>
+
+
+<repository>
+<!--****** VIRTUAL USERS ******-->
+<!--****** POPULATIONS ******-->
+<!--****** END POPULATIONS ******-->
+<!--****** SERVERS ******-->
+<!--****** END SERVERS ******-->
+<!--****** VARIABLES ******-->
+<!--****** END VARIABLES ******-->
+<!--****** MONITORED HOSTS ******-->
+<monitored-host-system host-name="" load-generator="false" uid="NeoLoad">
+    <embedded-action>e5fbacca-b953-438e-896c-bbf3a9e3b0f3</embedded-action>
+</monitored-host-system>
+<!--****** END MONITORED HOSTS ******-->
+<!--****** MONITOR CONNECTIONS ******-->
+<connection-system interval="1000" name="NeoLoad" server-port="0" uid="e5fbacca-b953-438e-896c-bbf3a9e3b0f3">
+    <monitor-category name="Default" short-display-name="Default">
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="UserLoad" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="throughput" sampling="0" unit="Mb/s"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="Alerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="CriticalAlerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="WarningAlerts" sampling="0" unit=""/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="cpu" sampling="0"
+            threshold="d63070fa-2a3b-40df-9734-2f5952e3be2e" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="memory" sampling="0"
+            threshold="53def95a-3615-493a-8b1a-6eb14daca770" unit="%"/>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="threadcount" sampling="0" unit=""/>
+        <monitor-category name="Load Generator Connections" short-display-name="Load Generator Connections">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="connectedlg" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="totallgdisconnections"
+                sampling="0"
+                threshold="eed7299b-7b3a-4976-993b-c8e7c9d35663" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="totallgreconnections" sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-category name="Network" short-display-name="Network">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="otcp.NeoLoad" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="tcp.NeoLoad" sampling="0" unit=""/>
+            <monitor-category name="wlp2s0 (wlp2s0)" short-display-name="wlp2s0 (wlp2s0)">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="ibytesperinterface~NeoLoad~wlp2s0"
+                    sampling="0" unit="Mb/s"/>
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="obytesperinterface~NeoLoad~wlp2s0"
+                    sampling="0" unit="Mb/s"/>
+            </monitor-category>
+            <monitor-category name="enp0s31f6 (enp0s31f6)" short-display-name="enp0s31f6 (enp0s31f6)">
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="ibytesperinterface~NeoLoad~enp0s31f6"
+                    sampling="0" unit="Mb/s"/>
+                <monitor-wrapped-statistic callTime="ON_BENCH"
+                    computing="0" format="NUMBER"
+                    name="obytesperinterface~NeoLoad~enp0s31f6"
+                    sampling="0" unit="Mb/s"/>
+            </monitor-category>
+        </monitor-category>
+        <monitor-category name="NeoLoad Web" short-display-name="NeoLoad Web">
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="nlwebdownload" sampling="0" unit=""/>
+            <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+                format="NUMBER" name="nlwebupload" sampling="0" unit=""/>
+        </monitor-category>
+        <monitor-wrapped-statistic callTime="ON_BENCH" computing="0"
+            format="NUMBER" name="SapUserLoad" sampling="0" unit=""/>
+    </monitor-category>
+    <threshold enabled="true" uid="d63070fa-2a3b-40df-9734-2f5952e3be2e">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="fr">
+                <threshold-content>CPU du Contrï¿½leur surchargï¿½.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="en">
+                <threshold-content>Controller CPU high.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="fr">
+                <threshold-content>CPU du Contrï¿½leur surchargï¿½.</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="en">
+                <threshold-content>Controller CPU high.</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="53def95a-3615-493a-8b1a-6eb14daca770">
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="LOW" valueMax="Infinity" valueMin="80.0">
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+        <threshold-condition durationKind="SECONDS" durationNumber="15"
+            operator="GREATER_THAN" severity="HIGH" valueMax="Infinity" valueMin="90.0">
+            <threshold-comment language="fr">
+                <threshold-content>Quantitï¿½ de mï¿½moire en cours d'utilisation ï¿½levï¿½e</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="en">
+                <threshold-content>Too high amount of memory used</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+    <threshold enabled="true" uid="eed7299b-7b3a-4976-993b-c8e7c9d35663">
+        <threshold-condition durationKind="NB_OF_TIMES"
+            durationNumber="1" operator="GREATER_THAN" severity="LOW"
+            valueMax="Infinity" valueMin="1.0">
+            <threshold-comment language="fr">
+                <threshold-content>Injecteur  dï¿½connectï¿½ &gt;= 1</threshold-content>
+            </threshold-comment>
+            <threshold-comment language="en">
+                <threshold-content>Load Generator Diconnected &gt;=1</threshold-content>
+            </threshold-comment>
+        </threshold-condition>
+    </threshold>
+</connection-system>
+<!--****** END MONITOR CONNECTIONS ******-->
+<!--****** MONITORENGINE HOSTS ******-->
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="fe80:0:0:0:296a:e0:e047:235f%3" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="jakob.intranet.neotys.com" version="6.11.0;build=20190618-2639">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) 82574L Gigabit Network Connection"
+        enabled="false" isLoopBack="false" name="eth1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="jakob.intranet.neotys.com">
+            <ip value="10.0.3.27"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:1c9b:6361:e8df:9d4a%eth1">
+            <ip value="fe80:0:0:0:1c9b:6361:e8df:9d4a%eth1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="fe80:0:0:0:8989:e03b:82c9:983e%2" version="7.0.2;build=20190924-58">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Intel(R) Wireless-AC 9560 160MHz"
+        enabled="false" isLoopBack="false" name="wlan1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc094.intranet.neotys.com">
+            <ip value="10.0.4.59"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:8989:e03b:82c9:983e%wlan1">
+            <ip value="fe80:0:0:0:8989:e03b:82c9:983e%wlan1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Microsoft Wi-Fi Direct Virtual Adapter"
+        enabled="false" isLoopBack="false" name="wlan0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:55f4:45f0:3ee7:1703%wlan0">
+            <ip value="fe80:0:0:0:55f4:45f0:3ee7:1703%wlan0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (6) I219-LM"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:f933:5a73:b711:aad0%eth6">
+            <ip value="fe80:0:0:0:f933:5a73:b711:aad0%eth6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Bluetooth Device (Personal Area Network)"
+        enabled="false" isLoopBack="false" name="eth0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:6d06:6673:b95f:2937%eth0">
+            <ip value="fe80:0:0:0:6d06:6673:b95f:2937%eth0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="net6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:7cd3:f8fa:729c:4039%net6">
+            <ip value="fe80:0:0:0:7cd3:f8fa:729c:4039%net6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="fe80:0:0:0:3156:db4c:bcd6:6e8d%2" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="10.0.4.160" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="mlasram.intranet.neotys.com" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="pc039.intranet.neotys.com" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="pc012.intranet.neotys.com" version="7.2.0;build=20191128-3026">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc012.intranet.neotys.com">
+            <ip value="10.0.75.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (2) I219-LM"
+        enabled="false" isLoopBack="false" name="eth2">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.91"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:b8b5:d4f1:a167:aec0%eth2">
+            <ip value="fe80:0:0:0:b8b5:d4f1:a167:aec0%eth2"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="localhost" version="7.0.2;build=20190924-58">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="wlp2s0" enabled="false"
+        isLoopBack="false" name="wlp2s0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.4.144">
+            <ip value="10.0.4.144"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0">
+            <ip value="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo" enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1%lo">
+            <ip value="0:0:0:0:0:0:0:1%lo"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="enp0s31f6" enabled="false"
+        isLoopBack="false" name="enp0s31f6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc014.intranet.neotys.com">
+            <ip value="10.0.5.35"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6">
+            <ip value="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="pc010.intranet.neotys.com" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth5">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="10.8.0.6"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:b026:b485:c58:1d3%eth5">
+            <ip value="fe80:0:0:0:b026:b485:c58:1d3%eth5"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth4">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.108"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:21f1:59ae:e160:e041%eth4">
+            <ip value="fe80:0:0:0:21f1:59ae:e160:e041%eth4"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #4"
+        enabled="false" isLoopBack="false" name="eth1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="172.18.16.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:3123:2a0e:145e:a874%eth1">
+            <ip value="fe80:0:0:0:3123:2a0e:145e:a874%eth1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter"
+        enabled="false" isLoopBack="false" name="eth11">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="10.0.75.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="naxas.intranet.neotys.com" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="fe80:0:0:0:1945:d3c6:a329:6158%3" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="enp0s25" enabled="false"
+        isLoopBack="false" name="enp0s25">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.5.12">
+            <ip value="10.0.5.12"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:1945:d3c6:a329:6158%enp0s25">
+            <ip value="fe80:0:0:0:1945:d3c6:a329:6158%enp0s25"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo" enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1%lo">
+            <ip value="0:0:0:0:0:0:0:1%lo"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="haddock-l.intranet.neotys.com" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Broadcom NetXtreme 57xx Gigabit Controller"
+        enabled="false" isLoopBack="false" name="eth3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="haddock-l.intranet.neotys.com">
+            <ip value="10.0.5.10"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3">
+            <ip value="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="10.0.4.177" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="en3" enabled="false"
+        isLoopBack="false" name="en3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:aede:48ff:fe00:1122%en3">
+            <ip value="fe80:0:0:0:aede:48ff:fe00:1122%en3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo0" enabled="false" isLoopBack="true" name="lo0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:0:0:0:1%lo0">
+            <ip value="fe80:0:0:0:0:0:0:1%lo0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="en5" enabled="false"
+        isLoopBack="false" name="en5">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.4.177">
+            <ip value="10.0.4.177"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:460:9b42:1f1:a020%en5">
+            <ip value="fe80:0:0:0:460:9b42:1f1:a020%en5"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="fe80:0:0:0:e046:993:8fde:15be%2" version="7.2.0;build=20191202-2">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (7) I219-LM"
+        enabled="false" isLoopBack="false" name="eth7">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.101"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:e046:993:8fde:15be%eth7">
+            <ip value="fe80:0:0:0:e046:993:8fde:15be%eth7"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc075.intranet.neotys.com">
+            <ip value="192.168.0.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth2">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc075.intranet.neotys.com">
+            <ip value="10.8.0.74"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:acd5:5dad:8e2:5c60%eth2">
+            <ip value="fe80:0:0:0:acd5:5dad:8e2:5c60%eth2"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>
+<me-host loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="false" uid="itbackup01.intranet.neotys.com" version="5.4.0;build=20170210-13">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>
+<!--****** END MONITORENGINE HOSTS ******-->
+<!--****** DASHBOARDS  ******-->
+<!--****** END DASHBOARDS  ******-->
+<!--****** RESULTS GRAPH DESC TEMPLATES ******-->
+<charts-templates-description name="template.customs"/>
+<!--****** END RESULTS GRAPH DESC TEMPLATES******-->
+<!--****** ZONES ******-->
+<zones defaultZoneUid="Default zone" dnsOverrideEnabled="false" dnsTtl="30"/>
+<zone dnsOverrideEnabled="false" proxyType="COMMON"
+    proxyTypeLg="NO_PROXY" uid="Default zone">
+    <embedded-action>844ccefa-a1ee-4944-975a-cf0b5b43c9f7</embedded-action>
+    <embedded-action>7794965b-9bab-4387-aade-0615ed5ec3d2</embedded-action>
+    <embedded-action>dafbf0a0-d7db-4f9d-a484-e62a698a5987</embedded-action>
+    <embedded-action>a8e05a72-8c54-4098-916d-a78846d3bb58</embedded-action>
+    <embedded-action>02b794c5-48a5-4d5f-9703-61b374c66822</embedded-action>
+    <embedded-action>88dbfd38-1a70-42c1-89e2-2996c15423a2</embedded-action>
+    <embedded-action>c12ce5fe-52df-40ff-8b0b-278e40fb9b36</embedded-action>
+    <embedded-action>908384bd-a85f-4698-870b-d15e5038860d</embedded-action>
+    <embedded-action>0cb9eda3-91c9-4f2d-80be-ae525f07b183</embedded-action>
+    <embedded-action>885054f2-38a7-4009-a6ac-eebbc6dddde4</embedded-action>
+    <embedded-action>f0e4b7a4-2fb8-46a6-a6a7-bd091e54edd6</embedded-action>
+    <embedded-action>c8091535-b8a6-4ed8-bb88-0c2f94eb5d3e</embedded-action>
+    <embedded-action>bb95f0b8-c250-4eb9-a255-3c5dbe7bfe85</embedded-action>
+</zone>
+<lg-host hostname="localhost:7100" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="844ccefa-a1ee-4944-975a-cf0b5b43c9f7" version="7.0.2;build=20190924-58">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="wlp2s0" enabled="false"
+        isLoopBack="false" name="wlp2s0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.4.144">
+            <ip value="10.0.4.144"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0">
+            <ip value="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo" enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1%lo">
+            <ip value="0:0:0:0:0:0:0:1%lo"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="enp0s31f6" enabled="false"
+        isLoopBack="false" name="enp0s31f6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc014.intranet.neotys.com">
+            <ip value="10.0.5.35"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6">
+            <ip value="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="mlasram.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="7794965b-9bab-4387-aade-0615ed5ec3d2" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+<lg-host hostname="jakob.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="true"
+    uid="dafbf0a0-d7db-4f9d-a484-e62a698a5987" version="6.11.0;build=20190618-2639">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) 82574L Gigabit Network Connection"
+        enabled="false" isLoopBack="false" name="eth1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="jakob.intranet.neotys.com">
+            <ip value="10.0.3.27"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:1c9b:6361:e8df:9d4a%eth1">
+            <ip value="fe80:0:0:0:1c9b:6361:e8df:9d4a%eth1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="shiva.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="a8e05a72-8c54-4098-916d-a78846d3bb58" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+<lg-host hostname="10.0.4.148:7100" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="02b794c5-48a5-4d5f-9703-61b374c66822" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+<lg-host hostname="pc012.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="true"
+    uid="88dbfd38-1a70-42c1-89e2-2996c15423a2" version="7.2.0;build=20191128-3026">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc012.intranet.neotys.com">
+            <ip value="10.0.75.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (2) I219-LM"
+        enabled="false" isLoopBack="false" name="eth2">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.91"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:b8b5:d4f1:a167:aec0%eth2">
+            <ip value="fe80:0:0:0:b8b5:d4f1:a167:aec0%eth2"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="haddock-l.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="c12ce5fe-52df-40ff-8b0b-278e40fb9b36" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Broadcom NetXtreme 57xx Gigabit Controller"
+        enabled="false" isLoopBack="false" name="eth3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="haddock-l.intranet.neotys.com">
+            <ip value="10.0.5.10"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3">
+            <ip value="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="pc094.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="908384bd-a85f-4698-870b-d15e5038860d" version="7.0.2;build=20190924-58">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="net6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:7cd3:f8fa:729c:4039%net6">
+            <ip value="fe80:0:0:0:7cd3:f8fa:729c:4039%net6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Intel(R) Wireless-AC 9560 160MHz"
+        enabled="false" isLoopBack="false" name="wlan1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc094.intranet.neotys.com">
+            <ip value="10.0.4.59"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:8989:e03b:82c9:983e%wlan1">
+            <ip value="fe80:0:0:0:8989:e03b:82c9:983e%wlan1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Microsoft Wi-Fi Direct Virtual Adapter"
+        enabled="false" isLoopBack="false" name="wlan0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:55f4:45f0:3ee7:1703%wlan0">
+            <ip value="fe80:0:0:0:55f4:45f0:3ee7:1703%wlan0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (6) I219-LM"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:f933:5a73:b711:aad0%eth6">
+            <ip value="fe80:0:0:0:f933:5a73:b711:aad0%eth6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Bluetooth Device (Personal Area Network)"
+        enabled="false" isLoopBack="false" name="eth0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:6d06:6673:b95f:2937%eth0">
+            <ip value="fe80:0:0:0:6d06:6673:b95f:2937%eth0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="naxas.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="true"
+    uid="0cb9eda3-91c9-4f2d-80be-ae525f07b183" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+<lg-host hostname="pc039.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="true"
+    uid="885054f2-38a7-4009-a6ac-eebbc6dddde4" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+<lg-host hostname="10.0.4.177:7100" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="f0e4b7a4-2fb8-46a6-a6a7-bd091e54edd6" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="en3" enabled="false"
+        isLoopBack="false" name="en3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:aede:48ff:fe00:1122%en3">
+            <ip value="fe80:0:0:0:aede:48ff:fe00:1122%en3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo0" enabled="false" isLoopBack="true" name="lo0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:0:0:0:1%lo0">
+            <ip value="fe80:0:0:0:0:0:0:1%lo0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="en5" enabled="false"
+        isLoopBack="false" name="en5">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.4.177">
+            <ip value="10.0.4.177"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:460:9b42:1f1:a020%en5">
+            <ip value="fe80:0:0:0:460:9b42:1f1:a020%en5"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="pc010.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="true" standalone="false" supportWANEmulation="false"
+    uid="c8091535-b8a6-4ed8-bb88-0c2f94eb5d3e" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth5">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="10.8.0.6"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:b026:b485:c58:1d3%eth5">
+            <ip value="fe80:0:0:0:b026:b485:c58:1d3%eth5"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth4">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.108"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:21f1:59ae:e160:e041%eth4">
+            <ip value="fe80:0:0:0:21f1:59ae:e160:e041%eth4"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #4"
+        enabled="false" isLoopBack="false" name="eth1">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="172.18.16.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:3123:2a0e:145e:a874%eth1">
+            <ip value="fe80:0:0:0:3123:2a0e:145e:a874%eth1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter"
+        enabled="false" isLoopBack="false" name="eth11">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc010.intranet.neotys.com">
+            <ip value="10.0.75.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>
+<lg-host hostname="10.0.4.160:7100" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="bb95f0b8-c250-4eb9-a255-3c5dbe7bfe85" version="7.2.0 dev;build=branchHead-DEV">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
+</repository>

@@ -1,0 +1,53 @@
+<http-page executeResourcesDynamically="false"
+    name="/rating/ratings.php_1" playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@home @page/%resources%/recorded-artifacts/1e628b7f-66d4-4be8-ad8a-21014d7f243c.zip"
+    slaProfileEnabled="false" thinkTime="12"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="1e628b7f-66d4-4be8-ad8a-21014d7f243c">
+    <embedded-action>d977015c-c43a-4ec6-b9dd-62cfd15f9ebe</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_6f969f98-98bc-4dcc-81b3-84a64db678b3.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="POST" name="/rating/ratings.php" path="/rating/ratings.php"
+    postCharset="UTF-8" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@home @page/%resources%/recorded-artifacts/1e628b7f-66d4-4be8-ad8a-21014d7f243c.zip"
+    recordedResponseCode="200" responseSize="47"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="d977015c-c43a-4ec6-b9dd-62cfd15f9ebe" useKeepAlive="false">
+    <binaryPostContentBase64><![CDATA[am91cm5leV9pZD0ke2pvdXJuZXlfaWR9JmluZm89MQ==]]></binaryPostContentBase64>
+    <responsePageFileDescription>recorded-responses/res_7063c9a2-d71e-4c21-9f8b-d853196901de.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_7063c9a2-d71e-4c21-9f8b-d853196901de.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="journey_id"
+        recordRawValue="2530" separator="=" value="${journey_id}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="info"
+        recordRawValue="1" separator="=" value="1" valueMode="USE_VALUE"/>
+    <header name="Accept" value="application/json, text/javascript, */*; q=0.01"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-Type" value="application/x-www-form-urlencoded; charset=UTF-8"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h1vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506960979380|1506959179370; dtSa=-; dtLatC=12"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <header name="X-Requested-With" value="XMLHttpRequest"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:13 GMT&#xd;
+Server: Apache/2.2.17 (Unix) PHP/5.3.17&#xd;
+X-Powered-By: PHP/5.3.17&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-ruxit-JS-Agent: true&#xd;
+Access-Control-Allow-Origin: *&#xd;
+Content-Length: 47&#xd;
+Content-Type: text/html&#xd;
+X-Varnish: 768904454&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

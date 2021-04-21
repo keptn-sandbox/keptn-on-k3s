@@ -1,0 +1,43 @@
+populations:
+  - name: SimpleCheck
+    user_paths:
+      - name: SimpleCheck
+        distribution: 100%
+  - name: Simpleload
+    user_paths:
+      - name: SimpleLoad
+        distribution: 100%
+scenarios:
+  - name: Simpleload_light
+    populations:
+      - name: Simpleload
+        constant_load:
+          users: 10
+          duration: 3m
+    apm_configuration:
+      dynatrace_tags:
+        - "keptn_project:REPLACE_KEPTN_PROJECT"
+        - "keptn_service:REPLACE_KEPTN_SERVICE"
+        - "keptn_stage:functional"
+      dynatrace_anomaly_rules:
+        - metric_id: builtin:service.responsetime
+          operator: ABOVE
+          value: 100
+          severity: PERFORMANCE
+  - name: Simpleload
+    populations:
+      - name: Simpleload
+        constant_load:
+          users: 50
+          duration: 5m
+          rampup: 30s
+    apm_configuration:
+      dynatrace_tags:
+        - "keptn_project:REPLACE_KEPTN_PROJECT"
+        - "keptn_service:REPLACE_KEPTN_SERVICE"
+        - "keptn_stage:performance"
+      dynatrace_anomaly_rules:
+        - metric_id: builtin:service.responsetime
+          operator: ABOVE
+          value: 100
+          severity: PERFORMANCE

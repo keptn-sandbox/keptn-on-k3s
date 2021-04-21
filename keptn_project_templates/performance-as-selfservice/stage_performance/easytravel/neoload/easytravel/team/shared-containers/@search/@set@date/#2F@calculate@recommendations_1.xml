@@ -1,0 +1,238 @@
+<http-page executeResourcesDynamically="false"
+    name="/CalculateRecommendations_1" playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/b23ebdd0-b2fe-41bc-b278-a50677ac3469.zip"
+    slaProfileEnabled="false" thinkTime="484"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="b23ebdd0-b2fe-41bc-b278-a50677ac3469">
+    <embedded-action>254d762c-b478-408c-9fd1-b5dc60bb9777</embedded-action>
+    <embedded-action>5872b72b-531f-4b82-850e-45194326cab7</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_65ce6cfa-c0fa-428a-af43-a48b16aac960.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/CalculateRecommendations"
+    path="/CalculateRecommendations" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/b23ebdd0-b2fe-41bc-b278-a50677ac3469.zip"
+    recordedResponseCode="200" responseSize="1935"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="254d762c-b478-408c-9fd1-b5dc60bb9777" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_68f19adc-17ba-416b-b4c5-eacd2981fb77.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_68f19adc-17ba-416b-b4c5-eacd2981fb77.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="_"
+        recordRawValue="1506959221932" separator="=" value="${TS}" valueMode="USE_VALUE"/>
+    <header name="Accept" value="text/html, */*; q=0.01"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-Type" value="application/x-www-form-urlencoded; charset=UTF-8"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h21vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961021937|1506959179370; dtSa=-; dtLatC=1; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <header name="X-Requested-With" value="XMLHttpRequest"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:53 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: text/html;charset=UTF-8&#xd;
+X-Varnish: 768716804&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Content-Length: 1935&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="text/xml;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="POST" name="/orange.jsf" path="/orange.jsf"
+    postCharset="iso-8859-1" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/b23ebdd0-b2fe-41bc-b278-a50677ac3469.zip"
+    recordedResponseCode="200" responseSize="58868"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="5872b72b-531f-4b82-850e-45194326cab7" useKeepAlive="false">
+    <binaryPostContentBase64><![CDATA[aWNlZm9ybT1pY2Vmb3JtJmphdmF4LmZhY2VzLlZpZXdTdGF0ZT0tODE1MTgwMjg4NzAwMzI3Mzk3NCUzQTY5MDU0NDU0MDc2NjU4Nzc3OTAmaWNlLndpbmRvdz0ke2ljZV93aW5kb3d9JmljZS52aWV3PSR7aWNlX3ZpZXdfMX0maWNlZm9ybSUzQXRyYXZlbGxlcnM9NCZpY2Vmb3JtJTNBZGVzdGluYXRpb249QmFuZ2Fsb3JlJmljZWZvcm0lM0FkZXN0aW5hdGlvbl9pZHg9JmljZWZvcm0lM0Fmcm9tRGF0ZT1Ob3YlMjAxOSUyQyUyMDIwMTcmaWNlZm9ybSUzQXRvRGF0ZT1Ob3YlMjAzMCUyQyUyMDIwMTcmaWNlZmFjZXNDc3NVcGRhdGVzPSZpY2Vmb3JtJTNBZnJvbURhdGVfY2M9JmljZWZvcm0lM0FqX2lkY2w9JmljZWZvcm0lM0FqX2lkaWNlZm9ybSUzQXRvRGF0ZXNwPSZpY2Vmb3JtJTNBdG9EYXRlX2NjPSZpY2Vmb3JtJTNBal9pZGljZWZvcm0lM0Fmcm9tRGF0ZXNwPSZqYXZheC5mYWNlcy5zb3VyY2U9aWNlZm9ybSUzQXNlYXJjaCZqYXZheC5mYWNlcy5wYXJ0aWFsLmV2ZW50PWNsaWNrJmphdmF4LmZhY2VzLnBhcnRpYWwuZXhlY3V0ZT0lNDBhbGwmamF2YXguZmFjZXMucGFydGlhbC5yZW5kZXI9JTQwYWxsJmljZS53aW5kb3c9JHtpY2Vfd2luZG93fSZpY2Uudmlldz0ke2ljZV92aWV3XzF9JmljZS5mb2N1cz1pY2Vmb3JtJTNBc2VhcmNoJmljZWZvcm0lM0FzZWFyY2g9U2VhcmNoJmljZS5ldmVudC50YXJnZXQ9aWNlZm9ybSUzQXNlYXJjaCZpY2UuZXZlbnQuY2FwdHVyZWQ9aWNlZm9ybSUzQXNlYXJjaCZpY2UuZXZlbnQudHlwZT1vbmNsaWNrJmljZS5ldmVudC5hbHQ9ZmFsc2UmaWNlLmV2ZW50LmN0cmw9ZmFsc2UmaWNlLmV2ZW50LnNoaWZ0PWZhbHNlJmljZS5ldmVudC5tZXRhPWZhbHNlJmljZS5ldmVudC54PTYwMCZpY2UuZXZlbnQueT00OTcmaWNlLmV2ZW50LmxlZnQ9dHJ1ZSZpY2UuZXZlbnQucmlnaHQ9ZmFsc2UmaWNlLnN1Ym1pdC50eXBlPWljZS5zJmljZS5zdWJtaXQuc2VyaWFsaXphdGlvbj1mb3JtJmphdmF4LmZhY2VzLnBhcnRpYWwuYWpheD10cnVl]]></binaryPostContentBase64>
+    <responsePageFileDescription>recorded-responses/res_b7a4a61d-8ef0-4880-9f20-64c920e449b5.xml</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_b7a4a61d-8ef0-4880-9f20-64c920e449b5.txt</requestContentFileDescription>
+    <variable-extractor assertionOnNoMatch="false"
+        defaultValue="&lt;NOT FOUND>" displayMode="0"
+        endsWithSimple="&quot;" extractFromVarNameAdv=""
+        extractFromVarNameSimple="" extractType="0" extractTypeAdv="0"
+        extractTypeSimple="0" matchNumber="-1" matchNumberAdv="1"
+        matchNumberSimple="-1" name="Ressources"
+        refererUid="b7a4a61d-8ef0-4880-9f20-64c920e449b5"
+        regExp=" src=&quot;/icefaces/resource/(.*?)&quot;" regExpAdv=""
+        setDefaultValue="true"
+        startsWithSimple=" src=&quot;/icefaces/resource/" template="$1$"
+        templateAdv="$1$" uid="396e3b11-2776-46f4-95d7-b8af146a27f5" xpath="">
+        <variable-extractor-group extract="true" occurs="1" pattern="" type="4"/>
+    </variable-extractor>
+    <variable-extractor assertionOnNoMatch="false"
+        defaultValue="&lt;NOT FOUND>" displayMode="0"
+        endsWithSimple="&quot;" extractFromVarNameAdv=""
+        extractFromVarNameSimple="" extractType="0" extractTypeAdv="0"
+        extractTypeSimple="0" matchNumber="0" matchNumberAdv="1"
+        matchNumberSimple="0" name="Journey_id_selected"
+        refererUid="5872b72b-531f-4b82-850e-45194326cab7"
+        regExp="&lt;a href=&quot;/orange-trip-details\.jsf\?journeyId=(.*?)&quot;"
+        regExpAdv="" setDefaultValue="true"
+        startsWithSimple="&lt;a href=&quot;/orange-trip-details.jsf?journeyId="
+        template="$1$" templateAdv="$1$"
+        uid="ef72d32c-ffb4-4400-a5a0-5c2ed8c27181" xpath="">
+        <variable-extractor-group extract="true" occurs="1" pattern="" type="4"/>
+    </variable-extractor>
+    <variable-extractor assertionOnNoMatch="false"
+        defaultValue="&lt;NOT FOUND>" displayMode="1" endsWithSimple=""
+        extractFromVarNameAdv="" extractFromVarNameSimple=""
+        extractType="0" extractTypeAdv="0" extractTypeSimple="0"
+        matchNumber="-1" matchNumberAdv="-1" matchNumberSimple="1"
+        name="journey_id-rating"
+        regExp=" &lt;div class=&quot;rate_widget rating_(\d*?)&quot;"
+        regExpAdv=" &lt;div class=&quot;rate_widget rating_(\d*?)&quot;"
+        setDefaultValue="true" startsWithSimple="" template="$1$"
+        templateAdv="$1$" uid="e3cda75c-38f5-450f-97dd-5a045344ed8a" xpath=""/>
+    <variable-extractor assertionOnNoMatch="false"
+        defaultValue="&lt;NOT FOUND>" displayMode="0"
+        endsWithSimple="&amp;" extractFromVarNameAdv=""
+        extractFromVarNameSimple="" extractType="0" extractTypeAdv="0"
+        extractTypeSimple="0" matchNumber="0" matchNumberAdv="1"
+        matchNumberSimple="0" name="days"
+        refererUid="5872b72b-531f-4b82-850e-45194326cab7"
+        regExp="&amp;days=(\d*?)&amp;" regExpAdv=""
+        setDefaultValue="true" startsWithSimple="&amp;days="
+        template="$1$" templateAdv="$1$"
+        uid="ccb61efe-5fe0-4f47-b33d-a2a288f7e215" xpath="">
+        <variable-extractor-group extract="true" occurs="1" pattern="" type="3"/>
+    </variable-extractor>
+    <parameter encodeName="true" encodeValue="true" name="iceform"
+        recordRawValue="iceform" separator="=" value="iceform" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.ViewState"
+        recordRawValue="-8151802887003273974%3A6905445407665877790"
+        separator="=" value="${javax_faces_ViewState}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.window"
+        recordRawValue="r4j8acrrwc" separator="=" value="${ice_window}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.view"
+        recordRawValue="vynh7ci3ptl" separator="=" value="${ice_view_1}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:travellers" recordRawValue="4" separator="="
+        value="4" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:destination" recordRawValue="Bangalore"
+        separator="=" value="${JS_DEST_${AjaxSearch_counter}}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:destination_idx" recordRawValue="" separator="="
+        value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:fromDate" recordRawValue="Nov%2019%2C%202017"
+        separator="=" value="${DateStart}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:toDate" recordRawValue="Nov%2030%2C%202017"
+        separator="=" value="${EndDate}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="icefacesCssUpdates" recordRawValue="" separator="="
+        value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:fromDate_cc" recordRawValue="" separator="="
+        value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:j_idcl" recordRawValue="" separator="=" value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:j_idiceform:toDatesp" recordRawValue=""
+        separator="=" value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:toDate_cc" recordRawValue="" separator="="
+        value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:j_idiceform:fromDatesp" recordRawValue=""
+        separator="=" value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.source" recordRawValue="iceform%3Asearch"
+        separator="=" value="iceform:search" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.event" recordRawValue="click"
+        separator="=" value="click" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.execute" recordRawValue="%40all"
+        separator="=" value="@all" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.render" recordRawValue="%40all"
+        separator="=" value="@all" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.window"
+        recordRawValue="r4j8acrrwc" separator="=" value="${ice_window}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.view"
+        recordRawValue="vynh7ci3ptl" separator="=" value="${ice_view_1}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.focus"
+        recordRawValue="iceform%3Asearch" separator="="
+        value="iceform:search" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:search" recordRawValue="Search" separator="="
+        value="Search" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.target" recordRawValue="iceform%3Asearch"
+        separator="=" value="iceform:search" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.captured" recordRawValue="iceform%3Asearch"
+        separator="=" value="iceform:search" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.type" recordRawValue="onclick" separator="="
+        value="onclick" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.alt"
+        recordRawValue="false" separator="=" value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.ctrl" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.shift" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.meta" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.x"
+        recordRawValue="600" separator="=" value="600" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.y"
+        recordRawValue="497" separator="=" value="497" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.left" recordRawValue="true" separator="="
+        value="true" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.right" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.submit.type" recordRawValue="ice.s" separator="="
+        value="ice.s" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.submit.serialization" recordRawValue="form"
+        separator="=" value="form" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.ajax" recordRawValue="true"
+        separator="=" value="true" valueMode="USE_VALUE"/>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-type" value="application/x-www-form-urlencoded"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h21vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961021937|1506959179370; dtSa=-; dtLatC=1; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Faces-Request" value="partial/ajax"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:53 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Cache-Control: no-cache&#xd;
+Content-Type: text/xml;charset=UTF-8&#xd;
+X-Varnish: 768238534&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

@@ -1,0 +1,10 @@
+<plugin-identification-settings plugin="HESSIAN">
+    <request-headers>
+        <header value="x-application/hessian"/>
+        <header value="application/x-hessian"/>
+    </request-headers>
+    <response-headers>
+        <header value="x-application/hessian"/>
+        <header value="application/x-hessian"/>
+    </response-headers>
+</plugin-identification-settings>

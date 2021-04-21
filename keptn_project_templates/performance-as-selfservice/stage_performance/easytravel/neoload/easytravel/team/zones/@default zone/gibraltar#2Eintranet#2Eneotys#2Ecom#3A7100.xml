@@ -1,0 +1,79 @@
+<lg-host citrixSupport="false"
+    hostname="gibraltar.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="eb6364e8-b48b-43f2-b1f4-c9fb7a489083" version="6.1.2;build=20170926-55">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Intel(R) Dual Band Wireless-AC 7260"
+        enabled="false" isLoopBack="false" name="wlan0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="gibraltar.intranet.neotys.com">
+            <ip value="10.0.4.40"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:f8fe:4b56:fd0b:5dc8%wlan0">
+            <ip value="fe80:0:0:0:f8fe:4b56:fd0b:5dc8%wlan0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Périphérique Bluetooth (réseau personnel)"
+        enabled="false" isLoopBack="false" name="eth4">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:a594:bcea:17e:489a%eth4">
+            <ip value="fe80:0:0:0:a594:bcea:17e:489a%eth4"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Intel(R) Ethernet Connection I218-LM"
+        enabled="false" isLoopBack="false" name="eth3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="gibraltar.intranet.neotys.com">
+            <ip value="10.0.4.39"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Dell Wireless 5570 HSPA+ (42Mbps) Mobile Broadband Card"
+        enabled="false" isLoopBack="false" name="net6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:15b9:95f3:a665:7071%net6">
+            <ip value="fe80:0:0:0:15b9:95f3:a665:7071%net6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth22">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:3868:c20:1e8b:4866%eth22">
+            <ip value="fe80:0:0:0:3868:c20:1e8b:4866%eth22"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Check Point Virtual Network Adapter For SSL Network Extender"
+        enabled="false" isLoopBack="false" name="eth10">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:7d69:ff71:7556:6880%eth10">
+            <ip value="fe80:0:0:0:7d69:ff71:7556:6880%eth10"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Fortinet virtual adapter"
+        enabled="false" isLoopBack="false" name="eth9">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="fe80:0:0:0:71e8:a6ae:2999:cd15%eth9">
+            <ip value="fe80:0:0:0:71e8:a6ae:2999:cd15%eth9"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

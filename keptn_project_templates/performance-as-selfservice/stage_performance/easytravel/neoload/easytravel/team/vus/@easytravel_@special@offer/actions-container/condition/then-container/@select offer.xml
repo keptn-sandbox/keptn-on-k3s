@@ -1,0 +1,7 @@
+<basic-logical-action-container element-number="1" execution-type="0"
+    name="Select offer" pacingEnd="0" pacingMode="MODE_NO_PACING"
+    pacingStart="0" pacingValue="0" slaProfileEnabled="false"
+    uid="a3036cc4-2dd2-47ac-8f2e-5a97d808ec3c" weightsEnabled="false">
+    <weighted-embedded-action uid="1e972bdb-eb23-4f13-bd25-0484453f7d48"/>
+    <weighted-embedded-action uid="dbe4d326-5876-436f-90bd-5a5158bf472a"/>
+</basic-logical-action-container>

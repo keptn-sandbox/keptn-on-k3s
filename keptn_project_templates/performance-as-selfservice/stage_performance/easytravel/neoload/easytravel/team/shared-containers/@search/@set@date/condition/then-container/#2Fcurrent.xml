@@ -1,0 +1,310 @@
+<http-page executeResourcesDynamically="false" name="/current"
+    playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    slaProfileEnabled="false" thinkTime="0"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="8ea4dd21-3e46-4c7a-9cc4-349b7879f981">
+    <embedded-action>389f5cdb-1677-4d6b-b3a4-2bcb8868d91b</embedded-action>
+    <embedded-action>047f2197-26fa-4d27-928f-2023f0005003</embedded-action>
+    <embedded-action>8acb92d7-839c-45dd-af17-018dc4604c89</embedded-action>
+    <embedded-action>fee1143d-35e1-4f59-bafa-646305ed0792</embedded-action>
+    <embedded-action>9d8e3e08-abb3-4ab8-bb0b-de49257cab94</embedded-action>
+    <embedded-action>fc53798f-89c9-46d0-bdc5-3c19683695b1</embedded-action>
+    <embedded-action>77bb11fa-735c-489f-a3cf-8d4e6be23acc</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_beefa581-2e5e-474b-b51f-c85f9fb4c792.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html; charset=utf-8"
+    eTag="W/&quot;4b9-sksnx5bZN3rCfBkcLFhN2oHE1uc:dtagent10127170907093811rhnd:dtagent10127170907093811rhnd&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/current" path="/current" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200" responseSize="1494"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="389f5cdb-1677-4d6b-b3a4-2bcb8868d91b" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_31e36f6b-bd79-408e-81f0-266e7d6ef4a7.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_31e36f6b-bd79-408e-81f0-266e7d6ef4a7.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="loc"
+        recordRawValue="Bangalore" separator="="
+        value="${JS_DEST_${AjaxSearch_counter}}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="days"
+        recordRawValue="3" separator="=" value="${days}" valueMode="USE_VALUE">
+        <variable-extractor assertionOnNoMatch="true"
+            defaultValue="&lt;NOT FOUND>" displayMode="1"
+            endsWithSimple="" extractFromVarNameAdv=""
+            extractFromVarNameSimple="" extractType="0"
+            extractTypeAdv="0" extractTypeSimple="0" matchNumber="1"
+            matchNumberAdv="1" matchNumberSimple="1" name="nb_days"
+            refererUid="5872b72b-531f-4b82-850e-45194326cab7"
+            regExp="days=([^&amp;]*?)&amp;"
+            regExpAdv="days=([^&amp;]*?)&amp;" setDefaultValue="true"
+            startsWithSimple="" template="$1$" templateAdv="$1$"
+            uid="11f2168b-89bf-497f-b742-a885d733eac0" xpath="">
+            <variable-extractor-group extract="true" occurs="1"
+                pattern="" type="4"/>
+        </variable-extractor>
+    </parameter>
+    <parameter encodeName="true" encodeValue="true" name="tpl"
+        recordRawValue="small" separator="=" value="small" valueMode="USE_VALUE"/>
+    <header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h21vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961022580|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="Upgrade-Insecure-Requests" value="1"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:04 GMT&#xd;
+Content-Encoding: gzip&#xd;
+Content-Type: text/html; charset=utf-8&#xd;
+Etag: W/"4c1-2pUAndMvETJviU5M+pOWEFIh6Ac:dtagent10121170706152542HwDs:dtagent10121170706152542HwDs"&#xd;
+Vary: Accept-Encoding&#xd;
+X-Oneagent-Js-Injection: true&#xd;
+X-Powered-By: Express&#xd;
+X-Ruxit-Js-Agent: true&#xd;
+X-Vcap-Request-Id: df9755b5-cb30-4227-690d-9b8e1a9adab2&#xd;
+Content-Length: 653&#xd;
+Set-Cookie: dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1; Path=/&#xd;
+Keep-Alive: timeout=5, max=100&#xd;
+Connection: Keep-Alive</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="text/javascript; charset=utf-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/ruxitagentjs_2fqr_10121170706152542.js"
+    path="/ruxitagentjs_2fqr_10121170706152542.js" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200"
+    refererUid="389f5cdb-1677-4d6b-b3a4-2bcb8868d91b"
+    responseSize="67467"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="047f2197-26fa-4d27-928f-2023f0005003" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_4b825d40-9410-4208-9f30-c17d701f981d</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_4b825d40-9410-4208-9f30-c17d701f981d.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961024526|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/current?loc=Bangalore&amp;days=3&amp;tpl=small"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:52:56 GMT&#xd;
+Content-Encoding: gzip&#xd;
+Expires: Tue, 02 Oct 2018 15:52:56 GMT&#xd;
+Cache-Control: public, max-age=31536000&#xd;
+Last-Modified: Wed, 03 Mar 2010 07:01:40 GMT&#xd;
+Content-Length: 27634&#xd;
+Keep-Alive: timeout=5, max=100&#xd;
+Connection: Keep-Alive&#xd;
+Content-Type: text/javascript; charset=utf-8</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="1"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="text/css; charset=UTF-8"
+    eTag="W/&quot;18919-15ec45539c8&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Wed, 27 Sep 2017 17:14:33 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/stylesheets/style.css"
+    path="/stylesheets/style.css" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200" responseSize="100633"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="8acb92d7-839c-45dd-af17-018dc4604c89" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_c2cab4ad-b514-4e1e-b03f-bd17579f0e56.css</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_c2cab4ad-b514-4e1e-b03f-bd17579f0e56.txt</requestContentFileDescription>
+    <header name="Accept" value="text/css,*/*;q=0.1"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961024526|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/current?loc=Bangalore&amp;days=3&amp;tpl=small"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:04 GMT&#xd;
+Accept-Ranges: bytes&#xd;
+Cache-Control: public, max-age=0&#xd;
+Content-Encoding: gzip&#xd;
+Content-Type: text/css; charset=UTF-8&#xd;
+Etag: W/"18919-15ec45539c8"&#xd;
+Last-Modified: Wed, 27 Sep 2017 17:14:33 GMT&#xd;
+Vary: Accept-Encoding&#xd;
+X-Powered-By: Express&#xd;
+X-Vcap-Request-Id: 152145ec-b12b-4c5a-7446-8d2421439b7e&#xd;
+Content-Length: 17249&#xd;
+Keep-Alive: timeout=5, max=99&#xd;
+Connection: Keep-Alive</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="application/x-javascript"
+    eTag="W/&quot;71b6-15d175bf9d0&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Thu, 06 Jul 2017 10:04:50 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javascripts/bootstrap.min.js"
+    path="/javascripts/bootstrap.min.js" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200"
+    refererUid="389f5cdb-1677-4d6b-b3a4-2bcb8868d91b"
+    responseSize="29110"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="fee1143d-35e1-4f59-bafa-646305ed0792" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_ddb81511-8b6f-4ba3-bc70-1a2f37de464b</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_ddb81511-8b6f-4ba3-bc70-1a2f37de464b.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961024526|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/current?loc=Bangalore&amp;days=3&amp;tpl=small"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:04 GMT&#xd;
+Server: Microsoft-IIS/8.0&#xd;
+Content-Length: 7694&#xd;
+Content-Type: application/x-javascript&#xd;
+Content-Encoding: gzip&#xd;
+Last-Modified: Tue, 23 May 2017 04:05:56 GMT&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: "02a9ce079d3d21:0"&#xd;
+Vary: Accept-Encoding&#xd;
+X-Powered-By: ASP.NET&#xd;
+Arr-Disable-Session-Affinity: true&#xd;
+Keep-Alive: timeout=5, max=100&#xd;
+Connection: Keep-Alive</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="3"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="text/css; charset=UTF-8"
+    eTag="&quot;0cedb380dfd21:0&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Wed, 07 Jun 2017 11:25:00 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/stylesheets/weather_small.css"
+    path="/stylesheets/weather_small.css" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200" responseSize="2099"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="9d8e3e08-abb3-4ab8-bb0b-de49257cab94" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_16651d47-d756-4da3-ba57-4a1f94ebd326.css</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_16651d47-d756-4da3-ba57-4a1f94ebd326.txt</requestContentFileDescription>
+    <header name="Accept" value="text/css,*/*;q=0.1"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961024526|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/current?loc=Bangalore&amp;days=3&amp;tpl=small"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:04 GMT&#xd;
+Accept-Ranges: bytes&#xd;
+Cache-Control: public, max-age=0&#xd;
+Content-Encoding: gzip&#xd;
+Content-Type: text/css; charset=UTF-8&#xd;
+Etag: W/"833-15ec45555ac"&#xd;
+Last-Modified: Wed, 27 Sep 2017 17:14:40 GMT&#xd;
+Vary: Accept-Encoding&#xd;
+X-Powered-By: Express&#xd;
+X-Vcap-Request-Id: 000056d4-e270-4d5d-7a34-8c611480d85c&#xd;
+Content-Length: 606&#xd;
+Keep-Alive: timeout=5, max=100&#xd;
+Connection: Keep-Alive</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;14915-15d175c6f00&quot;" extractorInjectPathPolicy="2"
+    extractorPathPolicy="1" followRedirects="false"
+    generatedByClient="false"
+    lastModified="Thu, 06 Jul 2017 10:05:20 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javascripts/jquery-2.1.1.min.js"
+    path="/javascripts/jquery-2.1.1.min.js" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200"
+    refererUid="389f5cdb-1677-4d6b-b3a4-2bcb8868d91b"
+    responseSize="84245"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="fc53798f-89c9-46d0-bdc5-3c19683695b1" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_be35f09a-34ec-4cf6-aa38-a208aada9462</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_be35f09a-34ec-4cf6-aa38-a208aada9462.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359179354_497h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961024526|1506959179370; dtSa=-; dtLatC=5; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/current?loc=Bangalore&amp;days=3&amp;tpl=small"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:04 GMT&#xd;
+Accept-Ranges: bytes&#xd;
+Cache-Control: public, max-age=0&#xd;
+Content-Encoding: gzip&#xd;
+Content-Type: application/javascript&#xd;
+Etag: W/"14915-15d175c6f00"&#xd;
+Last-Modified: Thu, 06 Jul 2017 10:05:20 GMT&#xd;
+Vary: Accept-Encoding&#xd;
+X-Powered-By: Express&#xd;
+X-Vcap-Request-Id: 429f7cdd-2a84-4f13-676e-62f2c6b77ced&#xd;
+Keep-Alive: timeout=5, max=100&#xd;
+Connection: Keep-Alive&#xd;
+Transfer-Encoding: chunked</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="2"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="application/font-woff"
+    eTag="W/&quot;a360-15d175bf9d0:dtagent10127170907093811rhnd&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 06 Jul 2017 10:04:49 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/fonts/BerninaSans-Web-Regular.woff"
+    path="/fonts/BerninaSans-Web-Regular.woff" postType="1"
+    recordedArtifactZipFileName="team/shared-containers/@search/%resources%/recorded-artifacts/8ea4dd21-3e46-4c7a-9cc4-349b7879f981.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="77bb11fa-735c-489f-a3cf-8d4e6be23acc" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_b71bc362-1322-4b30-ae95-2715f6b5d71c</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_b71bc362-1322-4b30-ae95-2715f6b5d71c.txt</requestContentFileDescription>
+    <header name="Accept" value="application/font-woff2;q=1.0,application/font-woff;q=0.9,*/*;q=0.8"/>
+    <header name="Accept-Encoding" value="identity"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359225158_130h1vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961025173|1506959179370; dtSa=-; dtLatC=89; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8100"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8100/stylesheets/weather_small.css"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:47:05 GMT&#xd;
+Accept-Ranges: bytes&#xd;
+Cache-Control: public, max-age=0&#xd;
+Content-Type: application/font-woff&#xd;
+Etag: W/"a360-15d175bf9d0:dtagent10121170706152542HwDs"&#xd;
+Last-Modified: Thu, 06 Jul 2017 10:04:49 GMT&#xd;
+X-Powered-By: Express&#xd;
+X-Vcap-Request-Id: cc617a4b-9667-4642-5e23-86d65f02be26&#xd;
+Content-Length: 41824&#xd;
+Keep-Alive: timeout=5, max=99&#xd;
+Connection: Keep-Alive</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

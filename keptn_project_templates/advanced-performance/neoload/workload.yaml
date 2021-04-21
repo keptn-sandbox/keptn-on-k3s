@@ -1,0 +1,41 @@
+workloads:
+- teststrategy: performance
+  script:
+    repository: GIT_SERVER_TO_REPLACE/REPO_TO_REPLACE/REPLACE_KEPTN_PROJECT.git
+    branch: master
+    project:
+    - path: /neoload/simplenode_design.yaml
+    - path: /neoload/simplenode/simplenode_basic.yaml
+    - path: /neoload/load_template/load_template.nlp
+  properties:
+    scenario: Simpleload
+    constant_variables:
+    - name: server_host
+      value: appundertest.demo-adv-performance-performance.svc.cluster.local
+    - name: server_port
+      value: 80
+  description: Simpleload
+  infrastructure:
+    managedbyKeptn: true
+    numberOfMachine: 1
+    zoneId: On10d
+- teststrategy: performance_light
+  script:
+    repository: GIT_SERVER_TO_REPLACE/REPO_TO_REPLACE/demo-adv-performance.git
+    branch: master
+    project:
+      - path: /neoload/simplenode_design.yaml
+      - path: /neoload/simplenode/simplenode_basic.yaml
+      - path: /neoload/load_template/load_template.nlp
+  properties:
+    scenario: Simpleload_light
+    constant_variables:
+      - name: server_host
+        value: appundertest.demo-adv-performance-functional.svc.cluster.local
+      - name: server_port
+        value: 80
+  description: Simpleload_light
+  infrastructure:
+    managedbyKeptn: true
+    numberOfMachine: 1
+    zoneId: On10d

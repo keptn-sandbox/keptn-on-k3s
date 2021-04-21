@@ -1,0 +1,13 @@
+# Project description file
+
+project.name=load_template
+project.version=6.6
+project.original.version=6.6
+product.name=NeoLoad
+product.original.name=NeoLoad
+product.version=7.0.2
+product.original.version=7.0.2
+project.id=1abccec5-aabb-4535-ba42-b34df98d1f36
+project.config.path=config
+project.config.storage=FOLDER
+team.server.enabled=false
