@@ -844,21 +844,26 @@ function install_prometheus_qg_demo {
   chmod +x hey
 
   sleep 3
-  
+
   write_progress "Generating traffic for Podtato-head application (for 90 seconds)"
   ./hey -z 90s -c 10 "http://${PODTATO_DOMAIN}"
 
   echo "Run first Prometheus Quality Gate"
   keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=2m
 
-  # deploy other version
+  ### deploy slow version and evaluate it (this will be part of the tutorial and not automated here)
   # k3s kubectl set image deploy/helloservice server=gabrieltanner/hello-server:v0.1.2 --record -n prometheus-qg-quality-gate 
+  # k3s kubectl wait --namespace=prometheus-qg-quality-gate --for=condition=Available deploy/helloservice --timeout=300s --all
+  # ./hey -z 90s -c 10 "http://${PODTATO_DOMAIN}"
+  # ./hey -z 90s -c 10 http://$(k3s kubectl get ingress podtato-ingress -n prometheus-qg-quality-gate -ojsonpath='{.spec.rules[0].host}')
+  # keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=2m
+
 }
 
 function print_config {
   write_progress "Keptn Deployment Summary"
-  BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} | base64 -d)"
-  BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} | base64 -d)"
+  BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} --ignore-not-found | base64 -d)"
+  BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} --ignore-not-found | base64 -d)"
   KEPTN_API_TOKEN="$(get_keptn_token)"
 
   echo "API URL   :      ${PREFIX}://${KEPTN_DOMAIN}/api"
