@@ -843,6 +843,8 @@ function install_prometheus_qg_demo {
   curl https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 -o hey
   chmod +x hey
 
+  sleep 3
+  
   write_progress "Generating traffic for Podtato-head application (for 90 seconds)"
   ./hey -z 90s -c 10 "http://${PODTATO_DOMAIN}"
 
