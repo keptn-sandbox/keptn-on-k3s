@@ -1,0 +1,37 @@
+<lg-host citrixSupport="false" hostname="localhost:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="844ccefa-a1ee-4944-975a-cf0b5b43c9f7" version="7.0.2;build=20190924-58">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="wlp2s0" enabled="false"
+        isLoopBack="false" name="wlp2s0">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="10.0.4.144">
+            <ip value="10.0.4.144"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0">
+            <ip value="fe80:0:0:0:3a66:a5e4:7f75:3aeb%wlp2s0"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="lo" enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="localhost">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1%lo">
+            <ip value="0:0:0:0:0:0:0:1%lo"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="enp0s31f6" enabled="false"
+        isLoopBack="false" name="enp0s31f6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc014.intranet.neotys.com">
+            <ip value="10.0.5.35"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6">
+            <ip value="fe80:0:0:0:77b7:770e:cd56:34f%enp0s31f6"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

@@ -1,0 +1,29 @@
+<lg-host citrixSupport="false"
+    hostname="haddock-l.intranet.neotys.com:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="c12ce5fe-52df-40ff-8b0b-278e40fb9b36" version="7.1.0;build=20191120-35">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="127.0.0.1">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface
+        description="Broadcom NetXtreme 57xx Gigabit Controller"
+        enabled="false" isLoopBack="false" name="eth3">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="haddock-l.intranet.neotys.com">
+            <ip value="10.0.5.10"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3">
+            <ip value="fe80:0:0:0:ac5d:a1bc:8bc:72ae%eth3"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</lg-host>

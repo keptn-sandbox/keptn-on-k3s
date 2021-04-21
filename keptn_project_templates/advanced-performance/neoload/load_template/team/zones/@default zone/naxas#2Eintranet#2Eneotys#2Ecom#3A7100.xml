@@ -1,0 +1,6 @@
+<lg-host citrixSupport="false" hostname="naxas.intranet.neotys.com:7100"
+    loadWeight="1" sapSupport="false" standalone="false"
+    supportWANEmulation="true"
+    uid="0cb9eda3-91c9-4f2d-80be-ae525f07b183" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>

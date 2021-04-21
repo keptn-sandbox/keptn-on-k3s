@@ -708,24 +708,24 @@ gitea_createGitRepo(){
 function install_neoload_service {
 
 
-   if[ -z "$NL_WEB_HOST" ]; then
+   if [ -z "$NL_WEB_HOST" ]; then
      NL_WEB_HOST="neoload.saas.neotys.com"
    fi
 
-   if[ -z "$NL_WEBAPI_HOST" ]; then
+   if [ -z "$NL_WEBAPI_HOST" ]; then
      NL_WEBAPI_HOST="neoload-api.saas.neotys.com"
    fi
 
-   if[ -z "$NL_WEBUPLOAD_HOST" ]; then
+   if [ -z "$NL_WEBUPLOAD_HOST" ]; then
      NL_WEBUPLOAD_HOST="neoload-files.saas.neotys.com"
    fi
 
-   if[ -z "$NL_API_TOKEN"]; then
+   if [ -z "$NL_API_TOKEN"]; then
       echo "The NeoLoad API TOKEN has not be configure. create the NL_API_TOKEN environment variable first"
       exit 1
    fi
 
-   if[ -z "$NL_ZONE_ID"]; then
+   if [ -z "$NL_ZONE_ID"]; then
       echo "The NeoLoad Zone ID has not be configured. create the NL_ZONE_ID environment variable first"
       exit 1
    fi

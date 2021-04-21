@@ -1,0 +1,9 @@
+<basic-logical-action-container element-number="1" execution-type="0"
+    name="Create account" pacingEnd="0" pacingMode="MODE_NO_PACING"
+    pacingStart="0" pacingValue="0" slaProfileEnabled="false"
+    uid="2a1bf36d-caa2-4e1b-92ef-ffb55334c55d" weightsEnabled="false">
+    <weighted-embedded-action uid="da0dafe9-34be-4979-8b98-ca4326e675a7"/>
+    <weighted-embedded-action uid="6a7792af-faa5-4b11-aa3a-ac0859704b5e"/>
+    <weighted-embedded-action uid="8ad2551f-4e7c-4c09-91b2-53e919f75fad"/>
+    <weighted-embedded-action uid="f3b879a0-e975-4340-bf6e-2aba149e9994"/>
+</basic-logical-action-container>

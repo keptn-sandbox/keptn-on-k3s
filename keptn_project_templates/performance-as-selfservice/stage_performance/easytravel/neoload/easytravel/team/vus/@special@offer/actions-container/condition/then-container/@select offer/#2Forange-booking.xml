@@ -1,0 +1,223 @@
+<http-page executeResourcesDynamically="false" name="/orange-booking"
+    playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    slaProfileEnabled="false" thinkTime="4009"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="9e47499e-fbaa-44cb-8f31-82b690ddd2bd">
+    <embedded-action>fd86e547-a365-45ad-887c-f28b68ea8568</embedded-action>
+    <embedded-action>572c6b01-df66-41b0-a7c4-25823b80455b</embedded-action>
+    <embedded-action>7e086c63-6993-405e-87cd-0454bd02d2f8</embedded-action>
+    <embedded-action>be68ffad-9fd5-4d3a-b5a7-ccabab707648</embedded-action>
+    <embedded-action>ada2fb92-7aef-4e25-82d3-c7b5fe41dada</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_6a5a54e5-9592-4e99-b85d-e4fef9ed9af6.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/orange-booking-review.jsf"
+    path="/orange-booking-review.jsf" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    recordedResponseCode="200" responseSize="20236"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="fd86e547-a365-45ad-887c-f28b68ea8568" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_315e0b83-82f7-4721-8e5d-420217428e6f.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_315e0b83-82f7-4721-8e5d-420217428e6f.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="journeyId"
+        recordRawValue="4860" separator="="
+        value="${Journey_id_selected}" valueMode="USE_VALUE"/>
+    <header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022125907|1507020305483; dtSa=true%7CC%7C-1%7CBook%20Now%7C-%7C1507020332774%7C420318814_848%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Fspecial-offers.jsp%7CSpecial%20Offers%20-%20Landing%20Page%7C1507020325910%7C; dtLatC=1; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="Upgrade-Insecure-Requests" value="1"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:26 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Content-Type: text/html;charset=UTF-8&#xd;
+X-Varnish: 782968429&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;28874-1509644098000:dtagent1015718121115352842an&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:57 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javax.faces.resource/jsf.js.jsf"
+    path="/javax.faces.resource/jsf.js.jsf" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    recordedResponseCode="200"
+    refererUid="fd86e547-a365-45ad-887c-f28b68ea8568"
+    responseSize="28874"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="572c6b01-df66-41b0-a7c4-25823b80455b" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_49e6fa8e-40ba-4b8a-9362-aa287299bbd8</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_49e6fa8e-40ba-4b8a-9362-aa287299bbd8.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="ln"
+        recordRawValue="javax.faces" separator="=" value="javax.faces" valueMode="USE_VALUE"/>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022133187|1507020305483; dtSa=true%7CC%7C-1%7CBook%20Now%7C-%7C1507020332774%7C420318814_848%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Fspecial-offers.jsp%7CSpecial%20Offers%20-%20Landing%20Page%7C1507020325910%7C; dtLatC=1; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-review.jsf?journeyId=4860"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:26 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Expires: Tue, 10 Oct 2017 08:51:39 GMT&#xd;
+ETag: W/"28874-1491992676000:dtagent10127170907093811Ivlv:dtagent10127170907093811Ivlv"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:34 GMT&#xd;
+Content-Type: application/javascript&#xd;
+X-Varnish: 782938742&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="18"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;97097-1509644098000:dtagent1015718121115352842an&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:57 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javax.faces.resource/bridge.js.jsf"
+    path="/javax.faces.resource/bridge.js.jsf" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    recordedResponseCode="200"
+    refererUid="fd86e547-a365-45ad-887c-f28b68ea8568"
+    responseSize="97097"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="7e086c63-6993-405e-87cd-0454bd02d2f8" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_14aa3d7f-c46c-4c97-9436-b7d3c6a5cbc5</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_14aa3d7f-c46c-4c97-9436-b7d3c6a5cbc5.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="rand"
+        recordRawValue="928701386" separator="=" value="928701386" valueMode="USE_VALUE"/>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022133187|1507020305483; dtSa=true%7CC%7C-1%7CBook%20Now%7C-%7C1507020332774%7C420318814_848%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Fspecial-offers.jsp%7CSpecial%20Offers%20-%20Landing%20Page%7C1507020325910%7C; dtLatC=1; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-review.jsf?journeyId=4860"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:26 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Expires: Tue, 10 Oct 2017 08:51:40 GMT&#xd;
+ETag: W/"97097-1491992676000:dtagent10127170907093811Ivlv:dtagent10127170907093811Ivlv"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:34 GMT&#xd;
+Content-Type: application/javascript&#xd;
+X-Varnish: 782620257&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="19"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;294765-1509644098000:dtagent1015718121115352842an&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:57 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javax.faces.resource/icefaces-compat.js.jsf"
+    path="/javax.faces.resource/icefaces-compat.js.jsf" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    recordedResponseCode="200"
+    refererUid="fd86e547-a365-45ad-887c-f28b68ea8568"
+    responseSize="294765"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="be68ffad-9fd5-4d3a-b5a7-ccabab707648" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_59510d65-b86a-4526-9aac-1a01c759592c</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_59510d65-b86a-4526-9aac-1a01c759592c.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022133187|1507020305483; dtSa=true%7CC%7C-1%7CBook%20Now%7C-%7C1507020332774%7C420318814_848%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Fspecial-offers.jsp%7CSpecial%20Offers%20-%20Landing%20Page%7C1507020325910%7C; dtLatC=1; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-review.jsf?journeyId=4860"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:26 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Expires: Tue, 10 Oct 2017 08:51:40 GMT&#xd;
+ETag: W/"294765-1491992676000:dtagent10127170907093811Ivlv:dtagent10127170907093811Ivlv"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:34 GMT&#xd;
+Content-Type: application/javascript&#xd;
+X-Varnish: 782868240&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="21"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;15968-1509644098000:dtagent1015718121115352842an&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:57 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/javax.faces.resource/compat.js.jsf"
+    path="/javax.faces.resource/compat.js.jsf" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/9e47499e-fbaa-44cb-8f31-82b690ddd2bd.zip"
+    recordedResponseCode="200"
+    refererUid="fd86e547-a365-45ad-887c-f28b68ea8568"
+    responseSize="15968"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="ada2fb92-7aef-4e25-82d3-c7b5fe41dada" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_2363a884-9f0b-4609-a12a-8752ffcae000</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_2363a884-9f0b-4609-a12a-8752ffcae000.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022133187|1507020305483; dtSa=true%7CC%7C-1%7CBook%20Now%7C-%7C1507020332774%7C420318814_848%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Fspecial-offers.jsp%7CSpecial%20Offers%20-%20Landing%20Page%7C1507020325910%7C; dtLatC=1; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-review.jsf?journeyId=4860"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:26 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Expires: Tue, 10 Oct 2017 08:51:40 GMT&#xd;
+ETag: W/"15968-1491992676000:dtagent10127170907093811Ivlv:dtagent10127170907093811Ivlv"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:34 GMT&#xd;
+Content-Type: application/javascript&#xd;
+X-Varnish: 782938765&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="20"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>

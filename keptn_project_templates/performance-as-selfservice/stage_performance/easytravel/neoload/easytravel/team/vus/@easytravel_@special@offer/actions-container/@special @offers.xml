@@ -1,8 +1,0 @@
-<basic-logical-action-container element-number="1" execution-type="0"
-    name="Special Offers" pacingEnd="0" pacingMode="MODE_NO_PACING"
-    pacingStart="0" pacingValue="0" slaProfileEnabled="false"
-    uid="d31d41b5-3d01-479c-913c-a11898c99953" weightsEnabled="false">
-    <weighted-embedded-action uid="5a9f58c4-2633-4422-98ea-4f20ea7df067"/>
-    <weighted-embedded-action uid="15fb9092-557d-4b34-992c-c96631c7d6df"/>
-    <weighted-embedded-action uid="a4fa4e65-12a3-4caa-a0ca-4b54a32db1b4"/>
-</basic-logical-action-container>

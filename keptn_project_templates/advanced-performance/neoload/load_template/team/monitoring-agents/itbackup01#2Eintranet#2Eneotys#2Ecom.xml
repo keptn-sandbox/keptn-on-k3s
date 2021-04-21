@@ -1,0 +1,5 @@
+<me-host citrixSupport="false" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="itbackup01.intranet.neotys.com" version="5.4.0;build=20170210-13">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>

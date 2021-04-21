@@ -1,0 +1,294 @@
+<http-page executeResourcesDynamically="false"
+    name="/special-offers.jsp" playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    slaProfileEnabled="false" thinkTime="0"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="2a5dc9a7-de02-4792-8353-7dae4047a6d1">
+    <embedded-action>68e719ab-20c3-48dc-8df8-d734c0015003</embedded-action>
+    <embedded-action>76bbfaaf-5ff3-4e1c-8571-ddfe87b2ecbd</embedded-action>
+    <embedded-action>9e53e05f-e555-406d-ac6e-2e928d95d312</embedded-action>
+    <embedded-action>f8c2a69b-7368-4c36-9462-48e964a168fa</embedded-action>
+    <embedded-action>fb8de617-5ddd-4f3e-a1aa-8c1b7814375c</embedded-action>
+    <embedded-action>380dec96-c771-4369-9d22-943a8432e994</embedded-action>
+    <embedded-action>6ae036b4-cd3c-46e9-9138-9d87b9903cdb</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_6aeae35e-19fb-43fb-8f4f-fa83c9c5df85.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/html;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/special-offers.jsp" path="/special-offers.jsp"
+    postCharset="" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200" responseSize="12296"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="68e719ab-20c3-48dc-8df8-d734c0015003" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_2baf9199-2776-41fd-86bc-108068ccddb8.html</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_2baf9199-2776-41fd-86bc-108068ccddb8.txt</requestContentFileDescription>
+    <variable-extractor assertionOnNoMatch="true"
+        defaultValue="&lt;NOT FOUND>" displayMode="0"
+        endsWithSimple="&quot;" extractFromVarNameAdv=""
+        extractFromVarNameSimple="" extractType="0" extractTypeAdv="0"
+        extractTypeSimple="0" matchNumber="0" matchNumberAdv="0"
+        matchNumberSimple="0" name="Journey_id_selected"
+        refererUid="7ba0d46e-24a5-4bc3-aec7-2f23e66a6321"
+        regExp="&lt;a href=&quot;/orange-trip-details\.jsf\?journeyId=(.*?)&quot;"
+        regExpAdv="&lt;a href=&quot;/orange-trip-details\.jsf\?journeyId=([]*?)&quot;"
+        setDefaultValue="true"
+        startsWithSimple="&lt;a href=&quot;/orange-trip-details.jsf?journeyId="
+        template="$1$" templateAdv="$1$"
+        uid="ef72d32c-ffb4-4400-a5a0-5c2ed8c27181" xpath="">
+        <variable-extractor-group extract="true" occurs="1" pattern="" type="4"/>
+    </variable-extractor>
+    <header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022117342|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/"/>
+    <header name="Upgrade-Insecure-Requests" value="1"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:10 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: text/html;charset=UTF-8&#xd;
+X-Varnish: 782770847&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Transfer-Encoding: chunked&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;269295-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/js/jquery-1.8.1.js" path="/js/jquery-1.8.1.js"
+    postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200"
+    refererUid="68e719ab-20c3-48dc-8df8-d734c0015003"
+    responseSize="269295"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="76bbfaaf-5ff3-4e1c-8571-ddfe87b2ecbd" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_311b5094-ea0d-454c-860a-c7913f223d60</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_311b5094-ea0d-454c-860a-c7913f223d60.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118707|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:12 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"269295-1491992676000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:36 GMT&#xd;
+Content-Type: application/javascript&#xd;
+Content-Length: 269295&#xd;
+X-Varnish: 783003464&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="2"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="application/javascript"
+    eTag="W/&quot;192329-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/js/jquery-ui-1.8.2.min.js"
+    path="/js/jquery-ui-1.8.2.min.js" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200"
+    refererUid="68e719ab-20c3-48dc-8df8-d734c0015003"
+    responseSize="192329"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="9e53e05f-e555-406d-ac6e-2e928d95d312" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_4553bf78-eabd-4764-a430-31906d77b1f7</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_4553bf78-eabd-4764-a430-31906d77b1f7.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118707|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:12 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"192329-1491992676000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:36 GMT&#xd;
+Content-Type: application/javascript&#xd;
+Content-Length: 192329&#xd;
+X-Varnish: 782713996&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorContent="" extractorOccurence="3"
+        extractorRegExp="false" htmlType="1"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;5122139-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/specialoffersbig.png"
+    path="/img/specialoffersbig.png" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="f8c2a69b-7368-4c36-9462-48e964a168fa" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_0d0e187d-737a-45b7-a665-2ae14fb2beb9.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_45c09e70-095d-4606-b865-f613facbed3a.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118707|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:13 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"87166-1502360704000"&#xd;
+Last-Modified: Thu, 10 Aug 2017 10:25:04 GMT&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 87166&#xd;
+X-Varnish: 782807097&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;216367-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/easyTravel_banner.png"
+    path="/img/easyTravel_banner.png" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="fb8de617-5ddd-4f3e-a1aa-8c1b7814375c" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_4ac75b6b-c400-4518-8c0f-044675d1eec0.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_e6b34d5a-262f-4a30-ab0a-04dabefc6a44.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118707|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:13 GMT&#xd;
+Server: CouchDB&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 209019&#xd;
+X-Varnish: 782938501&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;36906-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/result_pic_0.png"
+    path="/img/result_pic_0.png" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="380dec96-c771-4369-9d22-943a8432e994" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_7e45aef4-04de-4839-b1c4-745ef9a25645.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_0fe8442d-67ed-4014-8cbd-a33980ee67db.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420305474_263h-vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118707|1507020305483; dtSa=true%7CC%7C-1%7CSpecial%20Offers%7C-%7C1507020317287%7C420305474_263%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2F%7CeasyTravel%20-%20One%20step%20to%20happiness%7C1507020315342%7C; dtLatC=10; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:14 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Accept-Ranges: bytes&#xd;
+ETag: W/"36906-1491992676000"&#xd;
+Last-Modified: Wed, 12 Apr 2017 10:24:36 GMT&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 36906&#xd;
+X-Varnish: 779811006&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="image/png"
+    eTag="W/&quot;32147-1509644098000&quot;"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    lastModified="Thu, 02 Nov 2017 17:34:58 GMT"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="GET" name="/img/result_pic_2.png"
+    path="/img/result_pic_2.png" postType="1"
+    recordedArtifactZipFileName="team/vus/@special@offer/%resources%/recorded-artifacts/2a5dc9a7-de02-4792-8353-7dae4047a6d1.zip"
+    recordedResponseCode="200" responseSize="0"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="6ae036b4-cd3c-46e9-9138-9d87b9903cdb" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_a7939160-2a76-411f-b3b0-0e481df269bd.png</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_41ba8269-b52e-4cd8-b9b3-0b4500302522.txt</requestContentFileDescription>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Cookie" value="JSESSIONID=E7A67C344F4E671A62C7411CC91E95C8.LNX3-jvmRoute-8280; rxVisitor=1507020305480ESAV6I7EC11N8GH850E0IJ0PLBSF7M7J; dtPC=1$420318814_848h1vARNLAAOLJFESPKGJNJBMIGMAMAMBNGLIFF; rxvt=1507022118828|1507020305483; dtSa=-; dtLatC=30; dtCookie=1$ED02F8900BEC39BA3DC69442E4E1CB56|www.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/special-offers.jsp"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Tue, 03 Oct 2017 08:51:14 GMT&#xd;
+Server: CouchDB&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+Content-Type: image/png&#xd;
+Content-Length: 31235&#xd;
+X-Varnish: 782495352&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>

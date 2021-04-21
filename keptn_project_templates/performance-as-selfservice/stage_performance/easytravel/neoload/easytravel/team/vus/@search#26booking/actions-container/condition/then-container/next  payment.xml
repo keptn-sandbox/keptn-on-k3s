@@ -1,0 +1,12 @@
+<basic-logical-action-container element-number="1" execution-type="0"
+    name="next  payment" pacingEnd="0" pacingMode="MODE_NO_PACING"
+    pacingStart="0" pacingValue="0" slaProfileEnabled="false"
+    uid="c337e157-a82e-412f-9e33-8c2a11893e1f" weightsEnabled="false">
+    <weighted-embedded-action uid="e6f88c99-a54c-4dce-bf74-577eb26aee65"/>
+    <weighted-embedded-action uid="c276b826-d336-4513-ba38-8dada6b3add1"/>
+    <weighted-embedded-action uid="d0eb5029-cad3-499b-8e5b-6d60130ddabf"/>
+    <weighted-embedded-action uid="abb95bca-fa47-47e5-aa84-3dcb72a10ffc"/>
+    <weighted-embedded-action uid="ceef55c7-3eb3-4524-8265-adf30b2f591f"/>
+    <weighted-embedded-action uid="79ec8c56-0bc0-4141-9414-3308a147ffe0"/>
+    <weighted-embedded-action uid="ae3c2bb8-f27d-4373-b9df-02ced40bcda5"/>
+</basic-logical-action-container>

@@ -1,0 +1,47 @@
+<me-host citrixSupport="false" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="fe80:0:0:0:e046:993:8fde:15be%2" version="7.2.0;build=20191202-2">
+    <!--****** LG NETWORK INTERFACES ******-->
+    <lg-networkiface
+        description="Intel(R) Ethernet Connection (7) I219-LM"
+        enabled="false" isLoopBack="false" name="eth7">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="host.docker.internal">
+            <ip value="10.0.4.101"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:e046:993:8fde:15be%eth7">
+            <ip value="fe80:0:0:0:e046:993:8fde:15be%eth7"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Hyper-V Virtual Ethernet Adapter #2"
+        enabled="false" isLoopBack="false" name="eth6">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc075.intranet.neotys.com">
+            <ip value="192.168.0.1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="Software Loopback Interface 1"
+        enabled="false" isLoopBack="true" name="lo">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="kubernetes.docker.internal">
+            <ip value="127.0.0.1"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="0:0:0:0:0:0:0:1">
+            <ip value="0:0:0:0:0:0:0:1"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+    <lg-networkiface description="TAP-Windows Adapter V9"
+        enabled="false" isLoopBack="false" name="eth2">
+        <!--****** LG ADDRESSES ******-->
+        <lg-address enabled="false" hostname="pc075.intranet.neotys.com">
+            <ip value="10.8.0.74"/>
+        </lg-address>
+        <lg-address enabled="false" hostname="fe80:0:0:0:acd5:5dad:8e2:5c60%eth2">
+            <ip value="fe80:0:0:0:acd5:5dad:8e2:5c60%eth2"/>
+        </lg-address>
+        <!--****** END LG ADDRESSES ******-->
+    </lg-networkiface>
+</me-host>

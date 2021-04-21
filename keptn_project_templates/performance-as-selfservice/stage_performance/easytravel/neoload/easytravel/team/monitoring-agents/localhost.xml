@@ -30,10 +30,10 @@
         <!--****** END LG ADDRESSES ******-->
     </lg-networkiface>
     <lg-networkiface description="Dell GigabitEthernet" enabled="false"
-        isLoopBack="false" name="eth4">
+        isLoopBack="false" name="eth5">
         <!--****** LG ADDRESSES ******-->
-        <lg-address enabled="false" hostname="fe80:0:0:0:2534:2e39:880b:137b%eth4">
-            <ip value="fe80:0:0:0:2534:2e39:880b:137b%eth4"/>
+        <lg-address enabled="false" hostname="fe80:0:0:0:2534:2e39:880b:137b%eth5">
+            <ip value="fe80:0:0:0:2534:2e39:880b:137b%eth5"/>
         </lg-address>
         <!--****** END LG ADDRESSES ******-->
     </lg-networkiface>
@@ -55,13 +55,13 @@
         <!--****** END LG ADDRESSES ******-->
     </lg-networkiface>
     <lg-networkiface description="Hyper-V Virtual Ethernet Adapter"
-        enabled="false" isLoopBack="false" name="eth22">
+        enabled="false" isLoopBack="false" name="eth25">
         <!--****** LG ADDRESSES ******-->
         <lg-address enabled="false" hostname="tag009444582930.mshome.net">
             <ip value="172.27.224.1"/>
         </lg-address>
-        <lg-address enabled="false" hostname="fe80:0:0:0:4833:abb2:3186:ab77%eth22">
-            <ip value="fe80:0:0:0:4833:abb2:3186:ab77%eth22"/>
+        <lg-address enabled="false" hostname="fe80:0:0:0:4833:abb2:3186:ab77%eth25">
+            <ip value="fe80:0:0:0:4833:abb2:3186:ab77%eth25"/>
         </lg-address>
         <!--****** END LG ADDRESSES ******-->
     </lg-networkiface>

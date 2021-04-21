@@ -1,0 +1,5 @@
+<me-host citrixSupport="false" loadWeight="1" sapSupport="false"
+    standalone="false" supportWANEmulation="false"
+    uid="naxas.intranet.neotys.com" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</me-host>

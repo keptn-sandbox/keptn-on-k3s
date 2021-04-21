@@ -1,0 +1,181 @@
+<http-page executeResourcesDynamically="false" name="booking"
+    playRequestsSequentially="false"
+    recordedArtifactZipFileName="team/vus/@search#26booking/%resources%/recorded-artifacts/abb95bca-fa47-47e5-aa84-3dcb72a10ffc.zip"
+    slaProfileEnabled="false" thinkTime="3939"
+    thinkTimeMode="MODE_SIMPLE_THINK_TIME" thinkTimeRangeEnd=""
+    thinkTimeRangeStart="" uid="abb95bca-fa47-47e5-aa84-3dcb72a10ffc">
+    <embedded-action>ccb8863a-c9cc-4ff9-a54d-4d8ebfb3f1cb</embedded-action>
+    <embedded-action>2c7b661a-6df6-4820-ad14-940a8b44caef</embedded-action>
+    <screenshotFileDescription>recorded-screenshots/sc_366de37d-1362-4787-89af-a63a8b3bc079.jpg</screenshotFileDescription>
+</http-page>
+<http-action actionType="1" contentType="text/xml;charset=UTF-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="POST" name="/orange-booking-payment.jsf"
+    path="/orange-booking-payment.jsf" postCharset="iso-8859-1"
+    postType="1"
+    recordedArtifactZipFileName="team/vus/@search#26booking/%resources%/recorded-artifacts/abb95bca-fa47-47e5-aa84-3dcb72a10ffc.zip"
+    recordedResponseCode="200" responseSize="145"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="ccb8863a-c9cc-4ff9-a54d-4d8ebfb3f1cb" useKeepAlive="false">
+    <binaryPostContentBase64><![CDATA[aWNlZm9ybT1pY2Vmb3JtJmphdmF4LmZhY2VzLlZpZXdTdGF0ZT0tNTM3NTg1NzE5MzY4NzQzNTE4NCUzQTM5OTI4MzY2NDE2MjU2MTYzNzMmaWNlLndpbmRvdz0ke2ljZV93aW5kb3d9JmljZS52aWV3PSR7aWNlX3ZpZXdfMX0maWNlZm9ybSUzQWNyZWRpdENhcmRUeXBlPVZJU0EmaWNlZm9ybSUzQWNyZWRpdENhcmROdW1iZXI9MTY4NDUxNTY4NDM4NTQmaWNlZm9ybSUzQWNyZWRpdENhcmRPd25lcj1kZXpkZWQmaWNlZm9ybSUzQWV4cGlyYXRpb25Nb250aD1EZWNlbWJlciZpY2Vmb3JtJTNBZXhwaXJhdGlvblllYXI9MjAxNyZpY2Vmb3JtJTNBdmVyaWZpY2F0aW9uTnVtYmVyPTA4NTImaWNlZmFjZXNDc3NVcGRhdGVzPSZpY2Vmb3JtJTNBal9pZGNsPSZqYXZheC5mYWNlcy5zb3VyY2U9aWNlZm9ybSUzQWJvb2tQYXltZW50TmV4dCZqYXZheC5mYWNlcy5wYXJ0aWFsLmV2ZW50PWNsaWNrJmphdmF4LmZhY2VzLnBhcnRpYWwuZXhlY3V0ZT0lNDBhbGwmamF2YXguZmFjZXMucGFydGlhbC5yZW5kZXI9JTQwYWxsJmljZS53aW5kb3c9JHtpY2Vfd2luZG93fSZpY2Uudmlldz0ke2ljZV92aWV3XzF9JmljZS5mb2N1cz1pY2Vmb3JtJTNBYm9va1BheW1lbnROZXh0JmljZWZvcm0lM0Fib29rUGF5bWVudE5leHQ9TmV4dCZpY2UuZXZlbnQudGFyZ2V0PWljZWZvcm0lM0Fib29rUGF5bWVudE5leHQmaWNlLmV2ZW50LmNhcHR1cmVkPWljZWZvcm0lM0Fib29rUGF5bWVudE5leHQmaWNlLmV2ZW50LnR5cGU9b25jbGljayZpY2UuZXZlbnQuYWx0PWZhbHNlJmljZS5ldmVudC5jdHJsPWZhbHNlJmljZS5ldmVudC5zaGlmdD1mYWxzZSZpY2UuZXZlbnQubWV0YT1mYWxzZSZpY2UuZXZlbnQueD03MTgmaWNlLmV2ZW50Lnk9NDk1JmljZS5ldmVudC5sZWZ0PXRydWUmaWNlLmV2ZW50LnJpZ2h0PWZhbHNlJmljZS5zdWJtaXQudHlwZT1pY2UucyZpY2Uuc3VibWl0LnNlcmlhbGl6YXRpb249Zm9ybSZqYXZheC5mYWNlcy5wYXJ0aWFsLmFqYXg9dHJ1ZQ==]]></binaryPostContentBase64>
+    <responsePageFileDescription>recorded-responses/res_24a6f517-cb40-4350-a5e7-b44072fad5fc.xml</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_24a6f517-cb40-4350-a5e7-b44072fad5fc.txt</requestContentFileDescription>
+    <parameter encodeName="true" encodeValue="true" name="iceform"
+        recordRawValue="iceform" separator="=" value="iceform" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.ViewState"
+        recordRawValue="-5375857193687435184%3A3992836641625616373"
+        separator="=" value="${javax_faces_ViewState}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.window"
+        recordRawValue="r4j8acrrwc" separator="=" value="${ice_window}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.view"
+        recordRawValue="vynh7ci3pw3" separator="=" value="${ice_view_1}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:creditCardType" recordRawValue="VISA"
+        separator="=" value="VISA" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:creditCardNumber" recordRawValue="16845156843854"
+        separator="=" value="16845156843854" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:creditCardOwner" recordRawValue="dezded"
+        separator="=" value="dezded" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:expirationMonth" recordRawValue="December"
+        separator="=" value="December" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:expirationYear" recordRawValue="2017"
+        separator="=" value="2017" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:verificationNumber" recordRawValue="0852"
+        separator="=" value="0852" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="icefacesCssUpdates" recordRawValue="" separator="="
+        value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:j_idcl" recordRawValue="" separator="=" value="" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.source"
+        recordRawValue="iceform%3AbookPaymentNext" separator="="
+        value="iceform:bookPaymentNext" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.event" recordRawValue="click"
+        separator="=" value="click" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.execute" recordRawValue="%40all"
+        separator="=" value="@all" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.render" recordRawValue="%40all"
+        separator="=" value="@all" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.window"
+        recordRawValue="r4j8acrrwc" separator="=" value="${ice_window}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.view"
+        recordRawValue="vynh7ci3pw3" separator="=" value="${ice_view_1}" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.focus"
+        recordRawValue="iceform%3AbookPaymentNext" separator="="
+        value="iceform:bookPaymentNext" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="iceform:bookPaymentNext" recordRawValue="Next"
+        separator="=" value="Next" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.target"
+        recordRawValue="iceform%3AbookPaymentNext" separator="="
+        value="iceform:bookPaymentNext" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.captured"
+        recordRawValue="iceform%3AbookPaymentNext" separator="="
+        value="iceform:bookPaymentNext" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.type" recordRawValue="onclick" separator="="
+        value="onclick" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.alt"
+        recordRawValue="false" separator="=" value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.ctrl" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.shift" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.meta" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.x"
+        recordRawValue="718" separator="=" value="718" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true" name="ice.event.y"
+        recordRawValue="495" separator="=" value="495" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.left" recordRawValue="true" separator="="
+        value="true" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.event.right" recordRawValue="false" separator="="
+        value="false" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.submit.type" recordRawValue="ice.s" separator="="
+        value="ice.s" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="ice.submit.serialization" recordRawValue="form"
+        separator="=" value="form" valueMode="USE_VALUE"/>
+    <parameter encodeName="true" encodeValue="true"
+        name="javax.faces.partial.ajax" recordRawValue="true"
+        separator="=" value="true" valueMode="USE_VALUE"/>
+    <header name="Accept" value="*/*"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-type" value="application/x-www-form-urlencoded"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359365885_522h3vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961194540|1506959179370; dtSa=-; dtLatC=1; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Faces-Request" value="partial/ajax"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-payment.jsf?journeyId=5558"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:55:46 GMT&#xd;
+X-OneAgent-JS-Injection: true&#xd;
+X-Powered-By: JSF/2.0&#xd;
+Cache-Control: no-cache&#xd;
+Content-Type: text/xml;charset=UTF-8&#xd;
+Content-Length: 145&#xd;
+X-Varnish: 709038762&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+</http-action>
+<http-action actionType="1" contentType="text/plain; charset=utf-8"
+    extractorInjectPathPolicy="2" extractorPathPolicy="1"
+    followRedirects="false" generatedByClient="false"
+    linkExtractorSeveralMatchOccurrence="1"
+    linkExtractorSeveralMatchPolicy="1" linkExtractorType="6"
+    method="POST" name="/rb_ee4b97fe-5357-438f-bc95-5cdad722e1b8"
+    path="/rb_ee4b97fe-5357-438f-bc95-5cdad722e1b8" postType="4"
+    recordedArtifactZipFileName="team/vus/@search#26booking/%resources%/recorded-artifacts/abb95bca-fa47-47e5-aa84-3dcb72a10ffc.zip"
+    recordedResponseCode="200" responseSize="359"
+    serverUid="ec2-54-84-118-207.compute-1.amazonaws.com"
+    slaProfileEnabled="false" uid="2c7b661a-6df6-4820-ad14-940a8b44caef" useKeepAlive="false">
+    <responsePageFileDescription>recorded-responses/res_c109c167-4bf4-41fe-8a7a-05bce5241d43</responsePageFileDescription>
+    <requestContentFileDescription>recorded-requests/req_c109c167-4bf4-41fe-8a7a-05bce5241d43.txt</requestContentFileDescription>
+    <header name="Accept" value="text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8"/>
+    <header name="Accept-Encoding" value="gzip, deflate"/>
+    <header name="Accept-Language" value="fr,fr-FR;q=0.8,en-US;q=0.5,en;q=0.3"/>
+    <header name="Connection" value="keep-alive"/>
+    <header name="Content-Type" value="text/plain;charset=UTF-8"/>
+    <header name="Cookie" value="JSESSIONID=99A937CC8B40796F8BA9D81950EF07FC.LNX4-jvmRoute-8280; rxVisitor=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3; dtPC=1$359365885_522h-vARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC; rxvt=1506961196122|1506959179370; dtSa=false%7CC%7C3%7CNext%7Ci%7C1506959396070%7C359365885_522%7Chttp%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Forange-booking-payment.jsf%3FjourneyId%3D5558%7CeasyTravel%20-%20Booking%20-%20Payment%7C1506959370974%7C; dtLatC=1; dtCookie=1$1B9239518F4AA342D18E721DCADBE563|www.easytravel.com|1|www.weather.easytravel.com|1"/>
+    <header name="Host" value="ec2-54-84-118-207.compute-1.amazonaws.com:8079"/>
+    <header name="Referer" value="http://ec2-54-84-118-207.compute-1.amazonaws.com:8079/orange-booking-payment.jsf?journeyId=5558"/>
+    <header name="User-Agent" value="Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:55.0) Gecko/20100101 Firefox/55.0"/>
+    <responseHeaders>HTTP/1.1 200 OK&#xd;
+Date: Mon, 02 Oct 2017 15:55:47 GMT&#xd;
+Cache-Control: no-cache&#xd;
+Content-Length: 359&#xd;
+Content-Type: text/plain; charset=utf-8&#xd;
+X-Varnish: 709038764&#xd;
+Age: 0&#xd;
+Via: 1.1 varnish-v4&#xd;
+Connection: keep-alive&#xd;
+Accept-Ranges: bytes</responseHeaders>
+    <record-html-infos extractorRegExp="false" htmlType="0"/>
+    <textPostContent><![CDATA[$a=1%7C3%7CNext%7CC%7Ci%7C1506959394524%7C0%7C301%7C-%7C-%7C%2Forange-booking-payment.jsf%7C-%7Cb1506959394557e0f15g15h15i15k15l1503m1503u436v145w145z11$svrid=1$rId=RID_359284373$rpId=-1214574585$domR=1506959367202$unload=xhr$url=http%3A%2F%2Fec2-54-84-118-207.compute-1.amazonaws.com%3A8079%2Forange-booking-payment.jsf%3FjourneyId%3D${journey_id-2_6}$title=easyTravel%20-%20Booking%20-%20Payment$vd=25114$isUnload=true$latC=1$visitID=ARBMAHKICILIMIMDCLJIJKOBHUKMMMUAPC$fId=359365885_522$v=10121170706152542$vID=1506959179365CPIIUGQJEA2DPGBPC6M5B1PLKBLAPHD3$time=1506959396093]]></textPostContent>
+</http-action>

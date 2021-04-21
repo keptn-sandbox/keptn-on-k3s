@@ -1,0 +1,5 @@
+<lg-host citrixSupport="false" hostname="10.0.4.148:7100" loadWeight="1"
+    sapSupport="false" standalone="false" supportWANEmulation="false"
+    uid="02b794c5-48a5-4d5f-9703-61b374c66822" version="7.2.0;build=20191205-3050">
+    <!--****** LG NETWORK INTERFACES ******-->
+</lg-host>
