@@ -706,7 +706,7 @@ gitea_createGitRepo(){
 }
 
 
-
+function install_neoload_service {
 
    if [ -z "$NL_WEB_HOST" ]; then
      NL_WEB_HOST="neoload.saas.neotys.com"
