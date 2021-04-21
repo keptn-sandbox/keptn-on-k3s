@@ -55,8 +55,8 @@ PREFIX="https"
 CERTS="selfsigned"
 CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
-XIP="false" ## TODO replace XIP with NIP
-NIP="true"
+XIP="true" 
+NIP="false"
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
@@ -1036,6 +1036,7 @@ function main {
         ;;
     --use-nip)
         echo "Using nip.io"
+        XIP="false"
         NIP="true"
         shift
         ;;
