@@ -1,0 +1,47 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simplenode-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+    secretName: {{ .Values.ingress.secretName }}
+  rules:
+    - host: {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ template "simplenode.fullname" . }}
+                port: 
+                  number: 80
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: simplenode-preview-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.keptn.service }}-preview.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+    secretName: {{ .Values.ingress.secretName }}
+  rules:
+    - host: {{ .Values.keptn.service }}-preview.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ template "simplenode.fullname" . }}-preview
+                port: 
+                  number: 80

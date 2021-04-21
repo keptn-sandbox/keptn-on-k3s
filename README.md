@@ -17,7 +17,8 @@ This is your fastest way to explore the following use cases:
 
 Depending on which options you choose the script will install
 * JMeter Service as a testing service
-* Istio as Service Mesh
+* Istio as Service Mesh for Blue/Green
+* Argo Rollouts for Canary Deployments
 * Generic Executor to execute remediation scripts
 * Monaco Service to automate Dynatrace Monitoring Configuration
 

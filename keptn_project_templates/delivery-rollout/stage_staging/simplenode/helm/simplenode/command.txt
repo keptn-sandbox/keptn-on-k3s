@@ -1,0 +1,19 @@
+
+# Helm Service: Create NS and install chart!
+kubectl create ns delivery-rollout-prod
+helm upgrade --install simplenode . -n delivery-rollout-prod
+
+# Rollout: Validate that rollouts are listed!
+kubectl argo rollouts list rollouts -n delivery-rollout-prod
+
+# Rollout: Watch rollout status
+kubectl argo rollouts get rollout simplenode-prod -n delivery-rollout-prod -w
+
+
+kubectl argo rollouts promote simplenode-prod -n delivery-rollout-prod
+
+
+
+
+
+http://simplenode.delivery-rollout-prod.keptn.keptn08-agrabner.demo.keptn.sh/

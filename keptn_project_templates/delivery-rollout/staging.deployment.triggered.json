@@ -1,12 +1,12 @@
 {
-    "type": "sh.keptn.event.prod.delivery.triggered",
+    "type": "sh.keptn.event.staging.delivery.triggered",
     "shkeptnspecversion": "0.2.0",
     "specversion": "1.0",
     "source": "triggered-via-api",
     "contenttype": "application/json",
     "data": {
       "project": "REPLACE_KEPTN_PROJECT",
-      "stage": "prod",
+      "stage": "staging",
       "service": "simplenode",
       "labels": {
         "deployWith": "ArgoRollout",

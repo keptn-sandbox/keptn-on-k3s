@@ -15,6 +15,7 @@ INGRESS_PROTOCOL="http"
 ISTIO_GATEWAY="public-gateway.istio-system"
 
 ARGO_ROLLOUTS_VERSION="stable"
+ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 
 # For execution plane these are the env-variables that identify the keptn control plane
 # KEPTN_CONTROL_PLANE_DOMAIN=""
@@ -27,12 +28,13 @@ ARGO_ROLLOUTS_VERSION="stable"
 
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 JMETER_SERVICE_VERSION="0.8.0"
+HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
 PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
 DT_SLI_SERVICE_VERSION="release-0.9.0"
-GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
+GENERICEXEC_SERVICE_VERSION="release-0.8.0"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
 
@@ -106,6 +108,8 @@ KEPTN_DELIVERY_STAGE_PRODUCTION="production"
 KEPTN_DELIVERY_SERVICE="simplenode"
 
 KEPTN_ROLLOUT_PROJECT="demo-rollout"
+KEPTN_ROLLOUT_STAGE_STAGING="staging"
+KEPTN_ROLLOUT_SERVICE="simplenode"
 
 KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
 KEPTN_ADV_PERFORMANCE_STAGE="performance"
@@ -285,7 +289,7 @@ function get_argorollouts {
   "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
 
   # now also installing the argo rollout extension for kubectl
-  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_VERSION}/download/kubectl-argo-rollouts-linux-amd64
+  curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_EXTENSION_VERSION}/download/kubectl-argo-rollouts-linux-amd64
   sudo chmod +x ./kubectl-argo-rollouts-linux-amd64
   sudo mv ./kubectl-argo-rollouts-linux-amd64 /usr/local/bin/kubectl-argo-rollouts
 }
@@ -427,6 +431,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
+      --set=continuous-delivery.helmService.image.repository="${HELM_SERVICE_IMAGE}" \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -462,6 +467,10 @@ function install_keptn {
     yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+
+    if [[ "${HELM_SERVICE_IMAGE}" != "" ]]; then
+      yq w /tmp/helm.values.yaml "distributor.image.repository" "${HELM_SERVICE_IMAGE}"
+    fi 
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
 
@@ -760,11 +769,12 @@ if [[ "${GITEA}" == "true" ]]; then
 fi
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
-  write_progress "Dynatrace Demo Summary: 3 Use Cases to explore"
+  write_progress "Dynatrace Demo Summary: 6 Use Cases to explore"
   cat << EOF
 6 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 
-For the Quality Gate Use case you can do this::
+------------------------------------------------------------------------
+For the Quality Gate Use case you can do this:
 1: Open the Keptn's Bridge for your Quality Gate Project: 
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_QG_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
@@ -773,6 +783,7 @@ For the Quality Gate Use case you can do this::
 3: Automatically synchronize your Dynatrace monitored services with Keptn by adding the 'keptn_managed' and 'keptn_service:SERVICENAME' tag
    More details here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
 
+------------------------------------------------------------------------
 For the Performance as a Self-Service Demo we have created a project that contains a simple JMeter test that can test a single URL.
 Here are things you can do:
 1: Open the Keptn's Bridge for your Performance Project:
@@ -784,6 +795,7 @@ Here are things you can do:
    ./trigger.performance.testing.sh ${KEPTN_PERFORMANCE_PROJECT} ${KEPTN_PERFORMANCE_STAGE} ${KEPTN_PERFORMANCE_SERVICE} performance_withdtmint http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
+------------------------------------------------------------------------
 For the Auto-Remediation Demo we have created project ${KEPTN_REMEDIATION_PROJECT} that contains a default remediation.yaml and some bash and python scripts
 In order for this to work do
 1: Create a new Problem Notification Integration as explained in the readme
@@ -792,7 +804,8 @@ In order for this to work do
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_REMEDIATION_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 
-For the Delivery Use Case we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
+------------------------------------------------------------------------
+For the Delivery Use Case using Istio we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
 To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI
    keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --service=${KEPTN_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
@@ -800,14 +813,18 @@ To trigger a delivery simple do this
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 
-For the Canary Delivery Use Case we have created project ${KEPTN_ROLLOUT_PROJECT} that uses Argo Rollouts for production canary deployments
+------------------------------------------------------------------------
+For the Canary Delivery Use Case using Argo Rollouts we have created project ${KEPTN_ROLLOUT_PROJECT} that deploys a simplenode app in 2 stages (blue/green in staging and canary in prod)
 To trigger a delivery simple do this
-1: Trigger a delivery through the Keptn API as explained in the readme
+1: Trigger a delivery through the Keptn CLI or the Keptn API as explained in the readme
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
 2: Watch the delivery progress in Keptn's bridge
-   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
+   Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_ROLLOUT_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
+3: To deliver the next version simply run
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=2.0.0
 
-
+------------------------------------------------------------------------
 For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
 To trigger a delivery simple do this
 1: Open the Keptn's Bridge for your Performance Project:
