@@ -839,11 +839,15 @@ function install_prometheus_qg_demo {
   write_progress "Waiting for Prometheus server to be available (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=prometheus --for=condition=Available deploy/prometheus-server --timeout=300s --all   
 
-  write_progress "Generating traffic for Podtato-head application"
-  curl -s  "${PODTATO_DOMAIN}?[1-1000]" > /dev/null
+  write_progress "Downloading hey load generation tool"
+  curl https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 -o hey
+  chmod +x hey
+
+  write_progress "Generating traffic for Podtato-head application (for 1 minute)"
+  ./hey -z 1m  "${PODTATO_DOMAIN}"
 
   echo "Run first Prometheus Quality Gate"
-  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=5m
+  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=1m
 
   # deploy other version
   # k3s kubectl set image deploy/helloservice server=gabrieltanner/hello-server:v0.1.2 --record -n prometheus-qg-quality-gate 
@@ -1133,14 +1137,13 @@ function main {
         if [[ $DEMO == "dynatrace" ]]; then 
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
+          JMETER="true"
          
           if [[ $OWNER_EMAIL == "none" ]]; then 
             echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
             exit 1
           fi 
-        fi
-
-        JMETER="true"
+        fi        
 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
