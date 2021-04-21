@@ -519,7 +519,7 @@ function install_keptn {
    fi
   fi
  
-  if [[ "${PROM}" == "true"]]; then
+  if [[ "${PROM}" == "true" ]]; then
      write_progress "Installing Prometheus Service"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
