@@ -24,7 +24,7 @@ ARGO_ROLLOUTS_VERSION="stable"
 # KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
 # KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
 # KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
-
+HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 # JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
 JMETER_SERVICE_VERSION="0.8.0"
 NEOLOAD_SERVICE_VERSION="0.8.0"
@@ -32,7 +32,7 @@ PROM_SERVICE_VERSION="release-0.4.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
 DT_SERVICE_VERSION="release-0.12.0"
 DT_SLI_SERVICE_VERSION="release-0.9.0"
-GENERICEXEC_SERVICE_VERSION="patch/keptn_080"  # "release-0.3"
+GENERICEXEC_SERVICE_VERSION="release-0.8.0"  # "release-0.3"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
 
@@ -459,6 +459,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
+     --set=continuous-delivery.helmService.image.repository="${HELM_SERVICE_IMAGE}" \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -518,7 +519,7 @@ function install_keptn {
    fi
   fi
  
-  if [ "${PROM}" == "true"]]; then
+  if [[ "${PROM}" == "true"]]; then
      write_progress "Installing Prometheus Service"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml "
@@ -705,7 +706,6 @@ gitea_createGitRepo(){
 }
 
 
-function install_neoload_service {
 
 
    if [ -z "$NL_WEB_HOST" ]; then
@@ -732,7 +732,7 @@ function install_neoload_service {
 
    NAMESPACE="keptn"
    write_progress "Installing NeoLoad service"
-   echo "Downloading and installing Istio ${ISTIO_VERSION}"
+   echo "Downloading and installing NeoLoad service ${ISTIO_VERSION}"
 
    if  [ ! -z "$GIT_USER" ] ;  then
      if  [ ! -z "$GIT_PASSWORD" ] ; then
