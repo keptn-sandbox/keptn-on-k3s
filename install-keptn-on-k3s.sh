@@ -843,11 +843,11 @@ function install_prometheus_qg_demo {
   curl https://hey-release.s3.us-east-2.amazonaws.com/hey_linux_amd64 -o hey
   chmod +x hey
 
-  write_progress "Generating traffic for Podtato-head application (for 1 minute)"
-  ./hey -z 1m  "${PODTATO_DOMAIN}"
+  write_progress "Generating traffic for Podtato-head application (for 90 seconds)"
+  ./hey -z 90s -c 10 "http://${PODTATO_DOMAIN}"
 
   echo "Run first Prometheus Quality Gate"
-  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=1m
+  keptn trigger evaluation --project="${KEPTN_PROMETHEUS_QG_PROJECT}" --stage="${KEPTN_PROMETHEUS_QG_STAGE}" --service="${KEPTN_PROMETHEUS_QG_SERVICE}" --timeframe=2m
 
   # deploy other version
   # k3s kubectl set image deploy/helloservice server=gabrieltanner/hello-server:v0.1.2 --record -n prometheus-qg-quality-gate 
