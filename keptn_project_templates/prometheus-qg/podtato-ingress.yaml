@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: podtato-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: issuer.placeholder-issuer
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - "domain.placeholder"
+    secretName: keptn-tls
+  rules:
+    - host: "domain.placeholder"
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: helloservice
+                port:
+                  number: 80
+
