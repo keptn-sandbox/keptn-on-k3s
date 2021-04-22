@@ -714,7 +714,7 @@ install_neoload_service() {
      NL_WEBAPI_HOST="neoload-api.saas.neotys.com"
    fi
 
-   if [[  "$NL_WEBUPLOAD_HOST" === "none" ]]; then
+   if [[  "$NL_WEBUPLOAD_HOST" == "none" ]]; then
      NL_WEBUPLOAD_HOST="neoload-files.saas.neotys.com"
    fi
 
