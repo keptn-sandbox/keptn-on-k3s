@@ -603,7 +603,7 @@ function install_keptn {
 
   # Installing JMeter Service on the control plane if requested!
   if [[ "${NEOLOAD}" == "true" ]]; then
-    install_neoload_service()
+    install_neoload_service
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
@@ -704,7 +704,7 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
- install_neoload_service() {
+install_neoload_service() {
 
    if [ -z "$NL_WEB_HOST" ]; then
      NL_WEB_HOST="neoload.saas.neotys.com"
