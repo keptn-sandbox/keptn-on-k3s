@@ -747,13 +747,13 @@ function install_neoload_service {
 
    echo "Deploying neoload-service $NEOLOAD_SERVICE_VERSION"
    # to update the link
-    curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/distributor.yaml -O distributor.yaml
-    curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/role.yaml -O role.yaml
+    curl -O distributor.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/distributor.yaml
+    curl -O role.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/role.yaml
 
     if [[ "${DYN}" == "true" ]]; then
-      curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service_withdynatrace.yaml
+      curl -O service.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service_withdynatrace.yaml
     else
-       curl https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service.yaml -O service.yaml
+       curl -O service.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service.yaml
     fi
 
 
