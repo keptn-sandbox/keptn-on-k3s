@@ -720,19 +720,19 @@ function install_neoload_service {
      NL_WEBUPLOAD_HOST="neoload-files.saas.neotys.com"
    fi
 
-   if [ -z "$NL_API_TOKEN"]; then
+   if [ -z "$NL_API_TOKEN" ]; then
       echo "The NeoLoad API TOKEN has not be configure. create the NL_API_TOKEN environment variable first"
       exit 1
    fi
 
-   if [ -z "$NL_ZONE_ID"]; then
+   if [ -z "$NL_ZONE_ID" ]; then
       echo "The NeoLoad Zone ID has not be configured. create the NL_ZONE_ID environment variable first"
       exit 1
    fi
 
    NAMESPACE="keptn"
    write_progress "Installing NeoLoad service"
-   echo "Downloading and installing NeoLoad service ${ISTIO_VERSION}"
+   echo "Downloading and installing NeoLoad service ${NEOLOAD_SERVICE_VERSION}"
 
    if  [ ! -z "$GIT_USER" ] ;  then
      if  [ ! -z "$GIT_PASSWORD" ] ; then
