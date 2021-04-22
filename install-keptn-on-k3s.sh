@@ -748,7 +748,7 @@ install_neoload_service() {
     curl -O distributor.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/distributor.yaml
     curl -O role.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/role.yaml
 
-    if [[ "${DYN}" == "true" ]]; then
+    if [[ "${DYNA}" == "true" ]]; then
       curl -O service.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service_withdynatrace.yaml
     else
        curl -O service.yaml https://raw.githubusercontent.com/keptn-contrib/neoload-service/$NEOLOAD_SERVICE_VERSION/config/neoloadexecutor/service.yaml
