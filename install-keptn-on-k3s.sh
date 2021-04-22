@@ -756,7 +756,7 @@ install_neoload_service() {
 
 
     echo "Creating neoload configmap"
-    "${K3SKUBECTL[@]}" -n "$NAMESPACE" create configmap neoload-config --from-literal="NL_WEB_HOST=$NL_WEB_HOST" --from-literal="NL_API_HOST=$NL_API_HOST"  --from-literal="NL_WEB_ZONEID=$NL_WEB_ZONEID" --from-literal="NL_UPLOAD_HOST=$NL_UPLOAD_HOST"
+    "${K3SKUBECTL[@]}" -n "$NAMESPACE" create configmap neoload-config --from-literal="NL_WEB_HOST=$NL_WEB_HOST" --from-literal="NL_API_HOST=$NL_WEBAPI_HOST"  --from-literal="NL_WEB_ZONEID=$NL_ZONE_ID" --from-literal="NL_UPLOAD_HOST=$NL_WEBUPLOAD_HOST"
 
 
    #replace the namespace in the deployment
