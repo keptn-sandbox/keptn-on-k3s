@@ -83,6 +83,7 @@ The script allows a couple of parameters
 | `--with-jmeter` | | Will make sure to install JMeter Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
 | `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
+| `--use-nip` | | Will use a nip.io domain which is sometimes more reliable than using xip.io |
 | `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
 | `--ip` | YOURIP | Allows you to pass your own IP of your host |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
