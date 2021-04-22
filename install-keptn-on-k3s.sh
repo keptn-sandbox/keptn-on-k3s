@@ -603,8 +603,7 @@ function install_keptn {
 
   # Installing JMeter Service on the control plane if requested!
   if [[ "${NEOLOAD}" == "true" ]]; then
-    write_progress "Installing NEOLOAD Service"
-    install_neoload_service
+    install_neoload_service()
   fi
 
   write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
@@ -705,8 +704,7 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
-
-function install_neoload_service {
+ install_neoload_service() {
 
    if [ -z "$NL_WEB_HOST" ]; then
      NL_WEB_HOST="neoload.saas.neotys.com"
@@ -762,9 +760,9 @@ function install_neoload_service {
 
 
    #replace the namespace in the deployment
-  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" service.yaml
-  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" distributor.yaml
-  sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" role.yaml
+   sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" service.yaml
+   sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" distributor.yaml
+   sed -i "s/NAMESPACE_TO_REPLACE/$NAMESPACE/" role.yaml
   "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f role.yaml
   "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f service.yaml
   "${K3SKUBECTL[@]}" -n "$NAMESPACE" apply -f distributor.yaml
