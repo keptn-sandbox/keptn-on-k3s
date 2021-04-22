@@ -78,7 +78,7 @@ The script allows a couple of parameters
 | `--controlplane` | | This is default, it will just install Keptn Control Plane on this k3s allowing Quality Gates & Auto-Remediation |
 | `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm (for Deployment) + JMeter (for Testing). This will also install Istio |
 | `--executionplane` | | This option only installs Keptn's Execution Plane + Helm (for Deployment) + JMeter (for Testing) + Istio. This also requires you to set some Env-Variables pointing to the Keptn Control Plane |
-| `--with-prometheus` | | Will enable Prometheus Support |
+| `--with-prometheus` | | Will enable Prometheus Support and install Prometheus in the `prometheus` namespace. |
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will make sure to install JMeter Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
@@ -87,8 +87,9 @@ The script allows a couple of parameters
 | `--ip` | YOURIP | Allows you to pass your own IP of your host |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
 | `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
-| `--with-demo` | dynatrace | Will install demo projects for Dynatrace |
+| `--with-demo` | dynatrace prometheus | Will install demo projects for Dynatrace or Prometheus |
 | `--with-gitea` |  | Will install Gitea and upstream Git repos for every Keptn project  |
+| `--disable-bridge-auth` |  | Will disable the password check when accessing Keptn Bridge (not recommended for anything else than demo purposes)  |
 
 ### TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io). 
