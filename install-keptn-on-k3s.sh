@@ -55,7 +55,7 @@ PREFIX="https"
 CERTS="selfsigned"
 CERT_EMAIL=${CERT_EMAIL:-none}
 LE_STAGE=${LE_STAGE:-none}
-XIP="true" 
+XIP="false" 
 NIP="false"
 INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
