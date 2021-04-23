@@ -216,10 +216,10 @@ function get_fqdn {
       exit 1
     fi
 
-    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${NIP}" == "true" ]]; then
+    if [[ "${NIP}" == "true" ]]; then
       FQDN="$(get_nip_address "${MY_IP}")"
     fi
-    if [[ "${LE_STAGE}" == "production" ]]; then
+    if [[ "${LE_STAGE}" == "production" ]] && [[ "${NIP}" == "true" ]]; then
       echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
       exit 1
     fi
