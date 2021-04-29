@@ -471,10 +471,11 @@ function install_keptn {
     get_istio
     get_argorollouts
 
-    # now we need to restart the helm service for it to pick up istio
-    kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
+    # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
+    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn    
 
-    # Install the Argo Service
+    # Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
