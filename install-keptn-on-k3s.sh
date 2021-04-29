@@ -34,8 +34,8 @@ HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
 PROM_SERVICE_VERSION="release-0.5.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
-DT_SERVICE_VERSION="release-0.12.0"
-DT_SLI_SERVICE_VERSION="release-0.9.0"
+DT_SERVICE_VERSION="release-0.13.1"
+DT_SLI_SERVICE_VERSION="release-0.10.2"
 GENERICEXEC_SERVICE_VERSION="release-0.8.0"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
