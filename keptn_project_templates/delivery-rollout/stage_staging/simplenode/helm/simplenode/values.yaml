@@ -5,7 +5,7 @@
 replicaCount: 1
 
 # deploymentURILocal: 
-deploymentURIPublic: http://simplenode.REPLACE_KEPTN_PROJECT-staging.REPLACE_KEPTN_INGRESS/
+deploymentURIPublic: http://simplenode.REPLACE_KEPTN_PROJECT-staging.REPLACE_KEPTN_INGRESS:80/
 
 image: docker.io/grabnerandi/simplenodeservice:1.0.0
 pullPolicy: Always
