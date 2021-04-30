@@ -282,21 +282,26 @@ function get_oneagent {
   if [ "$DT_API_TOKEN" == "none" ]; then return; fi
   if [ "$DT_PAAS_TOKEN" == "none" ]; then return; fi
 
-  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
-  "${K3SKUBECTL[@]}" create namespace dynatrace
+  # helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+  # "${K3SKUBECTL[@]}" create namespace dynatrace
 
-  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
-    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
-    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
-    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
-    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+  #sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+  #   -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+  #   -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+  #   -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+  #   ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
 
-  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-  helm install dynatrace-oneagent-operator \
-    dynatrace/dynatrace-oneagent-operator -n\
-    dynatrace --values oneagent_values.yaml
+  # export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+  # helm install dynatrace-oneagent-operator \
+  #   dynatrace/dynatrace-oneagent-operator -n\
+  #   dynatrace --values oneagent_values.yaml
 
-  rm oneagent_values.yaml
+
+  # Install OneAgent Operator & Active Gate instead of just OneAgent Operator
+  export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
+  wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_PAAS_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
+
+#  rm oneagent_values.yaml
 }
 
 function get_helm {
