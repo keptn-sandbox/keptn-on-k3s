@@ -772,6 +772,7 @@ install_neoload_service() {
    PODS=$("${K3SKUBECTL[@]}" -n "$NAMESPACE" get pods --no-headers | awk '{print $1}' | grep jmeter-service | tr '\n' ' ')
    echo "Deleting pods $PODS "
   "${K3SKUBECTL[@]}" -n "$NAMESPACE" delete pods "$PODS" --force  --wait=true --ignore-not-found
+   until "${K3SKUBECTL[@]}" get pod "$PODS"  -n "$NAMESPACE"  2>&1 >/dev/null; do sleep 10; done
 
 
 
