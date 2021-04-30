@@ -773,7 +773,7 @@ install_neoload_service() {
    echo "Deleting pods $PODS "
   "${K3SKUBECTL[@]}" -n "$NAMESPACE" delete pods "$PODS" --force --ignore-not-found
 
-
+  "${K3SKUBECTL[@]}" -n "$NAMESPACE" get pods
 }
 
 function install_demo_dynatrace {
