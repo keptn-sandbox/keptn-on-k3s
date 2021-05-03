@@ -1,0 +1,28 @@
+<html>
+        <style>
+                .leftColumn {position: absolute;top:0px;left: 0px;bottom: 0px;right: 50%;background-color: #33342D;}
+                .rightColumn {position: absolute;top:0px;right: 0px;bottom: 0px;left: 50%;background-color: #33342D;}
+        </style>
+        
+    <script>
+        window.setInterval(function() {
+            document.getElementById('iframe1').src = document.getElementById('iframe1').src;
+            document.getElementById('iframe2').src = document.getElementById('iframe2').src;
+            document.getElementById('iframe3').src = document.getElementById('iframe3').src;
+            document.getElementById('iframe4').src = document.getElementById('iframe4').src;
+            document.getElementById('iframe5').src = document.getElementById('iframe5').src;
+        }, 3000);
+    </script>
+
+    <body>
+        <div class="leftColumn">
+            <iframe id="iframe1" height="100%" width="100%" src="http://simplenode.REPLACE_KEPTN_PROJECT-staging.REPLACE_KEPTN_INGRESS"></iframe>
+        </div>
+        <div class="rightColumn">
+            <iframe id="iframe2" height="25%" width="100%" src="http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS"></iframe>
+            <iframe id="iframe3" height="25%" width="100%" src="http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS"></iframe>
+            <iframe id="iframe4" height="25%" width="100%" src="http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS"></iframe>
+            <iframe id="iframe5" height="25%" width="100%" src="http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS"></iframe>
+        </div>
+    </body>
+</html>

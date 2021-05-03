@@ -2,10 +2,10 @@
 # This is a YAML-formatted file.
 # Declare variables to be passed into your templates.
 
-replicaCount: 5
+replicaCount: 1
 
 # deploymentURILocal: 
-deploymentURIPublic: http://simplenode.REPLACE_KEPTN_PROJECT-prod.REPLACE_KEPTN_INGRESS:80/
+deploymentURIPublic: http://simplenode.REPLACE_KEPTN_PROJECT-staging.REPLACE_KEPTN_INGRESS:80/
 
 image: docker.io/grabnerandi/simplenodeservice:1.0.0
 pullPolicy: Always
@@ -17,7 +17,7 @@ ingress:
 
 service:
   name: simplenode
-  stage: prod
+  stage: staging
   type: ClusterIP
   port: 8080
 

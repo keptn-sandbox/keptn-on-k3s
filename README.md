@@ -17,7 +17,8 @@ This is your fastest way to explore the following use cases:
 
 Depending on which options you choose the script will install
 * JMeter Service as a testing service
-* Istio as Service Mesh
+* Istio as Service Mesh for Blue/Green
+* Argo Rollouts for Canary Deployments
 * Generic Executor to execute remediation scripts
 * Monaco Service to automate Dynatrace Monitoring Configuration
 
@@ -75,20 +76,22 @@ The script allows a couple of parameters
 | ------------------------------ | ------ | --------|
 | `--type` | all (default), k3s, keptn, demo, gitus | Will either install everything (all), just k3s, just keptn (assuming that kubectl is pointing to a k8s cluster), demo (just the demo components), gitus (will create Git Upstreams for each Keptn Project) |
 | `--controlplane` | | This is default, it will just install Keptn Control Plane on this k3s allowing Quality Gates & Auto-Remediation |
-| `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm (for Deployment) + JMeter or NeoLoad ( by using the --with-jmeter or --with-neoload) (for Testing). This will also install Istio |
-| `--executionplane` | | This option only installs Keptn's Execution Plane + Helm (for Deployment) + JMeter or NeoLoad( by using the --with-jmeter or --with-neoload) (for Testing) + Istio. This also requires you to set some Env-Variables pointing to the Keptn Control Plane |
-| `--with-prometheus` | | Will enable Prometheus Support |
+| `--deliveryplane` | | This option will install Keptn Delivery Plane - that is Control Plane + Helm (for Deployment) + JMeter (for Testing). This will also install Istio |
+| `--executionplane` | | This option only installs Keptn's Execution Plane + Helm (for Deployment) + JMeter (for Testing) + Istio. This also requires you to set some Env-Variables pointing to the Keptn Control Plane |
+| `--with-prometheus` | | Will enable Prometheus Support and install Prometheus in the `prometheus` namespace. |
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will make sure to install JMeter Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-neoload` | | Will make sure to install NeoLoad Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
 | `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
+| `--use-nip` | | Will use a nip.io domain which is sometimes more reliable than using xip.io |
 | `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
 | `--ip` | YOURIP | Allows you to pass your own IP of your host |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
 | `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
-| `--with-demo` | dynatrace | Will install demo projects for Dynatrace |
+| `--with-demo` | dynatrace prometheus | Will install demo projects for Dynatrace or Prometheus |
 | `--with-gitea` |  | Will install Gitea and upstream Git repos for every Keptn project  |
+| `--disable-bridge-auth` |  | Will disable the password check when accessing Keptn Bridge (not recommended for anything else than demo purposes)  |
 
 ### TLS Certificates
 keptn-on-k3s comes with [cert-manager](https://cert-manager.io/). By default, a self-signed certificate is generated. By adding `--letsencrypt` as a parameter, and a CERT_EMAIL is exported, you will create a LetsEncrypt-Staging certificate. By additionally exporting `LE_STAGE=production`, a LetsEncypt Production certificate will be issued (will not work with xip.io and nip.io). 

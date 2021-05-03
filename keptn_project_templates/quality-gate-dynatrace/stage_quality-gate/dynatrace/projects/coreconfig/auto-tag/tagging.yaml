@@ -1,0 +1,17 @@
+config:
+  - keptn-stage-tag: "keptn-tagging.json"
+  - keptn-service-tag: "keptn-tagging.json"
+  - keptn-project-tag: "keptn-tagging.json"
+  - keptn-deployment-tag: "keptn-tagging.json"
+
+keptn-stage-tag:
+  - name: "keptn_stage"
+
+keptn-service-tag:
+  - name: "keptn_service"
+
+keptn-project-tag:
+  - name: "keptn_project"
+
+keptn-deployment-tag:
+  - name: "keptn_deployment"
