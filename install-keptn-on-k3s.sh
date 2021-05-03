@@ -610,6 +610,7 @@ function install_keptn {
   sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
     -e 's~issuer.placeholder~'"$CERTS"'~' \
     ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
+  cat keptn-ingress_gen.yaml
   "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
   rm keptn-ingress_gen.yaml
 
