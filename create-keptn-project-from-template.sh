@@ -191,7 +191,7 @@ do
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_SERVICE/${SERVICE_NAME}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_SERVICE/${$STAGE_NAME}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_SERVICE/${STAGE_NAME}/" ${localFileName}.tmp
 
     if [[ "${localFileName}" == *"workload.yaml" ]]; then
       sed -i "s/GIT_SERVER_TO_REPLACE/$GIT_SERVER/" ${localFileName}.tmp
