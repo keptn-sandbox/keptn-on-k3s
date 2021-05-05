@@ -208,19 +208,19 @@ function get_fqdn {
 
     FQDN="${MY_IP}"
 
-    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${XIP}" == "true" ]]; then
-      FQDN="$(get_xip_address "${MY_IP}")"
+    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${NIP}" == "true" ]]; then
+      FQDN="$(get_nip_address "${MY_IP}")"
     fi
     if [[ "${LE_STAGE}" == "production" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
+      echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
       exit 1
     fi
 
-    if [[ "${NIP}" == "true" ]]; then
-      FQDN="$(get_nip_address "${MY_IP}")"
+    if [[ "${XIP}" == "true" ]]; then
+      FQDN="$(get_xip_address "${MY_IP}")"
     fi
-    if [[ "${LE_STAGE}" == "production" ]] && [[ "${NIP}" == "true" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
+    if [[ "${LE_STAGE}" == "production" ]] && [[ "${XIP}" == "true" ]]; then
+      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
       exit 1
     fi
   fi
@@ -1037,6 +1037,7 @@ function main {
     --use-xip)
         echo "Using xip.io"
         XIP="true"
+        NIP="false"
         shift
         ;;
     --use-nip)
