@@ -1014,6 +1014,7 @@ function main {
         ;;
     --fqdn)
 	FQDN="${2}"
+  echo "Using FQDN: ${FQDN}"
 	shift 2
       ;;
     --letsencrypt)
