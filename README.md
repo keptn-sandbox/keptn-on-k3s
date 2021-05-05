@@ -82,8 +82,8 @@ The script allows a couple of parameters
 | `--with-dynatrace` | | Will enable Dynatrace Support.<br>Requires DT_API_TOKEN and DT_TENANT env variables to be set |
 | `--with-jmeter` | | Will make sure to install JMeter Service in case not already selected by another option, e.g: deliveryplane or execution plane |
 | `--with-slackbot` | | Will install the Keptn slackbot. <br> Requires SLACKBOT_TOKEN env variable to be set |
-| `--use-xip` | | Will use a xip.io domain, will also be added when LE_STAGE=staging is selected |
-| `--use-nip` | | Will use a nip.io domain which is sometimes more reliable than using xip.io |
+| `--use-xip` | | Will use a xip.io domain, e.g: your.ip.xip.io |
+| `--use-nip` | | Will use a nip.io domain which is sometimes more reliable than using xip.io. Will also be used when LE_STAGE=staging and no FQDN is specified |
 | `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
 | `--ip` | YOURIP | Allows you to pass your own IP of your host |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
@@ -113,7 +113,7 @@ $ export OWNER_EMAIL=yourdynatraceuser@yourmail.com   # Your username in Dynatra
 $ export LE_STAGE=staging                             # This is needed for certificate creation
 ```
 
-When you have an EC2 machine you can run the following script which will install Keptn using the EC2 machines public IP to expose the keptn services via e.g: http://keptn.YOUR.IP.xip.io
+When you have an EC2 machine you can run the following script which will install Keptn using the EC2 machines public IP to expose the keptn services via e.g: http://keptn.YOUR.IP.nip.io
 
 ```console
 ./install-keptn-on-k3s.sh --deliveryplane --provider aws --with-dynatrace --with-demo dynatrace --letsencrypt --with-gitea

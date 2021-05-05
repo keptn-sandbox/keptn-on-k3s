@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.1"
+KEPTNVERSION="0.8.2"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -34,8 +34,8 @@ HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
 PROM_SERVICE_VERSION="release-0.5.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
-DT_SERVICE_VERSION="release-0.12.0"
-DT_SLI_SERVICE_VERSION="release-0.9.0"
+DT_SERVICE_VERSION="release-0.13.1"
+DT_SLI_SERVICE_VERSION="release-0.10.2"
 GENERICEXEC_SERVICE_VERSION="release-0.8.0"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
@@ -208,19 +208,19 @@ function get_fqdn {
 
     FQDN="${MY_IP}"
 
-    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${XIP}" == "true" ]]; then
-      FQDN="$(get_xip_address "${MY_IP}")"
+    if [[ "${LE_STAGE}" == "staging" ]] || [[ "${NIP}" == "true" ]]; then
+      FQDN="$(get_nip_address "${MY_IP}")"
     fi
     if [[ "${LE_STAGE}" == "production" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
+      echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
       exit 1
     fi
 
-    if [[ "${NIP}" == "true" ]]; then
-      FQDN="$(get_nip_address "${MY_IP}")"
+    if [[ "${XIP}" == "true" ]]; then
+      FQDN="$(get_xip_address "${MY_IP}")"
     fi
-    if [[ "${LE_STAGE}" == "production" ]] && [[ "${NIP}" == "true" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
+    if [[ "${LE_STAGE}" == "production" ]] && [[ "${XIP}" == "true" ]]; then
+      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
       exit 1
     fi
   fi
@@ -296,7 +296,11 @@ function get_oneagent {
     dynatrace/dynatrace-oneagent-operator -n\
     dynatrace --values oneagent_values.yaml
 
-  rm oneagent_values.yaml
+  # TODO -once ActiveGate supports local k8s API -> Install OneAgent Operator & Active Gate instead of just OneAgent Operator
+  # export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
+  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_PAAS_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
+
+#  rm oneagent_values.yaml
 }
 
 function get_helm {
@@ -461,7 +465,6 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://storage.googleapis.com/keptn-installer" \
       --set=continuous-delivery.enabled=true \
-      --set=continuous-delivery.helmService.image.repository="${HELM_SERVICE_IMAGE}" \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -471,10 +474,11 @@ function install_keptn {
     get_istio
     get_argorollouts
 
-    # now we need to restart the helm service for it to pick up istio
-    kubectl delete pod -n keptn --selector=app.kubernetes.io/name=helm-service
+    # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
+    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --set=helmservice.image.repository="${HELM_SERVICE_IMAGE}"
 
-    # Install the Argo Service
+    # Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
@@ -499,7 +503,7 @@ function install_keptn {
     yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
 
     if [[ "${HELM_SERVICE_IMAGE}" != "" ]]; then
-      yq w /tmp/helm.values.yaml "distributor.image.repository" "${HELM_SERVICE_IMAGE}"
+      yq w /tmp/helm.values.yaml "helmservice.image.repository" "${HELM_SERVICE_IMAGE}"
     fi 
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
@@ -760,6 +764,7 @@ function install_demo_dynatrace {
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_DELIVERY_PROJECT}"
   ./create-keptn-project-from-template.sh delivery-simplenode ${OWNER_EMAIL} ${KEPTN_DELIVERY_PROJECT}
+
 
   # ==============================================================================================
   # Demo 5: Canary Delivery with Argo Rollouts
@@ -1032,6 +1037,7 @@ function main {
     --use-xip)
         echo "Using xip.io"
         XIP="true"
+        NIP="false"
         shift
         ;;
     --use-nip)
