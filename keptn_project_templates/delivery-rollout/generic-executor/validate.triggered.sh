@@ -14,6 +14,6 @@ sleep "$DATA_VALIDATE_WAITTIME"
 
 if [[ "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0" != "" ]]; then
   echo "And now we validate whether we can reach the deployment Url: $DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0"
-  wget -q "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC"
+  wget -q "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0"
   echo "wget returned $?"
 fi
