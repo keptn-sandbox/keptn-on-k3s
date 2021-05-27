@@ -13,6 +13,9 @@ spec:
       - name: deployment
         properties:
           deploymentstrategy: user_managed
+      - name: validate
+        properties:
+          waittime: 10s
       - name: release          
       - name: test
         properties:
@@ -44,6 +47,9 @@ spec:
       - name: deployment
         properties:
           deploymentstrategy: user_managed
+      - name: validate
+        properties:
+          waittime: 10s
       - name: test
         properties:
           teststrategy: performance
