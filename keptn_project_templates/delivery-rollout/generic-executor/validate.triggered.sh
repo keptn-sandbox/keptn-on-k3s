@@ -7,13 +7,13 @@ if [[ "$DATA_VALIDATE_WAITTIME" == "" ]]; then
   DATA_VALIDATE_WAITTIME="10s"
 fi 
 
-echo "Validate Triggered Script for $PROJECT.$STAGE.$SERVICE"
+echo "Validate Triggered Script for $DATA_PROJECT.$DATA_STAGE.$DATA_SERVICE"
 echo "We are simply waiting for the passed time: $DATA_VALIDATE_WAITTIME"
 
 sleep "$DATA_VALIDATE_WAITTIME"
 
-if [[ "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC" == "" ]]; then
-  echo "And now we validate whether we can reach the deployment Url: $DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC"
+if [[ "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0" != "" ]]; then
+  echo "And now we validate whether we can reach the deployment Url: $DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0"
   wget -q "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC"
   echo "wget returned $?"
 fi
