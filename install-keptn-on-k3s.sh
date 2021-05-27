@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.2"
+KEPTNVERSION="0.8.3"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -27,10 +27,6 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 # KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
 # KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
 # KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
-
-# JMETER_SERVICE_VERSION="feature/2552/jmeterextensions" # is now installed automatically
-JMETER_SERVICE_VERSION="0.8.0"
-HELM_SERVICE_IMAGE=grabnerandi/helm-service # keptn/helm-service
 
 PROM_SERVICE_VERSION="release-0.5.0"
 PROM_SLI_SERVICE_VERSION="release-0.3.0"
@@ -476,7 +472,7 @@ function install_keptn {
 
     # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
     helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
-    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --set=helmservice.image.repository="${HELM_SERVICE_IMAGE}"
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
     # Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
@@ -501,10 +497,6 @@ function install_keptn {
     yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-
-    if [[ "${HELM_SERVICE_IMAGE}" != "" ]]; then
-      yq w /tmp/helm.values.yaml "helmservice.image.repository" "${HELM_SERVICE_IMAGE}"
-    fi 
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
 
