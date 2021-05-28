@@ -722,7 +722,7 @@ gitea_createKeptnRepoManually(){
 }
 
 gitea_createKeptnRepo(){
-    echo "Creating and migrating Keptn project to self-hosted git for $1"
+    echo "Creating and migrating Keptn project to self-hosted git for $1 on server $GIT_SERVER "
     gitea_createGitRepo $1
     gitea_updateKeptnRepo $1
 }
@@ -1310,7 +1310,7 @@ function main {
     gitea_createKeptnRepos
     print_config
   fi
-
+  
   if [[ "${INSTALL_TYPE}" == "k3s" ]]; then
     get_helm
     get_k3s
