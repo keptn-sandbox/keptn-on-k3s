@@ -728,7 +728,7 @@ gitea_createKeptnRepo(){
 }
 
 gitea_createGitRepo(){
-    echo "Create repo for project $1"
+    echo "Create repo for project $1 on  server $GIT_SERVER"
     # Create Repo with Token
     curl -k -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
     -H "accept: application/json" -H "Content-Type: application/json" \
