@@ -67,6 +67,9 @@ spec:
             match:
               result: "pass"
       tasks:
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
       - name: release
       - name: test
         properties:
@@ -86,6 +89,9 @@ spec:
             match:
               result: "pass"
       tasks:
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
       - name: release
       - name: test
         properties:
@@ -105,6 +111,9 @@ spec:
             match:
               result: "pass"
       tasks:
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
       - name: release
       - name: test
         properties:
