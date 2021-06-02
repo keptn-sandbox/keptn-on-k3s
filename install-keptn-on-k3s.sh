@@ -120,6 +120,8 @@ KEPTN_PROMETHEUS_QG_PROJECT="prometheus-qg"
 KEPTN_PROMETHEUS_QG_STAGE="quality-gate"
 KEPTN_PROMETHEUS_QG_SERVICE="helloservice"
 
+KEPTN_GENERIC_AUTOMATION_PROJECT="generic-automation"
+
 function create_namespace {
   namespace="${1:-none}"
   if [[ "${namespace}" == "none" ]]; then
@@ -774,6 +776,14 @@ function install_demo_dynatrace {
   echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
   ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
 
+  # ==============================================================================================
+  # Demo 7: Generic Automation
+  # Creates a project that just shows generic automation sequences, e.g: calling some scripts
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_GENERIC_AUTOMATION_PROJECT}"
+  ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
+
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
     gitea_readApiTokenFromFile
@@ -783,6 +793,7 @@ function install_demo_dynatrace {
     gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_GENERIC_AUTOMATION_PROJECT}"
   fi
 }
 
@@ -943,6 +954,10 @@ To trigger a delivery simple do this
    ./trigger.performance.testing.sh ${KEPTN_ADV_PERFORMANCE_PROJECT} functional ${KEPTN_ADV_PERFORMANCE_SERVICE} performance http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
+------------------------------------------------------------------------
+For the Generic Automation Use Case check out the project and trigger the fun sequence in dev
+To trigger that sequence simply execute:
+keptn send event --file=./dev.fun.triggered.json
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
