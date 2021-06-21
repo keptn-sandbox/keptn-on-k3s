@@ -980,6 +980,9 @@ If you want to install the Keptn CLI somewhere else - here the description:
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
 After that also remove the demo files that were downloaded in your local working directory!
 
+To get access to your k3s via kubectl execute the following command:
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
 Now go and enjoy Keptn!
 EOF
 
