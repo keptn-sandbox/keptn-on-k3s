@@ -32,9 +32,9 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="release-0.14.0"
 DT_SLI_SERVICE_VERSION="release-0.11.0"
-GENERICEXEC_SERVICE_VERSION="release-0.8.0"
-MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
+GENERICEXEC_SERVICE_VERSION="release-0.8.4"
+MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
+ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
