@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.3"
+KEPTNVERSION="0.8.4"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -28,10 +28,10 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 # KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
 # KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
 
-PROM_SERVICE_VERSION="release-0.5.0"
-PROM_SLI_SERVICE_VERSION="release-0.3.0"
+# PROM_SERVICE_VERSION="release-0.6.1"
+# # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="release-0.14.0"
-DT_SLI_SERVICE_VERSION="release-0.10.3"
+DT_SLI_SERVICE_VERSION="release-0.11.0"
 GENERICEXEC_SERVICE_VERSION="release-0.8.0"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
@@ -532,8 +532,8 @@ function install_keptn {
 
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
 
-     write_progress "Installing Prometheus SLI Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
+     # write_progress "Installing Prometheus SLI Service"
+     # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
