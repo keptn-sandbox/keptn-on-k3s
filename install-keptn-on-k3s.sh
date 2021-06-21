@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.3"
+KEPTNVERSION="0.8.4"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -28,10 +28,10 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 # KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
 # KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
 
-PROM_SERVICE_VERSION="release-0.5.0"
-PROM_SLI_SERVICE_VERSION="release-0.3.0"
-DT_SERVICE_VERSION="release-0.13.1"
-DT_SLI_SERVICE_VERSION="release-0.10.2"
+# PROM_SERVICE_VERSION="release-0.6.1"
+# # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
+DT_SERVICE_VERSION="release-0.14.0"
+DT_SLI_SERVICE_VERSION="release-0.11.0"
 GENERICEXEC_SERVICE_VERSION="release-0.8.0"
 MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
@@ -119,6 +119,8 @@ KEPTN_ADV_PERFORMANCE_SERVICE="appundertest"
 KEPTN_PROMETHEUS_QG_PROJECT="prometheus-qg"
 KEPTN_PROMETHEUS_QG_STAGE="quality-gate"
 KEPTN_PROMETHEUS_QG_SERVICE="helloservice"
+
+KEPTN_GENERIC_AUTOMATION_PROJECT="generic-automation"
 
 function create_namespace {
   namespace="${1:-none}"
@@ -530,8 +532,8 @@ function install_keptn {
 
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
 
-     write_progress "Installing Prometheus SLI Service"
-     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
+     # write_progress "Installing Prometheus SLI Service"
+     # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
@@ -774,6 +776,14 @@ function install_demo_dynatrace {
   echo "Create Keptn Project: ${KEPTN_ADV_PERFORMANCE_PROJECT}"
   ./create-keptn-project-from-template.sh advanced-performance ${OWNER_EMAIL} ${KEPTN_ADV_PERFORMANCE_PROJECT}
 
+  # ==============================================================================================
+  # Demo 7: Generic Automation
+  # Creates a project that just shows generic automation sequences, e.g: calling some scripts
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_GENERIC_AUTOMATION_PROJECT}"
+  ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
+
   # last step is to setup upstream gits
   if [[ "${GITEA}" == "true" ]]; then
     gitea_readApiTokenFromFile
@@ -783,6 +793,7 @@ function install_demo_dynatrace {
     gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
     gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
+    gitea_createKeptnRepo "${KEPTN_GENERIC_AUTOMATION_PROJECT}"
   fi
 }
 
@@ -943,6 +954,10 @@ To trigger a delivery simple do this
    ./trigger.performance.testing.sh ${KEPTN_ADV_PERFORMANCE_PROJECT} functional ${KEPTN_ADV_PERFORMANCE_SERVICE} performance http://yourapp/yoururl
 5: Watch data in Dynatrace as the test gets executed and watch the Quality Gate in Keptn after test execution is done!
 
+------------------------------------------------------------------------
+For the Generic Automation Use Case check out the project and trigger the fun sequence in dev
+To trigger that sequence simply execute:
+keptn send event --file=./dev.fun.triggered.json
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 

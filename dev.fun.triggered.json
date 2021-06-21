@@ -1,0 +1,11 @@
+{
+  "data": {
+      "project": "generic-automation",
+      "stage": "dev",
+      "service": "default"
+  },
+  "source": "my-automation-script",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.dev.fun.triggered",
+  "shkeptnspecversion": "0.2.0"
+}

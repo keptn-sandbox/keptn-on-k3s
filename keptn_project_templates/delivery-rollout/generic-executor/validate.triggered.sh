@@ -15,5 +15,13 @@ sleep "$DATA_VALIDATE_WAITTIME"
 if [[ "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0" != "" ]]; then
   echo "And now we validate whether we can reach the deployment Url: $DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0"
   wget "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0" -q -O /dev/null
-  echo "wget returned $?"
+
+  if [[ "$?" != "0" ]]; then
+    echo "wget returned $? - we retry once more!"
+    sleep "$DATA_VALIDATE_WAITTIME"
+    echo "Second attempt to validate deployment Url: $DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0"
+    wget "$DATA_DEPLOYMENT_DEPLOYMENTURISPUBLIC_0" -q -O /dev/null
+
+    echo "wget returned $?"
+  fi 
 fi
