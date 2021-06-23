@@ -343,15 +343,13 @@ function get_istio {
     "${K3SKUBECTL[@]}" apply -n istio-system -f ./files/istio/istio-gateway.yaml
   fi
 
-  # TODO - maybe use FQDN instead of KEPTN_DOMAIN as prefix
   # Create ConfigMap Entry for keptn's helm service
   "${K3SKUBECTL[@]}" create configmap -n keptn ingress-config \
-      --from-literal=ingress_hostname_suffix=${KEPTN_DOMAIN} \
+      --from-literal=ingress_hostname_suffix=${FQDN} \
       --from-literal=ingress_port=${INGRESS_PORT} \
       --from-literal=ingress_protocol=${INGRESS_PROTOCOL} \
       --from-literal=istio_gateway=${ISTIO_GATEWAY} \
       -oyaml --dry-run | kubectl replace -f -
-
 }
 
 function check_k8s {
