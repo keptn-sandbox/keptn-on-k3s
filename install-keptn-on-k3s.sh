@@ -810,15 +810,9 @@ function install_demo_dynatrace {
   ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
 
   # last step is to setup upstream gits
-  if [[ "${GITEA}" == "true" ]]; then
+  if [[ "${GIT_SERVER}" != "none" ]]; then
     gitea_readApiTokenFromFile
-    gitea_createKeptnRepo "${KEPTN_QG_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_GENERIC_AUTOMATION_PROJECT}"
+    gitea_createKeptnRepos
   fi
 }
 
