@@ -552,10 +552,11 @@ function install_keptn {
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
   fi
 
+  # Install Dynatrace Services
   if [[ "${DYNA}" == "true" ]]; then
 
-    if [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
-      write_progress "Installing Dynatrace Service on Control Plane"
+    if [[ "${KEPTN_CONTROLPLANE}" == "true" ]] || [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
+      write_progress "Installing Dynatrace + Dynatrace SLI Services on Control / Delivery Plane"
       create_namespace dynatrace
 
       check_delete_secret dynatrace
@@ -572,7 +573,7 @@ function install_keptn {
     fi 
 
     if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
-      # Installing monaco service
+      # Installing monaco service on delivery & execution plane
       write_progress "Installing Monaco (Monitoring as Code) on Execution / Delivery Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
 
