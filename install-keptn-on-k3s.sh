@@ -500,12 +500,12 @@ function install_keptn {
 
     # Install the Helm Service
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
-    yq w /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
-    yq w /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
-    yq w /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
-    yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-    yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
-    yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    yq w -i /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+    yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
 
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
 
@@ -518,12 +518,12 @@ function install_keptn {
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
       curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
-      yq w /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-      yq w /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
-      yq w /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
 
