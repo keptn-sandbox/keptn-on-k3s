@@ -43,20 +43,20 @@ KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 if [[ "$TEMPLATE_NAME" == "none" ]]; then
     echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
     echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
-    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate demo"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 if [[ "$OWNER_EMAIL" == "none" ]]; then
     echo "You have to set OWNER_EMAIL to a valid email as this might be used in e.g: Dynatrace Dashboards .."
     echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
-    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate demo"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 
 if [[ "$PROJECT_NAME" == "none" ]]; then
     echo "You have to set PROJECT_NAME to the project name you want to create based on the template"
     echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
-    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate demo"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 
