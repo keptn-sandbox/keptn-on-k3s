@@ -493,6 +493,8 @@ function install_keptn {
     create_namespace "keptn"
 
     # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
+    # Create an empty ingress-config configmap as it will be replaced by get_istio. Normally this config map gets created during the keptn install
+    "${K3SKUBECTL[@]}" -n keptn create configmap ingress-config 
     get_istio
     get_argorollouts
 
