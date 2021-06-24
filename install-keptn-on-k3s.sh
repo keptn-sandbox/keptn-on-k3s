@@ -35,6 +35,7 @@ DT_SLI_SERVICE_VERSION="release-0.11.0"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
+LOCUST_SERVICE_VERSION="release-0.1.2"
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -59,6 +60,7 @@ PROM="false"
 DYNA="false"
 GITEA="false"
 JMETER="false"
+LOCUST="false"
 SLACK="false"
 GENERICEXEC="false"
 
@@ -77,10 +79,10 @@ KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 
 #Gitea - default values
-GIT_USER="keptn"
-GIT_PASSWORD="keptn#R0cks"
-GIT_SERVER="none"
-GIT_DOMAIN="none"
+GIT_USER=${GIT_USER:-keptn}
+GIT_PASSWORD=${GIT_SERVER:-keptn#R0cks}
+GIT_SERVER=${GIT_SERVER:-none}
+GIT_DOMAIN=${GIT_DOMAIN:-none}
 
 # static vars
 GIT_TOKEN="keptn-upstream-token"
@@ -224,9 +226,13 @@ function get_fqdn {
   fi
 
   KEPTN_DOMAIN="keptn.${FQDN}"
-  GIT_DOMAIN="git.${FQDN}"
-  # always acceses git via http as we otherwise may have problem with self-signed certificate!
-  GIT_SERVER="http://$GIT_DOMAIN"
+
+  # if GIT_DOMAIN wasnt set we assume we will install it
+  if [[ "${GIT_DOMAIN}" == "none" ]]; then
+    GIT_DOMAIN="git.${FQDN}"
+    # always acceses git via http as we otherwise may have problem with self-signed certificate!
+    GIT_SERVER="http://$GIT_DOMAIN"
+  fi
 }
 
 function apply_manifest {
@@ -507,7 +513,6 @@ function install_keptn {
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
 
-
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
       curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
@@ -519,7 +524,18 @@ function install_keptn {
       yq w /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+
+      # no need to additionally install jmeter afterwards as we install it as part of the execution plane anyway!
+      JMETER="false"
     fi
+
+    # Install Locust if the user wants to
+    if [[ "${LOCUST}" == "true" ]]; then
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    fi
+
   fi
  
   if [[ "${PROM}" == "true" ]]; then
@@ -534,32 +550,35 @@ function install_keptn {
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
 
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
-
-     # write_progress "Installing Prometheus SLI Service"
-     # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
   if [[ "${DYNA}" == "true" ]]; then
-    write_progress "Installing Dynatrace Service & Monaco (Monitoring as Code)"
-    create_namespace dynatrace
 
-    check_delete_secret dynatrace
-    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
-      --from-literal="DT_TENANT=$DT_TENANT" \
-      --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
-      --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
-      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
-      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
+    if [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+      write_progress "Installing Dynatrace Service on Control Plane"
+      create_namespace dynatrace
 
-    # Installing core dynatrace services
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+      check_delete_secret dynatrace
+      "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
+        --from-literal="DT_TENANT=$DT_TENANT" \
+        --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
+        --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
+        --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
+        --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
-    # Installing monaco service
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+      # Installing core dynatrace services
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+    fi 
 
-    # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
-    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+    if [ [ "${KEPTN_DELIVERYPLANE}" == "true" ] || [ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+      # Installing monaco service
+      write_progress "Installing Monaco (Monitoring as Code) on Execution / Delivery Plane"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+
+      # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
+      "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+    fi 
   fi
 
   if [[ "${GITEA}" == "true" ]]; then
@@ -619,18 +638,21 @@ function install_keptn {
     disable_bridge_auth
   fi
 
-  write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
-  sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
-    -e 's~issuer.placeholder~'"$CERTS"'~' \
-    ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
-  "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
-  rm keptn-ingress_gen.yaml
-
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 
-  write_progress "Waiting for certificates to be ready (max 5 minutes)"
-  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
+  # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
+  if [ [ "${KEPTN_DELIVERYPLANE}" == "true" ] || [ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+    write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
+    sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
+      -e 's~issuer.placeholder~'"$CERTS"'~' \
+      ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
+    rm keptn-ingress_gen.yaml
+
+    write_progress "Waiting for certificates to be ready (max 5 minutes)"
+    "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
+  fi 
 }
 
 function install_keptncli {
@@ -1105,6 +1127,11 @@ function main {
         JMETER="true"
         shift
         ;;
+    --with-locust)
+        echo "Enabling Locust Support"
+        LOCUST="true"
+        shift
+        ;;
     --with-prometheus)
         echo "Enabling Prometheus Support"
         PROM="true"
@@ -1175,6 +1202,11 @@ function main {
 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
+        ;;
+    --with-genericexec)
+        GENERICEXEC="true"
+        echo "Enabling Generic Executor"
+        shift
         ;;
     --with-slackbot)
         SLACK="true"
