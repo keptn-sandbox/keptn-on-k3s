@@ -817,6 +817,8 @@ function install_demo_dynatrace {
 }
 
 function install_demo {
+  echo "Installing Demos"
+
   if [[ "${DEMO}" == "dynatrace" ]]; then
     install_demo_dynatrace
   fi 
@@ -1012,6 +1014,7 @@ function main {
   case "${1:-default}" in
     --type)
         INSTALL_TYPE="${2}"
+        echo "Install Type: ${INSTALL_TYPE}"
         shift 2
       ;;
     --ip)
