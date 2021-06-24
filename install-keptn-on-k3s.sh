@@ -571,7 +571,7 @@ function install_keptn {
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
     fi 
 
-    if [ [ "${KEPTN_DELIVERYPLANE}" == "true" ] || [ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
       # Installing monaco service
       write_progress "Installing Monaco (Monitoring as Code) on Execution / Delivery Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
@@ -642,7 +642,7 @@ function install_keptn {
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 
   # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
-  if [ [ "${KEPTN_DELIVERYPLANE}" == "true" ] || [ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+  if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
     write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
     sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
       -e 's~issuer.placeholder~'"$CERTS"'~' \
