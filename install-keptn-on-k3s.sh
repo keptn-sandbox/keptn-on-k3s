@@ -809,12 +809,6 @@ function install_demo_dynatrace {
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_GENERIC_AUTOMATION_PROJECT}"
   ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
-
-  # last step is to setup upstream gits
-  if [[ "${GIT_SERVER}" != "none" ]]; then
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepos
-  fi
 }
 
 function install_demo {
@@ -1252,8 +1246,13 @@ function main {
     install_keptn
     install_keptncli
     install_demo
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepos  
+
+    # if a GIT_SERVER is specified lets create repos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    fi
+
     print_config
   fi
 
@@ -1272,11 +1271,21 @@ function main {
 
   if [[ "${INSTALL_TYPE}" == "demo" ]]; then
     install_demo
+
+    # if a GIT_SERVER is specified lets create repos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    fi
   fi
 
   if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    else
+      echo "GIT_SERVER is not set - therefore not setting upstream git repos"
+    fi 
   fi
 
 }
