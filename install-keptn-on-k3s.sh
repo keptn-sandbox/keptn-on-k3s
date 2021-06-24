@@ -506,14 +506,16 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-
-    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.apiValidateTls" "false"
+    
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
     # Install the Argo Service for just the demo-rollout project
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor HTTP_SSL_VERIFY="false"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
@@ -524,12 +526,25 @@ function install_keptn {
       yq w -i /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.apiValidateTls" "false"
 
-      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
 
       # no need to additionally install jmeter afterwards as we install it as part of the execution plane anyway!
       JMETER="false"
     fi
+
+    if [[ "${GENERICEXEC}" == "true" ]]; then
+      write_progress "Installing Generic Executor Service on the Execution Plane"
+
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor HTTP_SSL_VERIFY="false"
+
+      GENERICEXEC="false"
+    fi
+
 
     # Install Locust if the user wants to
     if [[ "${LOCUST}" == "true" ]]; then
@@ -659,10 +674,20 @@ function install_keptn {
 }
 
 function install_keptncli {
-  KEPTN_API_TOKEN="$(get_keptn_token)"
 
-  echo "Installing and Authenticating Keptn CLI"
+  echo "Installing the Keptn CLI"
   curl -sL https://get.keptn.sh | KEPTN_VERSION=${KEPTNVERSION} sudo -E bash
+
+  # If we are on the execution plane we can connect the keptn CLI to the Control Plane
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    echo "Authenticate Keptn CLI against the Control Plane"
+    KEPTN_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
+    KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  else
+    echo "Authenticate Keptn CLI against your local installed Keptn"
+    KEPTN_API_TOKEN="$(get_keptn_token)"
+  fi
+
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
