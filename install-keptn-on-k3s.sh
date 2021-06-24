@@ -227,8 +227,8 @@ function get_fqdn {
 
   KEPTN_DOMAIN="keptn.${FQDN}"
 
-  # if GIT_DOMAIN wasnt set we assume we will install it
-  if [[ "${GIT_DOMAIN}" == "none" ]]; then
+  # if GIT_DOMAIN wasnt set and we will install GITEA lets create the domain name
+  if [[ "${GIT_DOMAIN}" == "none" ]] && [[ "${GITEA}" == "true" ]]; then
     GIT_DOMAIN="git.${FQDN}"
     # always acceses git via http as we otherwise may have problem with self-signed certificate!
     GIT_SERVER="http://$GIT_DOMAIN"
@@ -588,7 +588,7 @@ function install_keptn {
 
     # removing any previous git-token files that might be left-over from a previous install
     if [ -f "${TOKEN_FILE}" ]; then 
-      rm "${TOKEN_FILE}"     
+      rm "${TOKEN_FILE}"
     fi
 
     echo "Create namespace for git"
