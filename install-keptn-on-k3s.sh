@@ -712,7 +712,7 @@ gitea_createKeptnRepos() {
     echo "Creating repositories for Keptn projects "
     for project in `keptn get projects | awk '{ if (NR!=1) print $1}'`;
     do 
-        gitea_createKeptnRepo $project
+        gitea_createKeptnRepo $project || true
     done
 }
 

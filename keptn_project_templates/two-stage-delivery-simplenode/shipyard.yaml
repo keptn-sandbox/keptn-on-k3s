@@ -14,11 +14,6 @@ spec:
       - name: test
         properties:
           teststrategy: functional
-      - name: evaluation
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic
   - name: production
     sequences:
     - name: delivery

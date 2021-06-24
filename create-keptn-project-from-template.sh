@@ -192,7 +192,7 @@ do
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_SYNTHETIC_LOCATION/SYNTHETIC_LOCATION/" ${localFileName}.tmp
+    sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
