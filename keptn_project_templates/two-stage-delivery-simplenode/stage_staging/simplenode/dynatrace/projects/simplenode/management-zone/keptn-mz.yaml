@@ -1,0 +1,8 @@
+config:
+  - management-zone-keptn-project-stage: "keptn-mz.json"
+
+management-zone-keptn-project-stage:
+  - name: "Keptn: {{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_STAGE }}"
+  - project: "{{ .Env.KEPTN_PROJECT }}"
+  - stage: "{{ .Env.KEPTN_STAGE }}"
+  - service: "{{ .Env.KEPTN_SERVICE }}"

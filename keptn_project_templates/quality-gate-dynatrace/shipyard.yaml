@@ -10,3 +10,6 @@ spec:
         tasks:
         - name: monaco
         - name: evaluation
+      - name: simple_evaluation
+        tasks:
+        - name: evaluation        
