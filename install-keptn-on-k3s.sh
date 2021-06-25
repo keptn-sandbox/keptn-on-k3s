@@ -20,8 +20,8 @@ ARGO_ROLLOUTS_VERSION="stable"
 ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 
 # For execution plane these are the env-variables that identify the keptn control plane
-KEPTN_CONTROL_PLANE_DOMAIN=""
-KEPTN_CONTROL_PLANE_API_TOKEN=""
+KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_CONTROL_PLANE_DOMAIN:-none}
+KEPTN_CONTROL_PLANE_API_TOKEN=${KEPTN_CONTROL_PLANE_API_TOKEN:-none}
 
 # For execution plane here are the filters
 KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
@@ -1173,11 +1173,11 @@ function main {
         KEPTN_CONTROLPLANE="false"
 
         # need keptn_endpoint, keptn_token and distributor filter project, stage & service
-        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "" ]]; then
+        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "none" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_DOMAIN to the HOSTNAME of the Keptn Control Plane, e.g: keptn.yourdomain.com"
           exit 1
         fi 
-        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "" ]]; then
+        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "none" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_API_TOKEN to the API_TOKEN of your of the Keptn Control Plane"
           exit 1
         fi 
