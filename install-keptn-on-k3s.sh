@@ -20,21 +20,22 @@ ARGO_ROLLOUTS_VERSION="stable"
 ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 
 # For execution plane these are the env-variables that identify the keptn control plane
-# KEPTN_CONTROL_PLANE_DOMAIN=""
-# KEPTN_CONTROL_PLANE_API_TOKEN=""
+KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_CONTROL_PLANE_DOMAIN:-none}
+KEPTN_CONTROL_PLANE_API_TOKEN=${KEPTN_CONTROL_PLANE_API_TOKEN:-none}
 
 # For execution plane here are the filters
-# KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
-# KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
-# KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
+KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
+KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
+KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="release-0.14.0"
 DT_SLI_SERVICE_VERSION="release-0.11.0"
-GENERICEXEC_SERVICE_VERSION="release-0.8.0"
-MONACO_SERVICE_VERSION="release-0.8.0"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.8.0" # updates/finalize08
+GENERICEXEC_SERVICE_VERSION="release-0.8.4"
+MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
+ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
+LOCUST_SERVICE_VERSION="release-0.1.2"
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -57,8 +58,10 @@ INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
 DYNA="false"
+MONACO="false"
 GITEA="false"
 JMETER="false"
+LOCUST="false"
 SLACK="false"
 GENERICEXEC="false"
 
@@ -77,10 +80,10 @@ KUBECONFIG=/etc/rancher/k3s/k3s.yaml
 
 
 #Gitea - default values
-GIT_USER="keptn"
-GIT_PASSWORD="keptn#R0cks"
-GIT_SERVER="none"
-GIT_DOMAIN="none"
+GIT_USER=${GIT_USER:-keptn}
+GIT_PASSWORD=${GIT_SERVER:-keptn#R0cks}
+GIT_SERVER=${GIT_SERVER:-none}
+GIT_DOMAIN=${GIT_DOMAIN:-none}
 
 # static vars
 GIT_TOKEN="keptn-upstream-token"
@@ -149,7 +152,12 @@ function check_delete_secret {
 }
 
 function get_keptn_token {
-  echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+
+  if [[ "${KEPTN_CONTROL_PLANE_API_TOKEN}" == "none" ]]; then 
+    echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+  else
+    echo "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  fi
 }
 
 
@@ -213,20 +221,16 @@ function get_fqdn {
       echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
       exit 1
     fi
-
-    if [[ "${XIP}" == "true" ]]; then
-      FQDN="$(get_xip_address "${MY_IP}")"
-    fi
-    if [[ "${LE_STAGE}" == "production" ]] && [[ "${XIP}" == "true" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
-      exit 1
-    fi
   fi
 
   KEPTN_DOMAIN="keptn.${FQDN}"
-  GIT_DOMAIN="git.${FQDN}"
-  # always acceses git via http as we otherwise may have problem with self-signed certificate!
-  GIT_SERVER="http://$GIT_DOMAIN"
+
+  # if GIT_DOMAIN wasnt set and we will install GITEA lets create the domain name
+  if [[ "${GIT_DOMAIN}" == "none" ]] && [[ "${GITEA}" == "true" ]]; then
+    GIT_DOMAIN="git.${FQDN}"
+    # always acceses git via http as we otherwise may have problem with self-signed certificate!
+    GIT_SERVER="http://$GIT_DOMAIN"
+  fi
 }
 
 function apply_manifest {
@@ -343,15 +347,13 @@ function get_istio {
     "${K3SKUBECTL[@]}" apply -n istio-system -f ./files/istio/istio-gateway.yaml
   fi
 
-  # TODO - maybe use FQDN instead of KEPTN_DOMAIN as prefix
   # Create ConfigMap Entry for keptn's helm service
   "${K3SKUBECTL[@]}" create configmap -n keptn ingress-config \
-      --from-literal=ingress_hostname_suffix=${KEPTN_DOMAIN} \
+      --from-literal=ingress_hostname_suffix=${FQDN} \
       --from-literal=ingress_port=${INGRESS_PORT} \
       --from-literal=ingress_protocol=${INGRESS_PROTOCOL} \
       --from-literal=istio_gateway=${ISTIO_GATEWAY} \
       -oyaml --dry-run | kubectl replace -f -
-
 }
 
 function check_k8s {
@@ -478,6 +480,7 @@ function install_keptn {
 
     # Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
   fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
@@ -488,35 +491,73 @@ function install_keptn {
     create_namespace "keptn"
 
     # need to install Istio for Execution Plane as we potentially deliver services with Blue / Green
+    # Create an empty ingress-config configmap as it will be replaced by get_istio. Normally this config map gets created during the keptn install
+    "${K3SKUBECTL[@]}" -n keptn create configmap ingress-config 
     get_istio
     get_argorollouts
 
     # Install the Helm Service
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
-    yq w /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
-    yq w /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
-    yq w /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
-    yq w /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-    yq w /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
-    yq w /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    yq w -i /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+    yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
+    
+    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
-    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
-
-    # Install the Argo Service
+    # Install the Argo Service for just the demo-rollout project
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor HTTP_SSL_VERIFY="false"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
       curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
-      yq w /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
-      yq w /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-      yq w /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
-      yq w /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
 
-      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn-exec --create-namespace --values=/tmp/helm.values.yaml
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
+
+      # no need to additionally install jmeter afterwards as we install it as part of the execution plane anyway!
+      JMETER="false"
     fi
+
+    if [[ "${GENERICEXEC}" == "true" ]]; then
+      write_progress "Installing Generic Executor Service on the Execution Plane"
+
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.echo.triggered"
+      # TODO - we need to find a better way to define all events to be forwarded to the generic executor
+
+      GENERICEXEC="false"
+    fi
+
+    if [[ "${MONACO}" == "true" ]]; then
+      write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+    fi 
+
+    # Install Locust if the user wants to
+    if [[ "${LOCUST}" == "true" ]]; then
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=locust-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+    fi
+
   fi
  
   if [[ "${PROM}" == "true" ]]; then
@@ -531,32 +572,42 @@ function install_keptn {
      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-service/${PROM_SERVICE_VERSION}/deploy/service.yaml"
 
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
-
-     # write_progress "Installing Prometheus SLI Service"
-     # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/prometheus-sli-service/${PROM_SLI_SERVICE_VERSION}/deploy/service.yaml"
   fi
 
-  if [[ "${DYNA}" == "true" ]]; then
-    write_progress "Installing Dynatrace Service & Monaco (Monitoring as Code)"
-    create_namespace dynatrace
-
-    check_delete_secret dynatrace
+  # For Dynatrace or Monaco install the secret
+  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
+    write_progress "Creating Dynatrace Secret!"
+      check_delete_secret dynatrace
     "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
       --from-literal="DT_TENANT=$DT_TENANT" \
       --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
       --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
       --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
       --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
+  fi 
 
-    # Installing core dynatrace services
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+  # Install Dynatrace Services
+  if [[ "${DYNA}" == "true" ]]; then
 
-    # Installing monaco service
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+    if [[ "${KEPTN_CONTROLPLANE}" == "true" ]] || [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
+      write_progress "Installing Dynatrace + Dynatrace SLI Services on Control / Delivery Plane"
 
-    # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
-    "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+      # Installing core dynatrace services
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+
+      # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
+      "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+    fi 
+  fi 
+
+  # Install Monaco Service
+  if [[ "${MONACO}" == "true" ]]; then
+    if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] ; then
+      # Installing monaco service on deliveryplane
+      write_progress "Installing Monaco (Monitoring as Code) on Delivery Plane"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+    fi 
   fi
 
   if [[ "${GITEA}" == "true" ]]; then
@@ -565,7 +616,7 @@ function install_keptn {
 
     # removing any previous git-token files that might be left-over from a previous install
     if [ -f "${TOKEN_FILE}" ]; then 
-      rm "${TOKEN_FILE}"     
+      rm "${TOKEN_FILE}"
     fi
 
     echo "Create namespace for git"
@@ -616,25 +667,38 @@ function install_keptn {
     disable_bridge_auth
   fi
 
-  write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
-  sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
-    -e 's~issuer.placeholder~'"$CERTS"'~' \
-    ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
-  "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
-  rm keptn-ingress_gen.yaml
-
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
 
-  write_progress "Waiting for certificates to be ready (max 5 minutes)"
-  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
+  # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
+  if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
+    write_progress "Configuring Keptn Ingress Object (${KEPTN_DOMAIN})"
+    sed -e 's~domain.placeholder~'"$KEPTN_DOMAIN"'~' \
+      -e 's~issuer.placeholder~'"$CERTS"'~' \
+      ./files/keptn/keptn-ingress.yaml > keptn-ingress_gen.yaml
+    "${K3SKUBECTL[@]}" apply -n keptn -f keptn-ingress_gen.yaml
+    rm keptn-ingress_gen.yaml
+
+    write_progress "Waiting for certificates to be ready (max 5 minutes)"
+    "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
+  fi 
 }
 
 function install_keptncli {
-  KEPTN_API_TOKEN="$(get_keptn_token)"
 
-  echo "Installing and Authenticating Keptn CLI"
+  echo "Installing the Keptn CLI"
   curl -sL https://get.keptn.sh | KEPTN_VERSION=${KEPTNVERSION} sudo -E bash
+
+  # If we are on the execution plane we can connect the keptn CLI to the Control Plane
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    echo "Authenticate Keptn CLI against the Control Plane"
+    KEPTN_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
+    KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  else
+    echo "Authenticate Keptn CLI against your local installed Keptn"
+    KEPTN_API_TOKEN="$(get_keptn_token)"
+  fi
+
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
@@ -686,7 +750,7 @@ gitea_createKeptnRepos() {
     echo "Creating repositories for Keptn projects "
     for project in `keptn get projects | awk '{ if (NR!=1) print $1}'`;
     do 
-        gitea_createKeptnRepo $project
+        gitea_createKeptnRepo $project || true
     done
 }
 
@@ -712,6 +776,42 @@ gitea_createGitRepo(){
     curl -k -X POST "$GIT_SERVER/api/v1/user/repos?access_token=$API_TOKEN" \
     -H "accept: application/json" -H "Content-Type: application/json" \
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
+}
+
+function check_dynatrace_credentials {
+  echo "Enabling Dynatrace or Monaco Support: Requires you to set DT_TENANT, DT_API_TOKEN"
+  if [[ "$DT_TENANT" == "none" ]]; then
+    echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+    echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
+    exit 1
+  fi
+  if [[ "$DT_API_TOKEN" == "none" ]]; then
+    echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
+    echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
+    exit 1
+  fi
+  if [[ "$DYNA" == "true" ]] && [[ "$DT_PAAS_TOKEN" == "none" ]]; then
+    echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+    echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
+    echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
+    exit 1
+  fi
+
+  # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
+  echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
+  echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+
+  # Validate tenant and token is correct
+  status=$(curl --request GET \
+        --url "https://$DT_TENANT/api/v1/config/clusterversion" \
+        --header "Authorization: Api-Token $DT_API_TOKEN" \
+        --write-out %{http_code} --silent --output /dev/null)
+  if [[ $status != 200 ]]; then
+    echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
+    echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
+    echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
+    exit 1
+  fi
 }
 
 function install_demo_dynatrace {
@@ -783,21 +883,11 @@ function install_demo_dynatrace {
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_GENERIC_AUTOMATION_PROJECT}"
   ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
-
-  # last step is to setup upstream gits
-  if [[ "${GITEA}" == "true" ]]; then
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepo "${KEPTN_QG_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_PERFORMANCE_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_REMEDIATION_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_DELIVERY_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_ROLLOUT_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_ADV_PERFORMANCE_PROJECT}"
-    gitea_createKeptnRepo "${KEPTN_GENERIC_AUTOMATION_PROJECT}"
-  fi
 }
 
 function install_demo {
+  echo "Installing Demos"
+
   if [[ "${DEMO}" == "dynatrace" ]]; then
     install_demo_dynatrace
   fi 
@@ -980,6 +1070,9 @@ If you want to install the Keptn CLI somewhere else - here the description:
 If you want to uninstall Keptn and k3s simply type: k3s-uninstall.sh!
 After that also remove the demo files that were downloaded in your local working directory!
 
+To get access to your k3s via kubectl execute the following command:
+export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+
 Now go and enjoy Keptn!
 EOF
 
@@ -990,6 +1083,7 @@ function main {
   case "${1:-default}" in
     --type)
         INSTALL_TYPE="${2}"
+        echo "Install Type: ${INSTALL_TYPE}"
         shift 2
       ;;
     --ip)
@@ -1078,11 +1172,11 @@ function main {
         KEPTN_CONTROLPLANE="false"
 
         # need keptn_endpoint, keptn_token and distributor filter project, stage & service
-        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "" ]]; then
+        if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "none" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_DOMAIN to the HOSTNAME of the Keptn Control Plane, e.g: keptn.yourdomain.com"
           exit 1
         fi 
-        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "" ]]; then
+        if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "none" ]]; then
           echo "To install an execution plane set KEPTN_CONTROL_PLANE_API_TOKEN to the API_TOKEN of your of the Keptn Control Plane"
           exit 1
         fi 
@@ -1099,46 +1193,26 @@ function main {
         JMETER="true"
         shift
         ;;
+    --with-locust)
+        echo "Enabling Locust Support"
+        LOCUST="true"
+        shift
+        ;;
     --with-prometheus)
         echo "Enabling Prometheus Support"
         PROM="true"
         shift
         ;;
+    --with-monaco)
+        echo "Enabling Monaco Support"
+        MONACO="true"
+        check_dynatrace_credentials
+        shift
+        ;;
     --with-dynatrace)
         DYNA="true"
-        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
-        if [[ "$DT_TENANT" == "none" ]]; then
-          echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
-          echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
-          exit 1
-        fi
-        if [[ "$DT_API_TOKEN" == "none" ]]; then
-          echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
-          echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
-          exit 1
-        fi
-        if [[ "$DT_PAAS_TOKEN" == "none" ]]; then
-          echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
-          echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
-          echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
-          exit 1
-        fi
-
-        # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
-        echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
-        echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
-
-        # Validate tenant and token is correct
-        status=$(curl --request GET \
-             --url "https://$DT_TENANT/api/v1/config/clusterversion" \
-             --header "Authorization: Api-Token $DT_API_TOKEN" \
-             --write-out %{http_code} --silent --output /dev/null)
-        if [[ $status != 200 ]]; then
-          echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
-          echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
-          echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
-          exit 1
-        fi
+        MONACO="true"
+        check_dynatrace_credentials
         shift
         ;;
     --with-gitea)
@@ -1169,6 +1243,11 @@ function main {
 
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
+        ;;
+    --with-genericexec)
+        GENERICEXEC="true"
+        echo "Enabling Generic Executor"
+        shift
         ;;
     --with-slackbot)
         SLACK="true"
@@ -1216,8 +1295,13 @@ function main {
     install_keptn
     install_keptncli
     install_demo
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepos  
+
+    # if a GIT_SERVER is specified lets create repos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    fi
+
     print_config
   fi
 
@@ -1236,11 +1320,21 @@ function main {
 
   if [[ "${INSTALL_TYPE}" == "demo" ]]; then
     install_demo
+
+    # if a GIT_SERVER is specified lets create repos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    fi
   fi
 
   if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
-    gitea_readApiTokenFromFile
-    gitea_createKeptnRepos
+    if [[ "${GIT_SERVER}" != "none" ]]; then
+      gitea_readApiTokenFromFile
+      gitea_createKeptnRepos
+    else
+      echo "GIT_SERVER is not set - therefore not setting upstream git repos"
+    fi 
   fi
 
 }

@@ -1,0 +1,44 @@
+{
+    "name": "{{ .name }}",
+    "rules": [
+      {
+        "type": "SERVICE",
+        "enabled": true,
+        "propagationTypes": [],
+        "conditions": [
+          {
+            "key": {
+              "attribute": "SERVICE_TAGS"
+            },
+            "comparisonInfo": {
+              "type": "TAG",
+              "operator": "EQUALS",
+              "value": {
+                "context": "CONTEXTLESS",
+                "key": "keptn_project",
+                "value": "{{ .project }}"
+              },
+              "negate": false
+            }
+          },
+          {
+            "key": {
+              "attribute": "SERVICE_TAGS"
+            },
+            "comparisonInfo": {
+              "type": "TAG",
+              "operator": "EQUALS",
+              "value": {
+                "context": "CONTEXTLESS",
+                "key": "keptn_stage",
+                "value": "{{ .stage }}"
+              },
+              "negate": false
+            }
+          }
+        ]
+      }
+    ],
+    "dimensionalRules": []
+  }
+

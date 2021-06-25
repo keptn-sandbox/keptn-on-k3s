@@ -42,28 +42,33 @@ KEPTN_BRIDGE_PROJECT_ESCAPED="${KEPTN_BRIDGE_PROJECT//\//\\/}"
 
 if [[ "$TEMPLATE_NAME" == "none" ]]; then
     echo "You have to set TEMPLATE_NAME to a template keptn project name such as quality-gate-dynatrace. You find all available templates in the ${TEMPLATE_DIRECTORY} directory"
-    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
+    echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 if [[ "$OWNER_EMAIL" == "none" ]]; then
     echo "You have to set OWNER_EMAIL to a valid email as this might be used in e.g: Dynatrace Dashboards .."
-    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
+    echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 
 if [[ "$PROJECT_NAME" == "none" ]]; then
     echo "You have to set PROJECT_NAME to the project name you want to create based on the template"
-    echo "Usage: $0 quality-gate-dynatrace yourname@email.com quality-gate demo"
+    echo "Usage: $0 project-template-folder youremail@domain.com new-project-name"
+    echo "Example: $0 quality-gate-dynatrace myname@email.com quality-gate"
     exit 1
 fi
 
 if [[ "$KEPTN_ENDPOINT" == "" ]]; then
     echo "You have to export KEPTN_ENDPOINT and set it to your Keptn Endpoint URL, e.g: https://keptn.yourkeptndomain.com"
+    echo "Its needed when e.g: creating Dynatrace dashboards that point back to the Keptn Bridge"
     exit 1
 fi
 
 if [[ "$KEPTN_INGRESS" == "" ]]; then
     echo "You have to export KEPTN_INGRESS and set it to your Ingress host , e.g: yourkeptndomain.com"
+    echo "Its needed when e.g: creating Dynatrace dashboards that point back to the Keptn Bridge"
     exit 1
 fi
 
@@ -187,6 +192,7 @@ do
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
