@@ -779,6 +779,42 @@ gitea_createGitRepo(){
     -d "{ \"auto_init\": false, \"default_branch\": \"master\", \"name\": \"$1\", \"private\": false}"
 }
 
+function check_dynatrace_credentials {
+  echo "Enabling Dynatrace or Monaco Support: Requires you to set DT_TENANT, DT_API_TOKEN"
+  if [[ "$DT_TENANT" == "none" ]]; then
+    echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+    echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
+    exit 1
+  fi
+  if [[ "$DT_API_TOKEN" == "none" ]]; then
+    echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
+    echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
+    exit 1
+  fi
+  if [[ "$DYNA" == "true" ]] && [[ "$DT_PAAS_TOKEN" == "none" ]]; then
+    echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+    echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
+    echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
+    exit 1
+  fi
+
+  # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
+  echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
+  echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
+
+  # Validate tenant and token is correct
+  status=$(curl --request GET \
+        --url "https://$DT_TENANT/api/v1/config/clusterversion" \
+        --header "Authorization: Api-Token $DT_API_TOKEN" \
+        --write-out %{http_code} --silent --output /dev/null)
+  if [[ $status != 200 ]]; then
+    echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
+    echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
+    echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
+    exit 1
+  fi
+}
+
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -1171,44 +1207,13 @@ function main {
     --with-monaco)
         echo "Enabling Monaco Support"
         MONACO="true"
+        check_dynatrace_credentials
         shift
         ;;
     --with-dynatrace)
         DYNA="true"
         MONACO="true"
-        echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
-        if [[ "$DT_TENANT" == "none" ]]; then
-          echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
-          echo "To learn more about the required settings please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
-          exit 1
-        fi
-        if [[ "$DT_API_TOKEN" == "none" ]]; then
-          echo "You have to set DT_API_TOKEN to a Token that has read/write configuration, access metrics, log content and capture request data priviliges"
-          echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
-          exit 1
-        fi
-        if [[ "$DT_PAAS_TOKEN" == "none" ]]; then
-          echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
-          echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
-          echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
-          exit 1
-        fi
-
-        # Adding output as following curl may fail if DT_TENANT is resulting in an invalid curl
-        echo "Running a check if Dynatrace API is reachable on https://$DT_TENANT/api/v1/config/clusterversion"
-        echo "If script stops here please double check your DT_TENANT. It should be e,g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
-
-        # Validate tenant and token is correct
-        status=$(curl --request GET \
-             --url "https://$DT_TENANT/api/v1/config/clusterversion" \
-             --header "Authorization: Api-Token $DT_API_TOKEN" \
-             --write-out %{http_code} --silent --output /dev/null)
-        if [[ $status != 200 ]]; then
-          echo "Couldnt connect to the Dynatrace API with provided DT_TENANT & DT_API_TOKEN"
-          echo "Please double check the URL to not include leading https:// and double check your API_TOKEN priviliges"
-          echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
-          exit 1
-        fi
+        check_dynatrace_credentials
         shift
         ;;
     --with-gitea)
