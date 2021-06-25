@@ -58,6 +58,7 @@ INSTALL_TYPE="all"  # "k3s", "keptn", "demo", "gitea"
 
 PROM="false"
 DYNA="false"
+MONACO="false"
 GITEA="false"
 JMETER="false"
 LOCUST="false"
@@ -151,7 +152,12 @@ function check_delete_secret {
 }
 
 function get_keptn_token {
-  echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+
+  if [[ "${KEPTN_CONTROL_PLANE_API_TOKEN}" == "" ]]; then 
+    echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
+  else
+    echo "${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  fi
 }
 
 
@@ -213,14 +219,6 @@ function get_fqdn {
     fi
     if [[ "${LE_STAGE}" == "production" ]]; then
       echo "Issuing Production LetsEncrypt Certificates with nip.io as domain is not possible"
-      exit 1
-    fi
-
-    if [[ "${XIP}" == "true" ]]; then
-      FQDN="$(get_xip_address "${MY_IP}")"
-    fi
-    if [[ "${LE_STAGE}" == "production" ]] && [[ "${XIP}" == "true" ]]; then
-      echo "Issuing Production LetsEncrypt Certificates with xip.io as domain is not possible"
       exit 1
     fi
   fi
@@ -542,9 +540,18 @@ function install_keptn {
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor HTTP_SSL_VERIFY="false"
 
+      # TODO - we need to find a better way to define all events to be forwarded to the generic executor
+
       GENERICEXEC="false"
     fi
 
+    if [[ "${MONACO}" == "true" ]]; then
+      write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor HTTP_SSL_VERIFY="false"
+    fi 
 
     # Install Locust if the user wants to
     if [[ "${LOCUST}" == "true" ]]; then
@@ -569,33 +576,38 @@ function install_keptn {
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
   fi
 
+  # For Dynatrace or Monaco install the secret
+  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
+      check_delete_secret dynatrace
+    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
+      --from-literal="DT_TENANT=$DT_TENANT" \
+      --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
+      --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
+      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
+      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
+  fi 
+
   # Install Dynatrace Services
   if [[ "${DYNA}" == "true" ]]; then
 
     if [[ "${KEPTN_CONTROLPLANE}" == "true" ]] || [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
       write_progress "Installing Dynatrace + Dynatrace SLI Services on Control / Delivery Plane"
-      create_namespace dynatrace
-
-      check_delete_secret dynatrace
-      "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
-        --from-literal="DT_TENANT=$DT_TENANT" \
-        --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
-        --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
-        --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
-        --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
 
       # Installing core dynatrace services
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
-    fi 
-
-    if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
-      # Installing monaco service on delivery & execution plane
-      write_progress "Installing Monaco (Monitoring as Code) on Execution / Delivery Plane"
-      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
 
       # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
       "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
+    fi 
+  fi 
+
+  # Install Monaco Service
+  if [[ "${MONACO}" == "true" ]]; then
+    if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] ; then
+      # Installing monaco service on deliveryplane
+      write_progress "Installing Monaco (Monitoring as Code) on Delivery Plane"
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
     fi 
   fi
 
@@ -1156,8 +1168,14 @@ function main {
         PROM="true"
         shift
         ;;
+    --with-monaco)
+        echo "Enabling Monaco Support"
+        MONACO="true"
+        shift
+        ;;
     --with-dynatrace)
         DYNA="true"
+        MONACO="true"
         echo "Enabling Dynatrace Support: Requires you to set DT_TENANT, DT_API_TOKEN"
         if [[ "$DT_TENANT" == "none" ]]; then
           echo "You have to set DT_TENANT to your Tenant URL, e.g: abc12345.dynatrace.live.com or yourdynatracemanaged.com/e/abcde-123123-asdfa-1231231"
