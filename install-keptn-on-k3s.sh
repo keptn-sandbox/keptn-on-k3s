@@ -153,7 +153,7 @@ function check_delete_secret {
 
 function get_keptn_token {
 
-  if [[ "${KEPTN_CONTROL_PLANE_API_TOKEN}" == "" ]]; then 
+  if [[ "${KEPTN_CONTROL_PLANE_API_TOKEN}" == "none" ]]; then 
     echo "$(${K3SKUBECTL[@]} get secret keptn-api-token -n keptn -o jsonpath={.data.keptn-api-token} | base64 -d)"
   else
     echo "${KEPTN_CONTROL_PLANE_API_TOKEN}"
