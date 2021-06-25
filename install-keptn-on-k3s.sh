@@ -504,7 +504,7 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-    yq w -i /tmp/helm.values.yaml "remoteControlPlane.apiValidateTls" "false"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
     
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
@@ -524,7 +524,7 @@ function install_keptn {
       yq w -i /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.apiValidateTls" "false"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
 
@@ -540,6 +540,8 @@ function install_keptn {
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor HTTP_SSL_VERIFY="false"
 
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
+
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
       GENERICEXEC="false"
@@ -548,9 +550,10 @@ function install_keptn {
     if [[ "${MONACO}" == "true" ]]; then
       write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
     fi 
 
     # Install Locust if the user wants to
