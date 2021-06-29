@@ -832,8 +832,11 @@ function keptn_create_dynatrace_secret {
   secret_name="${1:-dynatrace}"
   scope="${2:-keptn-default}"
 
+  KEPTN_API_TOKEN="$(get_keptn_token)"
+
   # CREATE Keptn Secret
-  curl -k -X POST "${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"data\": { \"DT_TENANT\": \"${DT_TENANT}\", \"DT_API_TOKEN\": \"${DT_API_TOKEN}\" }, \"name\": \"${secret_name}\", \"scope\": \"${scope}\"}"
+  echo "Calling HTTP POST ${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret"
+  curl -k -X POST "${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret" -H "accept: application/json" -H "x-token: ${KEPTN_API_TOKEN}" -H "Content-Type: application/json" -d "{ \"data\": { \"DT_TENANT\": \"${DT_TENANT}\", \"DT_API_TOKEN\": \"${DT_API_TOKEN}\" }, \"name\": \"${secret_name}\", \"scope\": \"${scope}\"}"
 }
 
 function install_demo_dynatrace {
