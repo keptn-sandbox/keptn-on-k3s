@@ -538,7 +538,7 @@ function install_keptn {
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.echo.triggered"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
       GENERICEXEC="false"
@@ -577,13 +577,17 @@ function install_keptn {
   # For Dynatrace or Monaco install the secret
   if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
     write_progress "Creating Dynatrace Secret!"
+
+    # Always create the secret in Keptn as a secret
+    keptn_create_dynatrace_secret
+
+    # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
+    if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
       check_delete_secret dynatrace
     "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
       --from-literal="DT_TENANT=$DT_TENANT" \
-      --from-literal="DT_API_TOKEN=$DT_API_TOKEN" \
-      --from-literal="KEPTN_API_URL=${PREFIX}://$KEPTN_DOMAIN/api" \
-      --from-literal="KEPTN_API_TOKEN=$(get_keptn_token)" \
-      --from-literal="KEPTN_BRIDGE_URL=${PREFIX}://$KEPTN_DOMAIN/bridge"
+      --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+    fi 
   fi 
 
   # Install Dynatrace Services
@@ -812,6 +816,19 @@ function check_dynatrace_credentials {
     echo "To try this yourself try to get to: https://$DT_TENANT/api/v1/config/clusterversion"
     exit 1
   fi
+}
+
+#
+# Creates a Keptn Secret including DT_API_TOKEN AND DT_TENANT as name/value pairs
+# 1. secret_name (optional). Default is dynatrace
+# 2. scope (optional). Default is keptn-default
+#
+function keptn_create_dynatrace_secret {
+  secret_name="${1:-dynatrace}"
+  scope="${2:-keptn-default}"
+
+  # CREATE Keptn Secret
+  curl -X POST "${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret" -H "accept: application/json" -H "Content-Type: application/json" -d "{ \"data\": { \"DT_TENANT\": \"${DT_TENANT}\", \"DT_API_TOKEN\": \"${DT_API_TOKEN}\" }, \"name\": \"${secret_name}\", \"scope\": \"${scope}\"}"
 }
 
 function install_demo_dynatrace {
