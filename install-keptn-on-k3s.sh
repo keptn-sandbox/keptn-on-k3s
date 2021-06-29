@@ -1011,9 +1011,9 @@ if [[ "${GITEA}" == "true" ]]; then
 fi
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
-  write_progress "Dynatrace Demo Summary: 6 Use Cases to explore"
+  write_progress "Dynatrace Demo Summary: 8 Use Cases to explore"
   cat << EOF
-6 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
+8 Dynatrace Demo projects have been created, the Keptn CLI has been downloaded and configured and a first demo quality gate was already executed.
 
 ------------------------------------------------------------------------
 For the Quality Gate Use case you can do this:
@@ -1365,6 +1365,8 @@ function main {
       gitea_readApiTokenFromFile
       gitea_createKeptnRepos
     fi
+
+    print_config    
   fi
 
   if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
