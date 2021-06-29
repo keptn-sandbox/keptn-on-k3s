@@ -912,7 +912,7 @@ function install_demo_dynatrace {
   # ==============================================================================================
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_TWOSTAGE_DELIVERY_PROJECT}"
-  ./create-keptn-project-from-template.sh two-stage-delivery ${OWNER_EMAIL} ${KEPTN_TWOSTAGE_DELIVERY_PROJECT}
+  ./create-keptn-project-from-template.sh two-stage-delivery-simplenode ${OWNER_EMAIL} ${KEPTN_TWOSTAGE_DELIVERY_PROJECT}
 
 }
 
