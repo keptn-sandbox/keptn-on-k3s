@@ -115,6 +115,11 @@ KEPTN_ROLLOUT_PROJECT="demo-rollout"
 KEPTN_ROLLOUT_STAGE_STAGING="staging"
 KEPTN_ROLLOUT_SERVICE="simplenode"
 
+KEPTN_TWOSTAGE_DELIVERY_PROJECT="demo-twostage-delivery"
+KEPTN_TWOSTAGE_DELIVERY_STAGE_STAGING="staging"
+KEPTN_TWOSTAGE_DELIVERY_STAGE_PRODUCTION="production"
+KEPTN_TWOSTAGE_DELIVERY_SERVICE="simplenode"
+
 KEPTN_ADV_PERFORMANCE_PROJECT="demo-adv-performance"
 KEPTN_ADV_PERFORMANCE_STAGE="performance"
 KEPTN_ADV_PERFORMANCE_SERVICE="appundertest"
@@ -900,6 +905,15 @@ function install_demo_dynatrace {
   echo "----------------------------------------------"
   echo "Create Keptn Project: ${KEPTN_GENERIC_AUTOMATION_PROJECT}"
   ./create-keptn-project-from-template.sh generic-automation ${OWNER_EMAIL} ${KEPTN_GENERIC_AUTOMATION_PROJECT}
+
+  # ==============================================================================================
+  # Demo 8: Two Stage Delivery
+  # Creates a project that uses a regular helm chart for two stage delivery
+  # ==============================================================================================
+  echo "----------------------------------------------"
+  echo "Create Keptn Project: ${KEPTN_TWOSTAGE_DELIVERY_PROJECT}"
+  ./create-keptn-project-from-template.sh two-stage-delivery ${OWNER_EMAIL} ${KEPTN_TWOSTAGE_DELIVERY_PROJECT}
+
 }
 
 function install_demo {
@@ -1065,6 +1079,11 @@ To trigger a delivery simple do this
 For the Generic Automation Use Case check out the project and trigger the fun sequence in dev
 To trigger that sequence simply execute:
 keptn send event --file=./dev.fun.triggered.json
+
+------------------------------------------------------------------------
+For the Two Stage Delivery Use Case check simply deploy the app via
+1: keptn trigger delivery --project=${KEPTN_TWOSTAGE_DELIVERY_PROJECT} --stage=${KEPTN_TWOSTAGE_DELIVERY_STAGING} --service=${KEPTN_TWOSTAGE_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
 
