@@ -1,0 +1,4 @@
+#deploymentURIsLocal:
+#  - "<my-local-url>" # e.g. http://my-service.sockshop-dev:8080
+deploymentURIsPublic:
+  - "http://simplenode.REPLACE_KEPTN_PROJECT-production.REPLACE_KEPTN_INGRESS:80/"

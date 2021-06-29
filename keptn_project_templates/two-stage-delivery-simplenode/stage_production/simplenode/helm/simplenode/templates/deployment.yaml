@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: simplenode
+  name: {{ .Values.keptn.service }}
 spec:
   replicas: {{ .Values.replicaCount }}
   strategy:
@@ -11,11 +11,11 @@ spec:
     type: RollingUpdate
   selector:
     matchLabels:
-      app: simplenode
+      app: {{ .Values.keptn.service }}
   template:
     metadata:
       labels:
-        app: simplenode
+        app: {{ .Values.keptn.service }}
         app.kubernetes.io/name: "{{ .Values.keptn.service }}"
         app.kubernetes.io/instance: "{{ .Release.Name }}"
         app.kubernetes.io/component: api
@@ -25,13 +25,13 @@ spec:
         helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
     spec:
       containers:
-      - name: simplenode
+      - name: {{ .Values.keptn.service }}
         image: "{{ .Values.image }}"
         imagePullPolicy: IfNotPresent
         ports:
         - name: http
           protocol: TCP
-          containerPort: 8080
+          containerPort: {{ .Values.service.targetPort }}
         env:
 # Following DT_CLUSTER_ID would "hard code" the PGI naming which we will do through a naming rule using the meta data on this container
 #        - name: DT_CLUSTER_ID
@@ -67,14 +67,14 @@ spec:
         livenessProbe:
           httpGet:
             path: /
-            port: 8080
+            port: {{ .Values.service.targetPort }}
           initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 15
         readinessProbe:
           httpGet:
             path: /
-            port: 8080
+            port: {{ .Values.service.targetPort }}
           initialDelaySeconds: 60
           periodSeconds: 10
           timeoutSeconds: 15
