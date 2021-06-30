@@ -285,9 +285,12 @@ function get_k3s {
 # Installs Dynatrace OneAgent Operator on the k3s cluster
 function get_oneagent {
   # only install if all dynatrace settings are specified
-  if [ "$DT_TENANT" == "none" ]; then return; fi
-  if [ "$DT_API_TOKEN" == "none" ]; then return; fi
-  if [ "$DT_PAAS_TOKEN" == "none" ]; then return; fi
+  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_API_TOKEN" == "none" ]] || [[ "$DT_PAAS_TOKEN" == "none" ]]; then 
+    write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens not specified!"
+    return; 
+  fi
+
+  write_progress "Installing Dynatrace OneAgent Operator for k3s"
 
   helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
   "${K3SKUBECTL[@]}" create namespace dynatrace
