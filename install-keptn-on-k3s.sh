@@ -1085,7 +1085,7 @@ keptn send event --file=./dev.fun.triggered.json
 
 ------------------------------------------------------------------------
 For the Two Stage Delivery Use Case check simply deploy the app via
-1: keptn trigger delivery --project=${KEPTN_TWOSTAGE_DELIVERY_PROJECT} --stage=${KEPTN_TWOSTAGE_DELIVERY_STAGING} --service=${KEPTN_TWOSTAGE_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+1: keptn trigger delivery --project=${KEPTN_TWOSTAGE_DELIVERY_PROJECT} --stage=${KEPTN_TWOSTAGE_DELIVERY_STAGE_STAGING} --service=${KEPTN_TWOSTAGE_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
 
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
