@@ -59,5 +59,6 @@ Now its time to run the installation script!
 Final step is to install the demo projects used in the workshop
 ```bash
 cd cloudautomation
+export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.public.i.p.nip.io
 ./install-cloudautomation-workshop.sh 
 ```
