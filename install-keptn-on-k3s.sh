@@ -1032,6 +1032,8 @@ function print_config {
   echo "Bridge Password: $BRIDGE_PASSWORD"
   echo "API Token :      $KEPTN_API_TOKEN"
 
+  echo "Ingress Domain:  ${FQDN}"
+
 if [[ "${GITEA}" == "true" ]]; then
   echo "Git Server:      $GIT_SERVER"
   echo "Git User:        $GIT_USER"
