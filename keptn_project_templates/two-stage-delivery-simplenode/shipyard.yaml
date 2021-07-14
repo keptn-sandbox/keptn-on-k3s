@@ -10,7 +10,7 @@ spec:
       tasks:  
       - name: deployment
         properties:
-          deploymentstrategy: direct
+          deploymentstrategy: user_managed
       - name: test
         properties:
           teststrategy: functional
@@ -23,7 +23,7 @@ spec:
       - name: monaco
       - name: deployment
         properties:
-          deploymentstrategy: direct
+          deploymentstrategy: user_managed
       - name: test
         properties:
           teststrategy: functional

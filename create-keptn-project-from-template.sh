@@ -34,6 +34,8 @@ OWNER_EMAIL=${2:-none}
 PROJECT_NAME=${3:-none}
 SYNTHETIC_LOCATION=${SYNTHETIC_LOCATION:-GEOLOCATION-45AB48D9D6925ECC}
 
+INSTANCE_COUNT_XXX=${4:-1}
+
 # Expected Env Variables that should be set!
 # KEPTN_ENDPOINT="https://keptn.yourkeptndomain.abc
 # KEPTN_INGRESS="yourkeptndomain.abc"
@@ -154,13 +156,25 @@ do
             RESOURCE_SERVICE_NAME=$(echo "${localFileName##*/service_}")
             SERVICE_NAME=$(echo "${RESOURCE_SERVICE_NAME%%/*}")
 
-            if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
-                echo "Onboard Keptn Service: ${SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
-                keptn onboard service $SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts"
-            else 
-                echo "Create Keptn Service: ${SERVICE_NAME} for project ${PROJECT_NAME}"
-                keptn create service $SERVICE_NAME --project="${PROJECT_NAME}"
-            fi
+            # take into consideration that we may need to create multiple service instances if it contains the XXX placeholder
+            instanceCount=1
+            if [[ "$SERVICE_NAME" == *"XXX"* ]]; then 
+                instanceCount=${INSTANCE_COUNT_XXX}
+            fi 
+
+            # now either create a single or multiple instances
+            for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
+            do
+                INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME//XXX/$instanceIx}")
+
+                if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
+                    echo "Onboard Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
+                    keptn onboard service $INSTANCE_SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts"
+                else
+                    echo "Create Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME}"
+                    keptn create service $INSTANCE_SERVICE_NAME --project="${PROJECT_NAME}"
+                fi
+            done
         fi;
 
         continue; 
@@ -205,7 +219,29 @@ do
     # echo "Processing localFileName: ${localFileName}"
     # echo "Using remoteFileName: ${remoteFileName}"
     # Lets upload our file
-    keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileName}"
+
+        # take into consideration that we may need to create multiple service instances if it contains the XXX placeholder
+    instanceCount=1
+    if [[ "$remoteFileName" == *"XXX"* ]]; then 
+        instanceCount=${INSTANCE_COUNT_XXX}
+    fi 
+
+    # now either create a single or multiple instances
+    for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
+    do
+        # replace XXX in the remote file name
+        remoteFileInstanceName=$(echo "${remoteFileName//XXX/$instanceIx}")
+
+        # replace any occurance in a special tmp.xxx file
+        cp ${localFileName}.tmp ${localFileName}.tmp.xxx
+        sed -i "s/XXX/${instanceIx}/" ${localFileName}.tmp.xxx
+
+        # adding the file
+        keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp.xxx" --resourceUri="${remoteFileInstanceName}"
+
+        # remove the tmp.xxx file
+        rm ${localFileName}.tmp.xxx
+    done
 
     # remove tmp file
     rm ${localFileName}.tmp

@@ -1,2 +1,0 @@
-image: docker.io/grabnerandi/simplenodeservice:1.0.0
-replicaCount: 1
