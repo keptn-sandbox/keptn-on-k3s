@@ -41,6 +41,8 @@ export OWNER_EMAIL=youremail@domain.com
 Now its time to clone this git repo
 ```bash
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
+cd keptn-on-k3s
+git checkout release-0.8.0
 ```
 
 ### Step 3: Install k3s

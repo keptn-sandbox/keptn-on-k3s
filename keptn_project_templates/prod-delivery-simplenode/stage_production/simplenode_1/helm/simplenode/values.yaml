@@ -13,8 +13,7 @@ ingress:
   ingressHost: REPLACE_KEPTN_INGRESS
 
 service:
-  name: simplenode
-  stage: staging
+  name: simplenode_1
   type: ClusterIP
   port: 8080
   targetPort: 8080

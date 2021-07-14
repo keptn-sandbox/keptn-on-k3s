@@ -65,6 +65,8 @@ LOCUST="false"
 SLACK="false"
 GENERICEXEC="false"
 
+GITEA_VERSION="v2.2.0"
+
 DEMO="false"
 
 
@@ -641,7 +643,7 @@ function install_keptn {
         ./files/gitea/helm-gitea.yaml > helm-gitea_gen.yaml
 
     echo "Install gitea via Helmchart"
-    helm install gitea gitea-charts/gitea -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
+    helm install gitea gitea-charts/gitea --version "${GITEA_VERSION}" -f helm-gitea_gen.yaml --namespace git --kubeconfig="${KUBECONFIG}"
     rm helm-gitea_gen.yaml
     
     write_progress "Configuring Gitea Ingress Object (${GIT_DOMAIN})"
