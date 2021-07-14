@@ -23,6 +23,13 @@ ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
 KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_CONTROL_PLANE_DOMAIN:-none}
 KEPTN_CONTROL_PLANE_API_TOKEN=${KEPTN_CONTROL_PLANE_API_TOKEN:-none}
 
+# in demo installations its likely that control plane doesnt have a valid SSL - so - we default to validate SSL false
+KEPTN_CONTROL_PLANE_SSL_VERIFY=${KEPTN_CONTROL_PLANE_SSL_VERIFY:-false}
+if [[ $KEPTN_CONTROL_PLANE_DOMAIN == *"live.dynatrace.com" ]]; then 
+  # unless we connect to a dynatrace cloud automation tenant - we default to true
+  KEPTN_CONTROL_PLANE_SSL_VERIFY="true"
+fi 
+
 # For execution plane here are the filters
 KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
 KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
@@ -514,7 +521,7 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
+    yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
@@ -523,7 +530,7 @@ function install_keptn {
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor HTTP_SSL_VERIFY="false"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
@@ -534,7 +541,7 @@ function install_keptn {
       yq w -i /tmp/jmeter.values.yaml "distributor.projectFilter" "${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
-      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.apiValidateTls" "false"
+      yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
 
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
 
@@ -547,7 +554,7 @@ function install_keptn {
 
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
@@ -558,14 +565,14 @@ function install_keptn {
       write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi 
 
     # Install Locust if the user wants to
     if [[ "${LOCUST}" == "true" ]]; then
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=locust-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="false"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi
 
   fi
