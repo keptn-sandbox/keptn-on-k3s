@@ -165,7 +165,7 @@ do
             # now either create a single or multiple instances
             for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
             do
-                INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME/XXX/$instanceIx}")
+                INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME//XXX/$instanceIx}")
 
                 if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
                     echo "Onboard Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
@@ -229,8 +229,18 @@ do
     # now either create a single or multiple instances
     for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
     do
-        remoteFileInstanceName=$(echo "${remoteFileName/XXX/$instanceIx}")
-        keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileInstanceName}"
+        # replace XXX in the remote file name
+        remoteFileInstanceName=$(echo "${remoteFileName//XXX/$instanceIx}")
+
+        # replace any occurance in a special tmp.xxx file
+        cp ${localFileName}.tmp ${localFileName}.tmp.xxx
+        sed -i "s/XXX/${instanceIx}/" ${localFileName}.tmp.xxx
+
+        # adding the file
+        keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp.xxx" --resourceUri="${remoteFileInstanceName}"
+
+        # remove the tmp.xxx file
+        rm ${localFileName}.tmp.xxx
     done
 
     # remove tmp file
