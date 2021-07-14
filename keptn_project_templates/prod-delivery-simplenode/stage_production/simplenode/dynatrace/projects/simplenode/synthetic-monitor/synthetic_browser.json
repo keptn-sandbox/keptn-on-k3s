@@ -1,0 +1,74 @@
+{
+    "name": "{{ .name }}",
+    "frequencyMin": 5,
+    "enabled": true,
+    "type": "BROWSER",
+    "createdFrom": "GUI",
+    "script": {
+      "type": "clickpath",
+      "version": "1.0",
+      "configuration": {
+        "device": {
+          "deviceName": "Desktop",
+          "orientation": "landscape"
+        }
+      },
+      "events": [
+        {
+          "type": "navigate",
+          "description": "Loading of Simplenode Homepage",
+          "url": "{{ .url }}",
+          "wait": {
+            "waitFor": "page_complete"
+          }
+        },
+        {
+          "type": "click",
+          "description": "Click on Invoke",
+          "target": {
+            "locators": [
+              {
+                "type": "css",
+                "value": "#Invoke"
+              }
+            ]
+          },
+          "button": 0
+        }
+      ]
+    },
+    "locations": [
+        "{{ .location }}"
+    ],
+    "anomalyDetection": {
+      "outageHandling": {
+        "globalOutage": true,
+        "localOutage": false,
+        "localOutagePolicy": {
+          "affectedLocations": null,
+          "consecutiveRuns": null
+        },
+        "retryOnError": true
+      },
+      "loadingTimeThresholds": {
+        "enabled": false,
+        "thresholds": []
+      }
+    },
+    "tags": [
+        { "context" : "CONTEXTLESS", "key" : "{{ .project }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .service }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .stage }}"}        
+    ],
+    "managementZones": [],
+    "automaticallyAssignedApps": [
+    ],
+    "manuallyAssignedApps": [
+    ],
+    "keyPerformanceMetrics": {
+      "loadActionKpm": "VISUALLY_COMPLETE",
+      "xhrActionKpm": "VISUALLY_COMPLETE"
+    },
+    "events": [
+    ]
+  }

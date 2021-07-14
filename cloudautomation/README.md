@@ -49,3 +49,11 @@ Now its time to run the installation script!
 ```bash
 ./install-keptn-on-k3s.sh --executionplane --provider aws --with-jmeter --with-genericexec --with-monaco --with-gitea --use-nip
 ```
+
+### Step 4: Install demo projects
+
+Final step is to install the demo projects used in the workshop
+```bash
+cd cloudautomation
+./install-cloudautomation-workshop.sh 
+```

@@ -1,0 +1,13 @@
+---
+spec_version: '0.1.0'
+dashboard: query
+attachRules:
+  tagRule:
+  - meTypes:
+    - SERVICE
+    tags:
+    - context: CONTEXTLESS
+      key: keptn_service
+      value: $SERVICE
+    - context: CONTEXTLESS
+      key: keptn_managed
