@@ -34,6 +34,8 @@ export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
 export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 
 export OWNER_EMAIL=youremail@domain.com
+
+export ISTIO=false
 ```
 
 ### Step 2: Clone the git repo

@@ -52,6 +52,7 @@ OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
 PROVIDER="none"
+ISTIO=${ISTIO:-true}
 MY_IP="none"
 FQDN="none"
 KEPTN_DOMAIN="none"
@@ -344,6 +345,12 @@ function get_argorollouts {
 }
 
 function get_istio {
+
+  if [[ "$ISTIO" == "false" ]]; then
+    echo "Not installing istio as ISTIO=false"
+    return
+  fi 
+
   ISTIO_EXISTS=$(kubectl get po -n istio-system | grep Running | wc | awk '{ print $1 }')
   if [[ "$ISTIO_EXISTS" -gt "0" ]]
   then
