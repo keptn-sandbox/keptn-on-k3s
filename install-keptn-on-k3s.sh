@@ -289,7 +289,10 @@ function get_k3s {
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
 
-  helm install ingress-nginx ingress-nginx/ingress-nginx  
+  helm install ingress-nginx ingress-nginx/ingress-nginx
+
+  # wait for nginx to be ready
+
 }
 
 # Installs Dynatrace OneAgent Operator on the k3s cluster
@@ -388,6 +391,9 @@ function check_k8s {
       started=true
     fi
   done
+
+  echo "k8s - Waiting for all system pods to be ready - 1st attempt (max 60s)"
+  "${K3SKUBECTL[@]}" wait --namespace=default --for=condition=Ready pods --timeout=60s --all
 }
 
 function disable_bridge_auth {
