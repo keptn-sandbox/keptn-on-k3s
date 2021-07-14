@@ -163,7 +163,7 @@ do
             fi 
 
             # now either create a single or multiple instances
-            for (instanceIx=1; instanceIx<instanceCount; instanceIx++) 
+            for (( instanceIx=1; instanceIx<instanceCount; instanceIx++ ))
             do
                 INSTANCE_SERVICE_NAME="{SERVICE_NAME/XXX/$instanceIx}"
 
@@ -227,7 +227,7 @@ do
     fi 
 
     # now either create a single or multiple instances
-    for (instanceIx=1; instanceIx<instanceCount; instanceIx++) 
+    for (( instanceIx=1; instanceIx<instanceCount; instanceIx++ ))
     do
         remoteFileInstanceName="{remoteFileName/XXX/$instanceIx}"
         keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp" --resourceUri="${remoteFileInstanceName}"
