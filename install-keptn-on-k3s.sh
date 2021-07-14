@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.4"
+KEPTNVERSION="0.8.6"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -712,21 +712,22 @@ function install_keptn {
   fi 
 }
 
+function get_keptncredentials {
+  # If we are on the execution plane we can connect the keptn CLI to the Control Plane
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    KEPTN_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
+    KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  else
+    KEPTN_API_TOKEN="$(get_keptn_token)"
+  fi
+}
+
 function install_keptncli {
 
   echo "Installing the Keptn CLI"
   curl -sL https://get.keptn.sh | KEPTN_VERSION=${KEPTNVERSION} sudo -E bash
 
-  # If we are on the execution plane we can connect the keptn CLI to the Control Plane
-  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
-    echo "Authenticate Keptn CLI against the Control Plane"
-    KEPTN_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
-    KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
-  else
-    echo "Authenticate Keptn CLI against your local installed Keptn"
-    KEPTN_API_TOKEN="$(get_keptn_token)"
-  fi
-
+  get_keptncredentials
   keptn auth  --api-token "${KEPTN_API_TOKEN}" --endpoint "${PREFIX}://$KEPTN_DOMAIN/api"
 }
 
@@ -851,7 +852,7 @@ function keptn_create_dynatrace_secret {
   secret_name="${1:-dynatrace}"
   scope="${2:-keptn-default}"
 
-  KEPTN_API_TOKEN="$(get_keptn_token)"
+  get_keptncredentials
 
   # CREATE Keptn Secret
   echo "Calling HTTP POST ${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret"
@@ -866,6 +867,7 @@ function install_demo_dynatrace {
   # Setup based on https://github.com/keptn-contrib/dynatrace-sli-service/tree/master/dashboard
   # This project also enables the auto-synchronization capability as explained here: https://github.com/keptn-contrib/dynatrace-service#synchronizing-service-entities-detected-by-dynatrace
   # ==============================================================================================
+  get_keptncredentials
   export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
   export KEPTN_INGRESS=${FQDN}
   echo "----------------------------------------------"
@@ -1015,7 +1017,8 @@ function print_config {
   write_progress "Keptn Deployment Summary"
   BRIDGE_USERNAME="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_USERNAME} --ignore-not-found | base64 -d)"
   BRIDGE_PASSWORD="$(${K3SKUBECTL[@]} get secret bridge-credentials -n keptn -o jsonpath={.data.BASIC_AUTH_PASSWORD} --ignore-not-found | base64 -d)"
-  KEPTN_API_TOKEN="$(get_keptn_token)"
+
+  get_keptncredentials
 
   echo "API URL   :      ${PREFIX}://${KEPTN_DOMAIN}/api"
   echo "Bridge URL:      ${PREFIX}://${KEPTN_DOMAIN}/bridge"
