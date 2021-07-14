@@ -169,10 +169,10 @@ do
 
                 if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
                     echo "Onboard Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
-                    keptn onboard service $SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts"
+                    keptn onboard service $INSTANCE_SERVICE_NAME --project="${PROJECT_NAME}" --chart="./service_${SERVICE_NAME}/charts"
                 else
                     echo "Create Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME}"
-                    keptn create service $SERVICE_NAME --project="${PROJECT_NAME}"
+                    keptn create service $INSTANCE_SERVICE_NAME --project="${PROJECT_NAME}"
                 fi
             done
         fi;
