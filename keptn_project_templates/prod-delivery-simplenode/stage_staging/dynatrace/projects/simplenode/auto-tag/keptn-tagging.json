@@ -1,0 +1,32 @@
+{
+    "name": "{{ .name }}",
+    "rules": [
+        {
+            "type": "SERVICE",
+            "enabled": true,
+            "valueFormat": "{ProcessGroup:Environment:{{ .name }}}",
+            "propagationTypes": [
+                "SERVICE_TO_PROCESS_GROUP_LIKE"
+            ],
+            "conditions": [
+                {
+                    "key": {
+                        "attribute": "PROCESS_GROUP_CUSTOM_METADATA",
+                        "dynamicKey": {
+                            "source": "ENVIRONMENT",
+                            "key": "{{ .name }}"
+                        },
+                        "type": "PROCESS_CUSTOM_METADATA_KEY"
+                    },
+                    "comparisonInfo": {
+                        "type": "STRING",
+                        "operator": "EXISTS",
+                        "value": null,
+                        "negate": false,
+                        "caseSensitive": null
+                    }
+                }
+            ]
+        }
+    ]
+}
