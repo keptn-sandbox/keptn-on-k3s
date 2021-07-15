@@ -604,22 +604,6 @@ function install_keptn {
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
   fi
 
-  # For Dynatrace or Monaco install the secret
-  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
-    write_progress "Creating Dynatrace Secret!"
-
-    # Always create the secret in Keptn as a secret
-    keptn_create_dynatrace_secret
-
-    # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
-    if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
-      check_delete_secret dynatrace
-    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
-      --from-literal="DT_TENANT=$DT_TENANT" \
-      --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
-    fi 
-  fi 
-
   # Install Dynatrace Services
   if [[ "${DYNA}" == "true" ]]; then
 
@@ -716,6 +700,23 @@ function install_keptn {
     write_progress "Waiting for certificates to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
   fi 
+
+  # For Dynatrace or Monaco create the secret. Has to be at the end as keptn_create_dynatrace_secret calls the Keptn API
+  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
+    write_progress "Creating Dynatrace Secret!"
+
+    # Always create the secret in Keptn as a secret
+    keptn_create_dynatrace_secret
+
+    # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
+    if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+      check_delete_secret dynatrace
+    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
+      --from-literal="DT_TENANT=$DT_TENANT" \
+      --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+    fi 
+  fi 
+
 }
 
 function get_keptncredentials {
