@@ -1,0 +1,131 @@
+{
+    "name": "{{ .name }}",
+    "frequencyMin": 1,
+    "enabled": true,
+    "type": "HTTP",
+    "createdFrom": "GUI",
+    "script": {
+      "version": "1.0",
+      "requests": [
+        {
+          "description": "{{ .description }} - Step 1",
+          "url": "{{ .url }}",
+          "method": "GET",
+          "validation": {
+            "rules": [
+              {
+                "value": ">=400",
+                "passIfFound": false,
+                "type": "httpStatusesList"
+              }
+            ],
+            "rulesChaining": "or"
+          },
+          "configuration": {
+            "requestHeaders": [
+              {
+                "name": "x-dynatrace-test",
+                "value": "TSN=Step1;LTN=StagingCheck;LSN=HttpCheck"
+              }
+            ],            
+            "acceptAnyCertificate": true,
+            "followRedirects": true
+          }
+        },
+        {
+          "description": "{{ .description }} - Step 2",
+          "url": "{{ .url }}/api/invoke?url=https://www.keptn.sh&sleep=1000",
+          "method": "GET",
+          "validation": {
+            "rules": [
+              {
+                "value": ">=400",
+                "passIfFound": false,
+                "type": "httpStatusesList"
+              }
+            ],
+            "rulesChaining": "or"
+          },
+          "configuration": {
+            "requestHeaders": [
+              {
+                "name": "x-dynatrace-test",
+                "value": "TSN=Step2;LTN=StagingCheck;LSN=HttpCheck"
+              }
+            ],            
+            "acceptAnyCertificate": true,
+            "followRedirects": true
+          }
+        },
+        {
+          "description": "{{ .description }} - Step 3",
+          "url": "{{ .url }}/api/echo?text=Hello",
+          "method": "GET",
+          "validation": {
+            "rules": [
+              {
+                "value": ">=400",
+                "passIfFound": false,
+                "type": "httpStatusesList"
+              }
+            ],
+            "rulesChaining": "or"
+          },
+          "configuration": {
+            "requestHeaders": [
+              {
+                "name": "x-dynatrace-test",
+                "value": "TSN=Step3;LTN=StagingCheck;LSN=HttpCheck"
+              }
+            ],            
+            "acceptAnyCertificate": true,
+            "followRedirects": true
+          }
+        }        
+      ]
+    },
+    "locations": [
+      "{{ .location }}"
+    ],
+    "anomalyDetection": {
+      "outageHandling": {
+        "globalOutage": false,
+        "localOutage": false,
+        "localOutagePolicy": {
+          "affectedLocations": 1,
+          "consecutiveRuns": 3
+        }
+      },
+      "loadingTimeThresholds": {
+        "enabled": false,
+        "thresholds": [
+          {
+            "type": "TOTAL",
+            "valueMs": 0
+          }
+        ]
+      }
+    },
+    "tags": [
+        { "context" : "CONTEXTLESS", "key" : "{{ .project }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .service }}"},
+        { "context" : "CONTEXTLESS", "key" : "{{ .stage }}"}        
+    ],
+    "managementZones": [],
+    "automaticallyAssignedApps": [],
+    "manuallyAssignedApps": [],
+    "requests": [
+      {
+        "name": "{{ .description }} - Step 1",
+        "sequenceNumber": 1
+      },
+      {
+        "name": "{{ .description }} - Step 2",
+        "sequenceNumber": 2
+      },
+      {
+        "name": "{{ .description }} - Step 3",
+        "sequenceNumber": 3
+      }
+    ]
+  }
