@@ -62,3 +62,17 @@ cd cloudautomation
 export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.public.i.p.nip.io
 ./install-cloudautomation-workshop.sh 
 ```
+
+## Executing some samples for the workshop
+
+### Step 1: Deploy services end-2-end
+
+```
+keptn trigger delivery --project=delivery-demo --service=simplenode1 --image=grabnerandi/simplenodeservice:1.0.0
+```
+
+### Step 2: Deploy services directly in production
+
+```
+keptn trigger delivery --project=delivery-demo --service=simplenode1 --stage=production --image=grabnerandi/simplenodeservice:1.0.0
+```
