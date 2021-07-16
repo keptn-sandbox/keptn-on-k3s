@@ -35,7 +35,12 @@ PROJECT_NAME=${3:-none}
 SYNTHETIC_LOCATION=${SYNTHETIC_LOCATION:-GEOLOCATION-45AB48D9D6925ECC}
 
 # INSTANCE_COUNT_XXX=${4:-1}
-INSTANCE_ARRAY=(${!4:-AAAA})
+INSTANCE_ARRAY_FILE=${4:-none}
+if [[ "$INSTANCE_ARRAY_FILE" == "none" ]]; then
+  INSTANCE_ARRAY=(AAAA)
+else 
+  source $4
+fi 
 
 # Expected Env Variables that should be set!
 # KEPTN_ENDPOINT="https://keptn.yourkeptndomain.abc
