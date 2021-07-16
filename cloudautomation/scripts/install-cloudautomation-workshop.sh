@@ -14,7 +14,7 @@ if [[ "$KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN" == "none" ]] || [[ "$KEPTN_CONTROL
   exit 1
 fi
 
-if [[ "WORKSHOP_TENANT_INSTANCES" == "none" ]]; then 
+if [[ "$WORKSHOP_TENANT_INSTANCES" == "none" ]]; then 
   echo "Specify an array with instance names in WORKSHOP_TENANT_INSTANCES, e.g: WORKSHOP_TENANT_INSTANCES=(AAAA BBBB CCCC)"
   exit 1
 fi 
