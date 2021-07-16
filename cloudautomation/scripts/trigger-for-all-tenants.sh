@@ -14,6 +14,5 @@ for (( instanceIx=0; instanceIx<instanceCount; instanceIx++ ))
 do
     INSTANCE_NAME=${INSTANCE_ARRAY[$instanceIx]}
 
-    echo "Onboard Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
-    keptn trigger delivery --project=$2 --stage=$3 --service=$INSTANCE_SERVICE_NAME --image=$4
+    keptn trigger delivery --project=$2 --stage=$3 --service=$INSTANCE_NAME --image=$4
 done
