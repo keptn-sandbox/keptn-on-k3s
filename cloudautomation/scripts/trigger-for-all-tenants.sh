@@ -8,8 +8,6 @@ STAGE=${3:-none}
 IMAGE=${4:-none}
 SLEEP_IN_SECS=${5:-20}
 
-source $1
-
 if [[ "$TENANTS" == "none" ]] || [[ "$PROJECT" == "none" ]] || [[ "$STAGE" == "none" ]] || [[ "$IMAGE" == "none" ]]; then
   echo "Usage: ./trigger-for-all-tenants.sh TENANTLIST PROJECT STAGE IMAGE [SLEEP_IN_SECS]"
   echo "Example: "
@@ -17,6 +15,8 @@ if [[ "$TENANTS" == "none" ]] || [[ "$PROJECT" == "none" ]] || [[ "$STAGE" == "n
   exit 1
 fi
 
+# loading tenants
+source $TENANTS
 
 instanceCount=${#INSTANCE_ARRAY[@]}
 
