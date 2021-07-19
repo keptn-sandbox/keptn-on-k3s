@@ -2,10 +2,21 @@
 
 set -eu
 
+TENANTS=${1:-none}
+PROJECT=${2:-none}
+STAGE=${3:-none}
+IMAGE=${4:-none}
+SLEEP_IN_SECS=${5:-20}
+
 source $1
 
-# usage:
-# trigger-for-all-tenants: ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:3.0.0
+if [[ "$TENANTS" == "none" ]] || [[ "$PROJECT" == "none" ]] || [[ "$STAGE" == "none" ]] || [[ "$IMAGE" == "none" ]]; then
+  echo "Usage: ./trigger-for-all-tenants.sh TENANTLIST PROJECT STAGE IMAGE [SLEEP_IN_SECS]"
+  echo "Example: "
+  echo "./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:3.0.0"
+  exit 1
+fi
+
 
 instanceCount=${#INSTANCE_ARRAY[@]}
 
@@ -16,5 +27,5 @@ do
 
     keptn trigger delivery --project=$2 --stage=$3 --service=tnt-$INSTANCE_NAME-svc --image=$4
 
-    sleep 2
+    sleep $SLEEP_IN_SECS
 done
