@@ -51,7 +51,7 @@ git checkout release-0.8.0
 
 Now its time to run the installation script!
 ```bash
-./install-keptn-on-k3s.sh --executionplane --provider aws --with-jmeter --with-genericexec --with-monaco --with-gitea --use-nip
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --with-gitea --use-nip
 ```
 
 ### Step 4: Install demo projects
