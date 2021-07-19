@@ -82,12 +82,12 @@ if [[ "$KEPTN_INGRESS" == "" ]]; then
     exit 1
 fi
 
-if [[ "$KEPTN_STAGING_INGRESS" == ""]]; then
+if [[ "$KEPTN_STAGING_INGRESS" == "" ]]; then
     echo "Default KEPTN_STAGING_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
     KEPTN_STAGING_INGRESS="$KEPTN_INGRESS"
 fi 
 
-if [[ "$KEPTN_PRODUCTION_INGRESS" == ""]]; then
+if [[ "$KEPTN_PRODUCTION_INGRESS" == "" ]]; then
     echo "Default KEPTN_PRODUCTION_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
     KEPTN_PRODUCTION_INGRESS="$KEPTN_INGRESS"
 fi 
