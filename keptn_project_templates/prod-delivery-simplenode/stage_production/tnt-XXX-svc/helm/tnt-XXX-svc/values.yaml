@@ -13,7 +13,7 @@ ingress:
   ingressHost: REPLACE_KEPTN_INGRESS
 
 service:
-  name: simplenodeXXX
+  name: tnt-XXX-svc
   type: ClusterIP
   port: 8080
   targetPort: 8080
