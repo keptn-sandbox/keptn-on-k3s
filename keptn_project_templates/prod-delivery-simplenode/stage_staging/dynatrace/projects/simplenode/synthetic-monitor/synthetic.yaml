@@ -1,0 +1,11 @@
+config:
+    - synthetic_http_prod_check: "synthetic_http.json"
+
+synthetic_http_prod_check:
+    - name: "HTTP Check - {{ .Env.KEPTN_PROJECT }}.{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_STAGE }}"
+    - description: "{{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_SERVICE }} {{ .Env.KEPTN_STAGE }} HTTP Check"
+    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_STAGING_INGRESS"
+    - project: "{{ .Env.KEPTN_PROJECT }}"
+    - stage: "{{ .Env.KEPTN_STAGE }}"
+    - service: "{{ .Env.KEPTN_SERVICE }}"
+    - location: "REPLACE_SYNTHETIC_LOCATION"  # Frankfurt (AWS) would be GEOLOCATION-45AB48D9D6925ECC

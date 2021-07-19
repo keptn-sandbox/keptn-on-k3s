@@ -5,7 +5,7 @@ config:
 synthetic_http_prod_check:
     - name: "HTTP Check - {{ .Env.KEPTN_PROJECT }}.{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_STAGE }}"
     - description: "{{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_SERVICE }} {{ .Env.KEPTN_STAGE }} HTTP Check"
-    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_INGRESS"
+    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_PRODUCTION_INGRESS"
     - project: "{{ .Env.KEPTN_PROJECT }}"
     - stage: "{{ .Env.KEPTN_STAGE }}"
     - service: "{{ .Env.KEPTN_SERVICE }}"
@@ -14,7 +14,7 @@ synthetic_http_prod_check:
 synthetic_browser_prod_check:
     - name: "Browser Check - {{ .Env.KEPTN_PROJECT }}.{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_STAGE }}"
     - description: "{{ .Env.KEPTN_PROJECT }} {{ .Env.KEPTN_SERVICE }} {{ .Env.KEPTN_STAGE }} Browser Check"
-    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_INGRESS"
+    - url: "http://{{ .Env.KEPTN_SERVICE }}.{{ .Env.KEPTN_PROJECT }}-{{ .Env.KEPTN_STAGE }}.REPLACE_KEPTN_PRODUCTION_INGRESS"
     - project: "{{ .Env.KEPTN_PROJECT }}"
     - stage: "{{ .Env.KEPTN_STAGE }}"
     - service: "{{ .Env.KEPTN_SERVICE }}"

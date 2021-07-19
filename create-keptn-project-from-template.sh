@@ -19,11 +19,13 @@
 
 # The files in the repo can contain certain PLACEHOLDERS which will be replaced before uploaded. 
 # The replacement happens in .tmp files - so - no original files will be changed. Here the list of REPLACE options
-# REPLACE_KEPTN_BRIDGE         with -> KEPTN_BRIDGE_PROJECT_ESCAPED
-# REPLACE_OWNER_EMAIL          with -> OWNER_EMAIL
-# REPLACE_KEPTN_INGRESS        with -> KEPTN_INGRESS
-# REPLACE_SYNTHETIC_LOCATION   with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
-# REPLACE_KEPTN_PROJECT        with -> Keptn Project Name
+# REPLACE_KEPTN_BRIDGE              with -> KEPTN_BRIDGE_PROJECT_ESCAPED
+# REPLACE_OWNER_EMAIL               with -> OWNER_EMAIL
+# REPLACE_KEPTN_INGRESS             with -> KEPTN_INGRESS
+# REPLACE_KEPTN_STAGING_INGRESS     with -> KEPTN_STAGING_INGRESS
+# REPLACE_KEPTN_PRODUCTION_INGRESS  with -> KEPTN_PRODUCTION_INGRESS
+# REPLACE_SYNTHETIC_LOCATION        with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
+# REPLACE_KEPTN_PROJECT             with -> Keptn Project Name
 
 # default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
@@ -34,7 +36,13 @@ OWNER_EMAIL=${2:-none}
 PROJECT_NAME=${3:-none}
 SYNTHETIC_LOCATION=${SYNTHETIC_LOCATION:-GEOLOCATION-45AB48D9D6925ECC}
 
-INSTANCE_COUNT_XXX=${4:-1}
+# INSTANCE_COUNT_XXX=${4:-1}
+INSTANCE_ARRAY_FILE=${4:-none}
+if [[ "$INSTANCE_ARRAY_FILE" == "none" ]]; then
+  INSTANCE_ARRAY=(AAAA)
+else 
+  source $4
+fi 
 
 # Expected Env Variables that should be set!
 # KEPTN_ENDPOINT="https://keptn.yourkeptndomain.abc
@@ -73,6 +81,17 @@ if [[ "$KEPTN_INGRESS" == "" ]]; then
     echo "Its needed when e.g: creating Dynatrace dashboards that point back to the Keptn Bridge"
     exit 1
 fi
+
+if [[ "$KEPTN_STAGING_INGRESS" == "" ]]; then
+    echo "Default KEPTN_STAGING_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
+    KEPTN_STAGING_INGRESS="$KEPTN_INGRESS"
+fi 
+
+if [[ "$KEPTN_PRODUCTION_INGRESS" == "" ]]; then
+    echo "Default KEPTN_PRODUCTION_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
+    KEPTN_PRODUCTION_INGRESS="$KEPTN_INGRESS"
+fi 
+
 
 ## Now - lets validate if all tools are installed that are needed
 if ! [ -x "$(command -v tree)" ]; then
@@ -159,13 +178,16 @@ do
             # take into consideration that we may need to create multiple service instances if it contains the XXX placeholder
             instanceCount=1
             if [[ "$SERVICE_NAME" == *"XXX"* ]]; then 
-                instanceCount=${INSTANCE_COUNT_XXX}
+                # instanceCount=${INSTANCE_COUNT_XXX}
+                instanceCount=${#INSTANCE_ARRAY[@]}
             fi 
 
             # now either create a single or multiple instances
-            for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
+            for (( instanceIx=0; instanceIx<instanceCount; instanceIx++ ))
             do
-                INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME//XXX/$instanceIx}")
+                INSTANCE_NAME=${INSTANCE_ARRAY[$instanceIx]}
+                INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME//XXX/$INSTANCE_NAME}")
+                # INSTANCE_SERVICE_NAME=$(echo "${SERVICE_NAME//XXX/$instanceIx}")
 
                 if [ -d "./service_${SERVICE_NAME}/charts" ]; then 
                     echo "Onboard Keptn Service: ${INSTANCE_SERVICE_NAME} for project ${PROJECT_NAME} with provided helm charts"
@@ -205,6 +227,8 @@ do
     sed -i "s/REPLACE_KEPTN_BRIDGE/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_STAGING_INGRESS/${KEPTN_STAGING_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_PRODUCTION_INGRESS/${KEPTN_PRODUCTION_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
     sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
 
@@ -223,18 +247,23 @@ do
         # take into consideration that we may need to create multiple service instances if it contains the XXX placeholder
     instanceCount=1
     if [[ "$remoteFileName" == *"XXX"* ]]; then 
-        instanceCount=${INSTANCE_COUNT_XXX}
+        # instanceCount=${INSTANCE_COUNT_XXX}
+        instanceCount=${#INSTANCE_ARRAY[@]}
     fi 
 
     # now either create a single or multiple instances
-    for (( instanceIx=1; instanceIx<=instanceCount; instanceIx++ ))
+    for (( instanceIx=0; instanceIx<instanceCount; instanceIx++ ))
     do
+        INSTANCE_NAME=${INSTANCE_ARRAY[$instanceIx]}
+
         # replace XXX in the remote file name
-        remoteFileInstanceName=$(echo "${remoteFileName//XXX/$instanceIx}")
+        # remoteFileInstanceName=$(echo "${remoteFileName//XXX/$instanceIx}")
+        remoteFileInstanceName=$(echo "${remoteFileName//XXX/$INSTANCE_NAME}")
 
         # replace any occurance in a special tmp.xxx file
         cp ${localFileName}.tmp ${localFileName}.tmp.xxx
-        sed -i "s/XXX/${instanceIx}/" ${localFileName}.tmp.xxx
+        # sed -i "s/XXX/${instanceIx}/" ${localFileName}.tmp.xxx
+        sed -i "s/XXX/${INSTANCE_NAME}/" ${localFileName}.tmp.xxx
 
         # adding the file
         keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp.xxx" --resourceUri="${remoteFileInstanceName}"

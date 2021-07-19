@@ -1,0 +1,11 @@
+config:
+  - qualitygatedashboard: "qgdashboard.json"
+  
+qualitygatedashboard:
+  - name: "KQG;project={{ .Env.KEPTN_PROJECT }};service={{ .Env.KEPTN_SERVICE }};stage={{ .Env.KEPTN_STAGE }}"
+  - project: "{{ .Env.KEPTN_PROJECT }}"
+  - stage: "{{ .Env.KEPTN_STAGE }}"
+  - service: "{{ .Env.KEPTN_SERVICE }}"  
+  - owner: "${OWNER_EMAIL}"
+  - keptnbridge: "http://REPLACE_KEPTN_BRIDGE/bridge"
+  - owner: "REPLACE_OWNER_EMAIL"

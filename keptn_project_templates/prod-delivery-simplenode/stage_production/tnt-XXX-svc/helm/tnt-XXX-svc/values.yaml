@@ -10,10 +10,10 @@ pullPolicy: Always
 ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
-  ingressHost: REPLACE_KEPTN_INGRESS
+  ingressHost: REPLACE_KEPTN_PRODUCTION_INGRESS
 
 service:
-  name: simplenodeXXX
+  name: tnt-XXX-svc
   type: ClusterIP
   port: 8080
   targetPort: 8080

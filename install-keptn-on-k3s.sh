@@ -31,9 +31,9 @@ if [[ $KEPTN_CONTROL_PLANE_DOMAIN == *"live.dynatrace.com" ]]; then
 fi 
 
 # For execution plane here are the filters
-KEPTN_EXECUTION_PLANE_STAGE_FILTER=""
-KEPTN_EXECUTION_PLANE_SERVICE_FILTER=""
-KEPTN_EXECUTION_PLANE_PROJECT_FILTER=""
+KEPTN_EXECUTION_PLANE_STAGE_FILTER=${KEPTN_EXECUTION_PLANE_STAGE_FILTER:-""}
+KEPTN_EXECUTION_PLANE_SERVICE_FILTER=${KEPTN_EXECUTION_PLANE_SERVICE_FILTER:-""}
+KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
@@ -312,6 +312,8 @@ function get_oneagent {
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
     -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+    -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
+    -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
     ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
 
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -541,9 +543,8 @@ function install_keptn {
     # Install the Argo Service for just the demo-rollout project
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
@@ -569,6 +570,7 @@ function install_keptn {
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
       GENERICEXEC="false"
@@ -579,6 +581,7 @@ function install_keptn {
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     fi 
 
     # Install Locust if the user wants to
@@ -603,22 +606,6 @@ function install_keptn {
 
      "${K3SKUBECTL[@]}" set env deploy/prometheus-service --containers=prometheus-service PROMETHEUS_NS=prometheus ALERT_MANAGER_NS=prometheus -n keptn
   fi
-
-  # For Dynatrace or Monaco install the secret
-  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
-    write_progress "Creating Dynatrace Secret!"
-
-    # Always create the secret in Keptn as a secret
-    keptn_create_dynatrace_secret
-
-    # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
-    if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
-      check_delete_secret dynatrace
-    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
-      --from-literal="DT_TENANT=$DT_TENANT" \
-      --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
-    fi 
-  fi 
 
   # Install Dynatrace Services
   if [[ "${DYNA}" == "true" ]]; then
@@ -702,7 +689,7 @@ function install_keptn {
   fi
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
-  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
+  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all || true
 
   # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
@@ -716,6 +703,23 @@ function install_keptn {
     write_progress "Waiting for certificates to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready certificate keptn-tls --timeout=300s
   fi 
+
+  # For Dynatrace or Monaco create the secret. Has to be at the end as keptn_create_dynatrace_secret calls the Keptn API
+  if [[ "${DYNA}" == "true" ]] || [[ "${MONACO}" == "true" ]]; then
+    write_progress "Creating Dynatrace Secret!"
+
+    # Always create the secret in Keptn as a secret
+    keptn_create_dynatrace_secret
+
+    # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
+    if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+      check_delete_secret dynatrace
+    "${K3SKUBECTL[@]}" create secret generic -n keptn dynatrace \
+      --from-literal="DT_TENANT=$DT_TENANT" \
+      --from-literal="DT_API_TOKEN=$DT_API_TOKEN"
+    fi 
+  fi 
+
 }
 
 function get_keptncredentials {
