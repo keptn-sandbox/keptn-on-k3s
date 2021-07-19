@@ -19,11 +19,13 @@
 
 # The files in the repo can contain certain PLACEHOLDERS which will be replaced before uploaded. 
 # The replacement happens in .tmp files - so - no original files will be changed. Here the list of REPLACE options
-# REPLACE_KEPTN_BRIDGE         with -> KEPTN_BRIDGE_PROJECT_ESCAPED
-# REPLACE_OWNER_EMAIL          with -> OWNER_EMAIL
-# REPLACE_KEPTN_INGRESS        with -> KEPTN_INGRESS
-# REPLACE_SYNTHETIC_LOCATION   with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
-# REPLACE_KEPTN_PROJECT        with -> Keptn Project Name
+# REPLACE_KEPTN_BRIDGE              with -> KEPTN_BRIDGE_PROJECT_ESCAPED
+# REPLACE_OWNER_EMAIL               with -> OWNER_EMAIL
+# REPLACE_KEPTN_INGRESS             with -> KEPTN_INGRESS
+# REPLACE_KEPTN_STAGING_INGRESS     with -> KEPTN_STAGING_INGRESS
+# REPLACE_KEPTN_PRODUCTION_INGRESS  with -> KEPTN_PRODUCTION_INGRESS
+# REPLACE_SYNTHETIC_LOCATION        with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
+# REPLACE_KEPTN_PROJECT             with -> Keptn Project Name
 
 # default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
@@ -79,6 +81,17 @@ if [[ "$KEPTN_INGRESS" == "" ]]; then
     echo "Its needed when e.g: creating Dynatrace dashboards that point back to the Keptn Bridge"
     exit 1
 fi
+
+if [[ "$KEPTN_STAGING_INGRESS" == ""]]; then
+    echo "Default KEPTN_STAGING_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
+    KEPTN_STAGING_INGRESS="$KEPTN_INGRESS"
+fi 
+
+if [[ "$KEPTN_PRODUCTION_INGRESS" == ""]]; then
+    echo "Default KEPTN_PRODUCTION_INGRESS to KEPTN_INGRESS($KEPTN_INGRESS)"
+    KEPTN_PRODUCTION_INGRESS="$KEPTN_INGRESS"
+fi 
+
 
 ## Now - lets validate if all tools are installed that are needed
 if ! [ -x "$(command -v tree)" ]; then
@@ -214,6 +227,8 @@ do
     sed -i "s/REPLACE_KEPTN_BRIDGE/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
     sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_STAGING_INGRESS/${KEPTN_STAGING_INGRESS}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_PRODUCTION_INGRESS/${KEPTN_PRODUCTION_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
     sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
 

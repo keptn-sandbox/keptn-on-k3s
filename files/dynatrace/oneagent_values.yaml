@@ -8,6 +8,8 @@ oneagent:
   args:
   - --set-host-group=DT_HOST_GROUP
   - --set-host-tag=KeptnOnK3s
+  - --set-host-tag=KeptnType=KEPTN_TYPE
+  - --set-host-tag=KeptnStage=KEPTN_STAGE
   env: {}
   nodeSelector: {}
   labels: {}

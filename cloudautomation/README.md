@@ -29,10 +29,6 @@ export DT_PAAS_TOKEN=dt0c01.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 export KEPTN_CONTROL_PLANE_API_TOKEN=ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 
-export KEPTN_EXECUTION_PLANE_STAGE_FILTER=
-export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
-export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
-
 export OWNER_EMAIL=youremail@domain.com
 
 export ISTIO=false
@@ -47,12 +43,38 @@ cd keptn-on-k3s
 git checkout release-0.8.0
 ```
 
-### Step 3: Install k3s
+### Step 3a: Install a single k3s Execution Plane for Production & Staging
+
+**This installation option is good if you don't have too many tenants in your workshop and if your k3s host has sufficient CPU and Memory**
 
 Now its time to run the installation script!
 ```bash
+export KEPTN_EXECUTION_PLANE_STAGE_FILTER=
+export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
+export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 ./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --with-gitea --use-nip
 ```
+
+### Step 3b: Install a two k3s Execution Planes. One for Production & one for Staging
+
+**This requires two smaller hosts as each host is only handling either production or staging traffic**
+
+We first install the Execution Plane targeted for Production (here we also install Gitea)
+```bash
+export KEPTN_EXECUTION_PLANE_STAGE_FILTER=production
+export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
+export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --with-gitea --use-nip
+```
+
+And now the Execution Plane targeted for Staging (no need for gitea)
+```bash
+export KEPTN_EXECUTION_PLANE_STAGE_FILTER=staging
+export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
+export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --use-nip
+```
+
 
 ### Step 4: Install demo projects
 
@@ -73,9 +95,11 @@ Now we are ready and can create the demo project for that workshop
 ```bash
 cd cloudautomation
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
-export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.public.i.p.nip.io
+export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.productionk3s.i.p.nip.io   (this is the production execution plane IP)
+export KEPTN_PRODUCTION_INGRESS=your.productionk3s.i.p.nip.io
+export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 
-./install-cloudautomation-workshop.sh 
+./install-cloudautomation-workshop.sh
 ```
 
 ## Executing some samples for the workshop

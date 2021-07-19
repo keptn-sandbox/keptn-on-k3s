@@ -312,6 +312,8 @@ function get_oneagent {
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
     -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+    -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
+    -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
     ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
 
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml

@@ -10,7 +10,7 @@ pullPolicy: Always
 ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
-  ingressHost: REPLACE_KEPTN_INGRESS
+  ingressHost: REPLACE_KEPTN_PRODUCTION_INGRESS
 
 service:
   name: tnt-XXX-svc
