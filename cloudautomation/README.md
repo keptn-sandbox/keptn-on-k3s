@@ -56,10 +56,25 @@ Now its time to run the installation script!
 
 ### Step 4: Install demo projects
 
-Final step is to install the demo projects used in the workshop
+The demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
+The idea is that every attendee of the workshop gets its own service. The story is that we are all working for a SaaS provider and we are all responsible for our individual tenants.
+
+In order to create tenants for each student we need to create a file called `tenants.sh` in the `cloudautomation/scripts` folder that sets the TENANTID into an array as described here. The tenant IDs must only contain alphanumeric characters and have to be lowercase. Here is an example for 3 tenants:
+
+**./cloudautomation/scripts/tenants.sh:**
+```sh
+INSTANCE_ARRAY=(aabb ccdd eeff)
+```
+
+**TIP for Workshops:** To come up with the list of tenants a suggestion is to use the first two characters of your attendees first and last names for the tenant IDs, e.g: Andreas Grabner would be angr, Henrik Rexed would be here, ... 
+
+
+Now we are ready and can create the demo project for that workshop
 ```bash
 cd cloudautomation
+export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.public.i.p.nip.io
+
 ./install-cloudautomation-workshop.sh 
 ```
 
@@ -68,11 +83,17 @@ export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.public.i.p.nip.io
 ### Step 1: Deploy services end-2-end
 
 ```
-keptn trigger delivery --project=delivery-demo --service=simplenode1 --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-aabb-svc --image=grabnerandi/simplenodeservice:1.0.0
 ```
 
 ### Step 2: Deploy services directly in production
 
 ```
-keptn trigger delivery --project=delivery-demo --service=simplenode1 --stage=production --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-aabb-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.0
+```
+
+### Step 3: Deploy ALL services for ALL tenants in one go
+
+```
+./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.0
 ```
