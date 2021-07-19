@@ -686,7 +686,7 @@ function install_keptn {
   fi
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
-  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all
+  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all || true
 
   # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then
