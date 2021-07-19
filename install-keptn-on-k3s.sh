@@ -581,7 +581,7 @@ function install_keptn {
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     fi 
 
     # Install Locust if the user wants to
