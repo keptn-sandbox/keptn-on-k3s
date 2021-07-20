@@ -1,0 +1,11 @@
+config:
+    - pg_naming: "namingrules.json"
+    - svc_naming: "namingrules.json"
+
+pg_naming:
+    - name: "k8s PG Naming Rule"
+    - type: "PROCESS_GROUP"
+
+svc_naming:
+    - name: "k8s SVC Naming Rule"
+    - type: "SERVICE"
