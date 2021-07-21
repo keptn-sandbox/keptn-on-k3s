@@ -1,0 +1,47 @@
+{
+  "tsmMetricKey": "{{ .metricKey }}",
+  "name": "{{ .name }}",
+  "enabled": true,
+  "metricDefinition": {
+    "metric": "REQUEST_COUNT",
+    "requestAttribute": null
+  },
+  "unit": "COUNT",
+  "unitDisplayName": "",
+  "entityId": null,
+  "managementZones": [],
+  "conditions": [
+    {
+      "attribute": "SERVICE_TAG",
+      "comparisonInfo": {
+        "type": "TAG",
+        "comparison": "EQUALS",
+        "value": {
+          "context": "ENVIRONMENT",
+          "key": "DT_APPLICATION_NAME",
+          "value": "delivery-demo"
+        },
+        "values": null,
+        "negate": false
+      }
+    },
+    {
+      "attribute": "RESPONSE_TIME",
+      "comparisonInfo": {
+        "type": "NUMBER",
+        "comparison": "LOWER_THAN_OR_EQUAL",
+        "value": 500,
+        "values": null,
+        "negate": false
+      }
+    }
+  ],
+  "dimensionDefinition": {
+    "name": "version",
+    "dimension": "{Request:ApplicationReleaseVersion}",
+    "placeholders": [],
+    "topX": 10,
+    "topXDirection": "DESCENDING",
+    "topXAggregation": "SINGLE_VALUE"
+  }
+}

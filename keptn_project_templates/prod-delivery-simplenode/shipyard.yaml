@@ -16,6 +16,10 @@ spec:
         triggeredAfter: "10m"
         properties:
           timeframe: "10m"
+      - name: approval
+        properties:
+          pass: automatic
+          warning: automatic          
   - name: production
     sequences:
     - name: delivery

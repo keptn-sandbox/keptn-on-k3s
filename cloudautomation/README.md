@@ -94,6 +94,8 @@ INSTANCE_ARRAY=(aabb ccdd eeff)
 Now we are ready and can create the demo project for that workshop
 ```bash
 cd cloudautomation
+export OWNER_EMAIL=youremail@domain.com
+
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=your.productionk3s.i.p.nip.io   (this is the production execution plane IP)
 export KEPTN_PRODUCTION_INGRESS=your.productionk3s.i.p.nip.io

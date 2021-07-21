@@ -36,8 +36,10 @@ spec:
 # Following DT_CLUSTER_ID would "hard code" the PGI naming which we will do through a naming rule using the meta data on this container
 #        - name: DT_CLUSTER_ID
 #          value: "{{ .Values.keptn.project }}.{{ .Values.keptn.service }}.{{ .Values.keptn.stage }}.{{ .Values.keptn.deployment }}"
+        - name: DT_TAGS
+          value: "WorkshopTenant=XXX"
         - name: DT_CUSTOM_PROP
-          value: "keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
+          value: "WorkshopTenant=XXX keptn_project={{ .Values.keptn.project }} keptn_service={{ .Values.keptn.service }} keptn_stage={{ .Values.keptn.stage }} keptn_deployment={{ .Values.keptn.deployment }}"
         - name: POD_NAME
           valueFrom:
             fieldRef:

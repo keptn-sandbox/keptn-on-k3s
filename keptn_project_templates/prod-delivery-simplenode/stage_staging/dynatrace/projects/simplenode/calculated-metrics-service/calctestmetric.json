@@ -1,0 +1,51 @@
+{
+    "tsmMetricKey": "{{ .metricKey }}",
+    "name": "{{ .name }}",
+    "enabled": true,
+    "metricDefinition": {
+      "metric": "{{ .metric }}",
+      "requestAttribute": null
+    },
+    "unit": "{{ .metricunit }}",
+    "unitDisplayName": "",
+    "entityId": null,
+    "managementZones": [],
+    "conditions": [
+      {
+        "attribute": "SERVICE_REQUEST_ATTRIBUTE",
+        "comparisonInfo": {
+          "type": "STRING_REQUEST_ATTRIBUTE",
+          "comparison": "EXISTS",
+          "value": null,
+          "values": null,
+          "negate": false,
+          "requestAttribute": "TSN",
+          "caseSensitive": false,
+          "matchOnChildCalls": false,
+          "source": null
+        }
+      },    
+      {
+        "attribute": "SERVICE_TAG",
+        "comparisonInfo": {
+          "type": "TAG",
+          "comparison": "EQUALS",
+          "value": {
+            "context": "ENVIRONMENT",
+            "key": "DT_APPLICATION_NAME",
+            "value": "delivery-demo"
+          },
+          "values": null,
+          "negate": false
+        }
+      }
+    ],
+    "dimensionDefinition": {
+      "name": "Test Step",
+      "dimension": "{RequestAttribute:TSN}",
+      "placeholders": [],
+      "topX": 10,
+      "topXDirection": "DESCENDING",
+      "topXAggregation": "{{ .topxaggregate }}"
+    }
+  }

@@ -1,0 +1,25 @@
+config:
+  - testcpu: "calctestmetric.json"
+  - testfailurerate: "calctestmetric.json"
+  - testresponsetime: "calctestmetric.json"
+
+testcpu:
+  - name: "Test Step CPU"
+  - metricKey: "calc:service.teststepcpu"
+  - metric: "CPU_TIME"
+  - metricunit: "MICRO_SECOND"
+  - topxaggregate: "SUM"
+
+testfailurerate:
+  - name: "Test Step Failure Rate"
+  - metricKey: "calc:service.teststepfailurerate"
+  - metric: "FAILURE_RATE"
+  - metricunit: "PERCENT"
+  - topxaggregate: "OF_INTEREST_RATIO"
+
+testresponsetime:
+  - name: "Test Step Response Time"
+  - metricKey: "calc:service.teststepresponsetime"
+  - metric: "RESPONSE_TIME"
+  - metricunit: "MICRO_SECOND"
+  - topxaggregate: "SUM"
