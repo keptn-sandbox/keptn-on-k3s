@@ -46,6 +46,6 @@
       "placeholders": [],
       "topX": 10,
       "topXDirection": "DESCENDING",
-      "topXAggregation": "SUM"
+      "topXAggregation": "{{ .topxaggregate }}"
     }
   }

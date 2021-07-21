@@ -1,5 +1,5 @@
 config:
-  - tenantfastercount: "calctestmetric.json"
+  - tenantfastercount: "calcslometric.json"
   - tenantrtbyversion: "calcversionmetric.json"
 
 tenantfastercount:
