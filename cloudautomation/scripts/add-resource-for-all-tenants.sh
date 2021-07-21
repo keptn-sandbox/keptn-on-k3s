@@ -26,6 +26,4 @@ do
     INSTANCE_NAME=${INSTANCE_ARRAY[$instanceIx]}
 
     keptn add-resource --project=$2 --stage=$3 --service=tnt-$INSTANCE_NAME-svc --resource=$4 --resourceUri=$5
-
-    sleep $SLEEP_IN_SECS
 done
