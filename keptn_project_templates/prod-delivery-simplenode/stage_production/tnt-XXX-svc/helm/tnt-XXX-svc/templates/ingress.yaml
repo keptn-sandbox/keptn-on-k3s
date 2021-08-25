@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: {{ .Values.keptn.service }}-ingress
   annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
     cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
     nginx.ingress.kubernetes.io/ssl-redirect: "false"
 spec:

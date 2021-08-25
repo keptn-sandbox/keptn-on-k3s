@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.6"
+KEPTNVERSION="0.8.7"
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -689,6 +689,7 @@ function install_keptn {
   fi
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
+  sleep 30
   "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all || true
 
   # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane

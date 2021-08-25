@@ -11,6 +11,7 @@ ingress:
   clusterIssuer: issuer.letsencrypt
   secretName: keptn-tls
   ingressHost: REPLACE_KEPTN_STAGING_INGRESS
+  class: nginx
 
 service:
   name: tnt-XXX-svc
