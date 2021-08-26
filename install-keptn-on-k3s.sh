@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION="0.8.7"
+KEPTNVERSION=${KEPTNVERSION:-0.8.6}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
