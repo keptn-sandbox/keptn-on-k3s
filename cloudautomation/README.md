@@ -85,10 +85,13 @@ In order to create tenants for each student we need to create a file called `ten
 
 **./cloudautomation/scripts/tenants.sh:**
 ```sh
-INSTANCE_ARRAY=(aabb ccdd eeff)
+INSTANCE_ARRAY=(angr here saif)
 ```
 
 **TIP for Workshops:** To come up with the list of tenants a suggestion is to use the first two characters of your attendees first and last names for the tenant IDs, e.g: Andreas Grabner would be angr, Henrik Rexed would be here, ... 
+Another option would be to use e.g: stock symbols. With this you can assign everyone a stock symbol that is easy to remember, e.g: aapl, tsla, ... There is a sample file called `tenants.stocksample.sh`. It contains 30 symbol names (some made up) :-)
+
+**IMPORTANT:** Dynatrace automatically detects "version information" in pod names by removing hexadecimal patterns. So - make sure that these tenantIDs do not include numbers or just letters from A to F
 
 
 Now we are ready and can create the demo project for that workshop
@@ -109,13 +112,13 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ### Step 1: Deploy services end-2-end
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-aabb-svc --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --image=grabnerandi/simplenodeservice:1.0.0
 ```
 
 ### Step 2: Deploy services directly in production
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-aabb-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.0
 ```
 
 ### Step 3: Deploy ALL services for ALL tenants in one go

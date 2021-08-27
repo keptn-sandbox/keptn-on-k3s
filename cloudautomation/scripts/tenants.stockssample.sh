@@ -1,0 +1,1 @@
+INSTANCE_ARRAY=(aapl acer amzn bnym bofa cola comp dish docu duke dyna ebay fedx ford geel goog intc msft nflx nike nvda orly pton qcom sbux siri tsla vrtx wday yumb)
