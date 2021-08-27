@@ -2,3 +2,4 @@ _justForAndi.txt
 files/curloutput.txt
 gitea-ingress_gen.yaml
 *.tmp 
+cloudautomation/scripts/tenants.sh
