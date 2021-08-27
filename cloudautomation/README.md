@@ -129,4 +129,6 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 
 ## Import Sample Dynatrace SLO Dashboard
 
-In this directory you find the [default_qualitygate_dashboard.json](./scripts/default_qualitygate_dashboard.json). I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial
+In this directory you find the [default_qualitygate_dashboard.json](./scripts/default_qualitygate_dashboard.json). 
+I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial.
+The name can be: `KQG;project=dynatrace;stage=quality-gate;service=<YOURSERVICENAME>`
