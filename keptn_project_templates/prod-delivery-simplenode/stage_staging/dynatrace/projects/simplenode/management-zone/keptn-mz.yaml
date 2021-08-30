@@ -9,5 +9,5 @@ management-zone-keptn-project-stage:
   - service: "{{ .Env.KEPTN_SERVICE }}"
 
 management-zone-keptn-service:
-  - name: "Tenant: {{ .ENV.KEPTN_SERVICE }}"
-  - service: "{{ .ENV.KEPTN_SERVICE }}"  
+  - name: "Tenant: {{ .Env.KEPTN_SERVICE }}"
+  - service: "{{ .Env.KEPTN_SERVICE }}"  
