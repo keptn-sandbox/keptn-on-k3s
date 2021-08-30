@@ -4,7 +4,10 @@
       {
         "type": "SERVICE",
         "enabled": true,
-        "propagationTypes": [],
+        "propagationTypes": [
+          "SERVICE_TO_HOST_LIKE",
+          "SERVICE_TO_PROCESS_GROUP_LIKE"
+        ],
         "conditions": [
           {
             "key": {

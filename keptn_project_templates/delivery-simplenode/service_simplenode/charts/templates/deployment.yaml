@@ -46,6 +46,22 @@ spec:
           valueFrom:
             fieldRef:
               fieldPath: "metadata.labels['deployment']"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.name"
+        - name: DEPLOYMENT_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['deployment']"
+        - name: DT_RELEASE_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['app.kubernetes.io/version']"
+        - name: DT_RELEASE_PRODUCT
+          value: "{{ .Values.keptn.project }}"
+        - name: DT_RELEASE_STAGE
+          value: "{{ .Values.keptn.stage }}"
         - name: CONTAINER_IMAGE
           value: "{{ .Values.image }}"
         - name: KEPTN_PROJECT
