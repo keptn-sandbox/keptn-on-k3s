@@ -1,0 +1,210 @@
+ {
+  "dashboardMetadata": {
+    "name": "SLO Dashboard for Tenant xxxx",
+    "shared": false,
+    "tags": [
+      "xxxx",
+      "slo"
+    ]
+  },
+  "tiles": [
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 0,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-1h"
+      },
+      "assignedEntities": [
+        "c1de81d1-8cea-36c1-85d4-e5b8a25ab5e1"
+      ]
+    },
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 304,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-2h"
+      },
+      "assignedEntities": [
+        "c1de81d1-8cea-36c1-85d4-e5b8a25ab5e1"
+      ]
+    },
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 608,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-6h"
+      },
+      "assignedEntities": [
+        "c1de81d1-8cea-36c1-85d4-e5b8a25ab5e1"
+      ]
+    },
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 0,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-1h"
+      },
+      "assignedEntities": [
+        "676dc8a9-2267-33d9-b4fa-bcf7aa5d879d"
+      ]
+    },
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 304,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-2h"
+      },
+      "assignedEntities": [
+        "676dc8a9-2267-33d9-b4fa-bcf7aa5d879d"
+      ]
+    },
+    {
+      "name": "Performance SLO for xxxx",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 608,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-6h"
+      },
+      "assignedEntities": [
+        "676dc8a9-2267-33d9-b4fa-bcf7aa5d879d"
+      ]
+    },
+    {
+      "name": "Last hour",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 266,
+        "left": 0,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Last 2 hours",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 266,
+        "left": 304,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Last 6 hours",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 266,
+        "left": 608,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Last hour",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 38,
+        "left": 0,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Last 2 hours",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 38,
+        "left": 304,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Last 6 hours",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 38,
+        "left": 608,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Performance SLO (Response Time faster than 500ms)",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 912,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Synthetic Availability SLO",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 228,
+        "left": 0,
+        "width": 912,
+        "height": 38
+      },
+      "tileFilter": {}
+    }
+  ]
+}

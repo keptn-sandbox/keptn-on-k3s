@@ -126,3 +126,15 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 ```
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.0
 ```
+
+## Import Sample Dynatrace SLO Dashboard
+
+### SLO Quality Gate Dashboard
+In this directory you find the [default_qualitygate_dashboard.json](./scripts/default_qualitygate_dashboard.json). 
+I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial.
+The name can be: `KQG;project=dynatrace;stage=quality-gate;service=<YOURSERVICENAME>`
+
+### SLO Dashboard
+In this directory you also find the [default_slo_dashboard.json](./scripts/default_slo_dashboard.json). 
+I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial.
+The name can be: `SLO Dashboard for tenant xxxx`

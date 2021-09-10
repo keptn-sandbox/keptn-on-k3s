@@ -17,24 +17,9 @@
               "type": "TAG",
               "operator": "EQUALS",
               "value": {
-                "context": "ENVIRONMENT",
-                "key": "DT_APPLICATION_NAME",
-                "value": "{{ .project }}"
-              },
-              "negate": false
-            }
-          },
-          {
-            "key": {
-              "attribute": "SERVICE_TAGS"
-            },
-            "comparisonInfo": {
-              "type": "TAG",
-              "operator": "EQUALS",
-              "value": {
-                "context": "ENVIRONMENT",
-                "key": "DT_APPLICATION_ENVIRONMENT",
-                "value": "{{ .stage }}"
+                "context": "KUBERNETES",
+                "key": "app.kubernetes.io/name",
+                "value": "{{ .service }}"
               },
               "negate": false
             }
@@ -44,4 +29,3 @@
     ],
     "dimensionalRules": []
   }
-
