@@ -1,0 +1,12 @@
+config:
+  - qualitygatedashboard: "qgdashboard.json"
+  
+qualitygatedashboard:
+  - name: "KQG;project={{ .Env.KEPTN_PROJECT }};service={{ .Env.KEPTN_SERVICE }};stage={{ .Env.KEPTN_STAGE }}"
+  - project: "{{ .Env.KEPTN_PROJECT }}"
+  - stage: "{{ .Env.KEPTN_STAGE }}"
+  - service: "{{ .Env.KEPTN_SERVICE }}"  
+  - keptnbridge: "http://REPLACE_KEPTN_BRIDGE/bridge"
+  - owner: "REPLACE_OWNER_EMAIL"
+  - mzId: "projects/simplenode/management-zone/keptn-mz/management-zone-keptn-project-stage.id"
+  - mzName: "projects/simplenode/management-zone/keptn-mz/management-zone-keptn-project-stage.name"  

@@ -25,7 +25,51 @@
             }
           }
         ]
-      }
+      },
+      {
+        "type": "HTTP_MONITOR",
+        "enabled": true,
+        "propagationTypes": [],
+        "conditions": [
+          {
+            "key": {
+              "attribute": "HTTP_MONITOR_TAGS",
+              "type": "STATIC"
+            },
+            "comparisonInfo": {
+              "type": "TAG",
+              "operator": "TAG_KEY_EQUALS",
+              "value": {
+                "context": "CONTEXTLESS",
+                "key": "{{ .service }}"
+              },
+              "negate": false
+            }
+          }
+        ]
+      },
+      {
+        "type": "BROWSER_MONITOR",
+        "enabled": true,
+        "propagationTypes": [],
+        "conditions": [
+          {
+            "key": {
+              "attribute": "BROWSER_MONITOR_TAGS",
+              "type": "STATIC"
+            },
+            "comparisonInfo": {
+              "type": "TAG",
+              "operator": "TAG_KEY_EQUALS",
+              "value": {
+                "context": "CONTEXTLESS",
+                "key": "{{ .service }}"
+              },
+              "negate": false
+            }
+          }
+        ]
+      }      
     ],
     "dimensionalRules": []
   }
