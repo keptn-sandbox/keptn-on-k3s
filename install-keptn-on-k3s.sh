@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.8.6}
+KEPTNVERSION=${KEPTNVERSION:-0.9.1}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -37,8 +37,8 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="release-0.15.0"
-DT_SLI_SERVICE_VERSION="release-0.12.0"
+DT_SERVICE_VERSION="release-0.16.0"
+# DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
@@ -611,11 +611,13 @@ function install_keptn {
   if [[ "${DYNA}" == "true" ]]; then
 
     if [[ "${KEPTN_CONTROLPLANE}" == "true" ]] || [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
-      write_progress "Installing Dynatrace + Dynatrace SLI Services on Control / Delivery Plane"
+      write_progress "Installing Dynatrace SLI Services on Control / Delivery Plane"
 
       # Installing core dynatrace services
-      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
-      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+      helm upgrade --install dynatrace-service -n keptn https://github.com/keptn-contrib/dynatrace-service/releases/download/${DT_SERVICE_VERSION}/dynatrace-service-${DT_SERVICE_VERSION}.tgz --set dynatraceService.config.keptnApiUrl=${PREFIX}://${KEPTN_DOMAIN}/api --set dynatraceService.config.keptnBridgeUrl=${PREFIX}://${KEPTN_DOMAIN}/bridge
+
+      # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
+      # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
 
       # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
       "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
