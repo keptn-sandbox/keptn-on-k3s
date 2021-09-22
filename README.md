@@ -7,6 +7,7 @@
 | [@thschue](https://github.com/thschue) | [release-0.6.2](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.6.2) | 0.6.2 | Initial Release |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.7.3](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.7.3) | 0.7.3 | Adding Dynatrace Use Cases |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.8.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.8.0) | 0.8.0 | Updates to Keptn 0.8 |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.9.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.9.0) | 0.9.1 | Updates to Keptn 0.9.x |
 
 This repo automates the installation of [Keptn's](https://keptn.sh) Control Plane, Delivery or Execution. For that it will automatically install a [k3s](https://k3s.io). 
 This is your fastest way to explore the following use cases:
@@ -59,7 +60,7 @@ sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.8.0
+git checkout release-0.9.0
 ```
 
 ### Currently tested on:
