@@ -12,6 +12,7 @@ metadata:
     # rewrite any request will return 404
     nginx.ingress.kubernetes.io/rewrite-target: /
     cert-manager.io/cluster-issuer: issuer.placeholder-issuer
+    kubernetes.io/ingress.class: istio
   name: istio-ingress
   namespace: istio-system
 spec:
