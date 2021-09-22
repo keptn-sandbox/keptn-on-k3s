@@ -40,7 +40,7 @@ Now its time to clone this git repo
 ```bash
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.8.0
+git checkout release-0.9.0
 ```
 
 ### Step 3a: Install a single k3s Execution Plane for Production & Staging
