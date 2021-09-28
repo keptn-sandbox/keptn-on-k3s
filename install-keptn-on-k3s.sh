@@ -40,7 +40,7 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 DT_SERVICE_VERSION="0.16.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
-MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
+MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
 LOCUST_SERVICE_VERSION="release-0.1.2"
 
