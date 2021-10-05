@@ -279,7 +279,7 @@ function get_kubectl {
 
 function get_k3s {
   write_progress "Installing K3s (${K3SVERSION}) with NGINX instead of Traefik Ingress"
-  curl --insecure -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
+  curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
 
   # set the kubeconfig
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -307,6 +307,9 @@ function get_oneagent {
 
   helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
   "${K3SKUBECTL[@]}" create namespace dynatrace
+
+  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
+  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
 
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
