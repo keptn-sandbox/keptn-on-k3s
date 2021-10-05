@@ -16,16 +16,16 @@ spec:
         triggeredAfter: "6m"
         properties:
           timeframe: "6m"
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic          
   - name: production
     sequences:
     - name: delivery
       triggeredOn:
       - event: staging.delivery.finished
       tasks:
+      - name: approval
+        properties:
+          pass: automatic
+          warning: manual
       - name: monaco
       - name: deployment
         properties:
