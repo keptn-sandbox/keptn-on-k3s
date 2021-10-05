@@ -279,7 +279,7 @@ function get_kubectl {
 
 function get_k3s {
   write_progress "Installing K3s (${K3SVERSION}) with NGINX instead of Traefik Ingress"
-  curl -sfkL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
+  curl --insecure -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL="${K3SVERSION}" INSTALL_K3S_SYMLINK="skip" K3S_KUBECONFIG_MODE="644" INSTALL_K3S_EXEC="--disable=traefik" sh -
 
   # set the kubeconfig
   export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
