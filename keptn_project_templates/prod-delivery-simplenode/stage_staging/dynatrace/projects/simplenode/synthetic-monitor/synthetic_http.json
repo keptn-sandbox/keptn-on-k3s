@@ -1,6 +1,6 @@
 {
     "name": "{{ .name }}",
-    "frequencyMin": 1,
+    "frequencyMin": 2,
     "enabled": true,
     "type": "HTTP",
     "createdFrom": "GUI",
