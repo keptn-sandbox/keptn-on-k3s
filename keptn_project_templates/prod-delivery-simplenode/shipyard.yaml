@@ -13,9 +13,9 @@ spec:
         properties:
           deploymentstrategy: user_managed
       - name: evaluation
-        triggeredAfter: "10m"
+        triggeredAfter: "6m"
         properties:
-          timeframe: "10m"
+          timeframe: "6m"
       - name: approval
         properties:
           pass: automatic
@@ -30,3 +30,7 @@ spec:
       - name: deployment
         properties:
           deploymentstrategy: user_managed
+      - name: evaluation
+        triggeredAfter: "6m"
+        properties:
+          timeframe: "6m"
