@@ -34,7 +34,7 @@
         },
         {
           "description": "{{ .description }} - Step 2",
-          "url": "{{ .url }}/api/invoke?url=https://www.keptn.sh&sleep=1000",
+          "url": "{{ .url }}/api/invoke?url=https://github.com/keptn&sleep=1000",
           "method": "GET",
           "validation": {
             "rules": [
