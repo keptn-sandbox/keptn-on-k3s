@@ -112,19 +112,19 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ### Step 1: Deploy services end-2-end
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ### Step 2: Deploy services directly in production
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ### Step 3: Deploy ALL services for ALL tenants in one go
 
 ```
-./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.0
+./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.1
 ```
 
 ## Import Sample Dynatrace SLO Dashboard

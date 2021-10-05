@@ -15,9 +15,9 @@ Your instructor will give you login credentials to
 
 While the Bastion host can be ued to trigger keptn CLI commands you can also install the Keptn CLI yourself.
 Please ask your instructor which version to install so it matches the cloud automation instance. Or simple download it via the download link in the Cloud Automation UI (top right menu)
-Here the sample on how to install e.g: 0.8.6 CLI on your Linux:
+Here the sample on how to install e.g: 0.9.2 CLI on your Linux:
 ```sh
-curl -sL https://get.keptn.sh | KEPTN_VERSION=0.8.6 sudo -E bash
+curl -sL https://get.keptn.sh | KEPTN_VERSION=0.9.2 sudo -E bash
 ```
 
 To connect to local Keptn CLI with your Cloud Automation instance copy the `keptn auth` command from the Cloud Automation UI (top right)
@@ -41,10 +41,10 @@ The sample application used comes with 4 different container versions that are a
 
 | Image | Description |
 | ------ | ------------- |
-| grabnerandi/simplenodeservice:1.0.0 | Version 1, green background, no problems |
-| grabnerandi/simplenodeservice:2.0.0 | Version 2, yellow background, high failure rate |
-| grabnerandi/simplenodeservice:3.0.0 | Version 3, no problems |
-| grabnerandi/simplenodeservice:4.0.0 | Version 4, only problems in production |
+| grabnerandi/simplenodeservice:1.0.1 | Version 1, green background, no problems |
+| grabnerandi/simplenodeservice:2.0.1 | Version 2, yellow background, high failure rate |
+| grabnerandi/simplenodeservice:3.0.1 | Version 3, no problems |
+| grabnerandi/simplenodeservice:4.0.1 | Version 4, only problems in production |
 
 ## Trigger a new version deployment of your service
 
@@ -56,14 +56,14 @@ To trigger a full end-2-end delivery (staging and production) in the `delivery-d
 * xxxx needs to be replaced with your demo service tenant, e.g: aapl, goog, ...
 * you can choose which image version to deploy
 ```sh
-keptn trigger delivery --project=delivery-demo --stage=staging --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --stage=staging --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ### Delivery directly into production
 
 For some of our exercises we may shortcut the deployment and deploy straight into `production`. For this we simply change the stage name parameter to production shown like here:
 ```sh
-keptn trigger delivery --project=delivery-demo --stage=production --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:1.0.0
+keptn trigger delivery --project=delivery-demo --stage=production --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ## Triggering SLO based quality gates
