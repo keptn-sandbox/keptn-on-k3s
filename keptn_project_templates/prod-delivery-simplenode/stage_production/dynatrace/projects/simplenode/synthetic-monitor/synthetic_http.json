@@ -1,6 +1,6 @@
 {
     "name": "{{ .name }}",
-    "frequencyMin": 5,
+    "frequencyMin": 2,
     "enabled": true,
     "type": "HTTP",
     "createdFrom": "GUI",
@@ -9,7 +9,7 @@
       "requests": [
         {
           "description": "{{ .description }}",
-          "url": "{{ .url }}",
+          "url": "{{ .url }}/api/invoke?url=https://github.com/keptn&sleep=1000",
           "method": "GET",
           "validation": {
             "rules": [
