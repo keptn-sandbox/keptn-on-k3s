@@ -531,7 +531,7 @@ function install_keptn {
     get_istio
     get_argorollouts
 
-    # Install the Helm Service
+    # Install the Helm Service - and increase memory and cpu limits
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
@@ -540,6 +540,10 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
+    yq w -i /tmp/helm.values.yaml "resources.requests.cpu" "50"
+    yq w -i /tmp/helm.values.yaml "resources.requests.memory" "128Mi"
+    yq w -i /tmp/helm.values.yaml "resources.limits.cpu" "200"
+    yq w -i /tmp/helm.values.yaml "resources.limits.memory" "512Mi"
     
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
