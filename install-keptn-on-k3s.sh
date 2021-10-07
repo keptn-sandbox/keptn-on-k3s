@@ -540,9 +540,9 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
-    yq w -i /tmp/helm.values.yaml "resources.requests.cpu" "50"
+    yq w -i /tmp/helm.values.yaml "resources.requests.cpu" "50m"
     yq w -i /tmp/helm.values.yaml "resources.requests.memory" "128Mi"
-    yq w -i /tmp/helm.values.yaml "resources.limits.cpu" "200"
+    yq w -i /tmp/helm.values.yaml "resources.limits.cpu" "200m"
     yq w -i /tmp/helm.values.yaml "resources.limits.memory" "512Mi"
     
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
