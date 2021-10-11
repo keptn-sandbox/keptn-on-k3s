@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.9.1}
+KEPTNVERSION=${KEPTNVERSION:-0.9.2}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -40,7 +40,7 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 DT_SERVICE_VERSION="0.16.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
-MONACO_SERVICE_VERSION="release-0.8.4"  # migratetokeptn08
+MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
 LOCUST_SERVICE_VERSION="release-0.1.2"
 
@@ -308,6 +308,9 @@ function get_oneagent {
   helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
   "${K3SKUBECTL[@]}" create namespace dynatrace
 
+  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
+  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
+
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
     -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
@@ -528,7 +531,7 @@ function install_keptn {
     get_istio
     get_argorollouts
 
-    # Install the Helm Service
+    # Install the Helm Service - and increase memory and cpu limits
     curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
@@ -537,6 +540,10 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "distributor.stageFilter" "${KEPTN_EXECUTION_PLANE_STAGE_FILTER}"
     yq w -i /tmp/helm.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
+    yq w -i /tmp/helm.values.yaml "resources.requests.cpu" "50m"
+    yq w -i /tmp/helm.values.yaml "resources.requests.memory" "128Mi"
+    yq w -i /tmp/helm.values.yaml "resources.limits.cpu" "200m"
+    yq w -i /tmp/helm.values.yaml "resources.limits.memory" "512Mi"
     
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
@@ -692,7 +699,7 @@ function install_keptn {
 
   write_progress "Waiting for Keptn pods to be ready (max 5 minutes)"
   sleep 30
-  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=300s --all || true
+  "${K3SKUBECTL[@]}" wait --namespace=keptn --for=condition=Ready pods --timeout=60s --all || true
 
   # Keptn Ingress only makes sense if we actually installed the keptn control or delivery plane
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]] || [[ "${KEPTN_CONTROLPLANE}" == "true" ]]; then

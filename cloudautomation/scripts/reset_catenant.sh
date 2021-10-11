@@ -22,9 +22,10 @@ if [[ "$userinput" != "y" ]]; then
 fi
 
 # lets first delete secret and project
-keptn delete secret dynatrace
+# keptn delete secret dynatrace
 keptn delete project dynatrace
 
 # now lets create the project and add the default dynatrace.conf.yaml
 keptn create project dynatrace --shipyard=./shipyard.yaml
-keptn add-resource --project=dynatrace --stage=quality-gate --resource="dynatrace.conf.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"
+keptn add-resource --project=dynatrace --stage=quality-gate --resource="dynatrace.conf.quality-gate.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"
+keptn add-resource --project=dynatrace --stage=production --resource="dynatrace.conf.production.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"

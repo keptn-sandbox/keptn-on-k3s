@@ -7,9 +7,6 @@ attachRules:
     - PROCESS_GROUP_INSTANCE
     tags:
     - context: KUBERNETES
-      key: "app.kubernetes.io/part-of"
-      value: $PROJECT
-    - context: KUBERNETES
       key: "app.kubernetes.io/name"
       value: $SERVICE    
     - context: ENVIRONMENT

@@ -13,20 +13,24 @@ spec:
         properties:
           deploymentstrategy: user_managed
       - name: evaluation
-        triggeredAfter: "10m"
+        triggeredAfter: "6m"
         properties:
-          timeframe: "10m"
-      - name: approval
-        properties:
-          pass: automatic
-          warning: automatic          
+          timeframe: "6m"
   - name: production
     sequences:
     - name: delivery
       triggeredOn:
       - event: staging.delivery.finished
       tasks:
+      - name: approval
+        properties:
+          pass: automatic
+          warning: manual
       - name: monaco
       - name: deployment
         properties:
           deploymentstrategy: user_managed
+      - name: evaluation
+        triggeredAfter: "6m"
+        properties:
+          timeframe: "6m"
