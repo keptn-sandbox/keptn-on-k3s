@@ -1,5 +1,13 @@
 # Keptn on k3s with demo projects for Dynatrace
 
+## Cloud Automation Workshop
+
+If you navigate to this repository because you are part of a **Cloud Automation Workshop** then check out the following resources
+* [Cloud Automation Hands-On Instructions](./cloudautomation/INSTRUCTIONS.md)
+* [Cloud Automation Workshop Setup Instructions](./cloudautomation/README.md)
+
+## Running on Keptn on k3s with demo projects
+
 **Before you start - make sure to pick the right branch for your Keptn Version!**
 
 | Authors | Tutorial Version | Keptn Version | Comment |
