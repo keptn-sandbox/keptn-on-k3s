@@ -1,4 +1,4 @@
-# Dynatrace Cloud Automation Workshop
+# Dynatrace Cloud Automation Workshop - Instructions for Trainers
 
 This folder contains scripts to setup a Dynatrace Cloud Automation Workshop
 
