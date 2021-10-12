@@ -74,9 +74,9 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 | Field | Value |
 | ------ | ------------- |
 | Metrics Expression | `(builtin:synthetic.browser.availability.location.total:splitBy()`  |
-| Entity Selector | `type("SYNTHETIC_TEST"),tag("tnt-xxxx-svc"),tag("production")` |
 | Name of SLO | `Availability of xxxx` |
 | Description | `% of time xxxx service is available based on synthetic test` | 
+| Entity Selector | `type("SYNTHETIC_TEST"),tag("tnt-xxxx-svc"),tag("production")` |
 | Timeframe | `-1w` |
 
 ### Step 2 - Create Performance SLO
@@ -88,14 +88,14 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 | Field | Value |
 | ------ | ------------- |
 | Metrics Expression | `(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())`  |
-| Entity Selector | `type("SERVICE"),tag("[Environment]WorkshopTenant:xxxx"),tag("[Environment]DT_APPLICATION_ENVIRONMENT:production")` |
 | Name of SLO | `Performance SLO of xxxx` |
 | Description | `% of requests handled by xxxx service faster than 500ms` | 
+| Entity Selector | `type("SERVICE"),tag("[Environment]WorkshopTenant:xxxx"),tag("[Environment]DT_APPLICATION_ENVIRONMENT:production")` |
 | Timeframe | `-1w` |
 
 ### Step 3 - Create SLO Dashboard
 
-Create SLO dashboard as explained and shown by instructor.
+Clone the *preset* dashboard with the name `SLO Dashboard tnt-xxxx-svc`. Then modify the cloned dashboard as explained in the following screenshot!
 ![](./images/lab1_slodashboard_edit.png)
 
 ## Lab 2 - Release Validation
@@ -110,7 +110,7 @@ and then have it automatically evaluated giving us an SLO score for a certain re
 
 ### Step 1 - Clone dashboard
 
-Clone the dashboard with the name `KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc` as shown here:
+Clone the *preset* dashboard with the name `KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc` as shown here:
 ![](./images/lab2_clonsedashboard.png)
 
 ### Step 2 - Rename dashboard and configure your SLOs
