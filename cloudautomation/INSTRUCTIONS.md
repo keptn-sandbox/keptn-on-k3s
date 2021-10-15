@@ -73,7 +73,7 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 
 | Field | Value |
 | ------ | ------------- |
-| Metrics Expression | `(builtin:synthetic.browser.availability.location.total:splitBy()`  |
+| Metrics Expression | `builtin:synthetic.browser.availability.location.total:splitBy()`  |
 | Name of SLO | `Availability of xxxx` |
 | Description | `% of time xxxx service is available based on synthetic test` | 
 | Entity Selector | `type("SYNTHETIC_TEST"),tag("tnt-xxxx-svc"),tag("production")` |

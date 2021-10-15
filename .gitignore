@@ -3,3 +3,5 @@ files/curloutput.txt
 gitea-ingress_gen.yaml
 *.tmp 
 cloudautomation/scripts/tenants.sh
+cloudautomation/monaco/.logs/*.*
+cloudautomation/scripts/.logs/*.*
