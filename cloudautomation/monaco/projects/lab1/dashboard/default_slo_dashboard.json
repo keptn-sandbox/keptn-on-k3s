@@ -1,0 +1,425 @@
+{
+  "dashboardMetadata": {
+    "name": "{{ .name }}",
+    "owner" : "{{ .owner }}",
+    "shared": false,
+    "dashboardFilter": {
+      "managementZone": {
+        "id": "{{ .mzId }}",
+        "name" : "{{ .mzName }}"
+      }
+    },
+    "tags": [
+      "slo"
+    ]
+  },
+  "tiles": [
+    {
+      "name": "Availability",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 0,
+        "width": 304,
+        "height": 114
+      },
+      "tileFilter": {
+        "timeframe": "-1h"
+      },
+      "assignedEntities": [
+        "{{ .availabilitySloId }}"
+      ]
+    },
+    {
+      "name": "Availability",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 304,
+        "width": 304,
+        "height": 114
+      },
+      "tileFilter": {
+        "timeframe": "-24h to now"
+      },
+      "assignedEntities": [
+        "{{ .availabilitySloId }}"
+      ]
+    },
+    {
+      "name": "Availability",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 152,
+        "left": 608,
+        "width": 304,
+        "height": 114
+      },
+      "tileFilter": {
+        "timeframe": "-7d to now"
+      },
+      "assignedEntities": [
+        "{{ .availabilitySloId }}"
+      ]
+    },
+    {
+      "name": "Performance",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 342,
+        "left": 0,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-1h"
+      },
+      "assignedEntities": [
+        "{{ .performanceSloId }}"
+      ]
+    },
+    {
+      "name": "Performance",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 342,
+        "left": 304,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-24h to now"
+      },
+      "assignedEntities": [
+        "{{ .performanceSloId }}"
+      ]
+    },
+    {
+      "name": "Performance",
+      "tileType": "SLO",
+      "configured": true,
+      "bounds": {
+        "top": 342,
+        "left": 608,
+        "width": 304,
+        "height": 152
+      },
+      "tileFilter": {
+        "timeframe": "-7d to now"
+      },
+      "assignedEntities": [
+        "{{ .performanceSloId }}"
+      ]
+    },
+    {
+      "name": "Last 30 days",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 912,
+        "width": 532,
+        "height": 190
+      },
+      "tileFilter": {
+        "timeframe": "-30d to now"
+      },
+      "customName": "Data explorer results",
+      "queries": [
+        {
+          "id": "A",
+          "timeAggregation": "DEFAULT",
+          "splitBy": [],
+          "metricSelector": "(builtin:synthetic.browser.availability.location.total:splitBy())",
+          "enabled": true
+        }
+      ],
+      "visualConfig": {
+        "type": "GRAPH_CHART",
+        "global": {
+          "theme": "DEFAULT",
+          "threshold": {
+            "axisTarget": "LEFT",
+            "rules": [
+              {
+                "value": 99.99,
+                "color": "#7dc540"
+              },
+              {
+                "value": 99.98,
+                "color": "#f5d30f"
+              },
+              {
+                "value": 0,
+                "color": "#dc172a"
+              }
+            ],
+            "visible": true
+          },
+          "seriesType": "LINE"
+        },
+        "rules": [],
+        "axes": {
+          "xAxis": {
+            "displayName": "",
+            "visible": true
+          },
+          "yAxes": [
+            {
+              "displayName": "",
+              "visible": true,
+              "min": "97.33",
+              "max": "100",
+              "position": "LEFT",
+              "queryIds": [
+                "A"
+              ],
+              "defaultAxis": true
+            }
+          ]
+        },
+        "thresholds": [
+          {
+            "axisTarget": "LEFT",
+            "rules": [
+              {
+                "value": 99.99,
+                "color": "#7dc540"
+              },
+              {
+                "value": 99.98,
+                "color": "#f5d30f"
+              },
+              {
+                "value": 0,
+                "color": "#dc172a"
+              }
+            ],
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Last 30 days",
+      "tileType": "DATA_EXPLORER",
+      "configured": true,
+      "bounds": {
+        "top": 266,
+        "left": 912,
+        "width": 532,
+        "height": 228
+      },
+      "tileFilter": {
+        "timeframe": "-30d to now"
+      },
+      "customName": "Data explorer results",
+      "queries": [
+        {
+          "id": "A",
+          "timeAggregation": "DEFAULT",
+          "metricSelector": "(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())",
+          "enabled": true
+        }
+      ],
+      "visualConfig": {
+        "type": "GRAPH_CHART",
+        "global": {
+          "theme": "DEFAULT",
+          "threshold": {
+            "axisTarget": "LEFT",
+            "rules": [
+              {
+                "value": 99.99,
+                "color": "#7dc540"
+              },
+              {
+                "value": 99.98,
+                "color": "#f5d30f"
+              },
+              {
+                "value": 0,
+                "color": "#dc172a"
+              }
+            ],
+            "visible": true
+          },
+          "seriesType": "LINE"
+        },
+        "rules": [],
+        "axes": {
+          "xAxis": {
+            "displayName": "",
+            "visible": true
+          },
+          "yAxes": [
+            {
+              "displayName": "",
+              "visible": true,
+              "min": "97.33",
+              "max": "100",
+              "position": "LEFT",
+              "queryIds": [
+                "A"
+              ],
+              "defaultAxis": true
+            }
+          ]
+        },
+        "thresholds": [
+          {
+            "axisTarget": "LEFT",
+            "rules": [
+              {
+                "value": 99.99,
+                "color": "#7dc540"
+              },
+              {
+                "value": 99.98,
+                "color": "#f5d30f"
+              },
+              {
+                "value": 0,
+                "color": "#dc172a"
+              }
+            ],
+            "visible": true
+          }
+        ]
+      }
+    },
+    {
+      "name": "Availability",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 0,
+        "width": 912,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Performance (% faster than 500ms)",
+      "tileType": "HEADER",
+      "configured": true,
+      "bounds": {
+        "top": 266,
+        "left": 0,
+        "width": 912,
+        "height": 38
+      },
+      "tileFilter": {}
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 0,
+        "width": 608,
+        "height": 76
+      },
+      "tileFilter": {},
+      "markdown": "## Service Level Objectives for tnt-{{ .tenant }}-svc\nTODO: Change MZ, select your SLOs, add your name & tag"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 114,
+        "left": 0,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Current (last hour)"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 114,
+        "left": 304,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Last 24h"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 114,
+        "left": 608,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Last 7 days"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 0,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Current (last hour)"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 304,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Last 24h"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 304,
+        "left": 608,
+        "width": 304,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Last 7 days"
+    },
+    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 0,
+        "left": 608,
+        "width": 608,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "Additional links: [Release management](/ui/releases), [Release validation](https://fvk03152.cloudautomation.live.dynatrace.com/bridge/dashboard)"
+    }
+  ]
+}

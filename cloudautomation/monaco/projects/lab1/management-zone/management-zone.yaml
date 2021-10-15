@@ -1,0 +1,5 @@
+config:
+  - zone: "zone.json"
+
+zone:
+  - name: "Tenant: tnt-{{ .Env.TENANT_ID }}-svc"

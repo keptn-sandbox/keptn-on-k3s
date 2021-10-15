@@ -1,11 +1,11 @@
 config:
-  - avail: "availability_slo.json"
-  - perf: "performance_slo.json"
+  - availabilitySlo: "availability_slo.json"
+  - performanceSlo: "performance_slo.json"
 
-avail:
+availabilitySlo:
   - name: "Availability of {{ .Env.TENANT_ID }}"
   - tenant: "{{ .Env.TENANT_ID }}"
 
-perf:
+performanceSlo:
   - name: "Performance SLO of {{ .Env.TENANT_ID }}"
   - tenant: "{{ .Env.TENANT_ID }}"

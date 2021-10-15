@@ -1,0 +1,11 @@
+config:
+  - slo_dashboard: "default_slo_dashboard.json"
+
+slo_dashboard:
+  - name: "SLO Dashboard for Tenant {{ .Env.TENANT_ID }}"
+  - owner: "{{ .Env.OWNER }}"
+  - tenant: "{{ .Env.TENANT_ID }}"
+  - availabilitySloId: "/lab1/slo/availabilitySlo.id"
+  - performanceSloId: "/lab1/slo/performanceSlo.id"
+  - mzId: "/lab1/management-zone/zone.id"
+  - mzName: "/lab1/management-zone/zone.name"
