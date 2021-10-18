@@ -240,11 +240,15 @@ var server = http.createServer(async function (req, res) {
 			} else 
 			if(url.pathname === "/api/triggerDelivery") {
 				triggerDelivery(url, res)
-			} else {
+			} else
+			if(url.pathname === "/api/stop") {
+				process.exit(1)
+			}
+			else {
 				res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});	
 				res.write("Unknown request!");
 				res.end(); 
-			}
+			} 
 		}
 		else
 		{
