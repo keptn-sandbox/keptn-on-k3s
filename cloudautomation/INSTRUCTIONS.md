@@ -3,13 +3,13 @@
 Here is the TOC for this workshop
 
 Overview:
-1. Our lab environment
-2. Our demo application
+1. [Our lab environment](#Access-to-the-lab-environment)
+2. [Our sample app today](#Our-sample-app-today)
 
 Followed by 3 labs
-1. Lab 1 - Production Reliability
-2. Lab 2 - Release Validation
-3. Lab 3 - Delivery Pipelines
+1. [Lab 1 - Production Reliability](#Lab-1-Production-Reliability)
+2. [Lab 2 - Release Validation](#Lab-2--Release-Validation)
+3. [Lab 3 - Delivery Pipelines](#Lab-3--Delivery-Pipelines)
 
 ## Access to the lab environment
 
@@ -18,7 +18,7 @@ Followed by 3 labs
 Your instructor will give you login credentials to
 * A Dynatrace Environment
 * A Cloud Automation Environment
-* A Bastion Host
+* A Bastion Host - either Web Interface or SSH
 
 ### Install Keptn CLI locally
 
