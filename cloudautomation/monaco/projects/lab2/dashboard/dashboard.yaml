@@ -1,0 +1,11 @@
+config:
+  - release_validation_dashboard: "default_release_validation_dashboard.json"
+
+release_validation_dashboard:
+  - name: "KQG;project=dynatrace;stage=production;service=tnt-{{ .Env.TENANT_ID }}-svc"
+  - owner: "{{ .Env.OWNER }}"
+  - tenant: "{{ .Env.TENANT_ID }}"
+  - availabilitySloId: "/lab1/slo/availabilitySlo.id"
+  - performanceSloId: "/lab1/slo/performanceSlo.id"
+  - mzId: "/general/management-zone/zone.id"
+  - mzName: "/general/management-zone/zone.name"

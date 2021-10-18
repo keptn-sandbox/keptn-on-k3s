@@ -1,0 +1,15 @@
+{
+    "enabled": true,
+    "name": "{{ .name }}",
+    "description": "% of requests handled by xxxx service faster than 500ms",
+    "useRateMetric": true,
+    "metricExpression": "(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())",
+    "metricRate": "",
+    "metricDenominator": "",
+    "metricNumerator": "",
+    "evaluationType": "AGGREGATE",
+    "filter": "type(\"SERVICE\"),tag(\"[Environment]WorkshopTenant:{{ .tenant }}\"),tag(\"[Environment]DT_APPLICATION_ENVIRONMENT:production\")",
+    "target": 99.98,
+    "warning": 99.99,
+    "timeframe": "-1d"
+}

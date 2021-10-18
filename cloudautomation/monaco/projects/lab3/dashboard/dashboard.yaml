@@ -1,0 +1,11 @@
+config:
+  - qg_dashboard: "default_qualitygate_dashboard.json"
+
+qg_dashboard:
+  - name: "KQG;project=delivery-demo;stage=staging;service=tnt-{{ .Env.TENANT_ID }}-svc"
+  - owner: "{{ .Env.OWNER }}"
+  - tenant: "{{ .Env.TENANT_ID }}"
+  - availabilitySloId: "/lab1/slo/availabilitySlo.id"
+  - performanceSloId: "/lab1/slo/performanceSlo.id"
+  - mzId: "/general/management-zone/zone.id"
+  - mzName: "/general/management-zone/zone.name"

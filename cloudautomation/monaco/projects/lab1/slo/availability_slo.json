@@ -1,0 +1,15 @@
+{
+    "enabled": true,
+    "name": "{{ .name }}",
+    "description": "% of time {{ .name }} service is available based on synthetic test",
+    "useRateMetric": true,
+    "metricExpression": "(builtin:synthetic.browser.availability.location.total:splitBy())",
+    "metricRate": "",
+    "metricDenominator": "",
+    "metricNumerator": "",
+    "evaluationType": "AGGREGATE",
+    "filter": "type(\"SYNTHETIC_TEST\"),tag(\"tnt-{{ .tenant }}-svc\"),tag(\"production\")",
+    "target": 99.98,
+    "warning": 99.99,
+    "timeframe": "-1d"
+}

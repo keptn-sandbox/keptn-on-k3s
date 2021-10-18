@@ -3,13 +3,13 @@
 Here is the TOC for this workshop
 
 Overview:
-1. Our lab environment
-2. Our demo application
+1. [Our lab environment](#Access-to-the-lab-environment)
+2. [Our sample app today](#Our-sample-app-today)
 
 Followed by 3 labs
-1. Lab 1 - Production Reliability
-2. Lab 2 - Release Validation
-3. Lab 3 - Delivery Pipelines
+1. [Lab 1 - Production Reliability](#Lab-1---Production-Reliability)
+2. [Lab 2 - Release Validation](#Lab-2---Release-Validation)
+3. [Lab 3 - Delivery Pipelines](#Lab-3---Delivery-Pipelines)
 
 ## Access to the lab environment
 
@@ -18,7 +18,7 @@ Followed by 3 labs
 Your instructor will give you login credentials to
 * A Dynatrace Environment
 * A Cloud Automation Environment
-* A Bastion Host
+* A Bastion Host - either Web Interface or SSH
 
 ### Install Keptn CLI locally
 
@@ -73,7 +73,7 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 
 | Field | Value |
 | ------ | ------------- |
-| Metrics Expression | `(builtin:synthetic.browser.availability.location.total:splitBy()`  |
+| Metrics Expression | `builtin:synthetic.browser.availability.location.total:splitBy()`  |
 | Name of SLO | `Availability of xxxx` |
 | Description | `% of time xxxx service is available based on synthetic test` | 
 | Entity Selector | `type("SYNTHETIC_TEST"),tag("tnt-xxxx-svc"),tag("production")` |
@@ -226,22 +226,31 @@ $ keptn trigger delivery --project=delivery-demo --service=tnt-xxxx-svc --image=
 
 Watch the deployment sequence in the cloud automation web ui!
 
-### Step 6 - Trigger evaluation via Keptn API
+### Step 6 - Trigger deployment via Keptn API
 
-Besides using the Keptn CLI to trigger an evaluation we can also trigger it via the Keptn API. An easy way to do it is via the Swagger Web UI.
+Besides using the Keptn CLI to trigger a deployment we can also trigger it via the Keptn API. An easy way to do it is via the Swagger Web UI.
 1. In the Cloud Automation UI first copy the API Token (via the menu on the top right)
 2. Open the API UI (via menu in the top right)
-3. Switch to the 'controlPlane` API definition
+3. Switch to the 'api-service` API definition
 4. Authenticate the UI using the token you have in your clipboard (from point 1)
 5. Scroll to the /event API definition
 6. Use the following payload -> replace xxxx with your tenant
 ```
 {
-  "labels": {
-    "executedBy": "api",
-    "buildId": "releaseC"
+  "data": {
+    "configurationChange": {
+      "values": {
+        "image": "grabnerandi/simplenodeservice:3.0.1"
+      }
+    },
+    "project": delivery-demo,
+    "service": tnt-xxxx-svc,
+    "stage": staging
   },
-  "timeframe": "30m"
+  "source": "https://github.com/keptn-sandbox/keptn-on-k3s/cloudautomation",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.staging.delivery.triggered",
+  "shkeptnspecversion": "0.2.3"
 }
 ```
 

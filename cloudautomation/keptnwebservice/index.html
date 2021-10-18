@@ -1,0 +1,161 @@
+<html>
+  <head>
+    <title>Cloud Automation: Triggering Keptn Sequences through the Browser</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  </head>
+
+  <h1>Welcome to your Cloud Automation Interactive Lab</h1>
+  
+  <p>This web interface allows you to trigger sequences on your Keptn or Dynatrace Cloud Automation instance such as "trigger evaluation" or "trigger delivery".</p>
+  <p>It shows you how easy it is to trigger the automation and therefore how easy it is to integrate this with your existing DevOps tools such as Jenkins, GitLab, Azure DevOps, Harness, Tekton, Argo or others ...</p>
+  <p>This interface is connected to: <a href="KEPTN_ENDPOINT" target="_blank">KEPTN_ENDPOINT</a></p>
+  
+  <h2>Trigger an evaluation sequence for a specific project, stage and service</h2>
+  <table  style="width:100%">
+    <tbody>
+      <tr>
+        <td><b>Project:</b></td>
+        <td><input id="project_eval" type="textbox" value="dynatrace" style="width:80%" /></td>
+        <td><b>Stage:</b></td>
+        <td><input id="stage_eval" type="textbox" value="production" style="width:80%" /></td>
+        <td><b>Service:</b></td>
+        <td><input id="service_eval" type="textbox" value="tnt-xxxx-svc" style="width:80%" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>To trigger an evaluation we need to specify the timeframe. This can either be a timeframe, e.g: 30m or a start and end timestamp. Additionally we can specify labels such as buildId, executedBy, ..</p>
+  <table style="width:100%">
+    <tbody>
+      <tr>
+        <td style="width:25%"><b>Timespan of evaluation:</b></td>
+        <td style="width:35%"><input id="timeframe" type="textbox" value="30m" style="width:80%"  /></td>
+      </tr>
+      <tr>
+        <td><b>Additional labels:</b></td>
+        <td><input id="labelName1" type="textbox" value="buildId" style="width:80%"  /></td>
+        <td><input id="labelValue1" type="textbox" value="releaseA" style="width:80%"  /></td>
+      </tr>
+      <tr>
+        <td></td>
+        <td><input id="labelName2" type="textbox" value="executedBy" style="width:80%"  /></td>
+        <td><input id="labelValue2" type="textbox" value="https://yourexternaltool.com" style="width:80%"  /></td>
+      </tr>
+    </tbody>
+  </table>
+  <table>
+    <tbody>
+      <tr>
+        <td><button id="triggerEvaluation">Trigger Evaluation</button></td>
+        <td><p id="resultEvaluation"></p></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>Alternatively: The Keptn CLI command to trigger the evaluation</p>
+  <p><code>keptn trigger evaluation --project=project --service=service --stage=stage --timeframe=30m --labels=buildId=1,executedBy=https://yourexternaltool.com/</code></p>
+  <p>&nbsp;</p>
+  
+  <h2>Trigger a delivery sequence</h2>
+  <table  style="width:100%">
+    <tbody>
+      <tr>
+        <td><b>Project:</b></td>
+        <td><input id="project_delivery" type="textbox" value="delivery-demo" style="width:80%" /></td>
+        <td><b>Stage:</b></td>
+        <td><input id="stage_delivery" type="textbox" value="staging" style="width:80%" /></td>
+        <td><b>Service:</b></td>
+        <td><input id="service_delivery" type="textbox" value="tnt-xxxx-svc" style="width:80%" /></td>
+      </tr>
+    </tbody>
+  </table>
+  <p>To trigger an evaluation we need to specify the timeframe. This can either be a timeframe, e.g: 30m or a start and end timestamp. Additionally we can specify labels such as buildId, executedBy, ..</p>
+  <table style="width:100%">
+    <tbody>
+      <tr>
+        <td style="width:25%"><b>Image to deploy:</b></td>
+        <td style="width:35%"><input id="image" type="textbox" value="grabnerandi/simplenodeservice:1.0.0" style="width:80%"/></td>
+      </tr>
+      <tr>
+        <td><b>Sequence name (default=delivery):</b></td>
+        <td><input id="sequence" type="textbox" value="delivery" style="width:80%" /></td>
+      </tr>
+      <tr>
+        <td><b>Additional labels:</b></td>
+        <td><input id="labelName3" type="textbox" value="executedBy" style="width:80%" /></td>
+        <td><input id="labelValue3" type="textbox" value="https://yourexternaltool.com" style="width:80%" /></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table>
+    <tbody>
+      <tr>
+        <td><button id="triggerDelivery">Trigger Delivery</button></td>
+        <td><p id="resultDelivery"></p></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>Here is the Keptn CLI command to trigger the evaluation</p>
+  <p><code>keptn trigger delivery --project=project --service=service --stage=stage --image=grabnerandi/simplenodeservice:1.0.0 --labels=executedBy=https://yourexternaltool.com/</code></p>
+  <p>&nbsp;</p>
+
+  <script>	
+  function getRESTEndpoint() {
+    return window.location.href;
+  }
+  
+  function executeCall(requestString, projectPostfix, resultField) {
+    var fullURL = getRESTEndpoint() + requestString;
+
+    var project = $('#project_' + projectPostfix).val();	
+    var stage = $('#stage_' + projectPostfix).val();	
+    var service = $('#service_' + projectPostfix).val();	
+
+    if (project == "" || stage == "" || service == "") {
+      alert("You have to enter valid values for project, stage and project!")
+      return
+    }
+
+    if (service.includes("xxxx")) {
+      alert("Seems you forgot to replace xxxx with your correct service name!")
+      return
+    }
+
+    fullURL = fullURL + "&project=" + project + "&stage=" + stage + "&service=" + service;
+    
+      $.ajax({
+          url: fullURL
+        }).success(function(data) {
+           $('#' + resultField).text(data);
+        }).fail(function() {
+           $('#' + resultField).text("invoke failed!");
+      });
+    }
+  
+  $("#triggerEvaluation").click(function () {	
+    var timeframe = $('#timeframe').val();	
+    var labelName1 = $('#labelName1').val();	
+    var labelName2 = $('#labelName2').val();	
+    var labelValue1 = $('#labelValue1').val();	
+    var labelValue2 = $('#labelValue2').val();	
+    executeCall(
+      "api/triggerEvaluation?timeframe=" + timeframe + "&labelName1=" + labelName1 + "&labelName2=" + labelName2 + "&labelValue1=" + labelValue1 + "&labelValue2=" + labelValue2, 
+      "eval",
+      "resultEvaluation");
+  });
+
+  $("#triggerDelivery").click(function () {	
+    var image = $('#image').val();	
+    var sequence = $('#sequence').val();	
+    var labelName1 = $('#labelName3').val();	
+    var labelValue1 = $('#labelValue3').val();	
+    executeCall(
+      "api/triggerDelivery?image=" + image + "&sequence=" + sequence + "&labelName1=" + labelName1 + "&labelValue1=" + labelValue1, 
+      "delivery",
+      "resultDelivery");
+  });
+  
+  </script>	
+
+</body>  
+</html>
