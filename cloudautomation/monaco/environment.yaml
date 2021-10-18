@@ -1,4 +1,4 @@
-foo:
+workshop:
     - name: "workshop"
     - env-url: "https://{{ .Env.DT_TENANT }}"
     - env-token-name: "DT_API_TOKEN"

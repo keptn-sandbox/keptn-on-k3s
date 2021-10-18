@@ -17,10 +17,25 @@ source $TENANTS
 
 instanceCount=${#INSTANCE_ARRAY[@]}
 
-# now either create a single or multiple instances
+# change into the monaco directory
+currentDir=$(pwd)
+cd ../monaco
+
+# now call monaco
 for (( instanceIx=0; instanceIx<instanceCount; instanceIx++ ))
 do
     TENANT_ID=${INSTANCE_ARRAY[$instanceIx]}
 
-    monaco -e ../monaco/environment.yaml -p $PROJECT ../monaco/projects
+    if [[ "$PROJECT" == "delete" ]]; then
+      sed -e 's~TENANT_ID~'"$TENANT_ID"'~' \
+        projects/delete/delete.tmpl > projects/delete/delete.yaml
+      monaco -e environment.yaml projects/delete
+      rm projects/delete/delete.yaml
+    else 
+      monaco -e environment.yaml -p $PROJECT projects
+    fi
+
 done
+
+# and now back
+cd $currentDir

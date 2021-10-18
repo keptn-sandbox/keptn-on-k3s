@@ -226,22 +226,31 @@ $ keptn trigger delivery --project=delivery-demo --service=tnt-xxxx-svc --image=
 
 Watch the deployment sequence in the cloud automation web ui!
 
-### Step 6 - Trigger evaluation via Keptn API
+### Step 6 - Trigger deployment via Keptn API
 
-Besides using the Keptn CLI to trigger an evaluation we can also trigger it via the Keptn API. An easy way to do it is via the Swagger Web UI.
+Besides using the Keptn CLI to trigger a deployment we can also trigger it via the Keptn API. An easy way to do it is via the Swagger Web UI.
 1. In the Cloud Automation UI first copy the API Token (via the menu on the top right)
 2. Open the API UI (via menu in the top right)
-3. Switch to the 'controlPlane` API definition
+3. Switch to the 'api-service` API definition
 4. Authenticate the UI using the token you have in your clipboard (from point 1)
 5. Scroll to the /event API definition
 6. Use the following payload -> replace xxxx with your tenant
 ```
 {
-  "labels": {
-    "executedBy": "api",
-    "buildId": "releaseC"
+  "data": {
+    "configurationChange": {
+      "values": {
+        "image": "grabnerandi/simplenodeservice:3.0.1"
+      }
+    },
+    "project": delivery-demo,
+    "service": tnt-xxxx-svc,
+    "stage": staging
   },
-  "timeframe": "30m"
+  "source": "https://github.com/keptn-sandbox/keptn-on-k3s/cloudautomation",
+  "specversion": "1.0",
+  "type": "sh.keptn.event.staging.delivery.triggered",
+  "shkeptnspecversion": "0.2.3"
 }
 ```
 

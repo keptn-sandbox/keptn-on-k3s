@@ -10,7 +10,8 @@
       }
     },
     "tags": [
-      "slo"
+      "slo",
+      "tnt-{{ .tenant }}-svc"
     ]
   },
   "tiles": [
