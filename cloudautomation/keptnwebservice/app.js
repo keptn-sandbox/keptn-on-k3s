@@ -2,6 +2,8 @@ const EMPTY = "<EMPTY>";
 var port = process.env.PORT || 8080,
     http = require('http'),
     fs = require('fs'),
+	path = require('path'),
+	urlModule = require('url'),
 	KEPTN_ENDPOINT = process.env.KEPTN_ENDPOINT || EMPTY,
 	KEPTN_API_TOKEN = process.env.KEPTN_API_TOKEN || EMPTY
     finalHtml = fs.readFileSync('index.html').toString().replace("KEPTN_ENDPOINT", KEPTN_ENDPOINT).replace("KEPTN_ENDPOINT", KEPTN_ENDPOINT);
@@ -220,6 +222,27 @@ var triggerDelivery = function(url, res) {
 // ======================================================================
 var server = http.createServer(async function (req, res) {
 
+	const parsedUrl = urlModule.parse(req.url);
+	// extract URL path
+	let pathname = `.${parsedUrl.pathname}`;
+	// based on the URL path, extract the file extension. e.g. .js, .doc, ...
+	const extName = path.parse(pathname).ext;
+	// mimeMaps file extention to MIME types
+	const mimeMap = {
+	  '.ico': 'image/x-icon',
+	  '.html': 'text/html',
+	  '.js': 'text/javascript',
+	  '.json': 'application/json',
+	  '.css': 'text/css',
+	  '.png': 'image/png',
+	  '.jpg': 'image/jpeg',
+	  '.wav': 'audio/wav',
+	  '.mp3': 'audio/mpeg',
+	  '.svg': 'image/svg+xml',
+	  '.pdf': 'application/pdf',
+	  '.doc': 'application/msword'
+	};
+
 	requests.push(Date.now());
 
 	// now keep requests array from growing forever
@@ -250,6 +273,20 @@ var server = http.createServer(async function (req, res) {
 				res.end(); 
 			} 
 		}
+		else if (typeof mimeMap[extName] !== 'undefined')
+		{
+			// read file from file system
+			fs.readFile(pathname, function(err, data){
+				if(err){
+					res.statusCode = 500;
+					res.end(`Error getting the file: ${err}.`);
+				} else {
+					// if the file is found, set Content-type and send data
+					res.setHeader('Content-type', mimeMap[extName] || 'text/plain' );
+					res.end(data);
+				}
+			})
+		}	
 		else
 		{
 			res.writeHead(200, 'OK', {'Content-Type': 'text/html'});

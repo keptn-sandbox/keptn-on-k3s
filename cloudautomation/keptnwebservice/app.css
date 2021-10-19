@@ -1,0 +1,19 @@
+.top-header {
+  background-color: #00a1b2;
+}
+.top-header-text {
+  font-family: BerninaSansWeb,OpenSans,sans-serif;
+  color:white;
+  background-color: #00a1b2;
+  font-size:x-large;
+  font-weight: bold;
+  vertical-align: bottom;
+}
+h2, h3 {
+  font-family: BerninaSansWeb,OpenSans,sans-serif;
+  color: #454646;
+  line-height: 1.6;
+}
+body {
+  font-family: BerninaSansWeb,OpenSans,sans-serif;
+}
