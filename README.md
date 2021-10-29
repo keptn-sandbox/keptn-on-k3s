@@ -94,7 +94,7 @@ The script allows a couple of parameters
 | `--use-xip` | | Will use a xip.io domain, e.g: your.ip.xip.io |
 | `--use-nip` | | Will use a nip.io domain which is sometimes more reliable than using xip.io. Will also be used when LE_STAGE=staging and no FQDN is specified |
 | `--provider` | aws<br>gcp<br>digitalocean<br>EMPTY | handles IP gathering based on provider or uses hostname in case its empty |
-| `--ip` | YOURIP | Allows you to pass your own IP of your host |
+| `--ip` | "YOURIP" | Allows you to pass your own IP of your host, use double quotation marks |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
 | `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
 | `--with-demo` | dynatrace prometheus | Will install demo projects for Dynatrace or Prometheus |
