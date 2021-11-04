@@ -83,7 +83,13 @@ export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 
 ### Step 4: Install demo projects
 
-The demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
+There are three projects being created then running `./install-cloudautomation-workshop.sh`
+1. demo-delivery: two stage delivery of the simplenode app
+2. release-validation: a simple quality gate project to demo automating release validation
+3. keptnwebservice: a simple project to deploy the "Sample CI/CD Web Interface" to trigger keptn sequences
+
+Here some more information!
+The core demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
 The idea is that every attendee of the workshop gets its own service. The story is that we are all working for a SaaS provider and we are all responsible for our individual tenants.
 
 In order to create tenants for each student we need to create a file called `tenants.sh` in the `cloudautomation/scripts` folder that sets the TENANTID into an array as described here. The tenant IDs must only contain alphanumeric characters and have to be lowercase. Here is an example for 3 tenants:
@@ -112,22 +118,7 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ./install-cloudautomation-workshop.sh
 ```
 
-## Step 5: Create / re-create dynatrace cloud automation project
-
-In a default Cloud Automation instance we find a project called `dynatrace` with a default quality-gate stage. In our workshop we teach people how to use Cloud Automation to automate release validation in production. Therefore we want to use a dynatrace project that also has a production stage. To create (if you dont already have a dynatrace project) or re-create (if you have one) do the following:
-
-```
-./reset_catenant.sh 
-```
-
-This will delete the existing dynatrace project and then create a new one with two stages (quality-gate, production). It will also upload a dynatrace.conf.yaml to ensure events are correctly sent to Dynatrace!
-
-To automatically create services for every workshop tenant, e.g: aapl, googl ... - you can then run the following script to create all those services:
-```
-./create-service-for-all-tenants.sh tenants.sh dynatrace
-```
-
-## Step 6: Initial Dynatrace Setup Configuration
+## Step 5: Initial Dynatrace Setup Configuration
 
 **REQUIRES YOU TO ALSO INSTALL MONACO**. Install from [here](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation)
 
@@ -145,7 +136,7 @@ export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 monaco -e environment.yaml projects/setup
 ```
 
-## Step 7: Deploy Keptn Web Service App
+## Step 6: Deploy Keptn Web Service App
 
 The cloud automation workshop sample installation creates a project called keptnwebservice. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
 

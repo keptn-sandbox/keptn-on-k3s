@@ -13,7 +13,7 @@ slo_dashboard:
   - owner: "{{ .Env.OWNER }}"
 
 release_validation_dashboard:
-  - name: "KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc"
+  - name: "KQG;project=release-validation;stage=production;service=tnt-xxxx-svc"
   - owner: "{{ .Env.OWNER }}"
 
 workshop_dashboard:
