@@ -1,0 +1,22 @@
+config:
+  - qg_dashboard: "default_qualitygate_dashboard.json"
+  - slo_dashboard: "default_slo_dashboard.json"
+  - release_validation_dashboard: "default_release_validation_dashboard.json"
+  - workshop_dashboard: "default_workshop_dashboard.json"
+
+qg_dashboard:
+  - name: "KQG;project=delivery-demo;stage=staging;service=tnt-xxxx-svc"
+  - owner: "{{ .Env.OWNER }}"
+
+slo_dashboard:
+  - name: "SLO Dashboard for Tenant xxxx"
+  - owner: "{{ .Env.OWNER }}"
+
+release_validation_dashboard:
+  - name: "KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc"
+  - owner: "{{ .Env.OWNER }}"
+
+workshop_dashboard:
+  - name: "Cloud Automation Workshop Overview and Links"
+  - dttenant: "{{ .Env.DT_TENANT }}"
+  - keptncontrolplane: "{{ .Env.KEPTN_CONTROL_PLANE_DOMAIN }}"

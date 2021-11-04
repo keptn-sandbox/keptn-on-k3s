@@ -1,0 +1,22 @@
+{
+    "type": "{{ .type }}",
+    "nameFormat": "{ProcessGroup:KubernetesBasePodName}.{ProcessGroup:KubernetesNamespace}",
+    "displayName": "{{ .name }}",
+    "enabled": true,
+    "rules": [
+      {
+        "key": {
+          "attribute": "PROCESS_GROUP_PREDEFINED_METADATA",
+          "dynamicKey": "KUBERNETES_BASE_POD_NAME",
+          "type": "PROCESS_PREDEFINED_METADATA_KEY"
+        },
+        "comparisonInfo": {
+          "type": "STRING",
+          "operator": "EXISTS",
+          "value": null,
+          "negate": false,
+          "caseSensitive": null
+        }
+      }
+    ]
+  }
