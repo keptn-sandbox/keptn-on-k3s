@@ -27,4 +27,4 @@ echo "Lets create delivery-demo project"
 echo "Lets create keptnwebservice project"
 ./create-keptn-project-from-template.sh prod-keptnwebservice ${OWNER_EMAIL} keptnwebservice
 
-cd 
+cd ${currentDir}

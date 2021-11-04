@@ -39,7 +39,7 @@ spec:
         - name: DT_TAGS
           value: "KeptnWebService"
         - name: KEPTN_ENDPOINT
-          value: "https://REPLACE_KEPTN_CONTROL_PLANE_DOMAIN/api"
+          value: "https://REPLACE_KEPTN_CONTROL_PLANE_DOMAIN"
         - name: KEPTN_API_TOKEN
           value: "REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN"
         - name: POD_NAME

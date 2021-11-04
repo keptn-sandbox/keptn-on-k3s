@@ -127,7 +127,7 @@ To automatically create services for every workshop tenant, e.g: aapl, googl ...
 ./create-service-for-all-tenants.sh tenants.sh dynatrace
 ```
 
-## Step 5: Initial Dynatrace Setup Configuration
+## Step 6: Initial Dynatrace Setup Configuration
 
 **REQUIRES YOU TO ALSO INSTALL MONACO**. Install from [here](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation)
 
@@ -143,6 +143,15 @@ export OWNER=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 monaco -e environment.yaml projects/setup
+```
+
+## Step 7: Deploy Keptn Web Service App
+
+The cloud automation workshop sample installation creates a project called keptnwebservice. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
+
+To trigger the deployment of this app you have to do this once:
+```
+keptn trigger delivery --project=keptnwebservice --service=keptnwebservice --image=grabnerandi/keptnwebservice:1.0.0
 ```
 
 ## Executing some samples for the workshop
