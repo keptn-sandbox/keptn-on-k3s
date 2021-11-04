@@ -18,5 +18,11 @@ export KEPTN_INGRESS="${KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN}"
 
 currentDir=pwd
 cd ../..
+
+echo "Lets create delivery-demo project"
 ./create-keptn-project-from-template.sh prod-delivery-simplenode ${OWNER_EMAIL} delivery-demo ./cloudautomation/scripts/tenants.sh
+
+echo "Lets create keptnwebservice project"
+./create-keptn-project-from-template.sh prod-keptnwebservice ${OWNER_EMAIL} keptnwebservice
+
 cd 

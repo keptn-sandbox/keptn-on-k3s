@@ -15,6 +15,9 @@ What you need is:
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
 6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant
 
+Optionally:
+1. **SYNTHETIC_LOCATION**: Synthetic tests will be created through Monaco. The default location is GEOLOCATION-45AB48D9D6925ECC (AWS Frankfurt). Double check that you have this location available, e.g: Dynatrace Sprint tenants would have a different location. Specify your location via this environment variable 
+
 ## Installing the workshop
 
 ### Step 1: Export Environment Variables
@@ -32,6 +35,8 @@ export KEPTN_CONTROL_PLANE_API_TOKEN=ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 export OWNER_EMAIL=youremail@domain.com
 
 export ISTIO=false
+
+# export SYNTHETIC_LOCATION=GEOLOCATION-45AB48D9D6925ECC 
 ```
 
 ### Step 2: Clone the git repo
@@ -107,6 +112,22 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ./install-cloudautomation-workshop.sh
 ```
 
+## Step 5: Initial Dynatrace Setup Configuration
+
+While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a monaco project you can execute on its own which will
+* Create auto-tagging rules
+* Create Naming rules
+* Create default template dashboards
+
+Here is how to run that monaco project
+```bash
+cd cloudautomation/monaco
+export OWNER=youremail@domain.com
+export DT_TENANT=abc12345.live.dynatrace.com
+export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
+monaco -e environment.yaml -p setup projects
+```
+
 ## Executing some samples for the workshop
 
 ### Step 1: Deploy services end-2-end
@@ -128,6 +149,9 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 ```
 
 ## Import Sample Dynatrace SLO Dashboard
+
+If you ran the setup monaco script as explained in Step 4 you are all good. If not - you can also import the default dashboards as explained here
+You can either
 
 ### SLO Quality Gate Dashboard
 In this directory you find the [default_qualitygate_dashboard.json](./scripts/default_qualitygate_dashboard.json). 
