@@ -129,7 +129,9 @@ To automatically create services for every workshop tenant, e.g: aapl, googl ...
 
 ## Step 5: Initial Dynatrace Setup Configuration
 
-While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a monaco project you can execute on its own which will
+**REQUIRES YOU TO ALSO INSTALL MONACO**. Install from [here](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation)
+
+While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a [monaco](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation) project you can execute on its own which will
 * Create auto-tagging rules
 * Create Naming rules
 * Create default template dashboards
@@ -140,7 +142,7 @@ cd cloudautomation/monaco
 export OWNER=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
-monaco -e environment.yaml -p setup projects
+monaco -e environment.yaml projects/setup
 ```
 
 ## Executing some samples for the workshop

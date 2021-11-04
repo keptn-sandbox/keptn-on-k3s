@@ -18,5 +18,6 @@ release_validation_dashboard:
 
 workshop_dashboard:
   - name: "Cloud Automation Workshop Overview and Links"
+  - owner: "{{ .Env.OWNER }}"
   - dttenant: "{{ .Env.DT_TENANT }}"
   - keptncontrolplane: "{{ .Env.KEPTN_CONTROL_PLANE_DOMAIN }}"
