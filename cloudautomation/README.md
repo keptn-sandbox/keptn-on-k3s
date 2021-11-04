@@ -112,6 +112,21 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ./install-cloudautomation-workshop.sh
 ```
 
+## Step 5: Create / re-create dynatrace cloud automation project
+
+In a default Cloud Automation instance we find a project called `dynatrace` with a default quality-gate stage. In our workshop we teach people how to use Cloud Automation to automate release validation in production. Therefore we want to use a dynatrace project that also has a production stage. To create (if you dont already have a dynatrace project) or re-create (if you have one) do the following:
+
+```
+./reset_catenant.sh 
+```
+
+This will delete the existing dynatrace project and then create a new one with two stages (quality-gate, production). It will also upload a dynatrace.conf.yaml to ensure events are correctly sent to Dynatrace!
+
+To automatically create services for every workshop tenant, e.g: aapl, googl ... - you can then run the following script to create all those services:
+```
+./create-service-for-all-tenants.sh tenants.sh dynatrace
+```
+
 ## Step 5: Initial Dynatrace Setup Configuration
 
 While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a monaco project you can execute on its own which will
@@ -148,6 +163,32 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.1
 ```
 
+## Monaco helpers for Lab 1, 2 & 3
+
+The workshop walks our attendees through the manual creation of SLOs and Dashboards. For each lab we also have monaco projects where we can automatically create all configurations for that lab. This is a great way to show how Monaco can help us automate configuration.
+
+One thing I suggest to do is e.g: let attendees manually walk through the creation of the SLOs. Then DELETE all SLOs that they have just created and show them how to automatically create those SLOs through monaco. There is a helper script that triggers monaco for every of your workshop tenants:
+
+```
+For lab1:
+./monaco-for-all-tenants.sh tenants.sh lab1
+```
+
+```
+For la2:
+./monaco-for-all-tenants.sh tenants.sh lab2
+```
+
+```
+For lab3: 
+./monaco-for-all-tenants.sh tenants.sh lab3
+```
+
+To delete configuration simply do this:
+```
+./monaco-for-all-tenants.sh tenants.sh delete
+```
+
 ## Import Sample Dynatrace SLO Dashboard
 
 If you ran the setup monaco script as explained in Step 4 you are all good. If not - you can also import the default dashboards as explained here
@@ -162,3 +203,12 @@ The name can be: `KQG;project=dynatrace;stage=quality-gate;service=<YOURSERVICEN
 In this directory you also find the [default_slo_dashboard.json](./scripts/default_slo_dashboard.json). 
 I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial.
 The name can be: `SLO Dashboard for tenant xxxx`
+
+
+## Deleting workshop projects
+
+To delete the projects simply do this:
+```
+keptn delete project delivery-demo
+keptn delete project keptnwebservice
+```
