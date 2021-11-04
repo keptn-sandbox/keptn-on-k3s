@@ -162,6 +162,12 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 ### Step 3: Deploy ALL services for ALL tenants in one go
 
 ```
+Deploy straight into staging:
+./trigger-for-all-tenants.sh tenants.sh delivery-demo staging grabnerandi/simplenodeservice:1.0.1
+```
+
+```
+Deploy straight into production:
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.1
 ```
 

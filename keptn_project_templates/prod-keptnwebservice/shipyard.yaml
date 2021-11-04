@@ -6,6 +6,7 @@ spec:
   stages:
   - name: production
     sequences:
+    - name: delivery
       tasks:
       - name: deployment
         properties:
