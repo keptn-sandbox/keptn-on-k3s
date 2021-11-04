@@ -110,13 +110,13 @@ and then have it automatically evaluated giving us an SLO score for a certain re
 
 ### Step 1 - Clone dashboard
 
-Clone the *preset* dashboard with the name `KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc` as shown here:
+Clone the *preset* dashboard with the name `KQG;project=release-validation;stage=production;service=tnt-xxxx-svc` as shown here:
 ![](./images/lab2_clonsedashboard.png)
 
 ### Step 2 - Rename dashboard and configure your SLOs
 
 The following screenshot shows the changes you have to make. Please ensure that
-1. The name of your dashboard is `KQG;project=dynatrace;stage=production;service=tnt-xxxx-svc` (replace xxxx with your tenantId)
+1. The name of your dashboard is `KQG;project=release-validation;stage=production;service=tnt-xxxx-svc` (replace xxxx with your tenantId)
 2. Select the your Management Zone
 3. Select your SLOs for your tenant
 
@@ -134,7 +134,7 @@ If you have access to the Keptn CLI (via Bastion host or installed locally) you 
 3. Will add the label `releaseA`
 
 ```
-keptn trigger evaluation --project=dynatrace --stage=production --service=tnt-xxxx-svc --timeframe=30m --labels=buildId=releaseA
+keptn trigger evaluation --project=release-validation --stage=production --service=tnt-xxxx-svc --timeframe=30m --labels=buildId=releaseA
 ```
 
 Watch the result of the evaluation in the cloud automation web ui!
@@ -146,7 +146,7 @@ Watch the result of the evaluation in the cloud automation web ui!
 This is just a repeat of Step 4. This time however we ue the label `releaseB`
 
 ```
-keptn trigger evaluation --project=dynatrace --stage=production --service=tnt-xxxx-svc --timeframe=30m --labels=buildId=releaseB
+keptn trigger evaluation --project=release-validation --stage=production --service=tnt-xxxx-svc --timeframe=30m --labels=buildId=releaseB
 ```
 
 Watch the result of the evaluation in the cloud automation web ui!
@@ -164,7 +164,7 @@ Besides using the Keptn CLI to trigger an evaluation we can also trigger it via 
 
 | Field | Value |
 | ------ | ------------- |
-| project | `dynatrace`  |
+| project | `release-validation`  |
 | stage | `production` |
 | service | `tnt-xxxx-svc` |
 | Evaluation | 
