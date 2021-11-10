@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# This script helps to reset a Cloud Automation tenant's default "dynatrace" project
+
 set -eu
 
 PREFIX="https"
@@ -26,6 +28,6 @@ fi
 keptn delete project dynatrace
 
 # now lets create the project and add the default dynatrace.conf.yaml
-keptn create project dynatrace --shipyard=./shipyard.yaml
+keptn create project dynatrace --shipyard=./dynatrace_shipyard.yaml
 keptn add-resource --project=dynatrace --stage=quality-gate --resource="dynatrace.conf.quality-gate.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"
-keptn add-resource --project=dynatrace --stage=production --resource="dynatrace.conf.production.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"
+# keptn add-resource --project=dynatrace --stage=production --resource="dynatrace.conf.production.yaml" --resourceUri="dynatrace/dynatrace.conf.yaml"

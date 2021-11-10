@@ -1,8 +1,5 @@
 FROM node:15
 
-ARG BUILD_NUMBER=1
-ENV BUILD_NUMBER=$BUILD_NUMBER
-
 # Create app directory
 WORKDIR /usr/src/app
 

@@ -1,0 +1,16 @@
+config:
+  - lsn-tag: "attribute.json"
+  - ltn-tag: "attribute.json"
+  - tsn-tag: "attribute.json"
+
+lsn-tag:
+  - name: "LSN"
+  - delimiter: "LSN="
+
+ltn-tag:
+  - name: "LTN"
+  - delimiter: "LTN="
+
+tsn-tag:
+  - name: "TSN"
+  - delimiter: "TSN="

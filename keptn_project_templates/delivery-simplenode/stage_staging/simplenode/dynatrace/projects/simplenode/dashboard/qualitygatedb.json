@@ -223,5 +223,17 @@
             },
             "filtersPerEntityType": {}
         }
+    },    {
+      "name": "Markdown",
+      "tileType": "MARKDOWN",
+      "configured": true,
+      "bounds": {
+        "top": 76,
+        "left": 0,
+        "width": 1026,
+        "height": 38
+      },
+      "tileFilter": {},
+      "markdown": "KQG.Total.Pass=90%;KQG.Total.Warning=70%;KQG.Compare.WithScore=pass;KQG.Compare.Results=1;KQG.Compare.Function=avg"
     }]
 }

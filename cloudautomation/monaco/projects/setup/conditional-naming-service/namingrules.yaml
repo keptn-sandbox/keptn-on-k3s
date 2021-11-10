@@ -1,0 +1,6 @@
+config:
+    - svc_naming: "namingrules.json"
+
+svc_naming:
+    - name: "k8s SVC Naming Rule"
+    - type: "SERVICE"

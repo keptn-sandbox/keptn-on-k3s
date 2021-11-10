@@ -1,0 +1,12 @@
+config:
+  - tenantfastercount: "calcslometric.json"
+  - tenantrtbyversion: "calcversionmetric.json"
+
+tenantfastercount:
+  - name: "Tenant.ResponseTime.Count.Faster500ms"
+  - metricKey: "calc:service.tenant.responsetime.count.faster500ms"
+
+tenantrtbyversion:
+  - name: "Tenant.ResponseTime.ByVersion"
+  - metricKey: "calc:service.tenant.responsetime.byversion"
+
