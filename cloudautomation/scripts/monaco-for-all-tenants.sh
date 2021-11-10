@@ -24,7 +24,7 @@ cd ../monaco
 # now call monaco
 for (( instanceIx=0; instanceIx<instanceCount; instanceIx++ ))
 do
-    TENANT_ID=${INSTANCE_ARRAY[$instanceIx]}
+    export TENANT_ID=${INSTANCE_ARRAY[$instanceIx]}
 
     if [[ "$PROJECT" == "delete" ]]; then
       sed -e 's~TENANT_ID~'"$TENANT_ID"'~' \

@@ -15,6 +15,9 @@ What you need is:
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
 6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant
 
+Optionally:
+1. **SYNTHETIC_LOCATION**: Synthetic tests will be created through Monaco. The default location is GEOLOCATION-45AB48D9D6925ECC (AWS Frankfurt). Double check that you have this location available, e.g: Dynatrace Sprint tenants would have a different location. Specify your location via this environment variable 
+
 ## Installing the workshop
 
 ### Step 1: Export Environment Variables
@@ -32,6 +35,8 @@ export KEPTN_CONTROL_PLANE_API_TOKEN=ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
 export OWNER_EMAIL=youremail@domain.com
 
 export ISTIO=false
+
+# export SYNTHETIC_LOCATION=GEOLOCATION-45AB48D9D6925ECC 
 ```
 
 ### Step 2: Clone the git repo
@@ -78,7 +83,13 @@ export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 
 ### Step 4: Install demo projects
 
-The demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
+There are three projects being created then running `./install-cloudautomation-workshop.sh`
+1. demo-delivery: two stage delivery of the simplenode app
+2. release-validation: a simple quality gate project to demo automating release validation
+3. keptnwebservice: a simple project to deploy the "Sample CI/CD Web Interface" to trigger keptn sequences
+
+Here some more information!
+The core demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
 The idea is that every attendee of the workshop gets its own service. The story is that we are all working for a SaaS provider and we are all responsible for our individual tenants.
 
 In order to create tenants for each student we need to create a file called `tenants.sh` in the `cloudautomation/scripts` folder that sets the TENANTID into an array as described here. The tenant IDs must only contain alphanumeric characters and have to be lowercase. Here is an example for 3 tenants:
@@ -107,6 +118,33 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ./install-cloudautomation-workshop.sh
 ```
 
+## Step 5: Initial Dynatrace Setup Configuration
+
+**REQUIRES YOU TO ALSO INSTALL MONACO**. Install from [here](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation)
+
+While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a [monaco](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation) project you can execute on its own which will
+* Create auto-tagging rules
+* Create Naming rules
+* Create default template dashboards
+
+Here is how to run that monaco project
+```bash
+cd cloudautomation/monaco
+export OWNER=youremail@domain.com
+export DT_TENANT=abc12345.live.dynatrace.com
+export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
+monaco -e environment.yaml projects/setup
+```
+
+## Step 6: Deploy Keptn Web Service App
+
+The cloud automation workshop sample installation creates a project called keptnwebservice. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
+
+To trigger the deployment of this app you have to do this once:
+```
+keptn trigger delivery --project=keptnwebservice --service=keptnwebservice --image=grabnerandi/keptnwebservice:1.0.0
+```
+
 ## Executing some samples for the workshop
 
 ### Step 1: Deploy services end-2-end
@@ -124,10 +162,45 @@ keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=pr
 ### Step 3: Deploy ALL services for ALL tenants in one go
 
 ```
+Deploy straight into staging:
+./trigger-for-all-tenants.sh tenants.sh delivery-demo staging grabnerandi/simplenodeservice:1.0.1
+```
+
+```
+Deploy straight into production:
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.1
 ```
 
+## Monaco helpers for Lab 1, 2 & 3
+
+The workshop walks our attendees through the manual creation of SLOs and Dashboards. For each lab we also have monaco projects where we can automatically create all configurations for that lab. This is a great way to show how Monaco can help us automate configuration.
+
+One thing I suggest to do is e.g: let attendees manually walk through the creation of the SLOs. Then DELETE all SLOs that they have just created and show them how to automatically create those SLOs through monaco. There is a helper script that triggers monaco for every of your workshop tenants:
+
+```
+For lab1:
+./monaco-for-all-tenants.sh tenants.sh lab1
+```
+
+```
+For la2:
+./monaco-for-all-tenants.sh tenants.sh lab2
+```
+
+```
+For lab3: 
+./monaco-for-all-tenants.sh tenants.sh lab3
+```
+
+To delete configuration simply do this:
+```
+./monaco-for-all-tenants.sh tenants.sh delete
+```
+
 ## Import Sample Dynatrace SLO Dashboard
+
+If you ran the setup monaco script as explained in Step 4 you are all good. If not - you can also import the default dashboards as explained here
+You can either
 
 ### SLO Quality Gate Dashboard
 In this directory you find the [default_qualitygate_dashboard.json](./scripts/default_qualitygate_dashboard.json). 
@@ -138,3 +211,12 @@ The name can be: `KQG;project=dynatrace;stage=quality-gate;service=<YOURSERVICEN
 In this directory you also find the [default_slo_dashboard.json](./scripts/default_slo_dashboard.json). 
 I suggest you import this one to your Dynatrace environment as you can use it as a template for the SLO-based Quality Gate tutorial.
 The name can be: `SLO Dashboard for tenant xxxx`
+
+
+## Deleting workshop projects
+
+To delete the projects simply do this:
+```
+keptn delete project delivery-demo
+keptn delete project keptnwebservice
+```

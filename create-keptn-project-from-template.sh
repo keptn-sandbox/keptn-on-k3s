@@ -19,13 +19,15 @@
 
 # The files in the repo can contain certain PLACEHOLDERS which will be replaced before uploaded. 
 # The replacement happens in .tmp files - so - no original files will be changed. Here the list of REPLACE options
-# REPLACE_KEPTN_BRIDGE              with -> KEPTN_BRIDGE_PROJECT_ESCAPED
-# REPLACE_OWNER_EMAIL               with -> OWNER_EMAIL
-# REPLACE_KEPTN_INGRESS             with -> KEPTN_INGRESS
-# REPLACE_KEPTN_STAGING_INGRESS     with -> KEPTN_STAGING_INGRESS
-# REPLACE_KEPTN_PRODUCTION_INGRESS  with -> KEPTN_PRODUCTION_INGRESS
-# REPLACE_SYNTHETIC_LOCATION        with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
-# REPLACE_KEPTN_PROJECT             with -> Keptn Project Name
+# REPLACE_KEPTN_BRIDGE                   with -> KEPTN_BRIDGE_PROJECT_ESCAPED
+# REPLACE_OWNER_EMAIL                    with -> OWNER_EMAIL
+# REPLACE_KEPTN_INGRESS                  with -> KEPTN_INGRESS
+# REPLACE_KEPTN_STAGING_INGRESS          with -> KEPTN_STAGING_INGRESS
+# REPLACE_KEPTN_PRODUCTION_INGRESS       with -> KEPTN_PRODUCTION_INGRESS
+# REPLACE_SYNTHETIC_LOCATION             with -> SYNTHETIC_LOCATION (defaults to GEOLOCATION-45AB48D9D6925ECC)
+# REPLACE_KEPTN_PROJECT                  with -> Keptn Project Name
+# REPLACE_KEPTN_CONTROL_PLANE_DOMAIN     with -> KEPTN_CONTROL_PLANE_DOMAIN
+# REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN  with -> KEPTN_CONTROL_PLANE_API_TOKEN
 
 # default template project directory
 TEMPLATE_DIRECTORY="keptn_project_templates"
@@ -231,6 +233,8 @@ do
     sed -i "s/REPLACE_KEPTN_PRODUCTION_INGRESS/${KEPTN_PRODUCTION_INGRESS}/" ${localFileName}.tmp
     sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
     sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_CONTROL_PLANE_DOMAIN/${KEPTN_CONTROL_PLANE_DOMAIN}/" ${localFileName}.tmp
+    sed -i "s/REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN/${KEPTN_CONTROL_PLANE_API_TOKEN}/" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
