@@ -243,9 +243,9 @@ Besides using the Keptn CLI to trigger a deployment we can also trigger it via t
         "image": "grabnerandi/simplenodeservice:3.0.1"
       }
     },
-    "project": delivery-demo,
-    "service": tnt-xxxx-svc,
-    "stage": staging
+    "project": "delivery-demo",
+    "service": "tnt-xxxx-svc",
+    "stage": "staging"
   },
   "source": "https://github.com/keptn-sandbox/keptn-on-k3s/cloudautomation",
   "specversion": "1.0",
