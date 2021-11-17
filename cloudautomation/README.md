@@ -3,9 +3,16 @@
 This folder contains scripts to setup a Dynatrace Cloud Automation Workshop
 
 It's assumed you have the following:
-1. A Dynatrace Environment (SaaS or Managed with exposed API)
-2. A Cloud Automation SaaS Environment (aka Keptn SaaS Control Plane)
-3. An EC2 Amazon Linux instance (min: m5.8xlarge)
+1. *A Dynatrace Environment* (SaaS or Managed with exposed API)
+   
+   **CAUTION:** As we are heavily using Dynatrace Synthetics make sure you are not limited on Synthetics because you e.g: use a Trial Account!
+2. *A Cloud Automation SaaS Environment* (aka Keptn SaaS Control Plane)
+
+   **CAUTION:** Make sure to request a Cloud Automation instance ahead of time by requesting it through BAS. If you have questions use our internal slack channel #help-cloud-automation-solution
+
+3. *An EC2 Amazon Linux instance* (min: m5.8xlarge)
+
+   **INFO:** The instructions give you two options. Either a single larger EC2 machine or two smaller EC2 machines. Those EC2s will run your target system execution plane system (staging, production).
 
 What you need is:
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
@@ -19,6 +26,18 @@ Optionally:
 1. **SYNTHETIC_LOCATION**: Synthetic tests will be created through Monaco. The default location is GEOLOCATION-45AB48D9D6925ECC (AWS Frankfurt). Double check that you have this location available, e.g: Dynatrace Sprint tenants would have a different location. Specify your location via this environment variable 
 
 ## Installing the workshop
+
+### Required tools on EC2 execution plane machine(s)!
+
+To install you need the following tools on your machine: git, curl, tree, jq, tree, yq! Here instructions on how to download on an EC2 Linux
+```console
+sudo yum update -y
+sudo yum install git -y
+sudo yum install curl -y
+sudo yum install jq -y
+sudo yum install tree -y
+sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64 -O /usr/bin/yq && sudo chmod +x /usr/bin/yq
+```
 
 ### Step 1: Export Environment Variables
 
@@ -45,7 +64,7 @@ Now its time to clone this git repo
 ```bash
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.9.0
+git checkout release-0.10.0
 ```
 
 ### Step 3a: Install a single k3s Execution Plane for Production & Staging
@@ -132,6 +151,7 @@ Here is how to run that monaco project
 cd cloudautomation/monaco
 export OWNER=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
+export DT_API_TOKEN=dt0c01.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 monaco -e environment.yaml projects/setup
 ```

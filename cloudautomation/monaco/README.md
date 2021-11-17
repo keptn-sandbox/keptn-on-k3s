@@ -15,14 +15,16 @@ This Monaco folder contains monaco projects that can be used to
 Following enviornment variables need to be set
 
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
+2. **DT_API_TOKEN**: Dynatrace API Token
 2. **KEPTN_CONTROL_PLANE_DOMAIN**: hostname of your Cloud Automation enviornment, e.g: abc12345.cloudautomation.live.dynatrace.com
 3. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant
 
 ```
 export OWNER=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
+export DT_API_TOKEN=dt0c01.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
-monaco -e environment.yaml -p setup projects
+monaco -e environment.yaml projects/setup
 ```
 
 ## Usage: Create configurations for the labs
