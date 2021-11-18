@@ -12,7 +12,7 @@
     "tags": [
       "delivery-demo",
       "staging",
-      "{{ .tenant }}"
+      "tnt-{{ .tenant }}-svc"
     ]
   },
   "tiles": [
