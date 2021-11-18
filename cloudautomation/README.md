@@ -163,11 +163,11 @@ In order to create tenants for each student we need to create a file called `ten
 
 **./cloudautomation/scripts/tenants.sh:**
 ```sh
-INSTANCE_ARRAY=(angr here saif)
+INSTANCE_ARRAY=(aapl acer amzn)
 ```
 
 **TIP for Workshops:** To come up with the list of tenants a suggestion is to use the first two characters of your attendees first and last names for the tenant IDs, e.g: Andreas Grabner would be angr, Henrik Rexed would be here, ... 
-Another option would be to use e.g: stock symbols. With this you can assign everyone a stock symbol that is easy to remember, e.g: aapl, tsla, ... There is a sample file called `tenants.stocksample.sh`. It contains 30 symbol names (some made up) :-)
+Another option would be to use e.g: stock symbols. With this you can assign everyone a stock symbol that is easy to remember, e.g: aapl, acer, amzn, ... There is a sample file called `tenants.stocksample.sh`. It contains 30 symbol names (some made up) :-)
 
 **IMPORTANT:** Dynatrace automatically detects "version information" in pod names by removing hexadecimal patterns. So - make sure that these tenantIDs do not include numbers or just letters from A to F
 
@@ -232,13 +232,13 @@ keptn trigger delivery --project=devopstools --service=keptnwebservice --image=g
 ### Step 1: Deploy services end-2-end
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --image=grabnerandi/simplenodeservice:1.0.1
+keptn trigger delivery --project=delivery-demo --service=tnt-aapl-svc --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ### Step 2: Deploy services directly in production
 
 ```
-keptn trigger delivery --project=delivery-demo --service=tnt-angr-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.1
+keptn trigger delivery --project=delivery-demo --service=tnt-aapl-svc --stage=production --image=grabnerandi/simplenodeservice:1.0.1
 ```
 
 ### Step 3: Deploy ALL services for ALL tenants in one go
