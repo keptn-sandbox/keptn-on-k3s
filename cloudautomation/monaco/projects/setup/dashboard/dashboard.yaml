@@ -25,3 +25,4 @@ workshop_dashboard:
   - keptnproductioningress: "{{ .Env.KEPTN_PRODUCTION_INGRESS }}"
   - workshopuser: "{{ .Env.WORKSHOP_USERNAME }}"
   - workshoppwd: "{{ .Env.WORKSHOP_PASSWORD }}"
+  - onlinespreadsheetlink: "{{ .Env.ONLINE_SPREADSHEET }}"

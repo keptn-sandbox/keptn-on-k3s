@@ -18,6 +18,10 @@ It's assumed you have the following:
 
    **INFO:** To make it easier for people to sign into Dynatrace and Cloud Automation tenants I suggest to create e.g: gmail account and invite this account to your Dynatrace and Cloud Automation instance. With this its easy for every attendee to login with the same user.
 
+5. An online spreadsheet (Excel, Google, ...) to keep track of progress
+
+   **INFO:** You can create a copy of the [Excel Template](./WorkshopHandsOnFEEDBACK.xlsx). Then put it on a shared drive and create a link. You can then share this link with the attendees. The link is also used in a setup step further down the readme.
+
 What you need is:
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
 2. **DT_API_TOKEN**: It needs configuration read/write access. Best is to give it all privileges that don't touch sensitive data
@@ -195,7 +199,7 @@ While the delivery-demo project contains monaco to automatically create naming a
 * Create auto-tagging rules
 * Create Naming rules
 * Create default template dashboards
-* Creates an overview dashboard with links to additional material, login details ...
+* Creates an overview dashboard with links to additional material, login details, online excel ...
 
 Here is how to run that monaco project
 ```bash
@@ -208,6 +212,7 @@ export KEPTN_PRODUCTION_INGRESS=your.productionk3s.i.p.nip.io
 export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 export WORKSHOP_USERNAME=usernameForWorkshopattendees
 export WORKSHOP_PASSWORD=pwdForWorkshopattendees
+export ONLINE_SPREADSHEET=https://YOURLINKTOANONLINESPREADSHEET
 
 monaco -e environment.yaml projects/setup
 ```
