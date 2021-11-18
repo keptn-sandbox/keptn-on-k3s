@@ -11,7 +11,7 @@
         },
         "comparisonInfo": {
           "type": "TAG",
-          "operator": "TAG_KEY_EQUALS",
+          "operator": "EQUALS",
           "value": {
             "context": "ENVIRONMENT",
             "key": "KeptnStage",
