@@ -18,7 +18,7 @@ fi
 export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_CONTROL_PLANE_DOMAIN}"
 export KEPTN_INGRESS="${KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN}"
 
-currentDir=pwd
+currentDir=$(pwd)
 cd ../..
 
 echo "Lets create delivery-demo project"

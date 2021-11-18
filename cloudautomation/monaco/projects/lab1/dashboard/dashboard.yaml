@@ -3,7 +3,7 @@ config:
 
 slo_dashboard:
   - name: "SLO Dashboard for Tenant {{ .Env.TENANT_ID }}"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
   - tenant: "{{ .Env.TENANT_ID }}"
   - availabilitySloId: "/lab1/slo/availabilitySlo.id"
   - performanceSloId: "/lab1/slo/performanceSlo.id"

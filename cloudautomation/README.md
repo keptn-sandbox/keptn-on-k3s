@@ -33,14 +33,24 @@ Optionally:
 
 ### Creating Execution Plane instances
 
-Here the overview of configurations we have tested
+Here the overview of configurations we have tested:
 1. Single machine: m5.8xlarge, 30GB Storage
 2. Two machines: m5.xlarge, 30GB Storage
 On those machines allow incoming SSH, HTTP & HTTPS traffic
 
-What you will need later on is the public IP of those execution planes. An alternative to using the IPs is to create e.g: a Route53 entry to get a nice Domain name for your execution plane. Here two suggestions if you go down this route
+Here a screenshot of my AWS Console showing my two EC2 instances:
+![](./images/validate-install-ec2-instances.png)
+
+What you will need later on is the public IP of those execution planes. 
+
+An *alternative* to using the IPs is to create e.g: a Route53 wildcard entry to get a nice Domain name for your execution plane. 
+Here two suggestions if you go down this route:
 1. claus-ws.yourdomain -> pointing to the IP of your single machine
 2. claus-ws-staging.yourdomain -> pointing to one of your machine; claus-ws-production.yourdomain -> pointing to the other machine
+
+Here is a screenshot on those wildcard routes in Route53:
+![](./images/validate-install-dns.png)
+
 
 ### Required tools on EC2 execution plane machine(s)!
 
@@ -82,6 +92,12 @@ cd keptn-on-k3s
 git checkout release-0.10.0
 ```
 
+### Step 3: Install Execution Plane
+
+Whether you install a single or two execution planes (one for staging and prod) - afterwards you can validate if the installation worked correctly by looking at your Uniform screen in your Cloud Automation instance. you should see the Helm and Monaco service show up in the list:
+
+![](./images/validate-install-executionplane.png)
+
 ### Step 3a: Install a single k3s Execution Plane for Production & Staging
 
 **This installation option is good if you don't have too many tenants in your workshop and if your k3s host has sufficient CPU and Memory**
@@ -91,7 +107,16 @@ Now its time to run the installation script!
 export KEPTN_EXECUTION_PLANE_STAGE_FILTER=
 export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
 export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
-./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --with-gitea --use-nip
+```
+
+To install by just using the public IP of your linux machine you can use the option --use-nip in the end which will then use nip.io to create a "fake" DNS Entry for your IP.
+```bash
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --use-nip
+```
+
+If you have your own DNS entry such as claus-ws.yourdomain then you can use the --fqdn
+```bash
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --fqdn claus-ws.yourdomain
 ```
 
 ### Step 3b: Install a two k3s Execution Planes. One for Production & one for Staging
@@ -103,7 +128,7 @@ We first install the Execution Plane targeted for Production (here we also insta
 export KEPTN_EXECUTION_PLANE_STAGE_FILTER=production
 export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
 export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
-./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --with-gitea --use-nip
+./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --use-nip
 ```
 
 And now the Execution Plane targeted for Staging (no need for gitea)
@@ -114,10 +139,14 @@ export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 ./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --use-nip
 ```
 
+**ALTERNATIVE FOR DNS**: similar as explained in Step 3a you can use --fqdn instead of --use-nip in case you have created a DNS entry for both your staging and production machine, e.g: `--fqdn claus-ws-staging.yourdomain` and `--fqdn claus-ws-production.yourdomain`
 
 ### Step 4: Install demo projects
 
-There are three projects being created then running `./install-cloudautomation-workshop.sh`
+After you are done with this step you should see the following projects in your Cloud Automation instance:
+![](./images/validate-install-workshopprojects.png)
+
+There are three additional projects being created when executing `./install-cloudautomation-workshop.sh`
 1. *demo-delivery*: two stage delivery of the simplenode app
 2. *release-validation*: a simple quality gate project to demo automating release validation
 3. *devopstools*: a simple project to deploy some helper DevOps tools, e.g: "Sample CI/CD Web Interface" to trigger keptn sequences
@@ -155,6 +184,12 @@ export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
 ## Step 5: Initial Dynatrace Setup Configuration
 
 **REQUIRES YOU TO ALSO INSTALL MONACO**. Install from [here](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation)
+Or - try these commands:
+```
+curl -L https://github.com/dynatrace-oss/dynatrace-monitoring-as-code/releases/download/v1.6.0/monaco-linux-amd64 -o monaco
+chmod +x monaco
+sudo mv monaco /usr/local/bin/
+```
 
 While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a [monaco](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation) project you can execute on its own which will
 * Create auto-tagging rules
@@ -171,9 +206,10 @@ export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 monaco -e environment.yaml projects/setup
 ```
 
-## Step 6: Deploy Keptn Web Service App
+## Step 6: Deploy supporting "DevOps tools", e.g: Keptn Web Service App
 
-The cloud automation workshop sample installation creates a project called devopstools. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
+The cloud automation workshop sample installation creates a project called devopstools. 
+This project currently contains a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host. The story is that this "devops tool" could be your Jenkins, GitLab, Azure DevOps ... from where you can trigger your automation.
 
 To trigger the deployment of this app you have to do this once:
 ```
@@ -248,7 +284,14 @@ I suggest you import this one to your Dynatrace environment as you can use it as
 The name can be: `SLO Dashboard for tenant xxxx`
 
 
-## Deleting workshop projects
+## Cleanup and Troubleshooting
+
+### Troubleshooting failed installation
+
+If the installation of a keptn execution plane fails, e.g: something during ./install-keptn-on-k3s.sh then the best is to first execute: `k3s-uninstall.sh`
+This will uninstall k3s which is required before you fix the issue and run install-keptn-on-k3s.sh again.
+
+### Cleanup Keptn projects after workshop
 
 To delete the projects simply do this:
 ```
@@ -256,3 +299,8 @@ keptn delete project delivery-demo
 keptn delete project release-validation
 keptn delete project devopstools
 ```
+
+### Delete control plane
+
+Simply execute `k3s-uninstall.sh`
+That will remove k3s from your machine!

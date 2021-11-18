@@ -3,7 +3,7 @@ config:
 
 qg_dashboard:
   - name: "KQG;project=delivery-demo;stage=staging;service=tnt-{{ .Env.TENANT_ID }}-svc"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
   - tenant: "{{ .Env.TENANT_ID }}"
   - availabilitySloId: "/lab1/slo/availabilitySlo.id"
   - performanceSloId: "/lab1/slo/performanceSlo.id"
