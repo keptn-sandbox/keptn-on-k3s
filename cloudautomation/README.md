@@ -195,6 +195,7 @@ While the delivery-demo project contains monaco to automatically create naming a
 * Create auto-tagging rules
 * Create Naming rules
 * Create default template dashboards
+* Creates an overview dashboard with links to additional material, login details ...
 
 Here is how to run that monaco project
 ```bash
@@ -203,6 +204,11 @@ export OWNER=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
 export DT_API_TOKEN=dt0c01.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
+export KEPTN_PRODUCTION_INGRESS=your.productionk3s.i.p.nip.io
+export KEPTN_STAGING_INGRESS=your.stagingk3s.i.p.nip.io
+export WORKSHOP_USERNAME=usernameForWorkshopattendees
+export WORKSHOP_PASSWORD=pwdForWorkshopattendees
+
 monaco -e environment.yaml projects/setup
 ```
 

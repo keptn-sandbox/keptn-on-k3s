@@ -21,3 +21,7 @@ workshop_dashboard:
   - owner: "{{ .Env.OWNER_EMAIL }}"
   - dttenant: "{{ .Env.DT_TENANT }}"
   - keptncontrolplane: "{{ .Env.KEPTN_CONTROL_PLANE_DOMAIN }}"
+  - keptnstagingingress: "{{ .Env.KEPTN_STAGING_INGRESS }}"
+  - keptnproductioningress: "{{ .Env.KEPTN_PRODUCTION_INGRESS }}"
+  - workshopuser: "{{ .Env.WORKSHOP_USERNAME }}"
+  - workshoppwd: "{{ .Env.WORKSHOP_PASSWORD }}"
