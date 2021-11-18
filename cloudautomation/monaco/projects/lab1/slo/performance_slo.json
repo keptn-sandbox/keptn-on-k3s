@@ -8,7 +8,7 @@
     "metricDenominator": "",
     "metricNumerator": "",
     "evaluationType": "AGGREGATE",
-    "filter": "type(\"SERVICE\"),tag(\"[Environment]WorkshopTenant:{{ .tenant }}\"),tag(\"[Environment]DT_APPLICATION_ENVIRONMENT:production\")",
+    "filter": "mzName(\"Tenant: tnt-{{ .tenant }}-svc\"),type(\"SERVICE\"),tag(\"[Environment]DT_APPLICATION_ENVIRONMENT:production\")",
     "target": 99.98,
     "warning": 99.99,
     "timeframe": "-1d"

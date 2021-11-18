@@ -5,14 +5,18 @@ This folder contains scripts to setup a Dynatrace Cloud Automation Workshop
 It's assumed you have the following:
 1. *A Dynatrace Environment* (SaaS or Managed with exposed API)
    
-   **CAUTION:** As we are heavily using Dynatrace Synthetics make sure you are not limited on Synthetics because you e.g: use a Trial Account!
+   **CAUTION:** As we are heavily using Dynatrace Synthetics make sure you are not limited on Synthetics because you e.g: use a Trial Account! If you need more synthetics reach out internally to extend the number of synthetics
 2. *A Cloud Automation SaaS Environment* (aka Keptn SaaS Control Plane)
 
    **CAUTION:** Make sure to request a Cloud Automation instance ahead of time by requesting it through BAS. If you have questions use our internal slack channel #help-cloud-automation-solution
 
-3. *An EC2 Amazon Linux instance* (min: m5.8xlarge)
+3. *ONE or TWO EC2 Amazon Linux instance*
 
    **INFO:** The instructions give you two options. Either a single larger EC2 machine or two smaller EC2 machines. Those EC2s will run your target system execution plane system (staging, production).
+
+4. A gmail or equivalent email for workshop attendees
+
+   **INFO:** To make it easier for people to sign into Dynatrace and Cloud Automation tenants I suggest to create e.g: gmail account and invite this account to your Dynatrace and Cloud Automation instance. With this its easy for every attendee to login with the same user.
 
 What you need is:
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
@@ -20,16 +24,27 @@ What you need is:
 3. **DT_PAAS_TOKEN**: A PAAS Token as the script also installs a OneAgent & ActiveGate on your Bastion Host
 4. **KEPTN_CONTROL_PLANE_DOMAIN**: hostname of your Cloud Automation enviornment, e.g: abc12345.cloudautomation.live.dynatrace.com
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
-6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant
+6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant. SUGGESTION: use the gmail as explained in Step 4 above
 
 Optionally:
 1. **SYNTHETIC_LOCATION**: Synthetic tests will be created through Monaco. The default location is GEOLOCATION-45AB48D9D6925ECC (AWS Frankfurt). Double check that you have this location available, e.g: Dynatrace Sprint tenants would have a different location. Specify your location via this environment variable 
 
 ## Installing the workshop
 
+### Creating Execution Plane instances
+
+Here the overview of configurations we have tested
+1. Single machine: m5.8xlarge, 30GB Storage
+2. Two machines: m5.xlarge, 30GB Storage
+On those machines allow incoming SSH, HTTP & HTTPS traffic
+
+What you will need later on is the public IP of those execution planes. An alternative to using the IPs is to create e.g: a Route53 entry to get a nice Domain name for your execution plane. Here two suggestions if you go down this route
+1. claus-ws.yourdomain -> pointing to the IP of your single machine
+2. claus-ws-staging.yourdomain -> pointing to one of your machine; claus-ws-production.yourdomain -> pointing to the other machine
+
 ### Required tools on EC2 execution plane machine(s)!
 
-To install you need the following tools on your machine: git, curl, tree, jq, tree, yq! Here instructions on how to download on an EC2 Linux
+On each of those machines we need a couple of tools first. Do this:
 ```console
 sudo yum update -y
 sudo yum install git -y
@@ -103,9 +118,9 @@ export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 ### Step 4: Install demo projects
 
 There are three projects being created then running `./install-cloudautomation-workshop.sh`
-1. demo-delivery: two stage delivery of the simplenode app
-2. release-validation: a simple quality gate project to demo automating release validation
-3. keptnwebservice: a simple project to deploy the "Sample CI/CD Web Interface" to trigger keptn sequences
+1. *demo-delivery*: two stage delivery of the simplenode app
+2. *release-validation*: a simple quality gate project to demo automating release validation
+3. *devopstools*: a simple project to deploy some helper DevOps tools, e.g: "Sample CI/CD Web Interface" to trigger keptn sequences
 
 Here some more information!
 The core demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
@@ -158,11 +173,11 @@ monaco -e environment.yaml projects/setup
 
 ## Step 6: Deploy Keptn Web Service App
 
-The cloud automation workshop sample installation creates a project called keptnwebservice. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
+The cloud automation workshop sample installation creates a project called devopstools. It is a very simply web app that allows you to trigger evaluations or delivery sequences without the need to use a keptn CLI. We introduced this as many attendees have restrictions in downloading the CLI or accessing the bastion host.
 
 To trigger the deployment of this app you have to do this once:
 ```
-keptn trigger delivery --project=keptnwebservice --service=keptnwebservice --image=grabnerandi/keptnwebservice:1.0.0
+keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:1.0.0
 ```
 
 ## Executing some samples for the workshop
@@ -238,5 +253,6 @@ The name can be: `SLO Dashboard for tenant xxxx`
 To delete the projects simply do this:
 ```
 keptn delete project delivery-demo
-keptn delete project keptnwebservice
+keptn delete project release-validation
+keptn delete project devopstools
 ```
