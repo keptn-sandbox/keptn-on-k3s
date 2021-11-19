@@ -1,0 +1,11 @@
+config:
+    - staging_naming: "namingrules.json"
+    - production_naming: "namingrules.json"
+
+staging_naming:
+    - name: "cs workshop staging"
+    - stage: "staging"
+
+production_naming:
+    - name: "cs workshop production"
+    - stage: "production"

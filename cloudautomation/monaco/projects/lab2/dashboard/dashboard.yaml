@@ -3,7 +3,7 @@ config:
 
 release_validation_dashboard:
   - name: "KQG;project=release-validation;stage=production;service=tnt-{{ .Env.TENANT_ID }}-svc"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
   - tenant: "{{ .Env.TENANT_ID }}"
   - availabilitySloId: "/lab1/slo/availabilitySlo.id"
   - performanceSloId: "/lab1/slo/performanceSlo.id"

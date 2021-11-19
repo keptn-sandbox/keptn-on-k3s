@@ -8,7 +8,7 @@
     "metricDenominator": "",
     "metricNumerator": "",
     "evaluationType": "AGGREGATE",
-    "filter": "type(\"SYNTHETIC_TEST\"),tag(\"tnt-{{ .tenant }}-svc\"),tag(\"production\")",
+    "filter": "mzName(\"Tenant: tnt-{{ .tenant }}-svc\"),type(\"SYNTHETIC_TEST\")",
     "target": 99.98,
     "warning": 99.99,
     "timeframe": "-1d"

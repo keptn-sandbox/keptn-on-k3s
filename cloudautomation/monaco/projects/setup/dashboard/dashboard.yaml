@@ -6,18 +6,23 @@ config:
 
 qg_dashboard:
   - name: "KQG;project=delivery-demo;stage=staging;service=tnt-xxxx-svc"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
 
 slo_dashboard:
   - name: "SLO Dashboard for Tenant xxxx"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
 
 release_validation_dashboard:
   - name: "KQG;project=release-validation;stage=production;service=tnt-xxxx-svc"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
 
 workshop_dashboard:
   - name: "Cloud Automation Workshop Overview and Links"
-  - owner: "{{ .Env.OWNER }}"
+  - owner: "{{ .Env.OWNER_EMAIL }}"
   - dttenant: "{{ .Env.DT_TENANT }}"
   - keptncontrolplane: "{{ .Env.KEPTN_CONTROL_PLANE_DOMAIN }}"
+  - keptnstagingingress: "{{ .Env.KEPTN_STAGING_INGRESS }}"
+  - keptnproductioningress: "{{ .Env.KEPTN_PRODUCTION_INGRESS }}"
+  - workshopuser: "{{ .Env.WORKSHOP_USERNAME }}"
+  - workshoppwd: "{{ .Env.WORKSHOP_PASSWORD }}"
+  - onlinespreadsheetlink: "{{ .Env.ONLINE_SPREADSHEET }}"

@@ -1,6 +1,5 @@
 ---
 spec_version: '0.1.0'
-dashboard: query
 attachRules:
   tagRule:
   - meTypes:

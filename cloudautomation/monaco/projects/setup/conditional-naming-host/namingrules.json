@@ -1,0 +1,24 @@
+{
+    "type": "HOST",
+    "nameFormat": "{{ .name }}",
+    "displayName": "{{ .name }}",
+    "enabled": true,
+    "rules": [
+      {
+        "key": {
+          "attribute": "HOST_TAGS",
+          "type": "STATIC"
+        },
+        "comparisonInfo": {
+          "type": "TAG",
+          "operator": "EQUALS",
+          "value": {
+            "context": "ENVIRONMENT",
+            "key": "KeptnStage",
+            "value" : "{{ .stage }}"
+          },
+          "negate": false
+        }
+      }
+    ]
+  }

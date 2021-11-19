@@ -1,0 +1,136 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.keptn.service }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  strategy:
+    rollingUpdate:
+      maxUnavailable: 0
+    type: RollingUpdate
+  selector:
+    matchLabels:
+      app: {{ .Values.keptn.service }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.keptn.service }}
+        app.kubernetes.io/name: "{{ .Values.keptn.service }}"
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+        app.kubernetes.io/component: api
+        app.kubernetes.io/part-of: "{{ .Values.keptn.project }}"
+        app.kubernetes.io/managed-by: Keptn
+        app.kubernetes.io/version: {{ (split ":" .Values.image)._1 | default "latest" }}
+        helm.sh/chart: {{ .Chart.Name }}-{{ .Chart.Version }}
+    spec:
+      containers:
+      - name: {{ .Values.keptn.service }}
+        image: "{{ .Values.image }}"
+        imagePullPolicy: IfNotPresent
+        ports:
+        - name: http
+          protocol: TCP
+          containerPort: {{ .Values.service.targetPort }}
+        env:
+# Following DT_CLUSTER_ID would "hard code" the PGI naming which we will do through a naming rule using the meta data on this container
+#        - name: DT_CLUSTER_ID
+#          value: "{{ .Values.keptn.project }}.{{ .Values.keptn.service }}.{{ .Values.keptn.stage }}.{{ .Values.keptn.deployment }}"
+        - name: DT_TAGS
+          value: "KeptnWebService"
+        - name: KEPTN_ENDPOINT
+          value: "https://REPLACE_KEPTN_CONTROL_PLANE_DOMAIN"
+        - name: KEPTN_API_TOKEN
+          value: "REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN"
+        - name: POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.name"
+        - name: DEPLOYMENT_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['deployment']"
+        - name: DT_RELEASE_VERSION
+          valueFrom:
+            fieldRef:
+              fieldPath: "metadata.labels['app.kubernetes.io/version']"
+        - name: DT_RELEASE_PRODUCT
+          value: "{{ .Values.keptn.project }}"
+        - name: DT_RELEASE_STAGE
+          value: "{{ .Values.keptn.stage }}"
+        - name: CONTAINER_IMAGE
+          value: "{{ .Values.image }}"
+        livenessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.targetPort }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 15
+        readinessProbe:
+          httpGet:
+            path: /
+            port: {{ .Values.service.targetPort }}
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          timeoutSeconds: 15
+        resources:
+          limits:
+            cpu: 50m
+            memory: 100Mi
+          requests:
+            cpu: 50m
+            memory: 100Mi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ .Values.keptn.service }}-ingress
+  annotations:
+    kubernetes.io/ingress.class: {{ .Values.ingress.class }}
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.clusterIssuer }}
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec:
+  tls:
+  - hosts:
+    - {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+    secretName: {{ .Values.ingress.secretName }}
+  rules:
+    - host: {{ .Values.keptn.service }}.{{ .Values.keptn.project }}-{{ .Values.keptn.stage }}.{{ .Values.ingress.ingressHost }}
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: {{ .Values.keptn.service }}
+                port: 
+                  number: {{ .Values.service.port }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ .Values.keptn.service }}-default-view
+  namespace: {{ .Release.Namespace }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: view
+subjects:
+- kind: ServiceAccount
+  name: default
+  namespace: {{ .Release.Namespace }}
+---
+apiVersion: v1
+kind: Service
+metadata: 
+  name: {{ .Values.keptn.service }}
+spec: 
+  type: {{ .Values.service.type }}
+  ports: 
+  - name: http
+    port: {{ .Values.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.service.targetPport }}
+  selector: 
+    app: {{ .Values.keptn.service }}

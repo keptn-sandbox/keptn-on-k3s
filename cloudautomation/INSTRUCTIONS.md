@@ -76,7 +76,7 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 | Metrics Expression | `builtin:synthetic.browser.availability.location.total:splitBy()`  |
 | Name of SLO | `Availability of xxxx` |
 | Description | `% of time xxxx service is available based on synthetic test` | 
-| Entity Selector | `type("SYNTHETIC_TEST"),tag("tnt-xxxx-svc"),tag("production")` |
+| Entity Selector | `mzName("Tenant: tnt-xxxx-svc"),type("SYNTHETIC_TEST")` |
 | Timeframe | `-1w` |
 
 ### Step 2 - Create Performance SLO
@@ -90,7 +90,7 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 | Metrics Expression | `(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())`  |
 | Name of SLO | `Performance SLO of xxxx` |
 | Description | `% of requests handled by xxxx service faster than 500ms` | 
-| Entity Selector | `type("SERVICE"),tag("[Environment]WorkshopTenant:xxxx"),tag("[Environment]DT_APPLICATION_ENVIRONMENT:production")` |
+| Entity Selector | `mzName("Tenant: tnt-xxxx-svc"),type("SERVICE"),tag("[Environment]DT_APPLICATION_ENVIRONMENT:production")` |
 | Timeframe | `-1w` |
 
 ### Step 3 - Create SLO Dashboard

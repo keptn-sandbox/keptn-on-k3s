@@ -18,7 +18,7 @@ fi
 export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_CONTROL_PLANE_DOMAIN}"
 export KEPTN_INGRESS="${KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN}"
 
-currentDir=pwd
+currentDir=$(pwd)
 cd ../..
 
 echo "Lets create delivery-demo project"
@@ -27,7 +27,7 @@ echo "Lets create delivery-demo project"
 echo "Lets create release-validation project"
 ./create-keptn-project-from-template.sh release-validation-simplenode ${OWNER_EMAIL} release-validation ./cloudautomation/scripts/tenants.sh
 
-echo "Lets create keptnwebservice project"
-./create-keptn-project-from-template.sh prod-keptnwebservice ${OWNER_EMAIL} keptnwebservice
+echo "Lets create devopstools project"
+./create-keptn-project-from-template.sh prod-devopstools ${OWNER_EMAIL} devopstools
 
 cd ${currentDir}

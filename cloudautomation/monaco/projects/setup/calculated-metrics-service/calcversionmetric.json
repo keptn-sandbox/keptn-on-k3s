@@ -23,7 +23,21 @@
           "values": null,
           "negate": false
         }
-      }
+      },
+      {
+        "attribute": "SERVICE_TAG",
+        "comparisonInfo": {
+          "type": "TAG",
+          "comparison": "EQUALS",
+          "value": {
+            "context": "ENVIRONMENT",
+            "key": "DT_APPLICATION_NAME",
+            "value": "delivery-demo"
+          },
+          "values": null,
+          "negate": false
+        }
+      }      
     ],
     "dimensionDefinition": {
       "name": "version",
