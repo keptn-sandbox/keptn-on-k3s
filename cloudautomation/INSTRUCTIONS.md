@@ -18,15 +18,15 @@ Followed by 3 labs
 Your instructor will give you login credentials to
 * A Dynatrace Environment
 * A Cloud Automation Environment
-* A Bastion Host - either Web Interface or SSH
+* A Simple DevOps Tool link
 
-### Install Keptn CLI locally
+### (OPTIONAL) Install Keptn CLI locally
 
-While the Bastion host can be ued to trigger keptn CLI commands you can also install the Keptn CLI yourself.
-Please ask your instructor which version to install so it matches the cloud automation instance. Or simple download it via the download link in the Cloud Automation UI (top right menu)
-Here the sample on how to install e.g: 0.9.2 CLI on your Linux:
+There are multiple ways to trigger automation. One way is through the Keptn CLI. While its not mandatory you can install it locally.
+Either follow the instructions in the Cloud Automation Environment. There is a download link on the top right menu.
+Or just do this on Linux, e.g: 0.10.0 CLI on your Linux:
 ```sh
-curl -sL https://get.keptn.sh | KEPTN_VERSION=0.9.2 sudo -E bash
+curl -sL https://get.keptn.sh | KEPTN_VERSION=0.10.0 sudo -E bash
 ```
 
 To connect to local Keptn CLI with your Cloud Automation instance copy the `keptn auth` command from the Cloud Automation UI (top right)
