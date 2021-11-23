@@ -36,16 +36,18 @@ To validate you are connected you can run
 keptn status
 ``` 
 
-## Our sample app today
+## Pre-Lab: Lets access our sample app today
 
 The workshop will use a very simple Node.js based sample application. Details can be found here https://github.com/grabnerandi/simplenodeservice.
 
-### Your instance of the app
+### VALIDATE you can access your instance of the app
 
 Every attendee has their own pipeline to deploy the sample app across staging and production. To differentiate our instances every attendee picked a `TenantID` from the Excel list, e.g: aapl, goog, sbux, ...
-If your assigned TenantID is aapl then the service instance name is `tnt-aapl-svc`
+If your assigned TenantID is aapl then the service instance name is `tnt-aapl-svc`. This will also be reflected in the URL to access YOUR APP in Staging and Production:
 
-### 4 different versions of the app available
+![](./images/validate-access-to-demoapp.png)
+
+### Background details: 4 different versions of the app available
 The sample application used comes with 4 different container versions that are all uploaded to dockerhub:
 
 | Image | Description |
