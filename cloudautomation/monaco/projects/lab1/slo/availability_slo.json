@@ -9,7 +9,7 @@
     "metricNumerator": "",
     "evaluationType": "AGGREGATE",
     "filter": "mzName(\"Tenant: tnt-{{ .tenant }}-svc\"),type(\"SYNTHETIC_TEST\")",
-    "target": 99.98,
-    "warning": 99.99,
+    "target": 95.00,
+    "warning": 99.00,
     "timeframe": "-1d"
 }

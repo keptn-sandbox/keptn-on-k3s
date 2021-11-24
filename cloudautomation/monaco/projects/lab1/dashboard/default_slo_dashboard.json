@@ -174,7 +174,7 @@
             {
               "displayName": "",
               "visible": true,
-              "min": "97.33",
+              "min": "0",
               "max": "100",
               "position": "LEFT",
               "queryIds": [
@@ -189,11 +189,11 @@
             "axisTarget": "LEFT",
             "rules": [
               {
-                "value": 99.99,
+                "value": 99.00,
                 "color": "#7dc540"
               },
               {
-                "value": 99.98,
+                "value": 95.00,
                 "color": "#f5d30f"
               },
               {
@@ -236,11 +236,11 @@
             "axisTarget": "LEFT",
             "rules": [
               {
-                "value": 99.99,
+                "value": 90.00,
                 "color": "#7dc540"
               },
               {
-                "value": 99.98,
+                "value": 85.00,
                 "color": "#f5d30f"
               },
               {

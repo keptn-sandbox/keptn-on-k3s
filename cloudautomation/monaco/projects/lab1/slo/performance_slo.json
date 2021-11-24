@@ -9,7 +9,7 @@
     "metricNumerator": "",
     "evaluationType": "AGGREGATE",
     "filter": "mzName(\"Tenant: tnt-{{ .tenant }}-svc\"),type(\"SERVICE\"),tag(\"[Environment]DT_APPLICATION_ENVIRONMENT:production\")",
-    "target": 99.98,
-    "warning": 99.99,
+    "target": 85.00,
+    "warning": 90.00,
     "timeframe": "-1d"
 }
