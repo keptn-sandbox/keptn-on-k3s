@@ -262,7 +262,7 @@
             {
               "displayName": "",
               "visible": true,
-              "min": "97.33",
+              "min": "0",
               "max": "100",
               "position": "LEFT",
               "queryIds": [
