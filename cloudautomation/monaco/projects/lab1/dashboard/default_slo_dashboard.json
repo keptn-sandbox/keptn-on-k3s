@@ -148,11 +148,11 @@
             "axisTarget": "LEFT",
             "rules": [
               {
-                "value": 99.99,
+                "value": 99.00,
                 "color": "#7dc540"
               },
               {
-                "value": 99.98,
+                "value": 95.00,
                 "color": "#f5d30f"
               },
               {
@@ -262,7 +262,7 @@
             {
               "displayName": "",
               "visible": true,
-              "min": "97.33",
+              "min": "0",
               "max": "100",
               "position": "LEFT",
               "queryIds": [
@@ -277,11 +277,11 @@
             "axisTarget": "LEFT",
             "rules": [
               {
-                "value": 99.99,
+                "value": 90.00,
                 "color": "#7dc540"
               },
               {
-                "value": 99.98,
+                "value": 85.00,
                 "color": "#f5d30f"
               },
               {
@@ -329,7 +329,7 @@
         "height": 76
       },
       "tileFilter": {},
-      "markdown": "## Service Level Objectives for tnt-{{ .tenant }}-svc\nTODO: Change MZ, select your SLOs, add your name & tag"
+      "markdown": "## Service Level Objectives for tnt-{{ .tenant }}-svc"
     },
     {
       "name": "Markdown",
@@ -420,7 +420,7 @@
         "height": 38
       },
       "tileFilter": {},
-      "markdown": "Additional links: [Release management](/ui/releases), [Release validation](https://fvk03152.cloudautomation.live.dynatrace.com/bridge/dashboard)"
+      "markdown": "Additional links: [Release management](/ui/releases), [Release validation]({{ .bridgeLink }})"
     }
   ]
 }

@@ -584,7 +584,7 @@
         "height": 76
       },
       "tileFilter": {},
-      "markdown": "This dashboard will automatically be analyzed as part of your production deployment automation.\nTo see whats currently deployed check the [Releases Overview](/ui/releases). For all individual check out [Cloud Automation Heatmaps](https://fvk03152.cloudautomation.live.dynatrace.com/bridge)\n\nTODO: Clone dashboard, select your Management Zone, Add your relevant SLO, replace {{ .tenant }} with your tenant name"
+      "markdown": "This dashboard will automatically be analyzed as part of your production deployment automation.\nTo see whats currently deployed check the [Releases Overview](/ui/releases). For all individual check out [Cloud Automation Heatmaps]({{ .bridgeLink }})"
     },
     {
       "name": "Service-level objective",

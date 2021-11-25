@@ -9,3 +9,4 @@ slo_dashboard:
   - performanceSloId: "/lab1/slo/performanceSlo.id"
   - mzId: "/general/management-zone/zone.id"
   - mzName: "/general/management-zone/zone.name"
+  - bridgeLink: "https://{{ .Env.KEPTN_CONTROL_PLANE_DOMAIN }}/bridge"  

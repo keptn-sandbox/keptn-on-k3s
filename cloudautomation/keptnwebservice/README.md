@@ -22,3 +22,11 @@
 
 1. Access the application @ http://127.0.0.1:8080/
 
+# Running as docker container
+
+I have uploaded the following versions to my dockerhub registry:
+
+| Image | Description |
+| ------ | ------------- |
+| grabnerandi/keptnwebservice:1.0.0 | Initial Version |
+| grabnerandi/keptnwebservice:2.0.0 | Version with better UI and Manage Resource support |

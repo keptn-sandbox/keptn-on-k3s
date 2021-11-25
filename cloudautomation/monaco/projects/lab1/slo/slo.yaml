@@ -1,11 +1,21 @@
 config:
-  - availabilitySlo: "availability_slo.json"
-  - performanceSlo: "performance_slo.json"
+  - availabilitySlo: "slo.json"
+  - performanceSlo: "slo.json"
 
 availabilitySlo:
   - name: "Availability of {{ .Env.TENANT_ID }}"
-  - tenant: "{{ .Env.TENANT_ID }}"
+  - description: "% of time {{ .Env.TENANT_ID }} service is available based on synthetic test"
+  - expression: "(builtin:synthetic.browser.availability.location.total:splitBy())"
+  - filter: "mzName(\\\"Tenant: tnt-{{ .Env.TENANT_ID }}-svc\\\"),type(\\\"SYNTHETIC_TEST\\\")"
+  - target: "95.00"
+  - warning: "99.00"
+  - timeframe: "-1d"
 
 performanceSlo:
   - name: "Performance SLO of {{ .Env.TENANT_ID }}"
-  - tenant: "{{ .Env.TENANT_ID }}"
+  - description: "% of requests handled by {{ .Env.TENANT_ID }} service faster than 500ms"
+  - expression: "(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())"
+  - filter: "mzName(\\\"Tenant: tnt-{{ .Env.TENANT_ID }}-svc\\\"),type(\\\"SERVICE\\\"),tag(\\\"[Environment]DT_APPLICATION_ENVIRONMENT:production\\\")"
+  - target: "85.00"
+  - warning: "90.00"
+  - timeframe: "-1d"
