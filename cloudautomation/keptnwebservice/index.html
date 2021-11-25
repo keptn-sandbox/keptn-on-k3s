@@ -2,6 +2,11 @@
   <head>
   <title>Cloud Automation: Triggering Cloud Automation Sequences through the Browser</title>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>--> 
+  
+  <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+
   <link rel="stylesheet" href="app.css">
   </head>
 
@@ -18,117 +23,180 @@
   <p>It shows you how easy it is to trigger the automation and therefore how easy it is to integrate this with your existing DevOps tools such as Jenkins, GitLab, Azure DevOps, Harness, Tekton, Argo or others ...</p>
   <p>This interface is connected to: <a href="KEPTN_ENDPOINT" target="_blank">KEPTN_ENDPOINT</a></p>
   
-  <HR>
-  <h2>Trigger an evaluation sequence for a specific project, stage and service</h2>
-  <table>
-    <tbody>
-      <tr>
-        <td><b>Project:</b></td>
-        <td><input id="project_eval" type="textbox" value="dynatrace"  /></td>
-      </tr>
-      <tr>
-        <td><b>Stage:</b></td>
-        <td><input id="stage_eval" type="textbox" value="production" /></td>
-      </tr>
-      <tr>
-        <td><b>Service:</b></td>
-        <td><input id="service_eval" type="textbox" value="tnt-xxxx-svc" /></td>
-      </tr>
-      <tr>
-        <td><b>Evaluation Timespan:&nbsp;</b></td>
-        <td><input id="timeframe" type="textbox" value="30m"/></td>
-      </tr>
-    </tbody>
-  </table>
-  <p>Additionally we can specify labels as key/value pairs</p>  
-  <b>Additional labels:</b>
-  <br>
-  <table>
-    <tbody>
-      <tr>
-        <td>Key:&nbsp;<input id="labelName1" type="textbox" value="buildId"/></td>
-        <td>Value:&nbsp;<input id="labelValue1" type="textbox" value="releaseA" style="width: 200px;"  /></td>
-      </tr>
-      <tr>
-        <td>Key:&nbsp;<input id="labelName2" type="textbox" value="executedBy" /></td>
-        <td>Value:&nbsp;<input id="labelValue2" type="textbox" value="https://yourexternaltool.com" style="width: 200px;" /></td>
-      </tr>
-    </tbody>
-  </table>
-  <BR>
-  <table>
-    <tbody>
-      <tr>
-        <td><button id="triggerEvaluation">Trigger Evaluation</button></td>
-        <td><p id="resultEvaluation"></p></td>
-      </tr>
-    </tbody>
-  </table>
-  <p>Alternatively: The Keptn CLI command to trigger the evaluation</p>
-  <p><code>keptn trigger evaluation --project=dynatrace --stage=production --timeframe=30m --labels=buildId=1,executedBy=https://yourexternaltool.com/ --service=tnt-xxxx-svc</code></p>
-  <p>&nbsp;</p>
-  
-  <hr>
-  <h2>Trigger a delivery sequence</h2>
-  <table>
-    <tbody>
-      <tr>
-        <td><b>Project:</b></td>
-        <td><input id="project_delivery" type="textbox" value="delivery-demo"  /></td>
-      </tr>
-      <tr>
-        <td><b>Stage:</b></td>
-        <td><input id="stage_delivery" type="textbox" value="staging" /></td>
-      </tr>
-      <tr>
-        <td><b>Service:</b></td>
-        <td><input id="service_delivery" type="textbox" value="tnt-xxxx-svc" /></td>
-      </tr>
-      <tr>
-        <td><b>Image to deploy:</b></td>
-        <td><input id="image" type="textbox" value="grabnerandi/simplenodeservice:1.0.0" style="width: 400px;" /></td>
-      </tr>
-      <tr>
-        <td><b>Sequence name (default=delivery):</b></td>
-        <td><input id="sequence" type="textbox" value="delivery" /></td>
-      </tr>
-    </tbody>
-  </table>
-  <p>Additionally we can specify labels as key/value pairs</p>
-  <tables>
-    <tbody>
+  <script>
+    $( function() {
+      $( "#tabs" ).tabs();
+    } );
+  </script>
+
+  <div id="tabs">
+    <ul>
+      <li><a href="#tabs-1">Trigger Evaluation</a></li>
+      <li><a href="#tabs-2">Trigger Delivery</a></li>
+      <li><a href="#tabs-3">Manage Resources (SLOs)</a></li>
+    </ul>
+    <div id="tabs-1">
+      <h2>Trigger an evaluation sequence for a specific project, stage and service</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Project:</b></td>
+            <td><input id="project_eval" type="textbox" value="relase-validation"  /></td>
+          </tr>
+          <tr>
+            <td><b>Stage:</b></td>
+            <td><input id="stage_eval" type="textbox" value="production" /></td>
+          </tr>
+          <tr>
+            <td><b>Service:</b></td>
+            <td><input id="service_eval" type="textbox" value="tnt-xxxx-svc" /></td>
+          </tr>
+          <tr>
+            <td><b>Evaluation Timespan:&nbsp;</b></td>
+            <td><input id="timeframe" type="textbox" value="30m"/></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Additionally we can specify labels as key/value pairs</p>  
       <b>Additional labels:</b>
-      <tr>
-        <td>Key:&nbsp;<input id="labelName3" type="textbox" value="executedBy"  style="width: 200px;" /></td>
-        <td>Value:&nbsp;<input id="labelValue3" type="textbox" value="https://yourexternaltool.com" style="width: 200px;" /></td>
-      </tr>
-    </tbody>
-  </table>
+      <br>
+      <table>
+        <tbody>
+          <tr>
+            <td>Key:&nbsp;<input id="labelName1" type="textbox" value="buildId"/></td>
+            <td>Value:&nbsp;<input id="labelValue1" type="textbox" value="releaseA" style="width: 200px;"  /></td>
+          </tr>
+          <tr>
+            <td>Key:&nbsp;<input id="labelName2" type="textbox" value="executedBy" /></td>
+            <td>Value:&nbsp;<input id="labelValue2" type="textbox" value="https://yourexternaltool.com" style="width: 200px;" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <BR>
+      <table>
+        <tbody>
+          <tr>
+            <td><button id="triggerEvaluation">Trigger Evaluation</button></td>
+            <td><p id="resultEvaluation"></p></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Alternatively: The Keptn CLI command to trigger the evaluation</p>
+      <p><code>keptn trigger evaluation --project=release-validation --stage=production --timeframe=30m --labels=buildId=1,executedBy=https://yourexternaltool.com/ --service=tnt-xxxx-svc</code></p>
+    </div>
+    <div id="tabs-2">
+      <h2>Trigger a delivery sequence</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Project:</b></td>
+            <td><input id="project_delivery" type="textbox" value="delivery-demo"  /></td>
+          </tr>
+          <tr>
+            <td><b>Stage:</b></td>
+            <td><input id="stage_delivery" type="textbox" value="staging" /></td>
+          </tr>
+          <tr>
+            <td><b>Service:</b></td>
+            <td><input id="service_delivery" type="textbox" value="tnt-xxxx-svc" /></td>
+          </tr>
+          <tr>
+            <td><b>Image to deploy:</b></td>
+            <td><input id="image" type="textbox" value="grabnerandi/simplenodeservice:1.0.0" style="width: 400px;" /></td>
+          </tr>
+          <tr>
+            <td><b>Sequence name (default=delivery):</b></td>
+            <td><input id="sequence" type="textbox" value="delivery" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <p>Additionally we can specify labels as key/value pairs</p>
+      <tables>
+        <tbody>
+          <b>Additional labels:</b>
+          <tr>
+            <td>Key:&nbsp;<input id="labelName3" type="textbox" value="executedBy"  style="width: 200px;" /></td>
+            <td>Value:&nbsp;<input id="labelValue3" type="textbox" value="https://yourexternaltool.com" style="width: 200px;" /></td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <table>
+        <tbody>
+          <tr>
+            <td><button id="triggerDelivery">Trigger Delivery</button></td>
+            <td><p id="resultDelivery"></p></td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <p>Here is the Keptn CLI command to trigger the evaluation</p>
+      <p><code>keptn trigger delivery --project=delivery-demo --stage=staging --image=grabnerandi/simplenodeservice:1.0.0 --labels=executedBy=https://yourexternaltool.com/ --service=tnt-xxxx-svc</code></p>
+   
+    </div>
+    <div id="tabs-3">
+      <h2>Manage Git Resources</h2>
+      <table>
+        <tbody>
+          <tr>
+            <td><b>Project:</b></td>
+            <td><input id="project_resource" type="textbox" value="delivery-demo"  /></td>
+          </tr>
+          <tr>
+            <td><b>Stage:</b></td>
+            <td><input id="stage_resource" type="textbox" value="staging" /></td>
+          </tr>
+          <tr>
+            <td><b>Service:</b></td>
+            <td><input id="service_resource" type="textbox" value="tnt-xxxx-svc" /></td>
+          </tr>
+          <tr>
+            <td><b>Resource</b></td>
+            <td><input id="resourceUri" type="textbox" value="slo.yaml" style="width: 400px;" /></td>
+          </tr>
+        </tbody>
+      </table>
+      <table>
+        <tbody>
+          <tr>
+            <td><button id="getResource">Get Resource</button></td>
+            <td><p id="getResourceResult"></p></td>
+          </tr>
+          <tr>
+            <td><button id="addResource">Add Resource</button></td>
+            <td><p id="addResourceResult"></p></td>
+          </tr>
+          <tr>
+            <td><b>Resource Content</b></td>
+            <td><p id="resourceResult"><textarea id="resourceContent" rows="10" cols="80"></textarea></p></td>
+          </tr>
+        </tbody>
+      </table>
+    
+      <p>Here is the Keptn CLI command to add resources</p>
+      <p><code>keptn add-resource --project=delivery-demo --stage=staging --service=tnt-xxxx-svc --resource=slo.yaml</code></p>    
+    </div>
+  </div>
+  
 
-  <table>
-    <tbody>
-      <tr>
-        <td><button id="triggerDelivery">Trigger Delivery</button></td>
-        <td><p id="resultDelivery"></p></td>
-      </tr>
-    </tbody>
-  </table>
+  
 
-  <p>Here is the Keptn CLI command to trigger the evaluation</p>
-  <p><code>keptn trigger delivery --project=delivery-demo --stage=staging --image=grabnerandi/simplenodeservice:1.0.0 --labels=executedBy=https://yourexternaltool.com/ --service=tnt-xxxx-svc</code></p>
-  <p>&nbsp;</p>
+
 
   <script>	
   function getRESTEndpoint() {
     return window.location.href;
   }
   
-  function executeCall(requestString, projectPostfix, resultField) {
+  function executeCall(requestString, projectPostfix, resultField, errorField) {
     var fullURL = getRESTEndpoint() + requestString;
 
     var project = $('#project_' + projectPostfix).val();	
     var stage = $('#stage_' + projectPostfix).val();	
     var service = $('#service_' + projectPostfix).val();	
+
+    // clear the errorField first
+    $('#' + errorField).text("");
 
     if (project == "" || stage == "" || service == "") {
       alert("You have to enter valid values for project, stage and project!")
@@ -145,9 +213,9 @@
       $.ajax({
           url: fullURL
         }).success(function(data) {
-           $('#' + resultField).text(data);
-        }).fail(function() {
-           $('#' + resultField).text("invoke failed!");
+           $('#' + resultField).html(data);
+        }).fail(function(jqXHR, textStatus, errorThrown) {
+           $('#' + errorField).text("Invoke failed! " + textStatus);
       });
     }
   
@@ -160,7 +228,7 @@
     executeCall(
       "api/triggerEvaluation?timeframe=" + timeframe + "&labelName1=" + labelName1 + "&labelName2=" + labelName2 + "&labelValue1=" + labelValue1 + "&labelValue2=" + labelValue2, 
       "eval",
-      "resultEvaluation");
+      "resultEvaluation", "resultEvaluation");
   });
 
   $("#triggerDelivery").click(function () {	
@@ -171,8 +239,25 @@
     executeCall(
       "api/triggerDelivery?image=" + image + "&sequence=" + sequence + "&labelName1=" + labelName1 + "&labelValue1=" + labelValue1, 
       "delivery",
-      "resultDelivery");
+      "resultDelivery", "resultDelivery");
   });
+
+  $("#getResource").click(function () {	
+    var resourceUri = $('#resourceUri').val();	
+    executeCall(
+      "api/getResource?resourceUri=" + resourceUri, 
+      "resource",
+      "resourceResult", "getResourceResult");
+  });  
+
+  $("#addResource").click(function () {	
+    var resourceUri = $('#resourceUri').val();	
+    var resourceContent = btoa($('#resourceContent').val());	
+    executeCall(
+      "api/addResource?resourceUri=" + resourceUri + "&resourceContent=" + resourceContent, 
+      "resource",
+      "addResourceResult", "addResourceResult");
+  });  
   
   </script>	
 

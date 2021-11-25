@@ -67,7 +67,7 @@ var log = function(severity, entry) {
 	}
 };
 
-var sendRequest = function(path, data, res) {
+var sendRequest = function(path, data, res, method) {
 
 	try {
 
@@ -86,7 +86,7 @@ var sendRequest = function(path, data, res) {
 		closeResponse = false;
 		var options = {
 			host: urlRequest,
-			method: "POST",
+			method: method,
 			path: path,
 			headers: {
 				'Content-Type': 'application/json',
@@ -109,8 +109,31 @@ var sendRequest = function(path, data, res) {
 				var body = Buffer.concat(bodyChunks);
 				log(SEVERITY_DEBUG, 'BODY: ' + body);
 				status = body;
-				res.writeHead(returnStatusCode, returnStatusCode == 200 ? 'OK' : 'ERROR', {'Content-Type': 'text/plain'});	
-				res.write(status);
+
+				if (returnStatusCode == 200) {
+					responseObject = JSON.parse(body)
+					if (responseObject.keptnContext) {
+						// Generate a link to the Keptn context in the bridge
+						res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});	
+						res.write("<a target='blank' href='" + KEPTN_ENDPOINT + "/bridge/trace/" + responseObject.keptnContext +"'>Open Result</a>")
+					} else
+					if (responseObject.resourceContent) {
+						// generate an input field
+						buff = new Buffer(responseObject.resourceContent, "base64")
+						res.writeHead(200, 'OK', {'Content-Type': 'text/plain'});	
+						res.write("<textarea id=\"resourceContent\" rows=\"10\" cols=\"80\">" + buff.toString("ascii") + "</textarea>")
+					} else 
+					if (responseObject.message) {
+						// just write the error message
+						res.writeHead(200, 'ERROR', {'Content-Type': 'text/plain'});	
+						res.write("<b>" + responseObject.code + ": " + responseObject.message +"</b>")
+					} else {
+						res.write(status);
+					}
+				} else {
+					res.writeHead(returnStatusCode, 'ERROR', {'Content-Type': 'text/plain'});
+					res.write(status);
+				}
 				res.end();
 			}).on('error', function(error) {
 				status = "Request failed: " + error;
@@ -159,7 +182,7 @@ var triggerEvaluation = function(url, res) {
 
     log(SEVERITY_DEBUG, data)
 	
-	sendRequest('/api/controlPlane/v1/project/' + project + "/stage/" + stage + "/service/" + service + "/evaluation", data, res)
+	sendRequest('/api/controlPlane/v1/project/' + project + "/stage/" + stage + "/service/" + service + "/evaluation", data, res, "POST")
 }
 
 var triggerDelivery = function(url, res) {
@@ -193,29 +216,46 @@ var triggerDelivery = function(url, res) {
 	  }"
 
 	  log(SEVERITY_DEBUG, data)
-
-/*	const data = JSON.stringify({
-		"data": {
-		  "configurationChange": {
-			"values": {
-			  "image": image
-			}
-		  },
-		  "labels" : {
-			  labelName1 : labelValue1
-		  },
-		  "project": project,
-		  "service": service,
-		  "stage": stage
-		},
-		"source": "https://github.com/keptn-sandbox/keptn-on-k3s/cloudautomation",
-		"specversion": "1.0",
-		"type": "sh.keptn.event." + stage + "." + sequence + ".triggered",
-		"shkeptnspecversion": "0.2.3"
-	  })*/
 	
-	  sendRequest('/api/v1/event', data, res)
+	  sendRequest('/api/v1/event', data, res, "POST")
 }
+
+var addResource = function(url, res) {
+	log(SEVERITY_DEBUG, "a")
+	var project = url.query["project"]
+	var stage = url.query["stage"]
+	var service = url.query["service"]
+	var resourceUri = url.query["resourceUri"]
+	var resourceContent = url.query["resourceContent"]
+
+	log(SEVERITY_DEBUG, "b")
+	const data = "{ \
+		\"resources\": [ \
+		  { \
+			\"resourceURI\": \"" + resourceUri + "\", \
+			\"resourceContent\": \"" + resourceContent + "\" \
+		  } \
+		] \
+	  }"
+	url = "/api/configuration-service/v1/project/" + project + "/stage/" + stage + "/service/" + service + "/resource"
+	log(SEVERITY_DEBUG, url)
+
+	sendRequest(url, data, res, "POST")
+}
+
+var getResource = function(url, res) {
+	var project = url.query["project"]
+	var stage = url.query["stage"]
+	var service = url.query["service"]
+	var resourceUri = url.query["resourceUri"]
+
+	const data = ""
+	url = "/api/configuration-service/v1/project/" + project + "/stage/" + stage + "/service/" + service + "/resource/" + resourceUri + "?disableUpstreamSync=false"
+	log(SEVERITY_DEBUG, url)
+
+	sendRequest(url, data, res, "GET")
+}
+
 
 // ======================================================================
 // This is our main HttpServer Handler
@@ -263,6 +303,12 @@ var server = http.createServer(async function (req, res) {
 			} else 
 			if(url.pathname === "/api/triggerDelivery") {
 				triggerDelivery(url, res)
+			} else
+			if(url.pathname === "/api/getResource") {
+				getResource(url, res)
+			} else
+			if(url.pathname === "/api/addResource") {
+				addResource(url, res)
 			} else
 			if(url.pathname === "/api/stop") {
 				process.exit(1)
