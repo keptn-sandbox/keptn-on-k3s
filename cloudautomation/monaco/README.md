@@ -39,7 +39,7 @@ Following enviornment variables need to be set
 
 ```
 export OWNER=youremail@domain.com
-export TENANT=aapl
+export TENANT_ID=aapl
 monaco -e environment.yaml -p lab1 projects
 ```
 
@@ -51,7 +51,7 @@ Following enviornment variables need to be set
 
 ```
 export OWNER=youremail@domain.com
-export TENANT=aapl
+export TENANT_ID=aapl
 monaco -e environment.yaml -p lab2 projects
 ```
 
@@ -63,7 +63,7 @@ Following enviornment variables need to be set
 
 ```
 export OWNER=youremail@domain.com
-export TENANT=aapl
+export TENANT_ID=aapl
 monaco -e environment.yaml -p lab3 projects
 ```
 
