@@ -1,7 +1,7 @@
 {
     "enabled": true,
     "name": "{{ .name }}",
-    "description": "{{ .description }}",
+    "customDescription": "{{ .description }}",
     "useRateMetric": true,
     "metricExpression": "{{ .expression }}",
     "metricRate": "",
