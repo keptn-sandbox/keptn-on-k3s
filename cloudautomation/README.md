@@ -24,7 +24,7 @@ It's assumed you have the following:
 
 What you need is:
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
-2. **DT_API_TOKEN**: It needs configuration read/write access. Best is to give it all privileges that don't touch sensitive data
+2. **DT_API_TOKEN**: It needs several privileges. Check out [this screenshot](./images/setup_dtapitokens.png) for all details!
 3. **DT_PAAS_TOKEN**: A PAAS Token as the script also installs a OneAgent & ActiveGate on your Bastion Host
 4. **KEPTN_CONTROL_PLANE_DOMAIN**: hostname of your Cloud Automation enviornment, e.g: abc12345.cloudautomation.live.dynatrace.com
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
@@ -151,12 +151,12 @@ After you are done with this step you should see the following projects in your 
 ![](./images/validate-install-workshopprojects.png)
 
 There are three additional projects being created when executing `./install-cloudautomation-workshop.sh`
-1. *demo-delivery*: two stage delivery of the simplenode app
+1. *delivery-demo*: two stage delivery of the simplenode app
 2. *release-validation*: a simple quality gate project to demo automating release validation
 3. *devopstools*: a simple project to deploy some helper DevOps tools, e.g: "Sample CI/CD Web Interface" to trigger keptn sequences
 
 Here some more information!
-The core demo project is called `demo-delivery`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
+The core demo project is called `delivery-demo`. It is a two stage delivery pipeline of services with the name pattern tnt-TENANTID-svc.
 The idea is that every attendee of the workshop gets its own service. The story is that we are all working for a SaaS provider and we are all responsible for our individual tenants.
 
 In order to create tenants for each student we need to create a file called `tenants.sh` in the `cloudautomation/scripts` folder that sets the TENANTID into an array as described here. The tenant IDs must only contain alphanumeric characters and have to be lowercase. Here is an example for 3 tenants:
@@ -174,7 +174,7 @@ Another option would be to use e.g: stock symbols. With this you can assign ever
 
 Now we are ready and can create the demo project for that workshop
 ```bash
-cd cloudautomation
+cd cloudautomation/scripts
 export OWNER_EMAIL=youremail@domain.com
 
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
@@ -197,7 +197,7 @@ chmod +x monaco
 sudo mv monaco /usr/local/bin/
 ```
 
-While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a [monaco](https://dynatrace-oss.github.io/dynatrace-monitoring-as-code/installation) project you can execute on its own which will
+While the delivery-demo project contains monaco to automatically create naming and tagging rules there is a [monaco](./monaco) project you can execute on its own which will
 * Create auto-tagging rules
 * Create Naming rules
 * Create default template dashboards
@@ -206,7 +206,7 @@ While the delivery-demo project contains monaco to automatically create naming a
 Here is how to run that monaco project
 ```bash
 cd cloudautomation/monaco
-export OWNER=youremail@domain.com
+export OWNER_EMAIL=youremail@domain.com
 export DT_TENANT=abc12345.live.dynatrace.com
 export DT_API_TOKEN=dt0c01.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
@@ -245,13 +245,15 @@ keptn trigger delivery --project=delivery-demo --service=tnt-aapl-svc --stage=pr
 
 ### Step 3: Deploy ALL services for ALL tenants in one go
 
+There is a helper script that iterates over the list of workshop tenants and executes a `keptn trigger delivery`. This script by default waits 20 seconds between the trigger calls to ensure we are not overloading your cloud automation environment with too many deployments at the same time.
+
 ```
-Deploy straight into staging:
+Deploy staging and then production:
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo staging grabnerandi/simplenodeservice:1.0.1
 ```
 
 ```
-Deploy straight into production:
+Deploy straight into production (will prompt for approval in UI):
 ./trigger-for-all-tenants.sh tenants.sh delivery-demo production grabnerandi/simplenodeservice:1.0.1
 ```
 
