@@ -719,7 +719,7 @@ function install_keptn {
     write_progress "Creating Dynatrace Secret!"
 
     # Always create the secret in Keptn as a secret
-    keptn_create_dynatrace_secret
+    keptn_create_dynatrace_secret 
 
     # As of today (Keptn 0.8.4) we also have to create the secret as a k8s secret on the execution plane as keptn secrets are not yet propagated!
     if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
@@ -866,11 +866,11 @@ function check_dynatrace_credentials {
 #
 # Creates a Keptn Secret including DT_API_TOKEN AND DT_TENANT as name/value pairs
 # 1. secret_name (optional). Default is dynatrace
-# 2. scope (optional). Default is keptn-default
+# 2. scope (optional). Default is dynatrace-service
 #
 function keptn_create_dynatrace_secret {
   secret_name="${1:-dynatrace}"
-  scope="${2:-keptn-default}"
+  scope="${2:-dynatrace-service}"
 
   get_keptncredentials
 
