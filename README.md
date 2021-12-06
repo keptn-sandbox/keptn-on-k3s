@@ -16,6 +16,7 @@ If you navigate to this repository because you are part of a **Cloud Automation 
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.7.3](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.7.3) | 0.7.3 | Adding Dynatrace Use Cases |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.8.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.8.0) | 0.8.0 | Updates to Keptn 0.8 |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.9.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.9.0) | 0.9.1 | Updates to Keptn 0.9.x |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.10.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.10.0) | 0.10.0 | Updates to Keptn 0.10.x |
 
 This repo automates the installation of [Keptn's](https://keptn.sh) Control Plane, Delivery or Execution. For that it will automatically install a [k3s](https://k3s.io). 
 This is your fastest way to explore the following use cases:
