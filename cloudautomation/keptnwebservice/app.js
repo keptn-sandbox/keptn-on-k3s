@@ -88,6 +88,7 @@ var sendRequest = function(path, data, res, method) {
 			host: urlRequest,
 			method: method,
 			path: path,
+			rejectUnauthorized: false,
 			headers: {
 				'Content-Type': 'application/json',
 				'Accept' : 'application/json',

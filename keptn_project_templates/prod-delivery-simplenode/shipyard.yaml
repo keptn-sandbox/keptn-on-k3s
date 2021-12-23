@@ -34,3 +34,13 @@ spec:
         triggeredAfter: "6m"
         properties:
           timeframe: "6m"
+    - name: rollback
+      triggeredOn:
+      - event: production.delivery.finished
+        result: fail
+      tasks:
+      - name: rollback
+      - name: evaluation
+        triggeredAfter: "6m"
+        properties:
+          timeframe: "6m"          
