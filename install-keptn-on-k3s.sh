@@ -510,12 +510,21 @@ function install_keptn {
     get_argorollouts
 
     # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
-    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    # Install JMeter if requested
+    if [[ "${JMETER}" == "true" ]]; then
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    fi
+    # ALWAYS install Helm-Service on Delivery-Plane
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
-    # Install the Argo Service as this is needed for one of the demo use cases
+    # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
+
+    # Install Locust if requested
+    if [[ "${LOCUST}" == "true" ]]; then
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
+    fi 
   fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then

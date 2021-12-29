@@ -48,7 +48,9 @@ spec:
     - name: rollback
       triggeredOn:
       - event: production.delivery.finished
-        result: fail
+        selector:
+          match:
+            result: failed
       tasks:
       - name: rollback
       - name: evaluation
