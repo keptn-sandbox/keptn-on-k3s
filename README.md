@@ -99,7 +99,7 @@ The script allows a couple of parameters
 | `--ip` | "YOURIP" | Allows you to pass your own IP of your host, use double quotation marks |
 | `--letsencrypt` | | Will create a Letsencrypt certificate |
 | `--fqdn` | YOURFQDN | Allows you to pass your own hostname, allows you to create production LetsEncrypt Certificates, You need to create your own DNS entry |
-| `--with-demo` | dynatrace prometheus | Will install demo projects for Dynatrace or Prometheus |
+| `--with-demo` | dynatrace prometheus cloudautomation | Will install demo projects for Dynatrace, Prometheus or Cloud Automation |
 | `--with-gitea` |  | Will install Gitea and upstream Git repos for every Keptn project  |
 | `--disable-bridge-auth` |  | Will disable the password check when accessing Keptn Bridge (not recommended for anything else than demo purposes)  |
 

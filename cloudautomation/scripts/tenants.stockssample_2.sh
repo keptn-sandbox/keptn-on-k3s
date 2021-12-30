@@ -1,0 +1,1 @@
+INSTANCE_ARRAY=(aapl acer)

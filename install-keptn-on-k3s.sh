@@ -889,6 +889,33 @@ function keptn_create_dynatrace_secret {
   curl -k -X POST "${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret" -H "accept: application/json" -H "x-token: ${KEPTN_API_TOKEN}" -H "Content-Type: application/json" -d "{ \"data\": { \"DT_TENANT\": \"${DT_TENANT}\", \"DT_API_TOKEN\": \"${DT_API_TOKEN}\" }, \"name\": \"${secret_name}\", \"scope\": \"${scope}\"}"
 }
 
+function install_demo_cloudautomation {
+  write_progress "Installing Cloud Automation Demo Projects"
+
+  get_keptncredentials
+
+  # set the parameters needed for install-cloudautomation-workshop.sh
+  if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "none" ]]; then 
+    KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_DOMAIN:-none}
+  fi 
+  if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "none" ]]; then 
+    KEPTN_CONTROL_PLANE_API_TOKEN=${KEPTN_API_TOKEN:-none}
+  fi 
+
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${FQDN}
+  else
+    KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${KEPTN_DOMAIN:-none}
+  fi
+
+  # now install the cloud-automation-workshop with a single tenant
+  currentDir=$(pwd)
+  cd cloudautomation/scripts 
+  ./install-cloudautomation-workshop.sh ./cloudautomation/scripts/tenants.stockssample_2.sh
+
+  cd ${currentDir}
+}
+
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -975,6 +1002,10 @@ function install_demo {
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
     install_demo_dynatrace
+  fi 
+
+  if [[ "${DEMO}" == "cloudautomation" ]]; then
+    install_demo_cloudautomation
   fi 
 
   if [[ "${DEMO}" == "prometheus" ]]; then
@@ -1318,8 +1349,8 @@ function main {
        ;;
     --with-demo)
         DEMO="${2}"
-        if [[ $DEMO != "dynatrace" ]] && [[ $DEMO != "prometheus" ]] ; then 
-          echo "--with-demo parameter currently supports: dynatrace or prometheus. Value passed is not allowed"
+        if [[ $DEMO != "dynatrace" ]] && [[ $DEMO != "prometheus" ]] && [[ $DEMO != "cloudautomation" ]] ; then 
+          echo "--with-demo parameter currently supports: dynatrace, prometheus or cloudautomation. Value passed is not allowed"
           exit 1
         fi 
 
@@ -1327,9 +1358,25 @@ function main {
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
           JMETER="true"
+          DYNA="true"
+          MONACO="true"
+          check_dynatrace_credentials          
          
           if [[ $OWNER_EMAIL == "none" ]]; then 
             echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
+            exit 1
+          fi 
+        fi        
+
+        if [[ $DEMO == "cloudautomation" ]]; then 
+          # need to make sure we install the locust service as well as monaco and dynatrace
+          LOCUST="true"
+          DYNA="true"
+          MONACO="true"
+          check_dynatrace_credentials          
+         
+          if [[ $OWNER_EMAIL == "none" ]]; then 
+            echo "For installing the Cloud Automation demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
             exit 1
           fi 
         fi        
