@@ -908,6 +908,11 @@ function install_demo_cloudautomation {
     KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${KEPTN_DOMAIN:-none}
   fi
 
+  # export those variables as we call another script
+  export KEPTN_CONTROL_PLANE_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
+  export KEPTN_CONTROL_PLANE_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN="${KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN}"
+
   # now install the cloud-automation-workshop with a single tenant
   currentDir=$(pwd)
   cd cloudautomation/scripts 
