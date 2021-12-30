@@ -226,7 +226,7 @@ This project currently contains a very simply web app that allows you to trigger
 
 To trigger the deployment of this app you have to do this once:
 ```
-keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.0
+keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
 ```
 
 ## Executing some samples for the workshop

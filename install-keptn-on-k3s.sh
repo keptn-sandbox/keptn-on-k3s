@@ -917,8 +917,10 @@ function install_demo_cloudautomation {
   currentDir=$(pwd)
   cd cloudautomation/scripts 
   ./install-cloudautomation-workshop.sh ./cloudautomation/scripts/tenants.stockssample_2.sh
-
   cd ${currentDir}
+
+  # now trigger the delivery of the devops tools
+  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
 }
 
 function install_demo_dynatrace {
