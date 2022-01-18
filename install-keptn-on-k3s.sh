@@ -559,8 +559,8 @@ function install_keptn {
     # Install the Argo Service for just the demo-rollout project
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
@@ -584,9 +584,9 @@ function install_keptn {
 
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
       GENERICEXEC="false"
@@ -596,16 +596,16 @@ function install_keptn {
       write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi 
 
     # Install Locust if the user wants to
     if [[ "${LOCUST}" == "true" ]]; then
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=locust-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi
 
   fi
