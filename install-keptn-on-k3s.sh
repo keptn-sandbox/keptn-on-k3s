@@ -42,7 +42,7 @@ DT_SERVICE_VERSION="0.19.0"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
-LOCUST_SERVICE_VERSION="release-0.1.2"
+LOCUST_SERVICE_VERSION="release-0.1.5"
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -510,12 +510,21 @@ function install_keptn {
     get_argorollouts
 
     # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
-    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    # Install JMeter if requested
+    if [[ "${JMETER}" == "true" ]]; then
+      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+    fi
+    # ALWAYS install Helm-Service on Delivery-Plane
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
-    # Install the Argo Service as this is needed for one of the demo use cases
+    # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
+
+    # Install Locust if requested
+    if [[ "${LOCUST}" == "true" ]]; then
+      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
+    fi 
   fi
 
   if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
@@ -550,8 +559,8 @@ function install_keptn {
     # Install the Argo Service for just the demo-rollout project
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
@@ -575,9 +584,9 @@ function install_keptn {
 
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       # TODO - we need to find a better way to define all events to be forwarded to the generic executor
 
       GENERICEXEC="false"
@@ -587,14 +596,15 @@ function install_keptn {
       write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=monaco-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi 
 
     # Install Locust if the user wants to
     if [[ "${LOCUST}" == "true" ]]; then
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=locust-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
       "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
     fi
 
@@ -879,6 +889,40 @@ function keptn_create_dynatrace_secret {
   curl -k -X POST "${PREFIX}://${KEPTN_DOMAIN}/api/secrets/v1/secret" -H "accept: application/json" -H "x-token: ${KEPTN_API_TOKEN}" -H "Content-Type: application/json" -d "{ \"data\": { \"DT_TENANT\": \"${DT_TENANT}\", \"DT_API_TOKEN\": \"${DT_API_TOKEN}\" }, \"name\": \"${secret_name}\", \"scope\": \"${scope}\"}"
 }
 
+function install_demo_cloudautomation {
+  write_progress "Installing Cloud Automation Demo Projects"
+
+  get_keptncredentials
+
+  # set the parameters needed for install-cloudautomation-workshop.sh
+  if [[ "$KEPTN_CONTROL_PLANE_DOMAIN" == "none" ]]; then 
+    KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_DOMAIN:-none}
+  fi 
+  if [[ "$KEPTN_CONTROL_PLANE_API_TOKEN" == "none" ]]; then 
+    KEPTN_CONTROL_PLANE_API_TOKEN=${KEPTN_API_TOKEN:-none}
+  fi 
+
+  if [[ "${KEPTN_EXECUTIONPLANE}" == "true" ]]; then
+    KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${FQDN}
+  else
+    KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${KEPTN_DOMAIN:-none}
+  fi
+
+  # export those variables as we call another script
+  export KEPTN_CONTROL_PLANE_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
+  export KEPTN_CONTROL_PLANE_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
+  export KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN="${KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN}"
+
+  # now install the cloud-automation-workshop with a single tenant
+  currentDir=$(pwd)
+  cd cloudautomation/scripts 
+  ./install-cloudautomation-workshop.sh ./cloudautomation/scripts/tenants.stockssample_2.sh
+  cd ${currentDir}
+
+  # now trigger the delivery of the devops tools
+  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
+}
+
 function install_demo_dynatrace {
   write_progress "Installing Dynatrace Demo Projects"
 
@@ -965,6 +1009,10 @@ function install_demo {
 
   if [[ "${DEMO}" == "dynatrace" ]]; then
     install_demo_dynatrace
+  fi 
+
+  if [[ "${DEMO}" == "cloudautomation" ]]; then
+    install_demo_cloudautomation
   fi 
 
   if [[ "${DEMO}" == "prometheus" ]]; then
@@ -1308,8 +1356,8 @@ function main {
        ;;
     --with-demo)
         DEMO="${2}"
-        if [[ $DEMO != "dynatrace" ]] && [[ $DEMO != "prometheus" ]] ; then 
-          echo "--with-demo parameter currently supports: dynatrace or prometheus. Value passed is not allowed"
+        if [[ $DEMO != "dynatrace" ]] && [[ $DEMO != "prometheus" ]] && [[ $DEMO != "cloudautomation" ]] ; then 
+          echo "--with-demo parameter currently supports: dynatrace, prometheus or cloudautomation. Value passed is not allowed"
           exit 1
         fi 
 
@@ -1317,9 +1365,25 @@ function main {
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
           JMETER="true"
+          DYNA="true"
+          MONACO="true"
+          check_dynatrace_credentials          
          
           if [[ $OWNER_EMAIL == "none" ]]; then 
             echo "For installing the Dynatrace demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
+            exit 1
+          fi 
+        fi        
+
+        if [[ $DEMO == "cloudautomation" ]]; then 
+          # need to make sure we install the locust service as well as monaco and dynatrace
+          LOCUST="true"
+          DYNA="true"
+          MONACO="true"
+          check_dynatrace_credentials          
+         
+          if [[ $OWNER_EMAIL == "none" ]]; then 
+            echo "For installing the Cloud Automation demo you need to export OWNER_EMAIL to a valid email of a Dynatrace User Account. The demo will create dashboards using that owner!"
             exit 1
           fi 
         fi        

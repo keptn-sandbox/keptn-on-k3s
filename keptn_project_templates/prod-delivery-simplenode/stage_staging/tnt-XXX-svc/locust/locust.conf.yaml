@@ -1,0 +1,6 @@
+---
+spec_version: '0.1.0'
+workloads:
+  - teststrategy: performance
+    script: /locust/load.py
+    conf: /locust/locust.conf

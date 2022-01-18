@@ -6,6 +6,8 @@ spec:
   stages:
   - name: staging
     sequences:
+    # delivery:
+    # will do deploy, then wait 6 minutes and evaluate. traffic for evaluation is from synthetic tests. if its good continues in production
     - name: delivery
       tasks:
       - name: monaco
@@ -16,11 +18,38 @@ spec:
         triggeredAfter: "6m"
         properties:
           timeframe: "6m"
+    # delivery_withtest:
+    # will deploy, test (locust), evaluate. If its good continues in production.
+    - name: delivery_withtest
+      tasks:
+      - name: monaco
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
+      - name: test
+        properties:
+          teststrategy: performance
+      - name: evaluation
+    # just_delivery_withtest:
+    # will only deploy, test and evaluate in staging without triggering a production sequence afterwards
+    - name: just_delivery_withtest
+      tasks:
+      - name: monaco
+      - name: deployment
+        properties:
+          deploymentstrategy: user_managed
+      - name: test
+        properties:
+          teststrategy: performance
+      - name: evaluation
   - name: production
     sequences:
+    # delivery:
+    # will deploy, then wait 6 minutes and evaluate. evaluation is based on synthetic tests setup through monaco
     - name: delivery
       triggeredOn:
       - event: staging.delivery.finished
+      - event: staging.delivery_withtest.finished
       tasks:
       - name: approval
         properties:
@@ -34,10 +63,14 @@ spec:
         triggeredAfter: "6m"
         properties:
           timeframe: "6m"
+    # rollback:
+    # will rollback in case of an error of production deployment
     - name: rollback
       triggeredOn:
       - event: production.delivery.finished
-        result: fail
+        selector:
+          match:
+            result: failed
       tasks:
       - name: rollback
       - name: evaluation

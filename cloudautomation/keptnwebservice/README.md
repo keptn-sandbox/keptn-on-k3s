@@ -30,3 +30,4 @@ I have uploaded the following versions to my dockerhub registry:
 | ------ | ------------- |
 | grabnerandi/keptnwebservice:1.0.0 | Initial Version |
 | grabnerandi/keptnwebservice:2.0.0 | Version with better UI and Manage Resource support |
+| grabnerandi/keptnwebservice:2.0.1 | Allows requests to https without a valid certificate |

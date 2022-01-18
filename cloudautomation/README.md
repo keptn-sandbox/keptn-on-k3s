@@ -30,7 +30,7 @@ What you need is:
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
 6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant. SUGGESTION: use the gmail as explained in Step 4 above
 
-Optionally:
+Optionally (**BUT VERY IMPORTANT IF YOU DO NOT RUN ON A LIVE TENANT, e.g: SPRINT or DEV TENANT**):
 1. **SYNTHETIC_LOCATION**: Synthetic tests will be created through Monaco. The default location is GEOLOCATION-45AB48D9D6925ECC (AWS Frankfurt). Double check that you have this location available, e.g: Dynatrace Sprint tenants would have a different location. Specify your location via this environment variable 
 
 ## Installing the workshop
@@ -127,7 +127,7 @@ If you have your own DNS entry such as claus-ws.yourdomain then you can use the 
 
 **This requires two smaller hosts as each host is only handling either production or staging traffic**
 
-We first install the Execution Plane targeted for Production (here we also install Gitea)
+We first install the Execution Plane targeted for Production
 ```bash
 export KEPTN_EXECUTION_PLANE_STAGE_FILTER=production
 export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
@@ -135,7 +135,7 @@ export KEPTN_EXECUTION_PLANE_PROJECT_FILTER=
 ./install-keptn-on-k3s.sh --executionplane --provider aws --with-genericexec --with-monaco --use-nip
 ```
 
-And now the Execution Plane targeted for Staging (no need for gitea)
+And now the Execution Plane targeted for Staging
 ```bash
 export KEPTN_EXECUTION_PLANE_STAGE_FILTER=staging
 export KEPTN_EXECUTION_PLANE_SERVICE_FILTER=
@@ -226,7 +226,7 @@ This project currently contains a very simply web app that allows you to trigger
 
 To trigger the deployment of this app you have to do this once:
 ```
-keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.0
+keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
 ```
 
 ## Executing some samples for the workshop
