@@ -93,7 +93,7 @@ Now its time to clone this git repo
 ```bash
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.10.0
+git checkout release-0.12.0
 ```
 
 ### Step 3: Install Execution Plane
