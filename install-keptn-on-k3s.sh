@@ -1386,6 +1386,7 @@ function main {
           LOCUST="true"
           DYNA="true"
           MONACO="true"
+          GENERICEXEC="true"
           check_dynatrace_credentials          
          
           if [[ $OWNER_EMAIL == "none" ]]; then 
