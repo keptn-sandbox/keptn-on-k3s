@@ -18,7 +18,7 @@
           "comparison": "TAG_KEY_EQUALS",
           "value": {
             "context": "ENVIRONMENT",
-            "key": "DT_APPLICATION_RELEASE_VERSION"
+            "key": "DT_RELEASE_VERSION"
           },
           "values": null,
           "negate": false
