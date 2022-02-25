@@ -488,7 +488,7 @@ function install_keptn {
     helm upgrade keptn keptn --install --wait \
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
-      --repo="https://storage.googleapis.com/keptn-installer" \
+      --repo="https://charts.keptn.sh" \
       --set=continuous-delivery.enabled=false \
       --kubeconfig="$KUBECONFIG"
   fi 
@@ -498,7 +498,7 @@ function install_keptn {
     helm upgrade keptn keptn --install --wait \
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
-      --repo="https://storage.googleapis.com/keptn-installer" \
+      --repo="https://charts.keptn.sh" \
       --set=continuous-delivery.enabled=true \
       --kubeconfig="$KUBECONFIG"
 
