@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.12.0}
+KEPTNVERSION=${KEPTNVERSION:-0.13.1}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -37,7 +37,7 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="0.20.0"
+DT_SERVICE_VERSION="0.21.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
@@ -488,7 +488,7 @@ function install_keptn {
     helm upgrade keptn keptn --install --wait \
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
-      --repo="https://storage.googleapis.com/keptn-installer" \
+      --repo="https://charts.keptn.sh" \
       --set=continuous-delivery.enabled=false \
       --kubeconfig="$KUBECONFIG"
   fi 
@@ -498,7 +498,7 @@ function install_keptn {
     helm upgrade keptn keptn --install --wait \
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
-      --repo="https://storage.googleapis.com/keptn-installer" \
+      --repo="https://charts.keptn.sh" \
       --set=continuous-delivery.enabled=true \
       --kubeconfig="$KUBECONFIG"
 
@@ -541,7 +541,7 @@ function install_keptn {
     get_argorollouts
 
     # Install the Helm Service - and increase memory and cpu limits
-    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/helm-service/chart/values.yaml
+    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/helm-service/chart/values.yaml
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
@@ -564,7 +564,7 @@ function install_keptn {
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
-      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/release-${KEPTNVERSION}/jmeter-service/chart/values.yaml
+      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/jmeter-service/chart/values.yaml
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
@@ -908,6 +908,9 @@ function install_demo_cloudautomation {
     KEPTN_EXECUTION_PLANE_INGRESS_DOMAIN=${KEPTN_DOMAIN:-none}
   fi
 
+  export KEPTN_ENDPOINT="${PREFIX}://${KEPTN_DOMAIN}"
+  export KEPTN_INGRESS=${FQDN}  
+
   # export those variables as we call another script
   export KEPTN_CONTROL_PLANE_DOMAIN="${KEPTN_CONTROL_PLANE_DOMAIN}"
   export KEPTN_CONTROL_PLANE_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}"
@@ -918,6 +921,9 @@ function install_demo_cloudautomation {
   cd cloudautomation/scripts 
   ./install-cloudautomation-workshop.sh ./cloudautomation/scripts/tenants.stockssample_2.sh
   cd ${currentDir}
+
+  # Also install the Argo Rollout example
+  ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}  
 
   # now trigger the delivery of the devops tools
   keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
@@ -1380,6 +1386,7 @@ function main {
           LOCUST="true"
           DYNA="true"
           MONACO="true"
+          GENERICEXEC="true"
           check_dynatrace_credentials          
          
           if [[ $OWNER_EMAIL == "none" ]]; then 

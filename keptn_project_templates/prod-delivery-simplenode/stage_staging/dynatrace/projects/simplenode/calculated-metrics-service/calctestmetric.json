@@ -32,7 +32,7 @@
           "comparison": "EQUALS",
           "value": {
             "context": "ENVIRONMENT",
-            "key": "DT_APPLICATION_NAME",
+            "key": "DT_RELEASE_PRODUCT",
             "value": "delivery-demo"
           },
           "values": null,

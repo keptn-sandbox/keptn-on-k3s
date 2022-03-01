@@ -19,6 +19,7 @@ If you navigate to this repository because you are part of a **Cloud Automation 
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.10.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.10.0) | 0.10.0 | Updates to Keptn 0.10.x |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.11.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.11.0) | 0.11.0 | Updates to Keptn 0.11.x |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.12.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.12.0) | 0.12.0 | Updates to Keptn 0.12.x |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.13.1](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.13.1) | 0.13.1 | Updates to Keptn 0.13.1 |
 
 This repo automates the installation of [Keptn's](https://keptn.sh) Control Plane, Delivery or Execution. For that it will automatically install a [k3s](https://k3s.io). 
 This is your fastest way to explore the following use cases:
@@ -71,7 +72,7 @@ sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.12.0
+git checkout release-0.13.1
 ```
 
 ### Currently tested on:

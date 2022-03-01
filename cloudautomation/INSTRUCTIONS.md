@@ -99,7 +99,7 @@ As shown by the instructor simply walk through the *Add new SLO* wizard in Dynat
 | Metrics Expression | `(100)*(calc:service.tenant.responsetime.count.faster500ms:splitBy())/(builtin:service.requestCount.server:splitBy())`  |
 | Name of SLO | `Performance SLO of xxxx` |
 | Description | `% of requests handled by xxxx service faster than 500ms` | 
-| Entity Selector | `mzName("Tenant: tnt-xxxx-svc"),type("SERVICE"),tag("[Environment]DT_APPLICATION_ENVIRONMENT:production")` |
+| Entity Selector | `mzName("Tenant: tnt-xxxx-svc"),type("SERVICE"),tag("[Environment]DT_RELEASE_STAGE:production")` |
 | Timeframe | `-1w` |
 
 ### Step 3 - Create SLO Dashboard
