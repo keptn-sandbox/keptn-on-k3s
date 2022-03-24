@@ -601,10 +601,10 @@ function install_keptn {
 
       helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
-        --set remoteControlPlane.enabled=true
-        --set remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION}
-        --set remoteControlPlane.api.protocol=https
-        --set remoteControlPlane.api.hostname=${KEPTN_CONTROL_PLANE_DOMAIN}
+        --set remoteControlPlane.enabled=true \
+        --set remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION} \
+        --set remoteControlPlane.api.protocol=https \
+        --set remoteControlPlane.api.hostname=${KEPTN_CONTROL_PLANE_DOMAIN} \
         --set remoteControlPlane.api.token=${KEPTN_CONTROL_PLANE_API_TOKEN}
 
       JOBEXECUTOR="false"
@@ -716,7 +716,7 @@ function install_keptn {
 
       helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
-        --set remoteControlPlane.enabled=false
+        --set remoteControlPlane.enabled=false \
         --set remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION}
 
       JOBEXECUTOR="false"
