@@ -599,7 +599,7 @@ function install_keptn {
 
       TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
 
-      helm upgrade --install --create-namespace -n <NAMESPACE> \
+      helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/{JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-{JOBEEXECUTOR_SERVICE_VERSION}}.tgz \
       --set remoteControlPlane.enabled=true,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION},remoteControlPlane.api.protocol=${https},remoteControlPlane.api.hostname=${KEPTN_CONTROL_PLANE_DOMAIN},remoteControlPlane.api.token=${KEPTN_CONTROL_PLANE_API_TOKEN}
 
@@ -710,7 +710,7 @@ function install_keptn {
 
       TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
 
-      helm upgrade --install --create-namespace -n <NAMESPACE> \
+      helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/{JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-{JOBEEXECUTOR_SERVICE_VERSION}}.tgz \
       --set remoteControlPlane.enabled=false,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION}
 
