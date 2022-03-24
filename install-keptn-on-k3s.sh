@@ -39,7 +39,7 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="0.22.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION"0.1.8-next.2"
+JOBEEXECUTOR_SERVICE_VERSION="0.1.8-next.2"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
@@ -600,7 +600,7 @@ function install_keptn {
       TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
 
       helm upgrade --install --create-namespace -n keptn \
-        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
+        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
       --set remoteControlPlane.enabled=true,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION},remoteControlPlane.api.protocol=${https},remoteControlPlane.api.hostname=${KEPTN_CONTROL_PLANE_DOMAIN},remoteControlPlane.api.token=${KEPTN_CONTROL_PLANE_API_TOKEN}
 
       JOBEXECUTOR="false"
@@ -711,7 +711,7 @@ function install_keptn {
       TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
 
       helm upgrade --install --create-namespace -n keptn \
-        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION.tgz \
+        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
       --set remoteControlPlane.enabled=false,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION}
 
       JOBEXECUTOR="false"
