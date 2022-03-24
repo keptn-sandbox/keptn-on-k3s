@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.13.1}
+KEPTNVERSION=${KEPTNVERSION:-0.13.4}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -37,8 +37,9 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="0.21.0"
+DT_SERVICE_VERSION="0.22.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
+JOBEEXECUTOR_SERVICE_VERSION="0.1.8-next.2"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
@@ -72,6 +73,7 @@ JMETER="false"
 LOCUST="false"
 SLACK="false"
 GENERICEXEC="false"
+JOBEXECUTOR="false"
 
 GITEA_VERSION="v2.2.0"
 
@@ -592,6 +594,19 @@ function install_keptn {
       GENERICEXEC="false"
     fi
 
+    if [[ "${JOBEXECUTOR}" == "true" ]]; then
+      write_progress "Installing Job Executor Service on the Execution Plane"
+
+      TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
+
+      helm upgrade --install --create-namespace -n <NAMESPACE> \
+        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/{JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-{JOBEEXECUTOR_SERVICE_VERSION}}.tgz \
+      --set remoteControlPlane.enabled=true,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION},remoteControlPlane.api.protocol=${https},remoteControlPlane.api.hostname=${KEPTN_CONTROL_PLANE_DOMAIN},remoteControlPlane.api.token=${KEPTN_CONTROL_PLANE_API_TOKEN}
+
+      JOBEXECUTOR="false"
+    fi
+
+
     if [[ "${MONACO}" == "true" ]]; then
       write_progress "Installing Monaco (Monitoring as Code) on Execution Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
@@ -688,6 +703,19 @@ function install_keptn {
 
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
   fi
+
+
+  if [[ "${JOBEXECUTOR}" == "true" ]]; then
+      write_progress "Installing Job Executor Service"
+
+      TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
+
+      helm upgrade --install --create-namespace -n <NAMESPACE> \
+        job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/{JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-{JOBEEXECUTOR_SERVICE_VERSION}}.tgz \
+      --set remoteControlPlane.enabled=false,remoteControlPlane.topicSubscription=${TASK_SUBSCRIPTION}
+
+      JOBEXECUTOR="false"
+    fi
 
   if [[ "${SLACK}" == "true" ]]; then
     write_progress "Installing SlackBot Service"
@@ -1370,6 +1398,7 @@ function main {
         if [[ $DEMO == "dynatrace" ]]; then 
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
+          JOBEXECUTOR="true"
           JMETER="true"
           DYNA="true"
           MONACO="true"
@@ -1387,6 +1416,7 @@ function main {
           DYNA="true"
           MONACO="true"
           GENERICEXEC="true"
+          JOBEXECUTOR="true"
           check_dynatrace_credentials          
          
           if [[ $OWNER_EMAIL == "none" ]]; then 
@@ -1398,6 +1428,11 @@ function main {
         echo "Demo: Installing demo projects for ${DEMO}"
         shift 2
         ;;
+    --with-jobexec)
+        JOBEXECUTOR="true"
+        echo "Enabling Job Executor"
+        shift
+        ;;        
     --with-genericexec)
         GENERICEXEC="true"
         echo "Enabling Generic Executor"
