@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.13.4}
+KEPTNVERSION=${KEPTNVERSION:-0.14.1}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -39,10 +39,10 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="0.22.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION="0.1.8-next.2"
+JOBEEXECUTOR_SERVICE_VERSION="0.1.8"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
+ARGO_SERVICE_VERSION="release-0.9.2" # updates/finalize08
 LOCUST_SERVICE_VERSION="release-0.1.5"
 
 # Dynatrace Credentials
