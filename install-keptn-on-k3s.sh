@@ -42,7 +42,7 @@ DT_SERVICE_VERSION="0.22.0"
 JOBEEXECUTOR_SERVICE_VERSION="0.1.8"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.9.2" # updates/finalize08
+ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
 LOCUST_SERVICE_VERSION="release-0.1.5"
 
 # Dynatrace Credentials
