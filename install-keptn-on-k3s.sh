@@ -491,8 +491,8 @@ function install_keptn {
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
-      --set=continuous-delivery.enabled=false \
-      --set=bridge.installationType=CONTINOUS_DELIVERY \
+      --set continuous-delivery.enabled=false \
+      --set bridge.installationType=CONTINOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
   fi 
 
@@ -502,8 +502,8 @@ function install_keptn {
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
-      --set=continuous-delivery.enabled=true \
-      --set=bridge.installationType=CONTINOUS_DELIVERY \
+      --set continuous-delivery.enabled=true \
+      --set bridge.installationType=CONTINOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -979,7 +979,7 @@ function install_demo_cloudautomation {
   ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}  
 
   # now trigger the delivery of the devops tools
-  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
+  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice --tag=2.0.1
 }
 
 function install_demo_dynatrace {
