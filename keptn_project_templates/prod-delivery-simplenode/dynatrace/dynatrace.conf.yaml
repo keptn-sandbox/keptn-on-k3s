@@ -12,5 +12,5 @@ attachRules:
       key: "app.kubernetes.io/name"
       value: $SERVICE    
     - context: ENVIRONMENT
-      key: DT_APPLICATION_ENVIRONMENT
+      key: DT_RELEASE_STAGE
       value: $STAGE
