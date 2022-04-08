@@ -33,7 +33,7 @@
               "operator": "EQUALS",
               "value": {
                 "context": "ENVIRONMENT",
-                "key": "DT_APPLICATION_ENVIRONMENT",
+                "key": "DT_RELEASE_STAGE",
                 "value": "{{ .stage }}"
               },
               "negate": false
