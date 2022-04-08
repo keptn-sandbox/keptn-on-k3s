@@ -492,7 +492,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=false \
-      --set bridge.installationType=CONTINOUS_DELIVERY \
+      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
   fi 
 
@@ -503,7 +503,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=true \
-      --set bridge.installationType=CONTINOUS_DELIVERY \
+      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
