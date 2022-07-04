@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.13.4}
+KEPTNVERSION=${KEPTNVERSION:-0.14.1}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -39,7 +39,7 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
 DT_SERVICE_VERSION="0.22.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION="0.1.8-next.2"
+JOBEEXECUTOR_SERVICE_VERSION="0.1.8"
 GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
@@ -491,7 +491,8 @@ function install_keptn {
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
-      --set=continuous-delivery.enabled=false \
+      --set continuous-delivery.enabled=false \
+      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
   fi 
 
@@ -501,7 +502,8 @@ function install_keptn {
       --version="${KEPTNVERSION}" \
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
-      --set=continuous-delivery.enabled=true \
+      --set continuous-delivery.enabled=true \
+      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -521,11 +523,16 @@ function install_keptn {
 
     # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+    # For KNOWN ISSUE in Keptn 0.14.1
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
 
     # Install Locust if requested
     if [[ "${LOCUST}" == "true" ]]; then
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/locust-service/${LOCUST_SERVICE_VERSION}/deploy/service.yaml"
+
+      # For KNOWN ISSUE in Keptn 0.14.1
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/locust-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
     fi 
   fi
 
@@ -652,8 +659,8 @@ function install_keptn {
       # Installing core dynatrace services
       helm upgrade --install dynatrace-service -n keptn https://github.com/keptn-contrib/dynatrace-service/releases/download/${DT_SERVICE_VERSION}/dynatrace-service-${DT_SERVICE_VERSION}.tgz --set dynatraceService.config.keptnApiUrl=${PREFIX}://${KEPTN_DOMAIN}/api --set dynatraceService.config.keptnBridgeUrl=${PREFIX}://${KEPTN_DOMAIN}/bridge
 
-      # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-service/${DT_SERVICE_VERSION}/deploy/service.yaml"
-      # apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/dynatrace-sli-service/${DT_SLI_SERVICE_VERSION}/deploy/service.yaml"
+      # For KNOWN ISSUE in Keptn 0.14.1 - set the PUBSUB_URL
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/dynatrace-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
 
       # lets make Dynatrace the default SLI provider (feature enabled with lighthouse 0.7.2)
       "${K3SKUBECTL[@]}" create configmap lighthouse-config -n keptn --from-literal=sli-provider=dynatrace || true 
@@ -666,6 +673,10 @@ function install_keptn {
       # Installing monaco service on deliveryplane
       write_progress "Installing Monaco (Monitoring as Code) on Delivery Plane"
       apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/monaco-service/${MONACO_SERVICE_VERSION}/deploy/service.yaml"
+
+      # For KNOWN ISSUE in Keptn 0.14.1 - set the PUBSUB_URL
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/monaco-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+
     fi 
   fi
 
@@ -706,6 +717,9 @@ function install_keptn {
     write_progress "Installing Generic Executor Service"
 
     apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
+
+    # For KNOWN ISSUE in Keptn 0.14.1
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
   fi
 
 
@@ -718,6 +732,9 @@ function install_keptn {
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
         --set remoteControlPlane.enabled=false \
         --set remoteControlPlane.topicSubscription='${TASK_SUBSCRIPTION}'
+
+      # For KNOWN ISSUE in Keptn 0.14.1
+      "${K3SKUBECTL[@]}" -n keptn set env deployment/job-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
 
       JOBEXECUTOR="false"
     fi
@@ -734,6 +751,9 @@ function install_keptn {
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
     helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
+
+    # For KNOWN ISSUE in Keptn 0.14.1
+    "${K3SKUBECTL[@]}" -n keptn set env deployment/jmeter-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
   fi
 
   if [[ "${DISABLE_BRIDGE_AUTH}" == "true" ]]; then
@@ -959,7 +979,7 @@ function install_demo_cloudautomation {
   ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}  
 
   # now trigger the delivery of the devops tools
-  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
+  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice --tag=2.0.1
 }
 
 function install_demo_dynatrace {
