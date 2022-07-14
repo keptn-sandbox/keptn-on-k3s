@@ -746,11 +746,14 @@ function install_keptn {
 
       helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
-        --set remoteControlPlane.enabled=false \
-        --set remoteControlPlane.topicSubscription='${TASK_SUBSCRIPTION}'
+        --set remoteControlPlane.autoDetect.enabled=true \
+        --set remoteControlPlane.topicSubscription='${TASK_SUBSCRIPTION}' \
+        --set remoteControlPlane.api.token="" \
+        --set remoteControlPlane.api.hostname="" \
+        --set remoteControlPlane.api.protocol=""
 
       # For KNOWN ISSUE in Keptn 0.14.1
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/job-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+      # "${K3SKUBECTL[@]}" -n keptn set env deployment/job-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
 
       JOBEXECUTOR="false"
     fi
