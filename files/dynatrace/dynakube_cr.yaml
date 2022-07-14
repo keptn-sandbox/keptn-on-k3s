@@ -3,6 +3,8 @@ kind: DynaKube
 metadata:
   name: dynakube
   namespace: dynatrace
+  annotations:
+    feature.dynatrace.com/automatic-kubernetes-api-monitoring: "true"
 spec:
   # dynatrace api url including `/api` path at the end
   # either set ENVIRONMENTID to the proper tenant id or change the apiUrl as a whole, e.q. for Managed
@@ -50,6 +52,11 @@ spec:
 
   # Configuration for ActiveGate instances.
   activeGate:
+    # Enables listed ActiveGate capabilities
+    capabilities:
+      - routing
+      - kubernetes-monitoring
+
     # Optional: to use a custom ActiveGate Docker image.
     image: ""
 

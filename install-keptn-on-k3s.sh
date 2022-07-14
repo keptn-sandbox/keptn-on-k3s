@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.14.1}
+KEPTNVERSION=${KEPTNVERSION:-0.17.0}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -37,13 +37,14 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="0.22.0"
+DT_SERVICE_VERSION="0.23.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION="0.1.8"
-GENERICEXEC_SERVICE_VERSION="release-0.8.4"
+JOBEEXECUTOR_SERVICE_VERSION="0.2.3"
+# GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
+ARGO_SERVICE_VERSION="release-0.9.4"
 LOCUST_SERVICE_VERSION="release-0.1.5"
+GITEA_PROVISIONER_VERSION="0.1.1"
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -522,10 +523,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
     # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
-    # For KNOWN ISSUE in Keptn 0.14.1
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/tree/${ARGO_SERVICE_VERSION}/chart
 
     # Install Locust if requested
     if [[ "${LOCUST}" == "true" ]]; then
@@ -566,7 +564,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
     # Install the Argo Service for just the demo-rollout project
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/tree/${ARGO_SERVICE_VERSION}/chart
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
@@ -589,14 +587,7 @@ function install_keptn {
     fi
 
     if [[ "${GENERICEXEC}" == "true" ]]; then
-      write_progress "Installing Generic Executor Service on the Execution Plane"
-
-      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
-      # TODO - we need to find a better way to define all events to be forwarded to the generic executor
+      write_progress "NO LONGER SUPPORTING GENERIC EXECUTOR. PLEASE USE JOB EXECUTOR"
 
       GENERICEXEC="false"
     fi
@@ -711,15 +702,22 @@ function install_keptn {
 
     write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
+
+    # Installing Keptn Gitea Provisioner Service
+    write_progress "Install Keptn Gitea Provisioner Service"
+    helm install keptn-gitea-provisioner-service --namespace keptn https://github.com/keptn-sandbox/keptn-gitea-provisioner-service/releases/download/${VERSION}/keptn-gitea-provisioner-service-${GITEA_PROVISIONER_VERSION}.tgz --kubeconfig="${KUBECONFIG}" \
+      --set gitea.admin.create=true \
+      --set gitea.admin.username=${GIT_USER} \
+      --set gitea.admin.password=${GIT_PASSWORD} \
+      --set gitea.endpoint=${GIT_DOMAIN} \
+      --wait    
+
+    helm upgrade -n keptn keptn keptn/keptn --kubeconfig="${KUBECONFIG}" \
+      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn"
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
-    write_progress "Installing Generic Executor Service"
-
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
-
-    # For KNOWN ISSUE in Keptn 0.14.1
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+    write_progress "NO LONGER SUPPORTING GENERIC EXECUTOR. PLEASE USE JOB EXECUTOR"
   fi
 
 
@@ -740,11 +738,7 @@ function install_keptn {
     fi
 
   if [[ "${SLACK}" == "true" ]]; then
-    write_progress "Installing SlackBot Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
-
-    check_delete_secret slackbot
-    "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
+    write_progress "NO LONGER INSTALLING SLACK SERVICE - PLEASE USE THE WEBHOOK INTEGRATION INSTEAD"
   fi
 
   # Installing JMeter Service on the control plane if requested!
@@ -1510,11 +1504,12 @@ function main {
     install_keptncli
     install_demo
 
+    # NO LONGER NEEDED as we now have the auto git provisoiner!
     # if a GIT_SERVER is specified lets create repos
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    fi
+    # if [[ "${GIT_SERVER}" != "none" ]]; then
+    #  gitea_readApiTokenFromFile
+    #  gitea_createKeptnRepos
+    #fi
 
     print_config
   fi
@@ -1535,22 +1530,14 @@ function main {
   if [[ "${INSTALL_TYPE}" == "demo" ]]; then
     install_demo
 
+    # NO LONGER NEEDED as we now have the auto git provisoiner!
     # if a GIT_SERVER is specified lets create repos
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    fi
+    # if [[ "${GIT_SERVER}" != "none" ]]; then
+    #  gitea_readApiTokenFromFile
+    #  gitea_createKeptnRepos
+    #fi
 
     print_config    
-  fi
-
-  if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    else
-      echo "GIT_SERVER is not set - therefore not setting upstream git repos"
-    fi 
   fi
 
 }
