@@ -724,7 +724,7 @@ function install_keptn {
 
     # Installing Keptn Gitea Provisioner Service
     write_progress "Install Keptn Gitea Provisioner Service"
-    helm install keptn-gitea-provisioner-service --namespace keptn https://github.com/keptn-sandbox/keptn-gitea-provisioner-service/releases/download/${VERSION}/keptn-gitea-provisioner-service-${GITEA_PROVISIONER_VERSION}.tgz --kubeconfig="${KUBECONFIG}" \
+    helm install keptn-gitea-provisioner-service --namespace keptn https://github.com/keptn-sandbox/keptn-gitea-provisioner-service/releases/download/${GITEA_PROVISIONER_VERSION}/keptn-gitea-provisioner-service-${GITEA_PROVISIONER_VERSION}.tgz --kubeconfig="${KUBECONFIG}" \
       --set gitea.admin.create=true \
       --set gitea.admin.username=${GIT_USER} \
       --set gitea.admin.password=${GIT_PASSWORD} \
