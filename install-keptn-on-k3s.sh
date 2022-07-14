@@ -49,7 +49,7 @@ GITEA_PROVISIONER_VERSION="0.1.1"
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
-DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
+DT_INGEST_TOKEN=${DT_INGEST_TOKEN:-none}
 OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
@@ -301,35 +301,52 @@ function get_k3s {
 # Installs Dynatrace OneAgent Operator on the k3s cluster
 function get_oneagent {
   # only install if all dynatrace settings are specified
-  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_API_TOKEN" == "none" ]] || [[ "$DT_PAAS_TOKEN" == "none" ]]; then 
+  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_API_TOKEN" == "none" ]] || [[ "$DT_INGEST_TOKEN" == "none" ]]; then 
     write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens not specified!"
     return; 
   fi
 
   write_progress "Installing Dynatrace OneAgent Operator for k3s"
 
-  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
   "${K3SKUBECTL[@]}" create namespace dynatrace
-
-  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
-  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
-
+  "${K3SKUBECTL[@]}" apply -f https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.6.0/kubernetes.yaml
+  "${K3SKUBECTL[@]}" -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
+  
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
     -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
-    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
-    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+    ./files/dynatrace/dynakube_06.yaml > dynakube_06_tmp.yaml
+  
+  
+  "${K3SKUBECTL[@]}" apply -f dynakube_06_tmp.yaml
+  rm dynakube_06_tmp.yaml
 
-  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-  helm install dynatrace-oneagent-operator \
-    dynatrace/dynatrace-oneagent-operator -n\
-    dynatrace --values oneagent_values.yaml
+
+#  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+#  "${K3SKUBECTL[@]}" create namespace dynatrace
+
+#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
+#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
+
+#  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+#    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+#    -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
+#    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+#    -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
+#    -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
+#    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+
+#  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+#  helm install dynatrace-oneagent-operator \
+#    dynatrace/dynatrace-oneagent-operator -n\
+#    dynatrace --values oneagent_values.yaml
 
   # TODO -once ActiveGate supports local k8s API -> Install OneAgent Operator & Active Gate instead of just OneAgent Operator
   # export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
-  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_PAAS_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
+  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_INGEST_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
 
 #  rm oneagent_values.yaml
 }
@@ -493,8 +510,8 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=false \
-#      --set bridge.installationType="QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
+#      --set bridge.installationType="QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY" \
   fi 
 
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
@@ -504,8 +521,8 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=true \
-#      --set bridge.installationType="QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
+#      --set bridge.installationType="QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY" \
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
     JMETER="false"
@@ -896,8 +913,8 @@ function check_dynatrace_credentials {
     echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
     exit 1
   fi
-  if [[ "$DYNA" == "true" ]] && [[ "$DT_PAAS_TOKEN" == "none" ]]; then
-    echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+  if [[ "$DYNA" == "true" ]] && [[ "$DT_INGEST_TOKEN" == "none" ]]; then
+    echo "You have to set DT_INGEST_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
     echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
     echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
     exit 1
