@@ -16,8 +16,8 @@ INGRESS_PORT="80"
 INGRESS_PROTOCOL="http"
 ISTIO_GATEWAY="public-gateway.istio-system"
 
-ARGO_ROLLOUTS_VERSION="stable"
-ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
+ARGO_ROLLOUTS_VERSION="v1.2.1"
+ARGO_ROLLOUTS_EXTENSION_VERSION="latest"
 
 # For execution plane these are the env-variables that identify the keptn control plane
 KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_CONTROL_PLANE_DOMAIN:-none}
@@ -365,7 +365,8 @@ function get_argorollouts {
 
   # First installing Argo Rollouts itself
   "${K3SKUBECTL[@]}" create namespace argo-rollouts
-  "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
+  kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/download/${ARGO_ROLLOUTS_VERSION}/install.yaml
+  # "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
 
   # now also installing the argo rollout extension for kubectl
   curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_EXTENSION_VERSION}/download/kubectl-argo-rollouts-linux-amd64
