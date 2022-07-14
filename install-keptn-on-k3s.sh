@@ -42,7 +42,7 @@ DT_SERVICE_VERSION="0.23.0"
 JOBEEXECUTOR_SERVICE_VERSION="0.2.3"
 # GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.9.4"
+ARGO_SERVICE_VERSION="0.9.4"
 LOCUST_SERVICE_VERSION="release-0.1.5"
 GITEA_PROVISIONER_VERSION="0.1.1"
 
@@ -542,7 +542,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
     # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
-    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/tree/${ARGO_SERVICE_VERSION}/chart
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
 
     # Install Locust if requested
     if [[ "${LOCUST}" == "true" ]]; then
@@ -583,7 +583,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
     # Install the Argo Service for just the demo-rollout project
-    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/tree/${ARGO_SERVICE_VERSION}/chart
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
