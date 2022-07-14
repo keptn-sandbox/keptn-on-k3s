@@ -1,6 +1,6 @@
 apiVersion: v1
 data:
-  apiToken: DT_API_TOKEN
+  apiToken: DT_OPERATOR_TOKEN
   dataIngestToken: DT_INGEST_TOKEN
 kind: Secret
 metadata:

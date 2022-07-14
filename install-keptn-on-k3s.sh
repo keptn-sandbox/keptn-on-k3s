@@ -49,6 +49,7 @@ GITEA_PROVISIONER_VERSION="0.1.1"
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
+DT_OPERATOR_TOKEN=${DT_OPERATOR_TOKEN:-none}
 DT_INGEST_TOKEN=${DT_INGEST_TOKEN:-none}
 OWNER_EMAIL=${OWNER_EMAIL:-none}
 
@@ -301,8 +302,8 @@ function get_k3s {
 # Installs Dynatrace OneAgent Operator on the k3s cluster
 function get_oneagent {
   # only install if all dynatrace settings are specified
-  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_API_TOKEN" == "none" ]] || [[ "$DT_INGEST_TOKEN" == "none" ]]; then 
-    write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens not specified!"
+  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_OPERATOR_TOKEN" == "none" ]] ||[[ "$DT_INGEST_TOKEN" == "none" ]]; then 
+    write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens (DT_OPERATOR_TOKEN & DT_INGEST_TOKEN) not specified!"
     return; 
   fi
 
@@ -313,7 +314,7 @@ function get_oneagent {
   "${K3SKUBECTL[@]}" -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
   
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
-    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+    -e 's~DT_OPERATOR_TOKEN~'"$DT_OPERATOR_TOKEN"'~' \
     -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
