@@ -55,7 +55,7 @@ OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
 PROVIDER="none"
-ISTIO=${ISTIO:-true}
+ISTIO=${ISTIO:-false}
 MY_IP="none"
 FQDN="none"
 KEPTN_DOMAIN="none"
