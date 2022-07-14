@@ -728,11 +728,11 @@ function install_keptn {
       --set gitea.admin.create=true \
       --set gitea.admin.username=${GIT_USER} \
       --set gitea.admin.password=${GIT_PASSWORD} \
-      --set gitea.endpoint=${GIT_DOMAIN} \
+      --set gitea.endpoint=\"http://${GIT_DOMAIN}\" \
       --wait    
 
     helm upgrade -n keptn keptn keptn/keptn --kubeconfig="${KUBECONFIG}" \
-      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn"
+      --set "features.automaticProvisioning.serviceURL=\"http://keptn-gitea-provisioner-service.keptn\""
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
