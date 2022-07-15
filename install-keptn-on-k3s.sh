@@ -732,7 +732,7 @@ function install_keptn {
       --wait    
 
     # Upgrade Keptn to set the provisioner
-    helm upgrade -n keptn keptn \
+    helm upgrade -n keptn keptn keptn \
       --version="${KEPTNVERSION}" \
       --repo="https://charts.keptn.sh" \
       --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn"
