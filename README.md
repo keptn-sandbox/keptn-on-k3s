@@ -21,7 +21,8 @@ If you navigate to this repository because you are part of a **Cloud Automation 
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.12.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.12.0) | 0.12.0 | Updates to Keptn 0.12.x |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.13.1](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.13.1) | 0.13.1 | Updates to Keptn 0.13.1 |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.13.4](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.13.4) | 0.13.4 | Updates to Keptn 0.13.4 + adding Job Executor |
-| [@grabnerandi](https://github.com/grabnerandi) | [release-0.14.1](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.14.1) | 0.13.4 | Updates to Keptn 0.14.1|
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.14.1](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.14.1) | 0.14.1 | Updates to Keptn 0.14.1|
+| [@grabnerandi](https://github.com/grabnerandi) | [release-0.17.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.17.0) | 0.17.0 | Updates to Keptn 0.17.0 |
 
 This repo automates the installation of [Keptn's](https://keptn.sh) Control Plane, Delivery or Execution. For that it will automatically install a [k3s](https://k3s.io). 
 This is your fastest way to explore the following use cases:
@@ -123,7 +124,8 @@ The installation scripts for Dynatrace needs a couple of env-variables:
 ```console
 $ export DT_TENANT=abc12345.live.dynatrace.com        # Host name of your Dynatrace Tenant
 $ export DT_API_TOKEN=YOURTOKEN                       # Dynatrace API token to let Keptn pull SLIs from Dynatrace
-$ export DT_PAAS_TOKEN=YOURPAASTOKEN                  # Dynatrace PAAS token as script will install OneAgent
+$ export DT_OPERATOR_TOKEN=YOURK8STOKEN               # Dynatrace k8s Operator token as script uses to install OneAgent Operator (follow k8s install screen in dynatrace to get those tokens)
+$ export DT_INGEST_TOKEN=YOURINGESTTOKEN              # Dynatrace k8s ingest token as script will use to configure k8s ingest
 $ export OWNER_EMAIL=yourdynatraceuser@yourmail.com   # Your username in Dynatrace
 $ export LE_STAGE=staging                             # This is needed for certificate creation
 ```

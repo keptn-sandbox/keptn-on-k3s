@@ -53,10 +53,10 @@ The sample application used comes with 4 different container versions that are a
 
 | Image | Description |
 | ------ | ------------- |
-| grabnerandi/simplenodeservice:1.0.1 | Version 1, green background, no problems |
-| grabnerandi/simplenodeservice:2.0.1 | Version 2, yellow background, high failure rate |
-| grabnerandi/simplenodeservice:3.0.1 | Version 3, no problems |
-| grabnerandi/simplenodeservice:4.0.1 | Version 4, only problems in production |
+| grabnerandi/simplenodeservice:1.0.2 | Version 1, green background, no problems |
+| grabnerandi/simplenodeservice:2.0.2 | Version 2, yellow background, high failure rate |
+| grabnerandi/simplenodeservice:3.0.2 | Version 3, no problems |
+| grabnerandi/simplenodeservice:4.0.2 | Version 4, only problems in production |
 
 ## Our simple DevOps tool
 
@@ -236,25 +236,25 @@ To make things easy our Simple DevOps tools provides an option to load the curre
 
 Lets now trigger a delivery of a different version of our sample app. As part of the delivery SLIs and SLOs as defined in code (via yaml) will be used for the evaluation.
 
-We can start with delivering version 2.0.1 of the app
+We can start with delivering version 2.0.2 of the app
 
 ![](./images/lab3_triggerdelivery.png)
 
 **Trigger more**
-Once done and if time allows trigger the delivery of versions 3.0.1 or 4.0.1
+Once done and if time allows trigger the delivery of versions 3.0.2 or 4.0.2
 
 ### Step 3b - Trigger a deployment sequence for your service via Keptn CLI
 
-If you have access to the Keptn CLI (via Bastion host or installed locally) you can execute the following command (replace xxxx with your tenantId) which will **trigger** a **delivery** sequence to deliver version 2.0.1 for your service
+If you have access to the Keptn CLI (via Bastion host or installed locally) you can execute the following command (replace xxxx with your tenantId) which will **trigger** a **delivery** sequence to deliver version 2.0.2 for your service
 
 ```
-$ keptn trigger delivery --project=delivery-demo --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:2.0.1
+$ keptn trigger delivery --project=delivery-demo --service=tnt-xxxx-svc --image=grabnerandi/simplenodeservice:2.0.2
 ```
 
 Watch the deployment sequence in the cloud automation web ui!
 
 **Trigger more**
-Once done and if time allows trigger the delivery of versions 3.0.1 or 4.0.1
+Once done and if time allows trigger the delivery of versions 3.0.2 or 4.0.2
 
 ### Step 3c - Trigger deployment via Keptn API
 
@@ -270,7 +270,7 @@ Besides using the Keptn CLI to trigger a deployment we can also trigger it via t
   "data": {
     "configurationChange": {
       "values": {
-        "image": "grabnerandi/simplenodeservice:3.0.1"
+        "image": "grabnerandi/simplenodeservice:3.0.2"
       }
     },
     "project": "delivery-demo",

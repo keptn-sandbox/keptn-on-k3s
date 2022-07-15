@@ -275,13 +275,13 @@ For that reason you can also stop the rollout when you are asked as part of the 
 
 ### Deploy Version 2
 
-First we need to update our version to 2.0.0 in the helm chart. Therefore navigate to the Gitea repository. Navigate to the prod branch and there into simplenode/helm/simplenode. Edit the values.yaml and change the version to 2.0.0. For this you need to logon to Gitea. You can find user name & pwd in the install script output.
+First we need to update our version to 2.0.2 in the helm chart. Therefore navigate to the Gitea repository. Navigate to the prod branch and there into simplenode/helm/simplenode. Edit the values.yaml and change the version to 2.0.2. For this you need to logon to Gitea. You can find user name & pwd in the install script output.
 
 ![](./images/rollout_version2_edit_values_yaml.png)
 
-Now we can trigger another deployment just as we did for Version 1 by sending an event to Keptn via the Keptn API. I would however change the label of buildId to 2.0.0 because it will make it easier to see which version was rolled out in the Keptns Bridge
+Now we can trigger another deployment just as we did for Version 1 by sending an event to Keptn via the Keptn API. I would however change the label of buildId to 2.0.2 because it will make it easier to see which version was rolled out in the Keptns Bridge
 
-This will now force Keptn to first deploy the rollout changes for 2.0.0 which will result in the first rollout step of 25%. After tests are run you have an approval if you want to continue the rollout. You can now approve this and watch the next steps as the rollout continues with 50 to 75 and finally 100% coverage
+This will now force Keptn to first deploy the rollout changes for 2.0.2 which will result in the first rollout step of 25%. After tests are run you have an approval if you want to continue the rollout. You can now approve this and watch the next steps as the rollout continues with 50 to 75 and finally 100% coverage
 
 ![](./images/rollout_version2_canaryphases.png)
 
