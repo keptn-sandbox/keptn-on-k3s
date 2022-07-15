@@ -731,7 +731,11 @@ function install_keptn {
       --set gitea.endpoint=\"http://${GIT_DOMAIN}\" \
       --wait    
 
-    "${K3SKUBECTL[@]}" set env -n keptn deployment/shipyard-controller --containers=shipyard-controller AUTOMATIC_PROVISIONING_URL="http://keptn-gitea-provisioner-service.keptn"
+    # Upgrade Keptn to set the provisioner
+    helm upgrade -n keptn keptn \
+      --version="${KEPTNVERSION}" \
+      --repo="https://charts.keptn.sh" \
+      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn"
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
