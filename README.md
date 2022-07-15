@@ -6,6 +6,11 @@ If you navigate to this repository because you are part of a **Cloud Automation 
 * [Cloud Automation Hands-On Instructions](./cloudautomation/INSTRUCTIONS.md)
 * [Cloud Automation Workshop Setup Instructions](./cloudautomation/README.md)
 
+## CHANGE with Keptn 0.17.0
+
+Keptn now requires a Git upstream for every new project. 
+If use any of the demo options (dynatrace, prometheus, cloudautomation) the installation script will automatically use the --with-gitea option to install a Gitea git repository and also installs the Gitea Provisioner Service.
+
 ## Running on Keptn on k3s with demo projects
 
 **Before you start - make sure to pick the right branch for your Keptn Version!**

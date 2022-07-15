@@ -1443,6 +1443,9 @@ function main {
           exit 1
         fi 
 
+        # we always need GITEA
+        GITEA="true"
+
         if [[ $DEMO == "dynatrace" ]]; then 
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
