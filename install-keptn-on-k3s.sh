@@ -732,10 +732,14 @@ function install_keptn {
       --wait    
 
     # Upgrade Keptn to set the provisioner
+    write_progress "Update Keptn to use Gitea Provisioner"
     helm upgrade -n keptn keptn keptn \
       --version="${KEPTNVERSION}" \
       --repo="https://charts.keptn.sh" \
-      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn"
+      --set continuous-delivery.enabled=true \
+      --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
+      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn" \
+      --kubeconfig="$KUBECONFIG"
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
