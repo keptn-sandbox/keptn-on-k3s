@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.14.1}
+KEPTNVERSION=${KEPTNVERSION:-0.17.0}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -16,8 +16,8 @@ INGRESS_PORT="80"
 INGRESS_PROTOCOL="http"
 ISTIO_GATEWAY="public-gateway.istio-system"
 
-ARGO_ROLLOUTS_VERSION="stable"
-ARGO_ROLLOUTS_EXTENSION_VERSION="v0.10.2"
+ARGO_ROLLOUTS_VERSION="v1.2.1"
+ARGO_ROLLOUTS_EXTENSION_VERSION="latest"
 
 # For execution plane these are the env-variables that identify the keptn control plane
 KEPTN_CONTROL_PLANE_DOMAIN=${KEPTN_CONTROL_PLANE_DOMAIN:-none}
@@ -37,23 +37,25 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="0.22.0"
+DT_SERVICE_VERSION="0.23.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION="0.1.8"
-GENERICEXEC_SERVICE_VERSION="release-0.8.4"
+JOBEEXECUTOR_SERVICE_VERSION="0.2.4-next.1"
+# GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
-ARGO_SERVICE_VERSION="release-0.8.4" # updates/finalize08
+ARGO_SERVICE_VERSION="0.9.4"
 LOCUST_SERVICE_VERSION="release-0.1.5"
+GITEA_PROVISIONER_VERSION="0.1.1"
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
 DT_API_TOKEN=${DT_API_TOKEN:-none}
-DT_PAAS_TOKEN=${DT_PAAS_TOKEN:-none}
+DT_OPERATOR_TOKEN=${DT_OPERATOR_TOKEN:-none}
+DT_INGEST_TOKEN=${DT_INGEST_TOKEN:-none}
 OWNER_EMAIL=${OWNER_EMAIL:-none}
 
 # Install Flags
 PROVIDER="none"
-ISTIO=${ISTIO:-true}
+ISTIO=${ISTIO:-false}
 MY_IP="none"
 FQDN="none"
 KEPTN_DOMAIN="none"
@@ -85,7 +87,7 @@ KEPTN_API_TOKEN="$(head -c 16 /dev/urandom | base64)"
 BRIDGE_PASSWORD="$(cat /dev/urandom | tr -dc 'a-zA-Z0-9' | fold -w 32 | head -n 1)"
 
 # k8s config
-K3SVERSION="v1.19"
+K3SVERSION="v1.22"
 BINDIR="/usr/local/bin"
 K3SKUBECTL=("${BINDIR}/k3s" "kubectl")
 KUBECONFIG=/etc/rancher/k3s/k3s.yaml
@@ -300,35 +302,52 @@ function get_k3s {
 # Installs Dynatrace OneAgent Operator on the k3s cluster
 function get_oneagent {
   # only install if all dynatrace settings are specified
-  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_API_TOKEN" == "none" ]] || [[ "$DT_PAAS_TOKEN" == "none" ]]; then 
-    write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens not specified!"
+  if [[ "$DT_TENANT" == "none" ]] || [[ "$DT_OPERATOR_TOKEN" == "none" ]] ||[[ "$DT_INGEST_TOKEN" == "none" ]]; then 
+    write_progress "WARNING - NOT INSTALLING Dynatrace OneAgent Operator for k3s because relevant tokens (DT_OPERATOR_TOKEN & DT_INGEST_TOKEN) not specified!"
     return; 
   fi
 
   write_progress "Installing Dynatrace OneAgent Operator for k3s"
 
-  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
   "${K3SKUBECTL[@]}" create namespace dynatrace
-
-  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
-  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
-
+  "${K3SKUBECTL[@]}" apply -f https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.6.0/kubernetes.yaml
+  "${K3SKUBECTL[@]}" -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
+  
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
-    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
-    -e 's~DT_PAAS_TOKEN~'"$DT_PAAS_TOKEN"'~' \
+    -e 's~DT_OPERATOR_TOKEN~'"$DT_OPERATOR_TOKEN"'~' \
+    -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
-    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+    ./files/dynatrace/dynakube_06.yaml > dynakube_06_tmp.yaml
+  
+  
+  "${K3SKUBECTL[@]}" apply -f dynakube_06_tmp.yaml
+  rm dynakube_06_tmp.yaml
 
-  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-  helm install dynatrace-oneagent-operator \
-    dynatrace/dynatrace-oneagent-operator -n\
-    dynatrace --values oneagent_values.yaml
+
+#  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
+#  "${K3SKUBECTL[@]}" create namespace dynatrace
+
+#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
+#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
+
+#  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
+#    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
+#    -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
+#    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
+#    -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
+#    -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
+#    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
+
+#  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
+#  helm install dynatrace-oneagent-operator \
+#    dynatrace/dynatrace-oneagent-operator -n\
+#    dynatrace --values oneagent_values.yaml
 
   # TODO -once ActiveGate supports local k8s API -> Install OneAgent Operator & Active Gate instead of just OneAgent Operator
   # export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
-  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_PAAS_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
+  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_INGEST_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
 
 #  rm oneagent_values.yaml
 }
@@ -346,7 +365,8 @@ function get_argorollouts {
 
   # First installing Argo Rollouts itself
   "${K3SKUBECTL[@]}" create namespace argo-rollouts
-  "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
+  kubectl apply -n argo-rollouts -f https://github.com/argoproj/argo-rollouts/releases/download/${ARGO_ROLLOUTS_VERSION}/install.yaml
+  # "${K3SKUBECTL[@]}" apply -n argo-rollouts -f https://raw.githubusercontent.com/argoproj/argo-rollouts/${ARGO_ROLLOUTS_VERSION}/manifests/install.yaml
 
   # now also installing the argo rollout extension for kubectl
   curl -LO https://github.com/argoproj/argo-rollouts/releases/${ARGO_ROLLOUTS_EXTENSION_VERSION}/download/kubectl-argo-rollouts-linux-amd64
@@ -492,7 +512,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=false \
-      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY \
+      --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
   fi 
 
@@ -503,7 +523,7 @@ function install_keptn {
       --create-namespace --namespace=keptn \
       --repo="https://charts.keptn.sh" \
       --set continuous-delivery.enabled=true \
-      --set bridge.installationType=QUALITY_GATES,CONTINUOUS_OPERATIONS,CONTINUOUS_DELIVERY \
+      --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
@@ -522,10 +542,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
 
     # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
-    # For KNOWN ISSUE in Keptn 0.14.1
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
 
     # Install Locust if requested
     if [[ "${LOCUST}" == "true" ]]; then
@@ -566,7 +583,7 @@ function install_keptn {
     helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
     # Install the Argo Service for just the demo-rollout project
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-contrib/argo-service/${ARGO_SERVICE_VERSION}/deploy/service.yaml"
+    helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor PROJECT_FILTER="demo-rollout"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
     "${K3SKUBECTL[@]}" -n keptn set env deployment/argo-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
@@ -589,14 +606,7 @@ function install_keptn {
     fi
 
     if [[ "${GENERICEXEC}" == "true" ]]; then
-      write_progress "Installing Generic Executor Service on the Execution Plane"
-
-      apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=generic-executor-service CONFIGURATION_SERVICE="http://localhost:8081/configuration-service"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_TOPIC="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor STAGE_FILTER="${KEPTN_EXECUTION_PLANE_STAGE_FILTER}" SERVICE_FILTER="${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}" PROJECT_FILTER="${KEPTN_EXECUTION_PLANE_PROJECT_FILTER}"
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor KEPTN_API_ENDPOINT="https://${KEPTN_CONTROL_PLANE_DOMAIN}/api" KEPTN_API_TOKEN="${KEPTN_CONTROL_PLANE_API_TOKEN}" HTTP_SSL_VERIFY="${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
-      # TODO - we need to find a better way to define all events to be forwarded to the generic executor
+      write_progress "NO LONGER SUPPORTING GENERIC EXECUTOR. PLEASE USE JOB EXECUTOR"
 
       GENERICEXEC="false"
     fi
@@ -711,15 +721,29 @@ function install_keptn {
 
     write_progress "Waiting for Gitea pods to be ready (max 5 minutes)"
     "${K3SKUBECTL[@]}" wait --namespace=git --for=condition=Ready pods --timeout=300s --all    
+
+    # Installing Keptn Gitea Provisioner Service
+    write_progress "Install Keptn Gitea Provisioner Service"
+    helm install keptn-gitea-provisioner-service --namespace keptn https://github.com/keptn-sandbox/keptn-gitea-provisioner-service/releases/download/${GITEA_PROVISIONER_VERSION}/keptn-gitea-provisioner-service-${GITEA_PROVISIONER_VERSION}.tgz --kubeconfig="${KUBECONFIG}" \
+      --set gitea.admin.create=true \
+      --set gitea.admin.username=${GIT_USER} \
+      --set gitea.admin.password=${GIT_PASSWORD} \
+      --set gitea.endpoint=\"http://${GIT_DOMAIN}\" \
+      --wait    
+
+    # Upgrade Keptn to set the provisioner
+    write_progress "Update Keptn to use Gitea Provisioner"
+    helm upgrade -n keptn keptn keptn \
+      --version="${KEPTNVERSION}" \
+      --repo="https://charts.keptn.sh" \
+      --set continuous-delivery.enabled=true \
+      --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
+      --set "features.automaticProvisioning.serviceURL=http://keptn-gitea-provisioner-service.keptn" \
+      --kubeconfig="$KUBECONFIG"
   fi
 
   if [[ "${GENERICEXEC}" == "true" ]]; then
-    write_progress "Installing Generic Executor Service"
-
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/generic-executor-service/${GENERICEXEC_SERVICE_VERSION}/deploy/service.yaml"
-
-    # For KNOWN ISSUE in Keptn 0.14.1
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/generic-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+    write_progress "NO LONGER SUPPORTING GENERIC EXECUTOR. PLEASE USE JOB EXECUTOR"
   fi
 
 
@@ -730,21 +754,20 @@ function install_keptn {
 
       helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
-        --set remoteControlPlane.enabled=false \
-        --set remoteControlPlane.topicSubscription='${TASK_SUBSCRIPTION}'
+        --set remoteControlPlane.autoDetect.enabled=true \
+        --set remoteControlPlane.topicSubscription='${TASK_SUBSCRIPTION}' \
+        --set remoteControlPlane.api.token="" \
+        --set remoteControlPlane.api.hostname="" \
+        --set remoteControlPlane.api.protocol=""
 
       # For KNOWN ISSUE in Keptn 0.14.1
-      "${K3SKUBECTL[@]}" -n keptn set env deployment/job-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+      # "${K3SKUBECTL[@]}" -n keptn set env deployment/job-executor-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
 
       JOBEXECUTOR="false"
     fi
 
   if [[ "${SLACK}" == "true" ]]; then
-    write_progress "Installing SlackBot Service"
-    apply_manifest_ns_keptn "https://raw.githubusercontent.com/keptn-sandbox/slackbot-service/0.2.0/deploy/slackbot-service.yaml"
-
-    check_delete_secret slackbot
-    "${K3SKUBECTL[@]}" create secret generic -n keptn slackbot --from-literal="slackbot-token=$SLACKBOT_TOKEN"
+    write_progress "NO LONGER INSTALLING SLACK SERVICE - PLEASE USE THE WEBHOOK INTEGRATION INSTEAD"
   fi
 
   # Installing JMeter Service on the control plane if requested!
@@ -902,8 +925,8 @@ function check_dynatrace_credentials {
     echo "If you want to learn more please visit https://keptn.sh/docs/0.7.x/monitoring/dynatrace/install"
     exit 1
   fi
-  if [[ "$DYNA" == "true" ]] && [[ "$DT_PAAS_TOKEN" == "none" ]]; then
-    echo "You have to set DT_PAAS_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
+  if [[ "$DYNA" == "true" ]] && [[ "$DT_INGEST_TOKEN" == "none" ]]; then
+    echo "You have to set DT_INGEST_TOKEN to a PAAS Token that will be used to deploy the Dynatrace OneAgent on the k3s cluster"
     echo "Without that you wont have any monitoring of that cluster which will prohibit some of the dynatrace demos"
     echo "If you want to learn more please visit https://www.dynatrace.com/support/help/technology-support/cloud-platforms/kubernetes/deploy-oneagent-k8/"
     exit 1
@@ -979,7 +1002,7 @@ function install_demo_cloudautomation {
   ./create-keptn-project-from-template.sh delivery-rollout ${OWNER_EMAIL} ${KEPTN_ROLLOUT_PROJECT}  
 
   # now trigger the delivery of the devops tools
-  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice --tag=2.0.1
+  keptn trigger delivery --project=devopstools --service=keptnwebservice --image=grabnerandi/keptnwebservice:2.0.1
 }
 
 function install_demo_dynatrace {
@@ -1201,7 +1224,7 @@ In order for this to work do
 For the Delivery Use Case using Istio we have created project ${KEPTN_DELIVERY_PROJECT} that allows you to deliver a simplenode app in 3 stages (dev, staging, production)
 To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI
-   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --service=${KEPTN_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+   keptn trigger delivery --project=${KEPTN_DELIVERY_PROJECT} --stage=${KEPTN_DELIVERY_STAGE_DEV} --service=${KEPTN_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice:1.0.2
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_DELIVERY_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
@@ -1210,12 +1233,12 @@ To trigger a delivery simple do this
 For the Canary Delivery Use Case using Argo Rollouts we have created project ${KEPTN_ROLLOUT_PROJECT} that deploys a simplenode app in 2 stages (blue/green in staging and canary in prod)
 To trigger a delivery simple do this
 1: Trigger a delivery through the Keptn CLI or the Keptn API as explained in the readme
-   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice:1.0.2
 2: Watch the delivery progress in Keptn's bridge
    Project URL: ${PREFIX}://${KEPTN_DOMAIN}/bridge/project/${KEPTN_ROLLOUT_PROJECT}
    User / PWD: $BRIDGE_USERNAME / $BRIDGE_PASSWORD
 3: To deliver the next version simply run
-   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=2.0.0
+   keptn trigger delivery --project=${KEPTN_ROLLOUT_PROJECT} --stage=${KEPTN_ROLLOUT_STAGE_STAGING} --service=${KEPTN_ROLLOUT_SERVICE} --image=docker.io/grabnerandi/simplenodeservice:2.0.2
 
 ------------------------------------------------------------------------
 For the Advanced Performance Use Use Case we have created project ${KEPTN_ADV_PERFORMANCE_PROJECT} that first runs functional then real performance tests
@@ -1236,7 +1259,7 @@ keptn send event --file=./dev.fun.triggered.json
 
 ------------------------------------------------------------------------
 For the Two Stage Delivery Use Case check simply deploy the app via
-1: keptn trigger delivery --project=${KEPTN_TWOSTAGE_DELIVERY_PROJECT} --stage=${KEPTN_TWOSTAGE_DELIVERY_STAGE_STAGING} --service=${KEPTN_TWOSTAGE_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice --tag=1.0.0
+1: keptn trigger delivery --project=${KEPTN_TWOSTAGE_DELIVERY_PROJECT} --stage=${KEPTN_TWOSTAGE_DELIVERY_STAGE_STAGING} --service=${KEPTN_TWOSTAGE_DELIVERY_SERVICE} --image=docker.io/grabnerandi/simplenodeservice:1.0.2
 
 
 Explore more Dynatrace related tutorials on https://tutorials.keptn.sh
@@ -1420,6 +1443,9 @@ function main {
           exit 1
         fi 
 
+        # we always need GITEA
+        GITEA="true"
+
         if [[ $DEMO == "dynatrace" ]]; then 
           # need to make sure we install the generic exector service for our demo as well as jmeter
           GENERICEXEC="true"
@@ -1510,11 +1536,12 @@ function main {
     install_keptncli
     install_demo
 
+    # NO LONGER NEEDED as we now have the auto git provisoiner!
     # if a GIT_SERVER is specified lets create repos
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    fi
+    # if [[ "${GIT_SERVER}" != "none" ]]; then
+    #  gitea_readApiTokenFromFile
+    #  gitea_createKeptnRepos
+    #fi
 
     print_config
   fi
@@ -1535,22 +1562,14 @@ function main {
   if [[ "${INSTALL_TYPE}" == "demo" ]]; then
     install_demo
 
+    # NO LONGER NEEDED as we now have the auto git provisoiner!
     # if a GIT_SERVER is specified lets create repos
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    fi
+    # if [[ "${GIT_SERVER}" != "none" ]]; then
+    #  gitea_readApiTokenFromFile
+    #  gitea_createKeptnRepos
+    #fi
 
     print_config    
-  fi
-
-  if [[ "${INSTALL_TYPE}" == "gitus" ]]; then
-    if [[ "${GIT_SERVER}" != "none" ]]; then
-      gitea_readApiTokenFromFile
-      gitea_createKeptnRepos
-    else
-      echo "GIT_SERVER is not set - therefore not setting upstream git repos"
-    fi 
   fi
 
 }

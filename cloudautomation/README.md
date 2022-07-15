@@ -25,7 +25,8 @@ It's assumed you have the following:
 What you need is:
 1. **DT_TENANT**: hostname of your SaaS or managed environment, e.g: abc12345.live.dynatrace.com
 2. **DT_API_TOKEN**: It needs several privileges. Check out [this screenshot](./images/setup_dtapitokens.png) for all details!
-3. **DT_PAAS_TOKEN**: A PAAS Token as the script also installs a OneAgent & ActiveGate on your Bastion Host
+3. **DT_OPERATOR_TOKEN**: A token the script uses to install the a OneAgent k8s operator (best is to follow the k8s install screen in Dynatrace to get those tokens)
+3. **DT_INGEST_TOKEN**: A ingest token the script uses for k8s ingest
 4. **KEPTN_CONTROL_PLANE_DOMAIN**: hostname of your Cloud Automation enviornment, e.g: abc12345.cloudautomation.live.dynatrace.com
 5. **KEPTN_CONTROL_PLANE_API_TOKEN**: API Token for your Cloud Automation environment
 6. **OWNER_EMAIL**: The username (=email) of your Dynatrace user. It will be used to create dashboards in your tenant. SUGGESTION: use the gmail as explained in Step 4 above
@@ -75,7 +76,8 @@ Logon to your EC2 Amazon Linux instance and execute the following:
 ```bash
 export DT_TENANT=abc12345.live.dynatrace.com
 export DT_API_TOKEN=dt0c01.XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-export DT_PAAS_TOKEN=dt0c01.YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export DT_OPERATOR_TOKEN=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
+export DT_INGEST_TOKEN=YYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYYY
 
 export KEPTN_CONTROL_PLANE_DOMAIN=abc12345.cloudautomation.live.dynatrace.com
 export KEPTN_CONTROL_PLANE_API_TOKEN=ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ
