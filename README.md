@@ -80,7 +80,7 @@ sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.14.1
+git checkout release-0.17.0
 ```
 
 ### Currently tested on:
