@@ -129,11 +129,15 @@ The installation scripts for Dynatrace needs a couple of env-variables:
 ```console
 $ export DT_TENANT=abc12345.live.dynatrace.com        # Host name of your Dynatrace Tenant
 $ export DT_API_TOKEN=YOURTOKEN                       # Dynatrace API token to let Keptn pull SLIs from Dynatrace
-$ export DT_OPERATOR_TOKEN=YOURK8STOKEN               # Dynatrace k8s Operator token as script uses to install OneAgent Operator (follow k8s install screen in dynatrace to get those tokens)
-$ export DT_INGEST_TOKEN=YOURINGESTTOKEN              # Dynatrace k8s ingest token as script will use to configure k8s ingest
+$ export DT_OPERATOR_TOKEN=YOURK8STOKEN               # BASE64-Encoded Dynatrace k8s Operator token as script uses to install OneAgent Operator (follow k8s install screen in dynatrace to get those tokens)
+$ export DT_INGEST_TOKEN=YOURINGESTTOKEN              # BASE64-Encoded Dynatrace k8s ingest token as script will use to configure k8s ingest
 $ export OWNER_EMAIL=yourdynatraceuser@yourmail.com   # Your username in Dynatrace
 $ export LE_STAGE=staging                             # This is needed for certificate creation
 ```
+
+**ATTENTION**
+DT_OPERATOR_TOKEN and DT_INGEST_TOKEN need to be the BASE64-Encoded version of the tokens. 
+If you follow the Install Wizard for the OneAgent Operator you can download the dynakube.yaml and copy/paste the BASE64-encoded version from that file. Otherwise you need to encode it yourself!
 
 When you have an EC2 machine you can run the following script which will install Keptn using the EC2 machines public IP to expose the keptn services via e.g: http://keptn.YOUR.IP.nip.io
 
