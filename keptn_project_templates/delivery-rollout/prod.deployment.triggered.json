@@ -5,7 +5,7 @@
     "source": "triggered-via-api",
     "contenttype": "application/json",
     "data": {
-      "project": "REPLACE_KEPTN_PROJECT",
+      "project": "delivery-rollout",
       "stage": "prod",
       "service": "simplenode",
       "labels": {
