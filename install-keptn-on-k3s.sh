@@ -47,6 +47,7 @@ LOCUST_SERVICE_VERSION="release-0.1.5"
 GITEA_PROVISIONER_VERSION="0.1.1"
 HELM_SERVICE_VERSION=0.18.1
 JMETER_SERVICE_VERSION=0.18.1
+NGINX_INGRESS_VERSION=4.3.0
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -295,7 +296,7 @@ function get_k3s {
   helm repo add ingress-nginx https://kubernetes.github.io/ingress-nginx
   helm repo update
 
-  helm install ingress-nginx ingress-nginx/ingress-nginx
+  helm install ingress-nginx ingress-nginx/ingress-nginx --version="${NGINX_INGRESS_VERSION}"
 
   # wait for nginx to be ready
 
@@ -312,7 +313,7 @@ function get_oneagent {
   write_progress "Installing Dynatrace OneAgent Operator for k3s"
 
   "${K3SKUBECTL[@]}" create namespace dynatrace
-  "${K3SKUBECTL[@]}" apply -f https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.6.0/kubernetes.yaml
+  "${K3SKUBECTL[@]}" apply -f https://github.com/Dynatrace/dynatrace-operator/releases/download/v0.10.0/kubernetes.yaml
   "${K3SKUBECTL[@]}" -n dynatrace wait pod --for=condition=ready --selector=app.kubernetes.io/name=dynatrace-operator,app.kubernetes.io/component=webhook --timeout=300s
   
   sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
@@ -321,37 +322,11 @@ function get_oneagent {
     -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
     -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
-    ./files/dynatrace/dynakube_06.yaml > dynakube_06_tmp.yaml
+    ./files/dynatrace/dynakube_10.yaml > dynakube_10_tmp.yaml
   
   
-  "${K3SKUBECTL[@]}" apply -f dynakube_06_tmp.yaml
-  rm dynakube_06_tmp.yaml
-
-
-#  helm repo add dynatrace https://raw.githubusercontent.com/Dynatrace/helm-charts/master/repos/stable
-#  "${K3SKUBECTL[@]}" create namespace dynatrace
-
-#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagents.yaml 
-#  kubectl apply -f https://github.com/Dynatrace/dynatrace-oneagent-operator/releases/latest/download/dynatrace.com_oneagentapms.yaml
-
-#  sed -e 's~DT_TENANT~'"$DT_TENANT"'~' \
-#    -e 's~DT_API_TOKEN~'"$DT_API_TOKEN"'~' \
-#    -e 's~DT_INGEST_TOKEN~'"$DT_INGEST_TOKEN"'~' \
-#    -e 's~DT_HOST_GROUP~'"$KEPTN_TYPE"'~' \
-#    -e 's~KEPTN_TYPE~'"$KEPTN_TYPE"'~' \
-#    -e 's~KEPTN_STAGE~'"$KEPTN_EXECUTION_PLANE_STAGE_FILTER"'~' \
-#    ./files/dynatrace/oneagent_values.yaml > oneagent_values.yaml
-
-#  export KUBECONFIG=/etc/rancher/k3s/k3s.yaml
-#  helm install dynatrace-oneagent-operator \
-#    dynatrace/dynatrace-oneagent-operator -n\
-#    dynatrace --values oneagent_values.yaml
-
-  # TODO -once ActiveGate supports local k8s API -> Install OneAgent Operator & Active Gate instead of just OneAgent Operator
-  # export KUBECONFIG="/etc/rancher/k3s/k3s.yaml"
-  # wget https://github.com/dynatrace/dynatrace-operator/releases/latest/download/install.sh -O install.sh && sh ./install.sh --api-url "https://$DT_TENANT/api" --api-token "${DT_API_TOKEN}" --paas-token "${DT_INGEST_TOKEN}" --enable-k8s-monitoring --cluster-name "keptn-on-k3s-${FQDN}"
-
-#  rm oneagent_values.yaml
+  "${K3SKUBECTL[@]}" apply -f dynakube_10_tmp.yaml
+  rm dynakube_10_tmp.yaml
 }
 
 function get_helm {
@@ -516,7 +491,7 @@ function install_keptn {
       --set continuous-delivery.enabled=false \
       --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG" \
-      --debug
+      --debug --timeout=10m0s
   fi 
 
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
@@ -528,7 +503,7 @@ function install_keptn {
       --set continuous-delivery.enabled=true \
       --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG" \
-      --debug
+      --debug --timeout=10m0s
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
     JMETER="false"
