@@ -6,10 +6,12 @@ If you navigate to this repository because you are part of a **Cloud Automation 
 * [Cloud Automation Hands-On Instructions](./cloudautomation/INSTRUCTIONS.md)
 * [Cloud Automation Workshop Setup Instructions](./cloudautomation/README.md)
 
-## CHANGE with Keptn 0.17.0
+## UPDATE TO Keptn 1.0.0 - NOT YET FULLY TESTED & MIGRATED
 
-Keptn now requires a Git upstream for every new project. 
-If use any of the demo options (dynatrace, prometheus, cloudautomation) the installation script will automatically use the --with-gitea option to install a Gitea git repository and also installs the Gitea Provisioner Service.
+This version now uses Keptn 1.0.0.
+The installer also installs the latest versions of Helm-Service, JMeter-Service, Job-Executor and Dynatrace-Service
+
+There might be issues with the Dynatrace Demos or Cloud Automation Demos because the Monaco-Service currently doesnt run with Keptn 1.0. More config changes are necessary. I wanted to put it out there though for people to test
 
 ## Running on Keptn on k3s with demo projects
 
@@ -28,6 +30,7 @@ If use any of the demo options (dynatrace, prometheus, cloudautomation) the inst
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.13.4](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.13.4) | 0.13.4 | Updates to Keptn 0.13.4 + adding Job Executor |
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.14.1](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.14.1) | 0.14.1 | Updates to Keptn 0.14.1|
 | [@grabnerandi](https://github.com/grabnerandi) | [release-0.17.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-0.17.0) | 0.17.0 | Updates to Keptn 0.17.0 |
+| [@grabnerandi](https://github.com/grabnerandi) | [release-1.0.0](https://github.com/keptn-sandbox/keptn-on-k3s/tree/release-1.0.0) | 1.0.0 | Updates to Keptn 1.0.0 |
 
 This repo automates the installation of [Keptn's](https://keptn.sh) Control Plane, Delivery or Execution. For that it will automatically install a [k3s](https://k3s.io). 
 This is your fastest way to explore the following use cases:
@@ -80,7 +83,7 @@ sudo wget https://github.com/mikefarah/yq/releases/download/3.4.1/yq_linux_amd64
 
 git clone https://github.com/keptn-sandbox/keptn-on-k3s
 cd keptn-on-k3s
-git checkout release-0.17.0
+git checkout release-1.0.0
 ```
 
 ### Currently tested on:
