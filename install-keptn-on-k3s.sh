@@ -3,7 +3,7 @@
 set -eu
 
 # Keptn Version Information
-KEPTNVERSION=${KEPTNVERSION:-0.17.0}
+KEPTNVERSION=${KEPTNVERSION:-1.0.0}
 KEPTN_TYPE="controlplane"
 KEPTN_DELIVERYPLANE=false
 KEPTN_EXECUTIONPLANE=false
@@ -37,14 +37,15 @@ KEPTN_EXECUTION_PLANE_PROJECT_FILTER=${KEPTN_EXECUTION_PLANE_PROJECT_FILTER:-""}
 
 # PROM_SERVICE_VERSION="release-0.6.1"
 # # PROM_SLI_SERVICE_VERSION="release-0.3.0" <<-- has been merged with the prometheus service
-DT_SERVICE_VERSION="0.23.0"
+DT_SERVICE_VERSION="0.26.0"
 # DT_SLI_SERVICE_VERSION="release-0.12.0" <<-- has been merged with dynatrace-service!
-JOBEEXECUTOR_SERVICE_VERSION="0.2.4-next.1"
+JOBEEXECUTOR_SERVICE_VERSION="0.3.0"
 # GENERICEXEC_SERVICE_VERSION="release-0.8.4"
 MONACO_SERVICE_VERSION="release-0.9.1"  # migratetokeptn08
 ARGO_SERVICE_VERSION="0.9.4"
 LOCUST_SERVICE_VERSION="release-0.1.5"
 GITEA_PROVISIONER_VERSION="0.1.1"
+HELM_SERVICE_VERSION=0.18.1
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -539,7 +540,7 @@ function install_keptn {
       helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
     fi
     # ALWAYS install Helm-Service on Delivery-Plane
-    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn
+    helm install helm-service https://github.com/keptn-contrib/helm-service/releases/download/$HELM_SERVICE_VERSION/helm-service-$HELM_SERVICE_VERSION.tgz -n keptn
 
     # ALWAYS Install the Argo Service as this is needed for one of the demo use cases
     helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
@@ -567,7 +568,7 @@ function install_keptn {
     get_argorollouts
 
     # Install the Helm Service - and increase memory and cpu limits
-    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/helm-service/chart/values.yaml
+    curl -fsSL -o /tmp/helm.values.yaml https://raw.githubusercontent.com/keptn-contrib/helm-service/$HELM_SERVICE_VERSION/chart/values.yaml
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.enabled" "true"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
     yq w -i /tmp/helm.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
@@ -580,7 +581,7 @@ function install_keptn {
     yq w -i /tmp/helm.values.yaml "resources.limits.cpu" "200m"
     yq w -i /tmp/helm.values.yaml "resources.limits.memory" "512Mi"
     
-    helm install helm-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/helm-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
+    helm install helm-service https://github.com/keptn-contrib/helm-service/releases/download/$HELM_SERVICE_VERSION/helm-service-$HELM_SERVICE_VERSION.tgz -n keptn --create-namespace --values=/tmp/helm.values.yaml
 
     # Install the Argo Service for just the demo-rollout project
     helm install argo-service -n keptn https://github.com/keptn-contrib/argo-service/releases/download/${ARGO_SERVICE_VERSION}/argo-service-${ARGO_SERVICE_VERSION}.tgz
@@ -614,7 +615,7 @@ function install_keptn {
     if [[ "${JOBEXECUTOR}" == "true" ]]; then
       write_progress "Installing Job Executor Service on the Execution Plane"
 
-      TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered"
+      TASK_SUBSCRIPTION="sh.keptn.event.deployment.triggered,sh.keptn.event.test.triggered,sh.keptn.event.evaluation.triggered,sh.keptn.event.rollback.triggered,sh.keptn.event.release.triggered,sh.keptn.event.action.triggered,sh.keptn.event.getjoke.triggered,sh.keptn.event.validate.triggered,sh.keptn.event.monaco.triggered"
 
       helm upgrade --install --create-namespace -n keptn \
         job-executor-service https://github.com/keptn-contrib/job-executor-service/releases/download/${JOBEEXECUTOR_SERVICE_VERSION}/job-executor-service-${JOBEEXECUTOR_SERVICE_VERSION}.tgz \
