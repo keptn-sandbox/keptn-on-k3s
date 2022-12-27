@@ -516,6 +516,7 @@ function install_keptn {
       --set continuous-delivery.enabled=false \
       --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
+      --debug
   fi 
 
   if [[ "${KEPTN_DELIVERYPLANE}" == "true" ]]; then
@@ -527,6 +528,7 @@ function install_keptn {
       --set continuous-delivery.enabled=true \
       --set bridge.installationType="QUALITY_GATES\,CONTINUOUS_OPERATIONS\,CONTINUOUS_DELIVERY" \
       --kubeconfig="$KUBECONFIG"
+      --debug
 
     # no need to additionally install jmeter as we install a delivery plane anyway!
     JMETER="false"
