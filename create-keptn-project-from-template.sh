@@ -226,15 +226,15 @@ do
     #
     # create a tmp file so we can do any IN-FILE replacements
     cp ${localFileName} ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_BRIDGE/${KEPTN_BRIDGE_PROJECT_ESCAPED}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_OWNER_EMAIL/${OWNER_EMAIL}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_INGRESS/${KEPTN_INGRESS}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_STAGING_INGRESS/${KEPTN_STAGING_INGRESS}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_PRODUCTION_INGRESS/${KEPTN_PRODUCTION_INGRESS}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_PROJECT/${PROJECT_NAME}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_SYNTHETIC_LOCATION/${SYNTHETIC_LOCATION}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_CONTROL_PLANE_DOMAIN/${KEPTN_CONTROL_PLANE_DOMAIN}/" ${localFileName}.tmp
-    sed -i "s/REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN/${KEPTN_CONTROL_PLANE_API_TOKEN}/" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_BRIDGE~${KEPTN_BRIDGE_PROJECT_ESCAPED}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_OWNER_EMAIL~${OWNER_EMAIL}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_INGRESS~${KEPTN_INGRESS}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_STAGING_INGRESS~${KEPTN_STAGING_INGRESS}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_PRODUCTION_INGRESS~${KEPTN_PRODUCTION_INGRESS}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_PROJECT~${PROJECT_NAME}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_SYNTHETIC_LOCATION~${SYNTHETIC_LOCATION}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_CONTROL_PLANE_DOMAIN~${KEPTN_CONTROL_PLANE_DOMAIN}~" ${localFileName}.tmp
+    sed -i "s~REPLACE_KEPTN_CONTROL_PLANE_API_TOKEN~${KEPTN_CONTROL_PLANE_API_TOKEN}~" ${localFileName}.tmp
 
     #
     # Create remote file name, e.g: replace any filename placeholders and remove leading ./
@@ -266,8 +266,8 @@ do
 
         # replace any occurance in a special tmp.xxx file
         cp ${localFileName}.tmp ${localFileName}.tmp.xxx
-        # sed -i "s/XXX/${instanceIx}/" ${localFileName}.tmp.xxx
-        sed -i "s/XXX/${INSTANCE_NAME}/" ${localFileName}.tmp.xxx
+        # sed -i "s~XXX/${instanceIx}/" ${localFileName}.tmp.xxx
+        sed -i "s~XXX~${INSTANCE_NAME}~" ${localFileName}.tmp.xxx
 
         # adding the file
         keptn add-resource --project="${PROJECT_NAME}" --stage="${RESOURCE_STAGE_NAME}" --resource="${localFileName}.tmp.xxx" --resourceUri="${remoteFileInstanceName}"
