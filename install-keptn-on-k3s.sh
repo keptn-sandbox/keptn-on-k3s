@@ -46,6 +46,7 @@ ARGO_SERVICE_VERSION="0.9.4"
 LOCUST_SERVICE_VERSION="release-0.1.5"
 GITEA_PROVISIONER_VERSION="0.1.1"
 HELM_SERVICE_VERSION=0.18.1
+JMETER_SERVICE_VERSION=0.18.1
 
 # Dynatrace Credentials
 DT_TENANT=${DT_TENANT:-none}
@@ -537,7 +538,7 @@ function install_keptn {
     # Since Keptn 0.8.2 the Helm Service and JMeter Service are no longer installed through the Keptn Helm Chart. so - installing them now
     # Install JMeter if requested
     if [[ "${JMETER}" == "true" ]]; then
-      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn
+      helm install jmeter-service https://github.com/keptn-contrib/jmeter-service/releases/download/${JMETER_SERVICE_VERSION}/jmeter-service-${JMETER_SERVICE_VERSION}.tgz -n keptn
     fi
     # ALWAYS install Helm-Service on Delivery-Plane
     helm install helm-service https://github.com/keptn-contrib/helm-service/releases/download/$HELM_SERVICE_VERSION/helm-service-$HELM_SERVICE_VERSION.tgz -n keptn
@@ -591,7 +592,7 @@ function install_keptn {
 
     # Install JMeter if the user wants to
     if [[ "${JMETER}" == "true" ]]; then
-      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/keptn/keptn/${KEPTNVERSION}/jmeter-service/chart/values.yaml
+      curl -fsSL -o /tmp/jmeter.values.yaml https://raw.githubusercontent.com/kepnt-contrib/jmeter-service/${JMETER_SERVICE_VERSION}/chart/values.yaml
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.enabled" "true"
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.hostname" "${KEPTN_CONTROL_PLANE_DOMAIN}"
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.token" "${KEPTN_CONTROL_PLANE_API_TOKEN}"
@@ -600,7 +601,7 @@ function install_keptn {
       yq w -i /tmp/jmeter.values.yaml "distributor.serviceFilter" "${KEPTN_EXECUTION_PLANE_SERVICE_FILTER}"
       yq w -i /tmp/jmeter.values.yaml "remoteControlPlane.api.apiValidateTls" "${KEPTN_CONTROL_PLANE_SSL_VERIFY}"
 
-      helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
+      helm install jmeter-service https://github.com/keptn-contrib/jmeter-service/releases/download/${JMETER_SERVICE_VERSION}/jmeter-service-${JMETER_SERVICE_VERSION}.tgz -n keptn --create-namespace --values=/tmp/jmeter.values.yaml
 
       # no need to additionally install jmeter afterwards as we install it as part of the execution plane anyway!
       JMETER="false"
@@ -774,10 +775,10 @@ function install_keptn {
   # Installing JMeter Service on the control plane if requested!
   if [[ "${JMETER}" == "true" ]]; then
     write_progress "Installing JMeter Service"
-    helm install jmeter-service https://github.com/keptn/keptn/releases/download/${KEPTNVERSION}/jmeter-service-${KEPTNVERSION}.tgz -n keptn --create-namespace
+    helm install jmeter-service https://github.com/keptn-contrib/jmeter-service/releases/download/${JMETER_SERVICE_VERSION}/jmeter-service-${JMETER_SERVICE_VERSION}.tgz -n keptn
 
     # For KNOWN ISSUE in Keptn 0.14.1
-    "${K3SKUBECTL[@]}" -n keptn set env deployment/jmeter-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
+    # "${K3SKUBECTL[@]}" -n keptn set env deployment/jmeter-service --containers=distributor PUBSUB_URL="nats://keptn-nats"
   fi
 
   if [[ "${DISABLE_BRIDGE_AUTH}" == "true" ]]; then
